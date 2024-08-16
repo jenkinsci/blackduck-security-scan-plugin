@@ -95,21 +95,21 @@ public class ScanParametersFactory {
             String bridgeDownloadUrl = getBridgeDownloadUrlBasedOnAgentOS(
                     workspace,
                     listener,
-                    config.getSynopsysBridgeDownloadUrlForMac(),
-                    config.getSynopsysBridgeDownloadUrlForLinux(),
-                    config.getSynopsysBridgeDownloadUrlForWindows());
+                    config.getBridgeDownloadUrlForMac(),
+                    config.getBridgeDownloadUrlForLinux(),
+                    config.getBridgeDownloadUrlForWindows());
 
-            addParameterIfNotBlank(globalParameters, ApplicationConstants.BLACKDUCK_URL_KEY, config.getBlackDuckUrl());
+            addParameterIfNotBlank(globalParameters, ApplicationConstants.BLACKDUCK_URL_KEY, config.getBlackDuckSCAUrl());
             addParameterIfNotBlank(
                     globalParameters,
                     ApplicationConstants.BLACKDUCK_TOKEN_KEY,
                     scanCredentialsHelper
-                            .getApiTokenByCredentialsId(config.getBlackDuckCredentialsId())
+                            .getApiTokenByCredentialsId(config.getBlackDuckSCACredentialsId())
                             .orElse(null));
             addParameterIfNotBlank(
                     globalParameters,
                     ApplicationConstants.BLACKDUCK_INSTALL_DIRECTORY_KEY,
-                    config.getBlackDuckInstallationPath());
+                    config.getDetectInstallationPath());
             addParameterIfNotBlank(
                     globalParameters, ApplicationConstants.COVERITY_URL_KEY, config.getCoverityConnectUrl());
             addParameterIfNotBlank(
@@ -174,11 +174,11 @@ public class ScanParametersFactory {
             addParameterIfNotBlank(
                     globalParameters,
                     ApplicationConstants.SYNOPSYS_BRIDGE_INSTALL_DIRECTORY,
-                    config.getSynopsysBridgeInstallationPath());
+                    config.getBridgeInstallationPath());
             addParameterIfNotBlank(
                     globalParameters,
                     ApplicationConstants.SYNOPSYS_BRIDGE_DOWNLOAD_VERSION,
-                    config.getSynopsysBridgeVersion());
+                    config.getBridgeDownloadVersion());
             addParameterIfNotBlank(
                     globalParameters, ApplicationConstants.POLARIS_SERVER_URL_KEY, config.getPolarisServerUrl());
             addParameterIfNotBlank(

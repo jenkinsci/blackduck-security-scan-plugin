@@ -32,17 +32,17 @@ public class ScannerGlobalConfig extends GlobalConfiguration implements Serializ
     private String AUTHORIZATION_FAILURE = "Could not perform the authorization request: ";
     private String CONNECTION_SUCCESSFUL = "Connection successful.";
 
-    private String blackDuckUrl;
-    private String blackDuckCredentialsId;
-    private String blackDuckInstallationPath;
+    private String blackDuckSCAUrl;
+    private String blackDuckSCACredentialsId;
+    private String detectInstallationPath;
     private String coverityConnectUrl;
     private String coverityCredentialsId;
     private String coverityInstallationPath;
-    private String synopsysBridgeDownloadUrlForMac;
-    private String synopsysBridgeDownloadUrlForWindows;
-    private String synopsysBridgeDownloadUrlForLinux;
-    private String synopsysBridgeVersion;
-    private String synopsysBridgeInstallationPath;
+    private String bridgeDownloadUrlForMac;
+    private String bridgeDownloadUrlForWindows;
+    private String bridgeDownloadUrlForLinux;
+    private String bridgeDownloadVersion;
+    private String bridgeInstallationPath;
     private String polarisServerUrl;
     private String polarisCredentialsId;
     private String srmUrl;
@@ -59,14 +59,14 @@ public class ScannerGlobalConfig extends GlobalConfiguration implements Serializ
     }
 
     @DataBoundSetter
-    public void setBlackDuckUrl(String blackDuckUrl) {
-        this.blackDuckUrl = blackDuckUrl;
+    public void setBlackDuckSCAUrl(String blackDuckSCAUrl) {
+        this.blackDuckSCAUrl = blackDuckSCAUrl;
         save();
     }
 
     @DataBoundSetter
-    public void setBlackDuckInstallationPath(String blackDuckInstallationPath) {
-        this.blackDuckInstallationPath = blackDuckInstallationPath;
+    public void setDetectInstallationPath(String detectInstallationPath) {
+        this.detectInstallationPath = detectInstallationPath;
         save();
     }
 
@@ -101,32 +101,32 @@ public class ScannerGlobalConfig extends GlobalConfiguration implements Serializ
     }
 
     @DataBoundSetter
-    public void setSynopsysBridgeDownloadUrlForMac(String synopsysBridgeDownloadUrlForMac) {
-        this.synopsysBridgeDownloadUrlForMac = synopsysBridgeDownloadUrlForMac;
+    public void setBridgeDownloadUrlForMac(String bridgeDownloadUrlForMac) {
+        this.bridgeDownloadUrlForMac = bridgeDownloadUrlForMac;
         save();
     }
 
     @DataBoundSetter
-    public void setSynopsysBridgeDownloadUrlForWindows(String synopsysBridgeDownloadUrlForWindows) {
-        this.synopsysBridgeDownloadUrlForWindows = synopsysBridgeDownloadUrlForWindows;
+    public void setBridgeDownloadUrlForWindows(String bridgeDownloadUrlForWindows) {
+        this.bridgeDownloadUrlForWindows = bridgeDownloadUrlForWindows;
         save();
     }
 
     @DataBoundSetter
-    public void setSynopsysBridgeDownloadUrlForLinux(String synopsysBridgeDownloadUrlForLinux) {
-        this.synopsysBridgeDownloadUrlForLinux = synopsysBridgeDownloadUrlForLinux;
+    public void setBridgeDownloadUrlForLinux(String bridgeDownloadUrlForLinux) {
+        this.bridgeDownloadUrlForLinux = bridgeDownloadUrlForLinux;
         save();
     }
 
     @DataBoundSetter
-    public void setSynopsysBridgeVersion(String synopsysBridgeVersion) {
-        this.synopsysBridgeVersion = synopsysBridgeVersion;
+    public void setBridgeDownloadVersion(String bridgeDownloadVersion) {
+        this.bridgeDownloadVersion = bridgeDownloadVersion;
         save();
     }
 
     @DataBoundSetter
-    public void setSynopsysBridgeInstallationPath(String synopsysBridgeInstallationPath) {
-        this.synopsysBridgeInstallationPath = synopsysBridgeInstallationPath;
+    public void setBridgeInstallationPath(String bridgeInstallationPath) {
+        this.bridgeInstallationPath = bridgeInstallationPath;
         save();
     }
 
@@ -138,7 +138,7 @@ public class ScannerGlobalConfig extends GlobalConfiguration implements Serializ
 
     @DataBoundSetter
     public void setBlackDuckCredentialsId(String blackDuckCredentialsId) {
-        this.blackDuckCredentialsId = blackDuckCredentialsId;
+        this.blackDuckSCACredentialsId = blackDuckCredentialsId;
         save();
     }
 
@@ -176,12 +176,12 @@ public class ScannerGlobalConfig extends GlobalConfiguration implements Serializ
         this.srmSASTInstallationPath = srmSASTInstallationPath;
     }
 
-    public String getBlackDuckUrl() {
-        return blackDuckUrl;
+    public String getBlackDuckSCAUrl() {
+        return blackDuckSCAUrl;
     }
 
-    public String getBlackDuckInstallationPath() {
-        return blackDuckInstallationPath;
+    public String getDetectInstallationPath() {
+        return detectInstallationPath;
     }
 
     public String getCoverityConnectUrl() {
@@ -192,32 +192,32 @@ public class ScannerGlobalConfig extends GlobalConfiguration implements Serializ
         return coverityInstallationPath;
     }
 
-    public String getSynopsysBridgeDownloadUrlForMac() {
-        return synopsysBridgeDownloadUrlForMac;
+    public String getBridgeDownloadUrlForMac() {
+        return bridgeDownloadUrlForMac;
     }
 
-    public String getSynopsysBridgeDownloadUrlForWindows() {
-        return synopsysBridgeDownloadUrlForWindows;
+    public String getBridgeDownloadUrlForWindows() {
+        return bridgeDownloadUrlForWindows;
     }
 
-    public String getSynopsysBridgeDownloadUrlForLinux() {
-        return synopsysBridgeDownloadUrlForLinux;
+    public String getBridgeDownloadUrlForLinux() {
+        return bridgeDownloadUrlForLinux;
     }
 
-    public String getSynopsysBridgeVersion() {
-        return synopsysBridgeVersion;
+    public String getBridgeDownloadVersion() {
+        return bridgeDownloadVersion;
     }
 
-    public String getSynopsysBridgeInstallationPath() {
-        return synopsysBridgeInstallationPath;
+    public String getBridgeInstallationPath() {
+        return bridgeInstallationPath;
     }
 
     public String getPolarisServerUrl() {
         return polarisServerUrl;
     }
 
-    public String getBlackDuckCredentialsId() {
-        return blackDuckCredentialsId;
+    public String getBlackDuckSCACredentialsId() {
+        return blackDuckSCACredentialsId;
     }
 
     public String getCoverityCredentialsId() {
@@ -272,7 +272,7 @@ public class ScannerGlobalConfig extends GlobalConfiguration implements Serializ
                         ScanCredentialsHelper.API_TOKEN_CREDENTIALS);
     }
 
-    public ListBoxModel doFillBlackDuckCredentialsIdItems() {
+    public ListBoxModel doFillBlackDuckSCACredentialsIdItems() {
         return getOptionsWithApiTokenCredentials();
     }
 
@@ -331,26 +331,26 @@ public class ScannerGlobalConfig extends GlobalConfiguration implements Serializ
     }
 
     @POST
-    public FormValidation doTestBlackDuckConnection(
-            @QueryParameter("blackDuckUrl") String blackDuckUrl,
-            @QueryParameter("blackDuckCredentialsId") String blackDuckCredentialsId) {
+    public FormValidation doTestBlackDuckSCAConnection(
+            @QueryParameter("blackDuckSCAUrl") String blackDuckSCAUrl,
+            @QueryParameter("blackDuckSCACredentialsId") String blackDuckSCACredentialsId) {
         Jenkins jenkins = Jenkins.getInstanceOrNull();
         if (jenkins == null) {
             return FormValidation.warning(LogMessages.JENKINS_INSTANCE_MISSING_WARNING);
         }
         jenkins.checkPermission(Jenkins.ADMINISTER);
 
-        if (Utility.isStringNullOrBlank(blackDuckUrl)) {
-            return FormValidation.error("The Black Duck url must be specified");
+        if (Utility.isStringNullOrBlank(blackDuckSCAUrl)) {
+            return FormValidation.error("The Black Duck SCA URL must be specified");
         }
-        if (Utility.isStringNullOrBlank(blackDuckCredentialsId)) {
-            return FormValidation.error("The Black Duck credentials must be specified");
+        if (Utility.isStringNullOrBlank(blackDuckSCACredentialsId)) {
+            return FormValidation.error("The Black Duck SCA credentials must be specified");
         }
 
         try {
             AuthenticationSupport authenticationSupport = new AuthenticationSupport();
-            HttpResponse response = authenticationSupport.attemptBlackDuckAuthentication(
-                    blackDuckUrl, blackDuckCredentialsId, CONNECTION_TIMEOUT_IN_SECONDS);
+            HttpResponse response = authenticationSupport.attemptBlackDuckSCAAuthentication(
+                    blackDuckSCAUrl, blackDuckSCACredentialsId, CONNECTION_TIMEOUT_IN_SECONDS);
 
             if (response.getCode() != HttpURLConnection.HTTP_OK) {
                 String validationMessage = getValidationMessage(response.getCode());

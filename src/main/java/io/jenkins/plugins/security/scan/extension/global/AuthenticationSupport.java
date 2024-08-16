@@ -17,17 +17,17 @@ import org.apache.hc.core5.util.Timeout;
 public class AuthenticationSupport {
     private final ScanCredentialsHelper scanCredentialsHelper = new ScanCredentialsHelper();
 
-    public final HttpResponse attemptBlackDuckAuthentication(
-            String blackDuckUrl, String blackDuckCredentialsId, int timeoutInSeconds) {
-        String blackDuckAuthApi = blackDuckUrl.endsWith("/")
-                ? blackDuckUrl.concat(ApplicationConstants.BLACKDUCK_AUTH_API)
-                : blackDuckUrl.concat("/").concat(ApplicationConstants.BLACKDUCK_AUTH_API);
-        String blackDuckApiToken = scanCredentialsHelper
-                .getApiTokenByCredentialsId(blackDuckCredentialsId)
+    public final HttpResponse attemptBlackDuckSCAAuthentication(
+            String blackDuckSCAUrl, String blackDuckSCACredentialsId, int timeoutInSeconds) {
+        String blackDuckSCAAuthApi = blackDuckSCAUrl.endsWith("/")
+                ? blackDuckSCAUrl.concat(ApplicationConstants.BLACKDUCKSCA_AUTH_API)
+                : blackDuckSCAUrl.concat("/").concat(ApplicationConstants.BLACKDUCKSCA_AUTH_API);
+        String blackDuckSCAApiToken = scanCredentialsHelper
+                .getApiTokenByCredentialsId(blackDuckSCACredentialsId)
                 .orElse(null);
 
-        HttpPost httpPost = new HttpPost(blackDuckAuthApi);
-        httpPost.setHeader(ApplicationConstants.AUTHORIZATION_HEADER_NAME, "token " + blackDuckApiToken);
+        HttpPost httpPost = new HttpPost(blackDuckSCAAuthApi);
+        httpPost.setHeader(ApplicationConstants.AUTHORIZATION_HEADER_NAME, "token " + blackDuckSCAApiToken);
 
         return executeRequest(httpPost, timeoutInSeconds);
     }

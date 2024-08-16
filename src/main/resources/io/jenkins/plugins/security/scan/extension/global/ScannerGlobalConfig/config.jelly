@@ -1,14 +1,14 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form" xmlns:c="/lib/credentials">
-    <f:section title="Synopsys Security Scan">
+    <f:section title="Black Duck Security Scan">
 
         <!-- Place a single info line above the tabs -->
-        <div class="tab-info">Synopsys Security Product Configuration </div>
+        <div class="tab-info">Black Duck Security Product Configuration </div>
 
         <!-- Tab Container -->
         <div class="tab-container">
             <!-- Black Duck Tab -->
-            <div class="scan-tab" onclick="showScanType('BLACKDUCKSection')">Black Duck</div>
+            <div class="scan-tab" onclick="showScanType('BLACKDUCKSCASection')">Black Duck SCA</div>
             <!-- Coverity Tab -->
             <div class="scan-tab" onclick="showScanType('COVERITYSection')">Coverity</div>
             <!-- Polaris Tab -->
@@ -18,22 +18,22 @@
         </div>
 
         <!-- Black Duck Configuration -->
-        <div class="scan-type-section" id="BLACKDUCKSection" style="display: block;"> <!-- Set display to block -->
-            <f:entry field="blackDuckUrl" title="Black Duck URL">
-                <f:textbox name="blackDuckUrl" />
+        <div class="scan-type-section" id="BLACKDUCKSCASection" style="display: block;"> <!-- Set display to block -->
+            <f:entry field="blackDuckSCAUrl" title="Black Duck SCA URL">
+                <f:textbox name="blackDuckSCAUrl" />
             </f:entry>
-            <f:entry field="blackDuckCredentialsId" title="Black Duck Token">
+            <f:entry field="blackDuckSCACredentialsId" title="Black Duck SCA Token">
                  <c:select/>
             </f:entry>
-            <f:entry field="blackDuckInstallationPath" title="Black Duck Install Directory(Optional)">
-                <f:textbox name="blackDuckInstallationPath" />
+            <f:entry field="detectInstallationPath" title="Black Duck SCA Install Directory(Optional)">
+                <f:textbox name="detectInstallationPath" />
             </f:entry>
             <div class="button-container">
                 <div class="flex-1">
-                    <f:validateButton method="testBlackDuckConnection" title="Test Connection" progress="Testing..." with="blackDuckUrl,blackDuckCredentialsId"/>
+                    <f:validateButton method="testBlackDuckSCAConnection" title="Test Connection" progress="Testing..." with="blackDuckSCAUrl,blackDuckSCACredentialsId"/>
                 </div>
                 <f:entry>
-                    <button type="button" class="jenkins-button ml-7" onclick="clearTabFieldsAndTestConnectionMessages('BLACKDUCKSection')">Clear</button>
+                    <button type="button" class="jenkins-button ml-7" onclick="clearTabFieldsAndTestConnectionMessages('BLACKDUCKSCASection')">Clear</button>
                 </f:entry>
             </div>
         </div>
@@ -85,7 +85,7 @@
             <f:entry field="srmCredentialsId" title="SRM API Key">
                 <c:select/>
             </f:entry>
-            <f:entry field="srmSCAInstallationPath" title="Black Duck Install Directory(Optional)">
+            <f:entry field="srmSCAInstallationPath" title="Detect Install Directory(Optional)">
                 <f:textbox name="srmSCAInstallationPath" />
             </f:entry>
             <f:entry field="srmSASTInstallationPath" title="Coverity Install Directory(Optional)">
@@ -115,9 +115,9 @@
             </f:entry>
 
             <!-- Place a single info line above the tabs -->
-            <div class="tab-info-os">Configure Synopsys Bridge download URL for different platforms</div>
+            <div class="tab-info-os">Configure Bridge CLI download URL for different platforms</div>
 
-            <!-- Tab Container for Synopsys Bridge Download URLs -->
+            <!-- Tab Container for Bridge CLI Download URLs -->
             <div class="tab-container">
                 <!-- Mac Tab -->
                 <div class="os-tab" onclick="showOsType('MACSection')">Mac</div>
@@ -129,30 +129,30 @@
 
             <!-- Mac Download URL Configuration -->
             <div class="os-type-section" id="MACSection" style="display: none;">
-                <f:entry field="synopsysBridgeDownloadUrlForMac" title="Synopsys Bridge Download URL (Optional)">
-                    <f:textbox name="synopsysBridgeDownloadUrlForMac" />
+                <f:entry field="bridgeDownloadUrlForMac" title="Bridge CLI Download URL (Optional)">
+                    <f:textbox name="bridgeDownloadUrlForMac" />
                 </f:entry>
             </div>
 
             <!-- Windows Download URL Configuration -->
             <div class="os-type-section" id="WINDOWSSection" style="display: none;">
-                <f:entry field="synopsysBridgeDownloadUrlForWindows" title="Synopsys Bridge Download URL (Optional)">
-                    <f:textbox name="synopsysBridgeDownloadUrlForWindows" />
+                <f:entry field="bridgeDownloadUrlForWindows" title="Bridge CLI Download URL (Optional)">
+                    <f:textbox name="bridgeDownloadUrlForWindows" />
                 </f:entry>
             </div>
 
             <!-- Linux Download URL Configuration -->
             <div class="os-type-section" id="LINUXSection" style="display: none;">
-                <f:entry field="synopsysBridgeDownloadUrlForLinux" title="Synopsys Bridge Download URL (Optional)">
-                    <f:textbox name="synopsysBridgeDownloadUrlForLinux" />
+                <f:entry field="bridgeDownloadUrlForLinux" title="Bridge CLI Download URL (Optional)">
+                    <f:textbox name="bridgeDownloadUrlForLinux" />
                 </f:entry>
             </div>
 
             <!-- Other Configuration -->
-            <f:entry field="synopsysBridgeVersion" title="Synopsys Bridge Version (Optional)">
+            <f:entry field="bridgeDownloadVersion" title="Bridge CLI Download Version (Optional)">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="synopsysBridgeInstallationPath" title="Synopsys Bridge Installation Path (Optional)">
+            <f:entry field="bridgeInstallationPath" title="Bridge CLI Installation Path (Optional)">
                 <f:textbox/>
             </f:entry>
         </div>
@@ -353,19 +353,19 @@
 
         // Function to check for existing values and display related boxes on page load
         function checkExistingValues() {
-            var blackDuckUrl = document.querySelector("input[name='blackDuckUrl']").value;
+            var blackDuckSCAUrl = document.querySelector("input[name='blackDuckSCAUrl']").value;
             var coverityConnectUrl = document.querySelector("input[name='coverityConnectUrl']").value;
             var polarisServerUrl = document.querySelector("input[name='polarisServerUrl']").value;
             var srmUrl = document.querySelector("input[name='srmUrl']").value;
 
-            var synopsysBridgeDownloadUrlForWindows = document.querySelector("input[name='synopsysBridgeDownloadUrlForWindows']").value;
-            var synopsysBridgeDownloadUrlForLinux = document.querySelector("input[name='synopsysBridgeDownloadUrlForLinux']").value;
-            var synopsysBridgeDownloadUrlForMac = document.querySelector("input[name='synopsysBridgeDownloadUrlForMac']").value;
+            var bridgeDownloadUrlForWindows = document.querySelector("input[name='bridgeDownloadUrlForWindows']").value;
+            var bridgeDownloadUrlForLinux = document.querySelector("input[name='bridgeDownloadUrlForLinux']").value;
+            var bridgeDownloadUrlForMac = document.querySelector("input[name='bridgeDownloadUrlForMac']").value;
 
-            // Check the values of blackDuckUrl, coverityConnectUrl, and polarisServerUrl
+            // Check the values of blackDuckSCAUrl, coverityConnectUrl, and polarisServerUrl
             // and select the appropriate scan type based on their values
-            if (blackDuckUrl) {
-                selectScanType("BLACKDUCK"); // Show Black Duck box if there is a value
+            if (blackDuckSCAUrl) {
+                selectScanType("BLACKDUCKSCA"); // Show Black Duck SCA box if there is a value
             } else if (coverityConnectUrl) {
                 selectScanType("COVERITY"); // Show Coverity box if there is a value
             } else if (polarisServerUrl) {
@@ -373,17 +373,17 @@
             }  else if (srmUrl) {
                 selectScanType("SRM"); // Show Polaris box if there is a value
             }  else {
-                // If none of the URLs have a value, default to Black Duck
-                selectScanType("BLACKDUCK");
+                // If none of the URLs have a value, default to Black Duck SCA
+                selectScanType("BLACKDUCKSCA");
             }
 
-            // Check the values of synopsysBridgeDownloadUrlForMac, synopsysBridgeDownloadUrlForLinux, and synopsysBridgeDownloadUrlForWindows
+            // Check the values of bridgeDownloadUrlForMac, bridgeDownloadUrlForLinux, and bridgeDownloadUrlForWindows
             // and select the appropriate OS type based on their values
-            if (synopsysBridgeDownloadUrlForMac) {
+            if (bridgeDownloadUrlForMac) {
                 selectOSType("MAC");
-            } else if (synopsysBridgeDownloadUrlForLinux) {
+            } else if (bridgeDownloadUrlForLinux) {
                 selectOSType("LINUX");
-            } else if (synopsysBridgeDownloadUrlForWindows) {
+            } else if (bridgeDownloadUrlForWindows) {
                 selectOSType("WINDOWS");
             } else {
                 // If none of the URLs have a value, default to MAC

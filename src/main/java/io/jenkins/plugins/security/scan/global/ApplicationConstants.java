@@ -180,7 +180,7 @@ public class ApplicationConstants {
     public static final String NO_PROXY = "NO_PROXY";
 
     // Test Connection APIs
-    public static final String BLACKDUCK_AUTH_API = "api/tokens/authenticate";
+    public static final String BLACKDUCKSCA_AUTH_API = "api/tokens/authenticate";
     public static final String POLARIS_PORTFOLIO_API = "api/portfolio/portfolios";
     public static final String COVERITY_VIEWS_API = "api/v2/views";
     public static final String SRM_SYSTEM_INFO_API = "srm/api/system-info";
