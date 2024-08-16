@@ -20,6 +20,9 @@ public class BridgeInput {
     @JsonProperty("polaris")
     private Polaris polaris;
 
+    @JsonProperty("srm")
+    private SRM srm;
+
     @JsonProperty("project")
     private Project project;
 
@@ -68,6 +71,14 @@ public class BridgeInput {
 
     public void setPolaris(Polaris polaris) {
         this.polaris = polaris;
+    }
+
+    public SRM getSrm() {
+        return srm;
+    }
+
+    public void setSrm(SRM srm) {
+        this.srm = srm;
     }
 
     public Bitbucket getBitbucket() {

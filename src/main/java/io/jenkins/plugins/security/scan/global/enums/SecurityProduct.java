@@ -4,7 +4,8 @@ public enum SecurityProduct {
     BLACKDUCK("Blackduck"),
     BLACKDUCKSCA("Black Duck SCA"),
     COVERITY("Coverity"),
-    POLARIS("Polaris");
+    POLARIS("Polaris"),
+    SRM("Software Risk Manager (SRM)");
 
     private final String productLabel;
 
