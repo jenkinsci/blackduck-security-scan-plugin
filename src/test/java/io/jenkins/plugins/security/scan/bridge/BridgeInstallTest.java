@@ -26,7 +26,7 @@ public class BridgeInstallTest {
     }
 
     @Test
-    void installSynopsysBridgeTest() {
+    void installBridgeCLITest() {
         FilePath sourceBridge;
         String os = System.getProperty("os.name").toLowerCase();
         FilePath destinationBridge = bridgeInstallationPath.child("demo-bridge.zip");
@@ -39,7 +39,7 @@ public class BridgeInstallTest {
 
         try {
             sourceBridge.copyTo(destinationBridge);
-            bridgeInstall.installSynopsysBridge(getFullZipPath(), bridgeInstallationPath);
+            bridgeInstall.installBridgeCLI(getFullZipPath(), bridgeInstallationPath);
 
             assertFalse(destinationBridge.exists());
             assertTrue(bridgeInstallationPath.child("demo-bridge-extensions").isDirectory());

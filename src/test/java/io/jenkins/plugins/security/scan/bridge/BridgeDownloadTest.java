@@ -31,7 +31,7 @@ public class BridgeDownloadTest {
     }
 
     @Test
-    public void downloadSynopsysBridgeTest() throws Exception {
+    public void downloadBridgeCLITest() throws Exception {
         BridgeDownload bridgeDownload = new BridgeDownload(workspace, listenerMock, envVarsMock);
 
         String validBridgeDownloadUrl =
@@ -39,12 +39,12 @@ public class BridgeDownloadTest {
         String invalidBridgeDownloadUrl = "https://bridge.invalid.url";
 
         FilePath validBridgeDownloadPath =
-                bridgeDownload.downloadSynopsysBridge(validBridgeDownloadUrl, workspace.getRemote());
+                bridgeDownload.downloadBridgeCLI(validBridgeDownloadUrl, workspace.getRemote());
 
         assertTrue(Files.exists(Paths.get(validBridgeDownloadPath.getRemote())));
         assertThrows(
                 PluginExceptionHandler.class,
-                () -> bridgeDownload.downloadSynopsysBridge(invalidBridgeDownloadUrl, workspace.getRemote()));
+                () -> bridgeDownload.downloadBridgeCLI(invalidBridgeDownloadUrl, workspace.getRemote()));
 
         Utility.removeFile(validBridgeDownloadPath.getRemote(), workspace, listenerMock);
     }

@@ -38,13 +38,13 @@ public class BridgeDownloadManager {
 
         bridgeInstall.verifyAndCreateInstallationPath(bridgeInstallationPath);
 
-        FilePath bridgeZipPath = bridgeDownload.downloadSynopsysBridge(bridgeDownloadUrl, bridgeInstallationPath);
+        FilePath bridgeZipPath = bridgeDownload.downloadBridgeCLI(bridgeDownloadUrl, bridgeInstallationPath);
 
-        bridgeInstall.installSynopsysBridge(
+        bridgeInstall.installBridgeCLI(
                 bridgeZipPath, new FilePath(workspace.getChannel(), bridgeInstallationPath));
     }
 
-    public boolean isSynopsysBridgeDownloadRequired(BridgeDownloadParameters bridgeDownloadParameters) {
+    public boolean isBridgeDownloadRequired(BridgeDownloadParameters bridgeDownloadParameters) {
         String bridgeDownloadUrl = bridgeDownloadParameters.getBridgeDownloadUrl();
         String bridgeInstallationPath = bridgeDownloadParameters.getBridgeInstallationPath();
 
@@ -64,15 +64,15 @@ public class BridgeDownloadManager {
         return !latestBridgeVersion.equals(installedBridgeVersion);
     }
 
-    public boolean checkIfBridgeInstalled(String synopsysBridgeInstallationPath) {
+    public boolean checkIfBridgeInstalled(String bridgeInstallationPath) {
         try {
-            FilePath installationDirectory = new FilePath(workspace.getChannel(), synopsysBridgeInstallationPath);
+            FilePath installationDirectory = new FilePath(workspace.getChannel(), bridgeInstallationPath);
 
             if (installationDirectory.exists() && installationDirectory.isDirectory()) {
                 FilePath extensionsDir = installationDirectory.child(ApplicationConstants.EXTENSIONS_DIRECTORY);
-                FilePath bridgeBinaryFile = installationDirectory.child(ApplicationConstants.BRIDGE_BINARY);
+                FilePath bridgeBinaryFile = installationDirectory.child(ApplicationConstants.BRIDGE_CLI_EXECUTABLE);
                 FilePath bridgeBinaryFileWindows =
-                        installationDirectory.child(ApplicationConstants.BRIDGE_BINARY_WINDOWS);
+                        installationDirectory.child(ApplicationConstants.BRIDGE_CLI_EXECUTABLE_WINDOWS);
                 FilePath versionFile = installationDirectory.child(ApplicationConstants.VERSION_FILE);
 
                 return extensionsDir.isDirectory()
@@ -91,7 +91,7 @@ public class BridgeDownloadManager {
             FilePath file = new FilePath(workspace.getChannel(), versionFilePath);
             if (file.exists()) {
                 String versionsFileContent = file.readToString();
-                Matcher matcher = Pattern.compile("Synopsys Bridge Package: (\\d+\\.\\d+\\.\\d+)")
+                Matcher matcher = Pattern.compile("Bridge CLI Package: (\\d+\\.\\d+\\.\\d+)")
                         .matcher(versionsFileContent);
 
                 if (matcher.find()) {

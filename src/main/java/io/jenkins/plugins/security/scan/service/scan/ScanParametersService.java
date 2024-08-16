@@ -16,16 +16,14 @@ import java.util.stream.Collectors;
 
 public class ScanParametersService {
     private final TaskListener listener;
-    private final EnvVars envVars;
 
-    public ScanParametersService(TaskListener listener, EnvVars envVars) {
+    public ScanParametersService(TaskListener listener) {
         this.listener = listener;
-        this.envVars = envVars;
     }
 
     public boolean performScanParameterValidation(Map<String, Object> scanParameters, EnvVars envVars)
             throws PluginExceptionHandler {
-        Set<String> securityProducts = getSynopsysSecurityProducts(scanParameters);
+        Set<String> securityProducts = getSecurityProducts(scanParameters);
 
         if (securityProducts.contains(SecurityProduct.BLACKDUCK.name())) {
             BlackDuckParametersService
@@ -52,7 +50,7 @@ public class ScanParametersService {
         return true;
     }
 
-    public Set<String> getSynopsysSecurityProducts(Map<String, Object> scanParameters) {
+    public Set<String> getSecurityProducts(Map<String, Object> scanParameters) {
         String securityPlatform = (String) scanParameters.get(ApplicationConstants.PRODUCT_KEY);
 
         return Arrays.stream(securityPlatform.split(","))

@@ -1,6 +1,5 @@
 package io.jenkins.plugins.security.scan.factory;
 
-import hudson.AbortException;
 import hudson.EnvVars;
 import hudson.FilePath;
 import hudson.Launcher;
@@ -8,6 +7,8 @@ import hudson.model.Node;
 import hudson.model.Result;
 import hudson.model.Run;
 import hudson.model.TaskListener;
+import io.jenkins.plugins.security.scan.PluginParametersHandler;
+import io.jenkins.plugins.security.scan.SecurityScanner;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.extension.SecurityScan;
 import io.jenkins.plugins.security.scan.extension.freestyle.FreestyleScan;
@@ -18,27 +19,12 @@ import io.jenkins.plugins.security.scan.global.*;
 import io.jenkins.plugins.security.scan.global.enums.BuildStatus;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import io.jenkins.plugins.security.scan.service.ScannerArgumentService;
-import io.jenkins.plugins.security.scan.PluginParametersHandler;
-import io.jenkins.plugins.security.scan.SecurityScanner;
-import io.jenkins.plugins.synopsys.security.scan.global.*;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import jenkins.model.GlobalConfiguration;
 
 public class ScanParametersFactory {
-    private final EnvVars envVars;
-    private final FilePath workspace;
-
-    public ScanParametersFactory(EnvVars envVars, FilePath workspace) throws AbortException {
-        this.envVars = envVars;
-
-        if (workspace == null) {
-            throw new AbortException(ExceptionMessages.NULL_WORKSPACE);
-        }
-        this.workspace = workspace;
-    }
-
     public static PluginParametersHandler createPipelineCommand(
             Run<?, ?> run, TaskListener listener, EnvVars envVars, Launcher launcher, Node node, FilePath workspace) {
         return new PluginParametersHandler(
@@ -105,7 +91,7 @@ public class ScanParametersFactory {
         ScanCredentialsHelper scanCredentialsHelper = new ScanCredentialsHelper();
 
         if (config != null) {
-            String synopsysBridgeDownloadUrl = getSynopsysBridgeDownloadUrlBasedOnAgentOS(
+            String bridgeDownloadUrl = getBridgeDownloadUrlBasedOnAgentOS(
                     workspace,
                     listener,
                     config.getSynopsysBridgeDownloadUrlForMac(),
@@ -168,14 +154,14 @@ public class ScanParametersFactory {
                             .getApiTokenByCredentialsId(config.getGitlabCredentialsId())
                             .orElse(null));
             addParameterIfNotBlank(
-                    globalParameters, ApplicationConstants.SYNOPSYS_BRIDGE_DOWNLOAD_URL, synopsysBridgeDownloadUrl);
+                    globalParameters, ApplicationConstants.BRIDGECLI_DOWNLOAD_URL, bridgeDownloadUrl);
             addParameterIfNotBlank(
                     globalParameters,
-                    ApplicationConstants.SYNOPSYS_BRIDGE_INSTALL_DIRECTORY,
+                    ApplicationConstants.BRIDGECLI_INSTALL_DIRECTORY,
                     config.getSynopsysBridgeInstallationPath());
             addParameterIfNotBlank(
                     globalParameters,
-                    ApplicationConstants.SYNOPSYS_BRIDGE_DOWNLOAD_VERSION,
+                    ApplicationConstants.BRIDGECLI_DOWNLOAD_VERSION,
                     config.getSynopsysBridgeVersion());
             addParameterIfNotBlank(
                     globalParameters, ApplicationConstants.POLARIS_SERVER_URL_KEY, config.getPolarisServerUrl());
@@ -486,18 +472,18 @@ public class ScanParametersFactory {
 
         if (!Utility.isStringNullOrBlank(securityScan.getSynopsys_bridge_download_url())) {
             bridgeParameters.put(
-                    ApplicationConstants.SYNOPSYS_BRIDGE_DOWNLOAD_URL, securityScan.getSynopsys_bridge_download_url());
+                    ApplicationConstants.BRIDGECLI_DOWNLOAD_URL, securityScan.getSynopsys_bridge_download_url());
         }
 
         if (!Utility.isStringNullOrBlank(securityScan.getSynopsys_bridge_download_version())) {
             bridgeParameters.put(
-                    ApplicationConstants.SYNOPSYS_BRIDGE_DOWNLOAD_VERSION,
+                    ApplicationConstants.BRIDGECLI_DOWNLOAD_VERSION,
                     securityScan.getSynopsys_bridge_download_version());
         }
 
         if (!Utility.isStringNullOrBlank(securityScan.getSynopsys_bridge_install_directory())) {
             bridgeParameters.put(
-                    ApplicationConstants.SYNOPSYS_BRIDGE_INSTALL_DIRECTORY,
+                    ApplicationConstants.BRIDGECLI_INSTALL_DIRECTORY,
                     securityScan.getSynopsys_bridge_install_directory());
         }
 
@@ -576,19 +562,19 @@ public class ScanParametersFactory {
         return sarifParameters;
     }
 
-    public static String getSynopsysBridgeDownloadUrlBasedOnAgentOS(
+    public static String getBridgeDownloadUrlBasedOnAgentOS(
             FilePath workspace,
             TaskListener listener,
-            String synopsysBridgeDownloadUrlForMac,
-            String synopsysBridgeDownloadUrlForLinux,
-            String synopsysBridgeDownloadUrlForWindows) {
+            String bridgeDownloadUrlForMac,
+            String bridgeDownloadUrlForLinux,
+            String bridgeDownloadUrlForWindows) {
         String agentOs = Utility.getAgentOs(workspace, listener);
         if (agentOs.contains("mac")) {
-            return synopsysBridgeDownloadUrlForMac;
+            return bridgeDownloadUrlForMac;
         } else if (agentOs.contains("linux")) {
-            return synopsysBridgeDownloadUrlForLinux;
+            return bridgeDownloadUrlForLinux;
         } else {
-            return synopsysBridgeDownloadUrlForWindows;
+            return bridgeDownloadUrlForWindows;
         }
     }
 
@@ -604,9 +590,9 @@ public class ScanParametersFactory {
                                 || p.equals(SecurityProduct.COVERITY.name()));
 
         if (!isValid) {
-            logger.error("Invalid Synopsys Security Product");
+            logger.error("Invalid Security Product");
             logger.info(
-                    "Supported values for Synopsys security products: " + Arrays.toString(SecurityProduct.values()));
+                    "Supported values for security products: " + Arrays.toString(SecurityProduct.values()));
         }
 
         return isValid;

@@ -7,7 +7,6 @@ import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.global.Utility;
 import io.jenkins.plugins.security.scan.input.blackduck.Install;
 import io.jenkins.plugins.security.scan.input.coverity.*;
-import io.jenkins.plugins.synopsys.security.scan.input.coverity.*;
 import io.jenkins.plugins.security.scan.input.project.Project;
 import java.util.ArrayList;
 import java.util.Arrays;

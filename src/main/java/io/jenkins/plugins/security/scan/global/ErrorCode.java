@@ -15,10 +15,10 @@ public class ErrorCode {
     public static final int INVALID_COVERITY_PARAMETERS = 103;
     public static final int INVALID_POLARIS_PARAMETERS = 104;
     public static final int INVALID_BRIDGE_DOWNLOAD_PARAMETERS = 105;
-    public static final int SYNOPSYS_BRIDGE_DOWNLOAD_FAILED = 106;
-    public static final int SYNOPSYS_BRIDGE_DOWNLOAD_FAILED_AND_WONT_RETRY = 107;
-    public static final int SYNOPSYS_BRIDGE_UNZIPPING_FAILED = 108;
-    public static final int SYNOPSYS_BRIDGE_NOT_FOUND_IN_PROVIDED_PATH = 109;
+    public static final int BRIDGE_CLI_DOWNLOAD_FAILED = 106;
+    public static final int BRIDGE_CLI_DOWNLOAD_FAILED_AND_WONT_RETRY = 107;
+    public static final int BRIDGE_CLI_UNZIPPING_FAILED = 108;
+    public static final int BRIDGE_CLI_NOT_FOUND_IN_PROVIDED_PATH = 109;
     public static final int NO_BITBUCKET_TOKEN_FOUND = 110;
     public static final int NO_GITHUB_TOKEN_FOUND = 111;
     public static final int NO_GITLAB_TOKEN_FOUND = 112;

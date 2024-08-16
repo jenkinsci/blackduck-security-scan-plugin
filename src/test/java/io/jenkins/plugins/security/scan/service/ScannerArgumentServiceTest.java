@@ -496,11 +496,11 @@ public class ScannerArgumentServiceTest {
         if (getOSNameForTest().contains("win")) {
             assertEquals(
                     commandLineArgs.get(0),
-                    workspace.child(ApplicationConstants.BRIDGE_BINARY_WINDOWS).getRemote());
+                    workspace.child(ApplicationConstants.BRIDGE_CLI_EXECUTABLE_WINDOWS).getRemote());
         } else {
             assertEquals(
                     commandLineArgs.get(0),
-                    workspace.child(ApplicationConstants.BRIDGE_BINARY).getRemote());
+                    workspace.child(ApplicationConstants.BRIDGE_CLI_EXECUTABLE).getRemote());
         }
         Assertions.assertEquals(commandLineArgs.get(1), BridgeParams.STAGE_OPTION);
         assertEquals(commandLineArgs.get(2), BridgeParams.BLACKDUCK_STAGE);
@@ -535,11 +535,11 @@ public class ScannerArgumentServiceTest {
         if (getOSNameForTest().contains("win")) {
             assertEquals(
                     commandLineArgs.get(0),
-                    workspace.child(ApplicationConstants.BRIDGE_BINARY_WINDOWS).getRemote());
+                    workspace.child(ApplicationConstants.BRIDGE_CLI_EXECUTABLE_WINDOWS).getRemote());
         } else {
             assertEquals(
                     commandLineArgs.get(0),
-                    workspace.child(ApplicationConstants.BRIDGE_BINARY).getRemote());
+                    workspace.child(ApplicationConstants.BRIDGE_CLI_EXECUTABLE).getRemote());
         }
         assertEquals(commandLineArgs.get(1), BridgeParams.STAGE_OPTION);
         assertEquals(commandLineArgs.get(2), BridgeParams.COVERITY_STAGE);
@@ -575,11 +575,11 @@ public class ScannerArgumentServiceTest {
         if (getOSNameForTest().contains("win")) {
             assertEquals(
                     commandLineArgs.get(0),
-                    workspace.child(ApplicationConstants.BRIDGE_BINARY_WINDOWS).getRemote());
+                    workspace.child(ApplicationConstants.BRIDGE_CLI_EXECUTABLE_WINDOWS).getRemote());
         } else {
             assertEquals(
                     commandLineArgs.get(0),
-                    workspace.child(ApplicationConstants.BRIDGE_BINARY).getRemote());
+                    workspace.child(ApplicationConstants.BRIDGE_CLI_EXECUTABLE).getRemote());
         }
         assertEquals(commandLineArgs.get(1), BridgeParams.STAGE_OPTION);
         assertEquals(commandLineArgs.get(2), BridgeParams.POLARIS_STAGE);

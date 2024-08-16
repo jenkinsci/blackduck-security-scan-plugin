@@ -60,7 +60,7 @@ public class BridgeDownloadParametersService {
     public boolean isValidVersion(String version) {
         Pattern pattern = Pattern.compile("\\d+\\.\\d+\\.\\d+");
         Matcher matcher = pattern.matcher(version);
-        if (matcher.matches() || version.equals(ApplicationConstants.SYNOPSYS_BRIDGE_LATEST_VERSION)) {
+        if (matcher.matches() || version.equals(ApplicationConstants.BRIDGE_CLI_LATEST_VERSION)) {
             return true;
         } else {
             logger.warn("The provided Bridge download version is not valid: %s", version);
@@ -100,9 +100,9 @@ public class BridgeDownloadParametersService {
 
     public BridgeDownloadParameters getBridgeDownloadParams(
             Map<String, Object> scanParameters, BridgeDownloadParameters bridgeDownloadParameters) {
-        if (scanParameters.containsKey(ApplicationConstants.SYNOPSYS_BRIDGE_INSTALL_DIRECTORY)) {
+        if (scanParameters.containsKey(ApplicationConstants.BRIDGECLI_INSTALL_DIRECTORY)) {
             bridgeDownloadParameters.setBridgeInstallationPath(scanParameters
-                    .get(ApplicationConstants.SYNOPSYS_BRIDGE_INSTALL_DIRECTORY)
+                    .get(ApplicationConstants.BRIDGECLI_INSTALL_DIRECTORY)
                     .toString()
                     .trim());
         }
@@ -110,22 +110,22 @@ public class BridgeDownloadParametersService {
         boolean isNetworkAirgap = scanParameters.containsKey(ApplicationConstants.NETWORK_AIRGAP_KEY)
                 && scanParameters.get(ApplicationConstants.NETWORK_AIRGAP_KEY).equals(true);
 
-        if (scanParameters.containsKey(ApplicationConstants.SYNOPSYS_BRIDGE_DOWNLOAD_URL)) {
+        if (scanParameters.containsKey(ApplicationConstants.BRIDGECLI_DOWNLOAD_URL)) {
             bridgeDownloadParameters.setBridgeDownloadUrl(scanParameters
-                    .get(ApplicationConstants.SYNOPSYS_BRIDGE_DOWNLOAD_URL)
+                    .get(ApplicationConstants.BRIDGECLI_DOWNLOAD_URL)
                     .toString()
                     .trim());
-        } else if (scanParameters.containsKey(ApplicationConstants.SYNOPSYS_BRIDGE_DOWNLOAD_VERSION)
+        } else if (scanParameters.containsKey(ApplicationConstants.BRIDGECLI_DOWNLOAD_VERSION)
                 && !isNetworkAirgap) {
             String desiredVersion = scanParameters
-                    .get(ApplicationConstants.SYNOPSYS_BRIDGE_DOWNLOAD_VERSION)
+                    .get(ApplicationConstants.BRIDGECLI_DOWNLOAD_VERSION)
                     .toString()
                     .trim();
             String bridgeDownloadUrl = String.join(
                     "/",
                     ApplicationConstants.BRIDGE_ARTIFACTORY_URL,
                     desiredVersion,
-                    getSynopsysBridgeZipFileName(desiredVersion));
+                    getBridgeZipFileName(desiredVersion));
 
             bridgeDownloadParameters.setBridgeDownloadUrl(bridgeDownloadUrl);
             bridgeDownloadParameters.setBridgeDownloadVersion(desiredVersion);
@@ -134,8 +134,8 @@ public class BridgeDownloadParametersService {
                 String bridgeDownloadUrl = String.join(
                         "/",
                         ApplicationConstants.BRIDGE_ARTIFACTORY_URL,
-                        ApplicationConstants.SYNOPSYS_BRIDGE_LATEST_VERSION,
-                        getSynopsysBridgeZipFileName());
+                        ApplicationConstants.BRIDGE_CLI_LATEST_VERSION,
+                        getBridgeZipFileName());
                 bridgeDownloadParameters.setBridgeDownloadUrl(bridgeDownloadUrl);
             }
         }
@@ -162,15 +162,15 @@ public class BridgeDownloadParametersService {
         }
     }
 
-    public String getSynopsysBridgeZipFileName() {
-        return ApplicationConstants.BRIDGE_BINARY
+    public String getBridgeZipFileName() {
+        return ApplicationConstants.BRIDGE_CLI_EXECUTABLE
                 .concat("-")
                 .concat(getPlatform(null))
                 .concat(".zip");
     }
 
-    public String getSynopsysBridgeZipFileName(String version) {
-        return ApplicationConstants.BRIDGE_BINARY
+    public String getBridgeZipFileName(String version) {
+        return ApplicationConstants.BRIDGE_CLI_EXECUTABLE
                 .concat("-")
                 .concat(version)
                 .concat("-")

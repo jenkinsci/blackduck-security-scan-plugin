@@ -63,7 +63,7 @@ public class SecurityScanner {
             logger.println();
             logger.println(
                     "******************************* %s *******************************",
-                    "START EXECUTION OF SYNOPSYS BRIDGE");
+                    "START EXECUTION OF BRIDGE CLI");
 
             scanner = launcher.launch()
                     .cmds(commandLineArgs)
@@ -73,12 +73,12 @@ public class SecurityScanner {
                     .quiet(true)
                     .join();
         } catch (Exception e) {
-            logger.error("An exception occurred while invoking synopsys-bridge from the plugin: %s", e.getMessage());
+            logger.error("An exception occurred while invoking bridge-cli from the plugin: %s", e.getMessage());
             Thread.currentThread().interrupt();
         } finally {
             logger.println(
                     "******************************* %s *******************************",
-                    "END EXECUTION OF SYNOPSYS BRIDGE");
+                    "END EXECUTION OF BRIDGE CLI");
 
             scannerArgumentService.removeTemporaryInputJson(commandLineArgs);
 
@@ -104,8 +104,8 @@ public class SecurityScanner {
 
                 if (!isPullRequest) {
                     ScanParametersService
-                        scanParametersService = new ScanParametersService(listener, envVars);
-                    Set<String> scanType = scanParametersService.getSynopsysSecurityProducts(scanParams);
+                        scanParametersService = new ScanParametersService(listener);
+                    Set<String> scanType = scanParametersService.getSecurityProducts(scanParams);
                     boolean isBlackDuckScan = scanType.contains(SecurityProduct.BLACKDUCK.name());
                     boolean isPolarisDuckScan = scanType.contains(SecurityProduct.POLARIS.name());
 

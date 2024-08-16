@@ -1,11 +1,11 @@
 package io.jenkins.plugins.security.scan.global.enums;
 
 public enum SecurityProduct {
-    BLACKDUCK("Black Duck"),
+    BLACKDUCK("Blackduck SCA"),
     COVERITY("Coverity"),
     POLARIS("Polaris");
 
-    private String productLabel;
+    private final String productLabel;
 
     SecurityProduct(String productLabel) {
         this.productLabel = productLabel;

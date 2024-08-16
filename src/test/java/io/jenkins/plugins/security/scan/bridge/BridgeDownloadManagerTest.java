@@ -46,7 +46,7 @@ public class BridgeDownloadManagerTest {
     }
 
     @Test
-    void isSynopsysBridgeDownloadRequiredTest() {
+    void isBridgeDownloadRequiredTest() {
         BridgeDownloadParameters bridgeDownloadParameters = new BridgeDownloadParameters(workspace, listenerMock);
         bridgeDownloadParameters.setBridgeDownloadUrl("https://fake.url.com/bridge");
         bridgeDownloadParameters.setBridgeInstallationPath("/path/to/bridge");
@@ -57,7 +57,7 @@ public class BridgeDownloadManagerTest {
 
         Mockito.when(mockedBridgeDownloadManager.checkIfBridgeInstalled(anyString()))
                 .thenReturn(true);
-        boolean isDownloadRequired = bridgeDownloadManager.isSynopsysBridgeDownloadRequired(bridgeDownloadParameters);
+        boolean isDownloadRequired = bridgeDownloadManager.isBridgeDownloadRequired(bridgeDownloadParameters);
 
         assertTrue(isDownloadRequired);
     }

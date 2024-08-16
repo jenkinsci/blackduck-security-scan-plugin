@@ -19,18 +19,18 @@ public class BridgeInstall {
         this.logger = new LoggerWrapper(listener);
     }
 
-    public void installSynopsysBridge(FilePath bridgeZipPath, FilePath bridgeInstallationPath)
+    public void installBridgeCLI(FilePath bridgeZipPath, FilePath bridgeInstallationPath)
             throws PluginExceptionHandler {
         try {
             if (bridgeZipPath != null && bridgeInstallationPath != null) {
-                logger.info("Unzipping Synopsys Bridge zip file from: %s", bridgeZipPath.getRemote());
+                logger.info("Unzipping Bridge CLI zip file from: %s", bridgeZipPath.getRemote());
                 bridgeZipPath.unzip(bridgeInstallationPath);
-                logger.info("Synopsys Bridge installed successfully in: %s", bridgeInstallationPath.getRemote());
+                logger.info("Bridge CLI installed successfully in: %s", bridgeInstallationPath.getRemote());
             }
         } catch (IOException | InterruptedException e) {
-            logger.error("An exception occurred while unzipping Synopsys Bridge zip file: " + e.getMessage());
+            logger.error("An exception occurred while unzipping Bridge CLI zip file: " + e.getMessage());
             Thread.currentThread().interrupt();
-            throw new PluginExceptionHandler(ErrorCode.SYNOPSYS_BRIDGE_UNZIPPING_FAILED);
+            throw new PluginExceptionHandler(ErrorCode.BRIDGE_CLI_UNZIPPING_FAILED);
         }
 
         // Deleting the bridge zip file after unzipping
@@ -39,7 +39,7 @@ public class BridgeInstall {
                 bridgeZipPath.delete();
             }
         } catch (IOException | InterruptedException e) {
-            logger.warn("An exception occurred while deleting Synopsys Bridge zip file: " + e.getMessage());
+            logger.warn("An exception occurred while deleting Bridge CLI zip file: " + e.getMessage());
             Thread.currentThread().interrupt();
         }
     }

@@ -74,11 +74,11 @@ public class ScannerArgumentService {
 
         if (os.contains("win")) {
             return bridgeInstallationPath
-                    .child(ApplicationConstants.SYNOPSYS_BRIDGE_RUN_COMMAND_WINDOWS)
+                    .child(ApplicationConstants.BRIDGE_CLI_EXECUTABLE_WINDOWS)
                     .getRemote();
         } else {
             return bridgeInstallationPath
-                    .child(ApplicationConstants.SYNOPSYS_BRIDGE_RUN_COMMAND)
+                    .child(ApplicationConstants.BRIDGE_CLI_EXECUTABLE)
                     .getRemote();
         }
     }
@@ -86,8 +86,8 @@ public class ScannerArgumentService {
     private List<String> getSecurityProductSpecificCommands(
             Map<String, Boolean> installedBranchSourceDependencies, Map<String, Object> scanParameters)
             throws PluginExceptionHandler {
-        ScanParametersService scanParametersService = new ScanParametersService(listener, envVars);
-        Set<String> securityProducts = scanParametersService.getSynopsysSecurityProducts(scanParameters);
+        ScanParametersService scanParametersService = new ScanParametersService(listener);
+        Set<String> securityProducts = scanParametersService.getSecurityProducts(scanParameters);
 
         boolean isPrCommentSet = isPrCommentValueSet(scanParameters);
 

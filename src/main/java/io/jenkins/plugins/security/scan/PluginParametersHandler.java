@@ -40,7 +40,7 @@ public class PluginParametersHandler {
         BridgeDownloadParameters bridgeDownloadParams =
                 bridgeDownloadParametersService.getBridgeDownloadParams(scanParameters, bridgeDownloadParameters);
 
-        logMessagesForParameters(scanParameters, scanParametersService.getSynopsysSecurityProducts(scanParameters));
+        logMessagesForParameters(scanParameters, scanParametersService.getSecurityProducts(scanParameters));
 
         scanParametersService.performScanParameterValidation(scanParameters, envVars);
 
@@ -56,7 +56,7 @@ public class PluginParametersHandler {
         handleNetworkAirgap(isNetworkAirGap, bridgeDownloadParams, isBridgeInstalled);
 
         if (isBridgeInstalled) {
-            isBridgeDownloadRequired = bridgeDownloadManager.isSynopsysBridgeDownloadRequired(bridgeDownloadParams);
+            isBridgeDownloadRequired = bridgeDownloadManager.isBridgeDownloadRequired(bridgeDownloadParams);
         }
 
         handleBridgeDownload(isBridgeDownloadRequired, isNetworkAirGap, bridgeDownloadParams, bridgeDownloadManager);
@@ -76,8 +76,8 @@ public class PluginParametersHandler {
             boolean isNetworkAirgap, BridgeDownloadParameters bridgeDownloadParams, boolean isBridgeInstalled)
             throws PluginExceptionHandler {
         if (isNetworkAirgap && !bridgeDownloadParams.getBridgeDownloadUrl().contains(".zip") && !isBridgeInstalled) {
-            logger.error("Synopsys Bridge could not be found in " + bridgeDownloadParams.getBridgeInstallationPath());
-            throw new PluginExceptionHandler(ErrorCode.SYNOPSYS_BRIDGE_NOT_FOUND_IN_PROVIDED_PATH);
+            logger.error("Bridge CLI could not be found in " + bridgeDownloadParams.getBridgeInstallationPath());
+            throw new PluginExceptionHandler(ErrorCode.BRIDGE_CLI_NOT_FOUND_IN_PROVIDED_PATH);
         }
 
         if (isNetworkAirgap) {
@@ -95,7 +95,7 @@ public class PluginParametersHandler {
                 && bridgeDownloadParams.getBridgeDownloadUrl().contains(".zip")) {
             if (isNetworkAirgap) {
                 logger.warn(
-                        "Synopsys-Bridge will be downloaded from the provided custom URL. Make sure the network is reachable");
+                        "Bridge-CLI will be downloaded from the provided custom URL. Make sure the network is reachable");
             }
             bridgeDownloadManager.initiateBridgeDownloadAndUnzip(bridgeDownloadParams);
         } else {
@@ -158,9 +158,9 @@ public class PluginParametersHandler {
 
         for (Map.Entry<String, Object> entry : scanParameters.entrySet()) {
             String key = entry.getKey();
-            if (key.equals(ApplicationConstants.SYNOPSYS_BRIDGE_DOWNLOAD_URL)
-                    || key.equals(ApplicationConstants.SYNOPSYS_BRIDGE_DOWNLOAD_VERSION)
-                    || key.equals(ApplicationConstants.SYNOPSYS_BRIDGE_INSTALL_DIRECTORY)
+            if (key.equals(ApplicationConstants.BRIDGECLI_DOWNLOAD_URL)
+                    || key.equals(ApplicationConstants.BRIDGECLI_DOWNLOAD_VERSION)
+                    || key.equals(ApplicationConstants.BRIDGECLI_INSTALL_DIRECTORY)
                     || key.equals(ApplicationConstants.INCLUDE_DIAGNOSTICS_KEY)
                     || key.equals(ApplicationConstants.NETWORK_AIRGAP_KEY)
                     || key.equals(ApplicationConstants.MARK_BUILD_STATUS)) {

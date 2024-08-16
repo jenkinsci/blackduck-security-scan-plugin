@@ -62,7 +62,7 @@ public class PluginParametersHandlerTest {
         scanParameters.put(ApplicationConstants.BLACKDUCK_URL_KEY, "https://fake.blackduck.url");
         scanParameters.put(ApplicationConstants.BLACKDUCK_TOKEN_KEY, "MDJDSROSVC56FAKEKEY");
         scanParameters.put(ApplicationConstants.NETWORK_AIRGAP_KEY, true);
-        scanParameters.put(ApplicationConstants.SYNOPSYS_BRIDGE_INSTALL_DIRECTORY, "/path/to/bridge");
+        scanParameters.put(ApplicationConstants.BRIDGECLI_INSTALL_DIRECTORY, "/path/to/bridge");
 
         assertThrows(PluginExceptionHandler.class, () -> pluginParametersHandler.initializeScanner(scanParameters));
     }

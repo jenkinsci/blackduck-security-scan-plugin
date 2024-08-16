@@ -73,9 +73,9 @@ public class ScanParametersServiceTest {
         scanParametersWithSinglePlatform.put(ApplicationConstants.PRODUCT_KEY, "");
 
         Set<String> multiplePlatforms =
-                scanParametersService.getSynopsysSecurityProducts(scanParametersWithMultiplePlatforms);
+                scanParametersService.getSecurityProducts(scanParametersWithMultiplePlatforms);
         Set<String> singlePlatform =
-                scanParametersService.getSynopsysSecurityProducts(scanParametersWithSinglePlatform);
+                scanParametersService.getSecurityProducts(scanParametersWithSinglePlatform);
 
         assertEquals(2, multiplePlatforms.size());
         assertEquals(1, singlePlatform.size());
