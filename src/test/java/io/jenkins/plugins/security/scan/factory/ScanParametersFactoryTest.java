@@ -47,7 +47,7 @@ public class ScanParametersFactoryTest {
         securityScanStep.setGitlab_token("fakeTokeN-gItlAb");
         globalConfigValues.put(ApplicationConstants.BLACKDUCK_URL_KEY, "https://fake-blackduck.url");
         globalConfigValues.put(ApplicationConstants.BLACKDUCK_TOKEN_KEY, "fake-blackduck-token");
-        globalConfigValues.put(ApplicationConstants.BRIDGECLI_INSTALL_DIRECTORY, "/fake/path");
+        globalConfigValues.put(ApplicationConstants.SYNOPSYS_BRIDGE_INSTALL_DIRECTORY, "/fake/path");
 
         Map<String, Object> result =
                 ScanParametersFactory.preparePipelineParametersMap(securityScanStep, globalConfigValues, listenerMock);
@@ -55,7 +55,7 @@ public class ScanParametersFactoryTest {
         assertEquals(8, result.size());
         assertEquals("BLACKDUCK", result.get(ApplicationConstants.PRODUCT_KEY));
         assertEquals("fake-blackduck-token", result.get(ApplicationConstants.BLACKDUCK_TOKEN_KEY));
-        assertEquals("/fake/path", result.get(ApplicationConstants.BRIDGECLI_INSTALL_DIRECTORY));
+        assertEquals("/fake/path", result.get(ApplicationConstants.SYNOPSYS_BRIDGE_INSTALL_DIRECTORY));
         assertEquals("FAKETOKEN", result.get(ApplicationConstants.BITBUCKET_TOKEN_KEY));
         assertEquals("faketoken-github", result.get(ApplicationConstants.GITHUB_TOKEN_KEY));
         assertEquals("fakeTokeN-gItlAb", result.get(ApplicationConstants.GITLAB_TOKEN_KEY));
@@ -241,9 +241,9 @@ public class ScanParametersFactoryTest {
         assertEquals(5, bridgeParametersMap.size());
         assertEquals(
                 "https://fake.bridge-download.url",
-                bridgeParametersMap.get(ApplicationConstants.BRIDGECLI_DOWNLOAD_URL));
-        assertEquals("1.0.0", bridgeParametersMap.get(ApplicationConstants.BRIDGECLI_DOWNLOAD_VERSION));
-        assertEquals("/fake/path", bridgeParametersMap.get(ApplicationConstants.BRIDGECLI_INSTALL_DIRECTORY));
+                bridgeParametersMap.get(ApplicationConstants.SYNOPSYS_BRIDGE_DOWNLOAD_URL));
+        assertEquals("1.0.0", bridgeParametersMap.get(ApplicationConstants.SYNOPSYS_BRIDGE_DOWNLOAD_VERSION));
+        assertEquals("/fake/path", bridgeParametersMap.get(ApplicationConstants.SYNOPSYS_BRIDGE_INSTALL_DIRECTORY));
         assertTrue((boolean) bridgeParametersMap.get(ApplicationConstants.INCLUDE_DIAGNOSTICS_KEY));
         assertTrue((boolean) bridgeParametersMap.get(ApplicationConstants.NETWORK_AIRGAP_KEY));
 

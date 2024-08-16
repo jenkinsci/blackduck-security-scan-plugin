@@ -154,14 +154,14 @@ public class ScanParametersFactory {
                             .getApiTokenByCredentialsId(config.getGitlabCredentialsId())
                             .orElse(null));
             addParameterIfNotBlank(
-                    globalParameters, ApplicationConstants.BRIDGECLI_DOWNLOAD_URL, bridgeDownloadUrl);
+                    globalParameters, ApplicationConstants.SYNOPSYS_BRIDGE_DOWNLOAD_URL, bridgeDownloadUrl);
             addParameterIfNotBlank(
                     globalParameters,
-                    ApplicationConstants.BRIDGECLI_INSTALL_DIRECTORY,
+                    ApplicationConstants.SYNOPSYS_BRIDGE_INSTALL_DIRECTORY,
                     config.getSynopsysBridgeInstallationPath());
             addParameterIfNotBlank(
                     globalParameters,
-                    ApplicationConstants.BRIDGECLI_DOWNLOAD_VERSION,
+                    ApplicationConstants.SYNOPSYS_BRIDGE_DOWNLOAD_VERSION,
                     config.getSynopsysBridgeVersion());
             addParameterIfNotBlank(
                     globalParameters, ApplicationConstants.POLARIS_SERVER_URL_KEY, config.getPolarisServerUrl());
@@ -472,18 +472,18 @@ public class ScanParametersFactory {
 
         if (!Utility.isStringNullOrBlank(securityScan.getSynopsys_bridge_download_url())) {
             bridgeParameters.put(
-                    ApplicationConstants.BRIDGECLI_DOWNLOAD_URL, securityScan.getSynopsys_bridge_download_url());
+                    ApplicationConstants.SYNOPSYS_BRIDGE_DOWNLOAD_URL, securityScan.getSynopsys_bridge_download_url());
         }
 
         if (!Utility.isStringNullOrBlank(securityScan.getSynopsys_bridge_download_version())) {
             bridgeParameters.put(
-                    ApplicationConstants.BRIDGECLI_DOWNLOAD_VERSION,
+                    ApplicationConstants.SYNOPSYS_BRIDGE_DOWNLOAD_VERSION,
                     securityScan.getSynopsys_bridge_download_version());
         }
 
         if (!Utility.isStringNullOrBlank(securityScan.getSynopsys_bridge_install_directory())) {
             bridgeParameters.put(
-                    ApplicationConstants.BRIDGECLI_INSTALL_DIRECTORY,
+                    ApplicationConstants.SYNOPSYS_BRIDGE_INSTALL_DIRECTORY,
                     securityScan.getSynopsys_bridge_install_directory());
         }
 

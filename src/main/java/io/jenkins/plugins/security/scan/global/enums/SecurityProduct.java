@@ -1,7 +1,8 @@
 package io.jenkins.plugins.security.scan.global.enums;
 
 public enum SecurityProduct {
-    BLACKDUCK("Blackduck SCA"),
+    BLACKDUCK("Blackduck"),
+    BLACKDUCKSCA("Black Duck SCA"),
     COVERITY("Coverity"),
     POLARIS("Polaris");
 

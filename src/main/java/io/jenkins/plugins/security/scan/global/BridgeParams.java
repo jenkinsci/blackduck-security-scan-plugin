@@ -6,6 +6,7 @@ public class BridgeParams {
     public static final String DIAGNOSTICS_OPTION = "--diagnostics";
 
     public static final String BLACKDUCK_STAGE = "blackduck";
+    public static final String BLACKDUCKSCA_STAGE = "blackducksca";
     public static final String POLARIS_STAGE = "polaris";
     public static final String COVERITY_STAGE = "connect";
 }

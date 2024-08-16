@@ -100,9 +100,9 @@ public class BridgeDownloadParametersService {
 
     public BridgeDownloadParameters getBridgeDownloadParams(
             Map<String, Object> scanParameters, BridgeDownloadParameters bridgeDownloadParameters) {
-        if (scanParameters.containsKey(ApplicationConstants.BRIDGECLI_INSTALL_DIRECTORY)) {
+        if (scanParameters.containsKey(ApplicationConstants.SYNOPSYS_BRIDGE_INSTALL_DIRECTORY)) {
             bridgeDownloadParameters.setBridgeInstallationPath(scanParameters
-                    .get(ApplicationConstants.BRIDGECLI_INSTALL_DIRECTORY)
+                    .get(ApplicationConstants.SYNOPSYS_BRIDGE_INSTALL_DIRECTORY)
                     .toString()
                     .trim());
         }
@@ -110,15 +110,15 @@ public class BridgeDownloadParametersService {
         boolean isNetworkAirgap = scanParameters.containsKey(ApplicationConstants.NETWORK_AIRGAP_KEY)
                 && scanParameters.get(ApplicationConstants.NETWORK_AIRGAP_KEY).equals(true);
 
-        if (scanParameters.containsKey(ApplicationConstants.BRIDGECLI_DOWNLOAD_URL)) {
+        if (scanParameters.containsKey(ApplicationConstants.SYNOPSYS_BRIDGE_DOWNLOAD_URL)) {
             bridgeDownloadParameters.setBridgeDownloadUrl(scanParameters
-                    .get(ApplicationConstants.BRIDGECLI_DOWNLOAD_URL)
+                    .get(ApplicationConstants.SYNOPSYS_BRIDGE_DOWNLOAD_URL)
                     .toString()
                     .trim());
-        } else if (scanParameters.containsKey(ApplicationConstants.BRIDGECLI_DOWNLOAD_VERSION)
+        } else if (scanParameters.containsKey(ApplicationConstants.SYNOPSYS_BRIDGE_DOWNLOAD_VERSION)
                 && !isNetworkAirgap) {
             String desiredVersion = scanParameters
-                    .get(ApplicationConstants.BRIDGECLI_DOWNLOAD_VERSION)
+                    .get(ApplicationConstants.SYNOPSYS_BRIDGE_DOWNLOAD_VERSION)
                     .toString()
                     .trim();
             String bridgeDownloadUrl = String.join(

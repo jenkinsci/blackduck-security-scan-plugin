@@ -94,7 +94,7 @@ public class BlackDuckParametersService {
 
         if (blackDuckParameters.containsKey(ApplicationConstants.BLACKDUCK_AUTOMATION_FIXPR_KEY)) {
             String value = blackDuckParameters
-                    .get(ApplicationConstants.BLACKDUCK_SCAN_FULL_KEY)
+                    .get(ApplicationConstants.BLACKDUCK_AUTOMATION_FIXPR_KEY)
                     .toString()
                     .trim();
             setAutomationFixpr(blackDuck, value, automation);

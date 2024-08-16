@@ -21,7 +21,7 @@ public class ScanParametersServiceTest {
 
     @BeforeEach
     void setUp() {
-        scanParametersService = new ScanParametersService(listenerMock, envVarsMock);
+        scanParametersService = new ScanParametersService(listenerMock);
         Mockito.when(listenerMock.getLogger()).thenReturn(Mockito.mock(PrintStream.class));
     }
 

@@ -43,24 +43,57 @@ public class ApplicationConstants {
     // Product Key
     public static final String PRODUCT_KEY = "product";
 
-    //Blackduck Parameters
+    //Blackduck Parameters (Deprecated)
+    @Deprecated
     public static final String BLACKDUCK_URL_KEY = "blackduck_url";
+    @Deprecated
     public static final String BLACKDUCK_TOKEN_KEY = "blackduck_token";
+    @Deprecated
     public static final String BLACKDUCK_INSTALL_DIRECTORY_KEY = "blackduck_install_directory";
+    @Deprecated
     public static final String BLACKDUCK_SCAN_FULL_KEY = "blackduck_scan_full";
+    @Deprecated
     public static final String BLACKDUCK_SCAN_FAILURE_SEVERITIES_KEY = "blackduck_scan_failure_severities";
+    @Deprecated
     public static final String BLACKDUCK_AUTOMATION_FIXPR_KEY = "blackduck_automation_fixpr";
     @Deprecated
     public static final String BLACKDUCK_AUTOMATION_PRCOMMENT_KEY = "blackduck_automation_prcomment";
+    @Deprecated
     public static final String BLACKDUCK_PRCOMMENT_ENABLED_KEY = "blackduck_prComment_enabled";
+    @Deprecated
     public static final String BLACKDUCK_DOWNLOAD_URL_KEY = "blackduck_download_url";
+    @Deprecated
     public static final String BLACKDUCK_REPORTS_SARIF_CREATE_KEY = "blackduck_reports_sarif_create";
+    @Deprecated
     public static final String BLACKDUCK_REPORTS_SARIF_FILE_PATH_KEY = "blackduck_reports_sarif_file_path";
+    @Deprecated
     public static final String BLACKDUCK_REPORTS_SARIF_GROUPSCAISSUES_KEY = "blackduck_reports_sarif_groupSCAIssues";
+    @Deprecated
     public static final String BLACKDUCK_REPORTS_SARIF_SEVERITIES_KEY = "blackduck_reports_sarif_severities";
+    @Deprecated
     public static final String BLACKDUCK_SEARCH_DEPTH_KEY = "blackduck_search_depth";
+    @Deprecated
     public static final String BLACKDUCK_CONFIG_PATH_KEY = "blackduck_config_path";
+    @Deprecated
     public static final String BLACKDUCK_ARGS_KEY = "blackduck_args";
+
+    //Black Duck SCA Parameters
+    public static final String BLACKDUCKSCA_URL_KEY = "blackducksca_url";
+    public static final String BLACKDUCKSCA_TOKEN_KEY = "blackducksca_token";
+    public static final String DETECT_INSTALL_DIRECTORY_KEY = "detect_install_directory";
+    public static final String DETECT_SCAN_FULL_KEY = "detect_scan_full";
+    public static final String DETECT_EXECUTION_PATH_KEY = "detect_execution_path";
+    public static final String BLACKDUCKSCA_SCAN_FAILURE_SEVERITIES_KEY = "blackducksca_scan_failure_severities";
+    public static final String BLACKDUCKSCA_AUTOMATION_FIXPR_KEY = "blackducksca_automation_fixpr";
+    public static final String BLACKDUCKSCA_PRCOMMENT_ENABLED_KEY = "blackducksca_prComment_enabled";
+    public static final String BLACKDUCKSCA_DOWNLOAD_URL_KEY = "blackducksca_download_url";
+    public static final String BLACKDUCKSCA_REPORTS_SARIF_CREATE_KEY = "blackducksca_reports_sarif_create";
+    public static final String BLACKDUCKSCA_REPORTS_SARIF_FILE_PATH_KEY = "blackducksca_reports_sarif_file_path";
+    public static final String BLACKDUCKSCA_REPORTS_SARIF_GROUPSCAISSUES_KEY = "blackducksca_reports_sarif_groupSCAIssues";
+    public static final String BLACKDUCKSCA_REPORTS_SARIF_SEVERITIES_KEY = "blackducksca_reports_sarif_severities";
+    public static final String BLACKDUCKSCA_SEARCH_DEPTH_KEY = "blackducksca_search_depth";
+    public static final String BLACKDUCKSCA_CONFIG_PATH_KEY = "blackducksca_config_path";
+    public static final String BLACKDUCKSCA_ARGS_KEY = "blackducksca_args";
 
     // Coverity Parameters
     public static final String COVERITY_URL_KEY = "coverity_url";
@@ -115,10 +148,16 @@ public class ApplicationConstants {
     public static final String GITLAB_TOKEN_KEY = "gitlab_token";
     public static final String MARK_BUILD_STATUS = "mark_build_status";
 
-    // Bridge Parameters
+    // Bridge Download Parameters
+    @Deprecated
     public static final String SYNOPSYS_BRIDGE_DOWNLOAD_URL = "synopsys_bridge_download_url";
+    @Deprecated
     public static final String SYNOPSYS_BRIDGE_DOWNLOAD_VERSION = "synopsys_bridge_download_version";
+    @Deprecated
     public static final String SYNOPSYS_BRIDGE_INSTALL_DIRECTORY = "synopsys_bridge_install_directory";
+    public static final String BRIDGECLI_DOWNLOAD_URL = "bridgecli_download_url";
+    public static final String BRIDGECLI_DOWNLOAD_VERSION = "bridgecli_download_version";
+    public static final String BRIDGECLI_INSTALL_DIRECTORY = "bridgecli_install_directory";
 
     public static final String BLACKDUCK_INPUT_JSON_PREFIX = "blackducksca_input";
     public static final String COVERITY_INPUT_JSON_PREFIX = "coverity_input";

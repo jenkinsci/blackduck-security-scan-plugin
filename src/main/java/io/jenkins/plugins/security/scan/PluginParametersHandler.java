@@ -32,7 +32,7 @@ public class PluginParametersHandler {
     }
 
     public int initializeScanner(Map<String, Object> scanParameters) throws PluginExceptionHandler {
-        ScanParametersService scanParametersService = new ScanParametersService(listener, envVars);
+        ScanParametersService scanParametersService = new ScanParametersService(listener);
         BridgeDownloadParameters
             bridgeDownloadParameters = new BridgeDownloadParameters(workspace, listener);
         BridgeDownloadParametersService bridgeDownloadParametersService =
@@ -158,9 +158,9 @@ public class PluginParametersHandler {
 
         for (Map.Entry<String, Object> entry : scanParameters.entrySet()) {
             String key = entry.getKey();
-            if (key.equals(ApplicationConstants.BRIDGECLI_DOWNLOAD_URL)
-                    || key.equals(ApplicationConstants.BRIDGECLI_DOWNLOAD_VERSION)
-                    || key.equals(ApplicationConstants.BRIDGECLI_INSTALL_DIRECTORY)
+            if (key.equals(ApplicationConstants.SYNOPSYS_BRIDGE_DOWNLOAD_URL)
+                    || key.equals(ApplicationConstants.SYNOPSYS_BRIDGE_DOWNLOAD_VERSION)
+                    || key.equals(ApplicationConstants.SYNOPSYS_BRIDGE_INSTALL_DIRECTORY)
                     || key.equals(ApplicationConstants.INCLUDE_DIAGNOSTICS_KEY)
                     || key.equals(ApplicationConstants.NETWORK_AIRGAP_KEY)
                     || key.equals(ApplicationConstants.MARK_BUILD_STATUS)) {
