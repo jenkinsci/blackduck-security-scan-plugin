@@ -5,7 +5,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hudson.EnvVars;
 import hudson.FilePath;
 import hudson.model.TaskListener;
+import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
+import io.jenkins.plugins.security.scan.global.ApplicationConstants;
+import io.jenkins.plugins.security.scan.global.BridgeParams;
+import io.jenkins.plugins.security.scan.global.LoggerWrapper;
+import io.jenkins.plugins.security.scan.global.Utility;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
+import io.jenkins.plugins.security.scan.input.BridgeInput;
+import io.jenkins.plugins.security.scan.input.NetworkAirGap;
 import io.jenkins.plugins.security.scan.input.blackduck.BlackDuck;
 import io.jenkins.plugins.security.scan.input.blackduck.Config;
 import io.jenkins.plugins.security.scan.input.blackduck.Search;
@@ -22,18 +29,13 @@ import io.jenkins.plugins.security.scan.input.report.Sarif;
 import io.jenkins.plugins.security.scan.input.scm.bitbucket.Bitbucket;
 import io.jenkins.plugins.security.scan.input.scm.github.Github;
 import io.jenkins.plugins.security.scan.input.scm.gitlab.Gitlab;
+import io.jenkins.plugins.security.scan.input.srm.SRM;
 import io.jenkins.plugins.security.scan.service.scan.ScanParametersService;
 import io.jenkins.plugins.security.scan.service.scan.blackduck.BlackDuckParametersService;
 import io.jenkins.plugins.security.scan.service.scan.coverity.CoverityParametersService;
 import io.jenkins.plugins.security.scan.service.scan.polaris.PolarisParametersService;
+import io.jenkins.plugins.security.scan.service.scan.srm.SRMParametersService;
 import io.jenkins.plugins.security.scan.service.scm.SCMRepositoryService;
-import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
-import io.jenkins.plugins.security.scan.global.ApplicationConstants;
-import io.jenkins.plugins.security.scan.global.BridgeParams;
-import io.jenkins.plugins.security.scan.global.LoggerWrapper;
-import io.jenkins.plugins.security.scan.global.Utility;
-import io.jenkins.plugins.security.scan.input.BridgeInput;
-import io.jenkins.plugins.security.scan.input.NetworkAirGap;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -299,8 +301,8 @@ public class ScannerArgumentService {
                     .trim();
             if (installationPath != null && !installationPath.isBlank()) {
                 if (blackDuck == null) blackDuck = new BlackDuck();
-                io.jenkins.plugins.synopsys.security.scan.input.blackduck.Execution execution =
-                        new io.jenkins.plugins.synopsys.security.scan.input.blackduck.Execution();
+                io.jenkins.plugins.security.scan.input.blackduck.Execution execution =
+                        new io.jenkins.plugins.security.scan.input.blackduck.Execution();
                 execution.setPath(installationPath);
                 blackDuck.setExecution(execution);
                 bridgeInput.setBlackDuck(blackDuck);
@@ -318,8 +320,8 @@ public class ScannerArgumentService {
                     .trim();
             if (installationPath != null && !installationPath.isBlank()) {
                 if (coverity == null) coverity = new Coverity();
-                io.jenkins.plugins.synopsys.security.scan.input.coverity.Execution execution =
-                        new io.jenkins.plugins.synopsys.security.scan.input.coverity.Execution();
+                io.jenkins.plugins.security.scan.input.coverity.Execution execution =
+                        new io.jenkins.plugins.security.scan.input.coverity.Execution();
                 execution.setPath(installationPath);
                 coverity.setExecution(execution);
                 bridgeInput.setCoverity(coverity);

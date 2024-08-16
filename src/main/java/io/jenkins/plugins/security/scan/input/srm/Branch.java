@@ -1,4 +1,4 @@
-package io.jenkins.plugins.synopsys.security.scan.input.srm;
+package io.jenkins.plugins.security.scan.input.srm;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

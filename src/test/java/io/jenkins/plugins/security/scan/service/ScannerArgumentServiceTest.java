@@ -1,7 +1,6 @@
 package io.jenkins.plugins.security.scan.service;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hudson.EnvVars;
@@ -23,6 +22,7 @@ import io.jenkins.plugins.security.scan.input.report.Sarif;
 import io.jenkins.plugins.security.scan.input.scm.bitbucket.Bitbucket;
 import io.jenkins.plugins.security.scan.input.scm.github.Github;
 import io.jenkins.plugins.security.scan.input.scm.gitlab.Gitlab;
+import io.jenkins.plugins.security.scan.input.srm.SRM;
 import io.jenkins.plugins.security.scan.service.scm.bitbucket.BitbucketRepositoryService;
 import io.jenkins.plugins.security.scan.service.scm.github.GithubRepositoryService;
 import io.jenkins.plugins.security.scan.service.scm.gitlab.GitlabRepositoryService;
@@ -32,13 +32,7 @@ import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -700,11 +694,11 @@ public class ScannerArgumentServiceTest {
         if (getOSNameForTest().contains("win")) {
             assertEquals(
                     commandLineArgs.get(0),
-                    workspace.child(ApplicationConstants.BRIDGE_BINARY_WINDOWS).getRemote());
+                    workspace.child(ApplicationConstants.BRIDGE_CLI_EXECUTABLE_WINDOWS).getRemote());
         } else {
             assertEquals(
                     commandLineArgs.get(0),
-                    workspace.child(ApplicationConstants.BRIDGE_BINARY).getRemote());
+                    workspace.child(ApplicationConstants.BRIDGE_CLI_EXECUTABLE).getRemote());
         }
         assertEquals(commandLineArgs.get(1), BridgeParams.STAGE_OPTION);
         assertEquals(commandLineArgs.get(2), BridgeParams.SRM_STAGE);

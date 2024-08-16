@@ -11,7 +11,6 @@ import io.jenkins.plugins.security.scan.exception.ScannerException;
 import io.jenkins.plugins.security.scan.extension.SecurityScan;
 import io.jenkins.plugins.security.scan.factory.ScanParametersFactory;
 import io.jenkins.plugins.security.scan.global.*;
-import io.jenkins.plugins.synopsys.security.scan.global.*;
 import io.jenkins.plugins.security.scan.global.enums.BuildStatus;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import java.util.Map;

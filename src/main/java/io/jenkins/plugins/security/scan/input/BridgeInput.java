@@ -9,6 +9,7 @@ import io.jenkins.plugins.security.scan.input.report.Reports;
 import io.jenkins.plugins.security.scan.input.scm.bitbucket.Bitbucket;
 import io.jenkins.plugins.security.scan.input.scm.github.Github;
 import io.jenkins.plugins.security.scan.input.scm.gitlab.Gitlab;
+import io.jenkins.plugins.security.scan.input.srm.SRM;
 
 public class BridgeInput {
     @JsonProperty("blackduck")

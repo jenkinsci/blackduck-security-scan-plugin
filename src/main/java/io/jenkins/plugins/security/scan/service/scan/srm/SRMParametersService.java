@@ -1,12 +1,13 @@
-package io.jenkins.plugins.synopsys.security.scan.service.scan.srm;
+package io.jenkins.plugins.security.scan.service.scan.srm;
 
 import hudson.EnvVars;
 import hudson.model.TaskListener;
-import io.jenkins.plugins.synopsys.security.scan.global.ApplicationConstants;
-import io.jenkins.plugins.synopsys.security.scan.global.LoggerWrapper;
-import io.jenkins.plugins.synopsys.security.scan.global.Utility;
-import io.jenkins.plugins.synopsys.security.scan.input.project.Project;
-import io.jenkins.plugins.synopsys.security.scan.input.srm.*;
+import io.jenkins.plugins.security.scan.global.ApplicationConstants;
+import io.jenkins.plugins.security.scan.global.LoggerWrapper;
+import io.jenkins.plugins.security.scan.global.Utility;
+import io.jenkins.plugins.security.scan.input.project.Project;
+import io.jenkins.plugins.security.scan.input.srm.Branch;
+import io.jenkins.plugins.security.scan.input.srm.SRM;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
