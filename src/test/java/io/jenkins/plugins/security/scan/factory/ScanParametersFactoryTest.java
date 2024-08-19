@@ -1,17 +1,18 @@
 package io.jenkins.plugins.security.scan.factory;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import hudson.EnvVars;
 import hudson.FilePath;
 import hudson.model.Result;
 import hudson.model.TaskListener;
+import hudson.util.ListBoxModel;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.extension.freestyle.SecurityScanFreestyle;
 import io.jenkins.plugins.security.scan.extension.pipeline.SecurityScanStep;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.global.ErrorCode;
 import io.jenkins.plugins.security.scan.global.LoggerWrapper;
+import io.jenkins.plugins.security.scan.global.enums.BuildStatus;
+import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import java.io.File;
 import java.io.PrintStream;
 import java.util.HashMap;
@@ -23,7 +24,6 @@ import org.mockito.Mockito;
 public class ScanParametersFactoryTest {
     private TaskListener listenerMock;
     private FilePath workspace;
-    private EnvVars envVarsMock;
     private SecurityScanStep securityScanStep;
     private SecurityScanFreestyle securityScanFreestyle;
 
@@ -31,7 +31,6 @@ public class ScanParametersFactoryTest {
     public void setUp() {
         workspace = new FilePath(new File(System.getProperty("user.home")));
         listenerMock = Mockito.mock(TaskListener.class);
-        envVarsMock = Mockito.mock(EnvVars.class);
         securityScanStep = new SecurityScanStep();
         securityScanFreestyle = new SecurityScanFreestyle();
         Mockito.when(listenerMock.getLogger()).thenReturn(Mockito.mock(PrintStream.class));
@@ -475,5 +474,40 @@ public class ScanParametersFactoryTest {
                 ErrorCode.BRIDGE_BUILD_BREAK, "ABORTED", loggerMock));
         assertNull(ScanParametersFactory.getBuildResultIfIssuesAreFound(
                 ErrorCode.BRIDGE_ADAPTER_ERROR, "UNSTABLE", loggerMock));
+    }
+
+    @Test
+    public void getSecurityProductItemsTest() {
+        ListBoxModel items = ScanParametersFactory.getSecurityProductItems();
+
+        assertEquals(4, items.size());
+
+        assertEquals(SecurityProduct.BLACKDUCKSCA.getProductLabel(), items.get(0).name);
+        assertEquals(SecurityProduct.BLACKDUCKSCA.name().toLowerCase(), items.get(0).value);
+
+        assertEquals(SecurityProduct.COVERITY.getProductLabel(), items.get(1).name);
+        assertEquals(SecurityProduct.COVERITY.name().toLowerCase(), items.get(1).value);
+
+        assertEquals(SecurityProduct.POLARIS.getProductLabel(), items.get(2).name);
+        assertEquals(SecurityProduct.POLARIS.name().toLowerCase(), items.get(2).value);
+
+        assertEquals(SecurityProduct.SRM.getProductLabel(), items.get(2).name);
+        assertEquals(SecurityProduct.SRM.name().toLowerCase(), items.get(2).value);
+    }
+
+    @Test
+    public void getMarkBuildStatusItemsTest() {
+        ListBoxModel items = ScanParametersFactory.getMarkBuildStatusItems();
+
+        assertEquals(3, items.size());
+
+        assertEquals(BuildStatus.FAILURE.name(), items.get(0).name);
+        assertEquals(BuildStatus.FAILURE.name(), items.get(0).value);
+
+        assertEquals(BuildStatus.UNSTABLE.name(), items.get(1).name);
+        assertEquals(BuildStatus.UNSTABLE.name(), items.get(1).value);
+
+        assertEquals(BuildStatus.SUCCESS.name(), items.get(2).name);
+        assertEquals(BuildStatus.SUCCESS.name(), items.get(2).value);
     }
 }

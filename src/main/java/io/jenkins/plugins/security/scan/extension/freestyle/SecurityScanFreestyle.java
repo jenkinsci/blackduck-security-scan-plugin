@@ -11,7 +11,6 @@ import io.jenkins.plugins.security.scan.exception.ScannerException;
 import io.jenkins.plugins.security.scan.extension.SecurityScan;
 import io.jenkins.plugins.security.scan.factory.ScanParametersFactory;
 import io.jenkins.plugins.security.scan.global.*;
-import io.jenkins.plugins.security.scan.global.enums.BuildStatus;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import java.util.Map;
 import jenkins.tasks.SimpleBuildStep;
@@ -924,7 +923,7 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
         LoggerWrapper logger = new LoggerWrapper(listener);
 
         logger.info(
-                "**************************** START EXECUTION OF SYNOPSYS SECURITY SCAN ****************************");
+                "**************************** START EXECUTION OF BLACK DUCK SECURITY SCAN ****************************");
 
         try {
             exitCode = ScanParametersFactory.createPipelineCommand(run, listener, env, launcher, null, workspace)
@@ -955,7 +954,7 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
 
         if (exitCode == ErrorCode.SCAN_SUCCESSFUL) {
             logger.info(
-                    "**************************** END EXECUTION OF SYNOPSYS SECURITY SCAN ****************************");
+                    "**************************** END EXECUTION OF BLACK DUCK SECURITY SCAN ****************************");
         } else {
             Result result =
                     ScanParametersFactory.getBuildResultIfIssuesAreFound(exitCode, this.getMark_build_status(), logger);
@@ -995,24 +994,15 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
         public ListBoxModel doFillProductItems() {
             ListBoxModel items = new ListBoxModel();
             items.add(new ListBoxModel.Option(ApplicationConstants.DEFAULT_DROPDOWN_OPTION_NAME, "select"));
-
-            for (SecurityProduct product : SecurityProduct.values()) {
-                String label = product.getProductLabel();
-                String value = product.name().toLowerCase();
-                items.add(new ListBoxModel.Option(label, value));
-            }
+            items.addAll(ScanParametersFactory.getSecurityProductItems());
             return items;
         }
 
         @SuppressWarnings({"lgtm[jenkins/no-permission-check]", "lgtm[jenkins/csrf]"})
         public ListBoxModel doFillMark_build_statusItems() {
             ListBoxModel items = new ListBoxModel();
-
             items.add(ApplicationConstants.DEFAULT_DROPDOWN_OPTION_NAME, "");
-            items.add(BuildStatus.FAILURE.name(), BuildStatus.FAILURE.name());
-            items.add(BuildStatus.UNSTABLE.name(), BuildStatus.UNSTABLE.name());
-            items.add(BuildStatus.SUCCESS.name(), BuildStatus.SUCCESS.name());
-
+            items.addAll(ScanParametersFactory.getMarkBuildStatusItems());
             return items;
         }
 

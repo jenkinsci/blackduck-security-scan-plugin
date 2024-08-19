@@ -1,13 +1,14 @@
 package io.jenkins.plugins.security.scan.global;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class ApplicationConstants {
-    public static final String DISPLAY_NAME = "Black Duck Security Scan";
+    @Deprecated
+    public static final String DISPLAY_NAME = "Synopsys Security Scan (Deprecated)";
+    @Deprecated
     public static final String PIPELINE_NAME = "synopsys_scan";
-    public static final String PIPELINE_STEP_NAME = "blackduck_scan";
+    public static final String DISPLAY_NAME_BLACKDUCK = "Black Duck Security Scan";
+    public static final String PIPELINE_STEP_BLACKDUCK = "blackduck_scan";
     public static final String BRIDGE_ARTIFACTORY_URL =
             "https://sig-repo.synopsys.com/artifactory/bds-integrations-release/com/synopsys/integration/synopsys-bridge";
     public static final String BRIDGE_CLI_LATEST_VERSION = "latest";
@@ -202,12 +203,8 @@ public class ApplicationConstants {
     public static final String POLARIS_PRCOMMENT_INFO_FOR_NON_PR_SCANS =
         "Polaris PR Comment is ignored for non pull request scan";
 
-    public static final List<String> ARBITRARY_PARAM_KEYS = Collections.unmodifiableList(Arrays.asList(
-            BLACKDUCK_SEARCH_DEPTH_KEY,
-            BLACKDUCK_CONFIG_PATH_KEY,
-            BLACKDUCK_ARGS_KEY,
-            COVERITY_BUILD_COMMAND_KEY,
-            COVERITY_CLEAN_COMMAND_KEY,
-            COVERITY_CONFIG_PATH_KEY,
-            COVERITY_ARGS_KEY));
+    public static final List<String> ARBITRARY_PARAM_KEYS =
+        List.of(BLACKDUCK_SEARCH_DEPTH_KEY, BLACKDUCK_CONFIG_PATH_KEY, BLACKDUCK_ARGS_KEY,
+            COVERITY_BUILD_COMMAND_KEY, COVERITY_CLEAN_COMMAND_KEY, COVERITY_CONFIG_PATH_KEY,
+            COVERITY_ARGS_KEY);
 }

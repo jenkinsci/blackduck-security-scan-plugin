@@ -7,6 +7,7 @@ import hudson.model.Node;
 import hudson.model.Result;
 import hudson.model.Run;
 import hudson.model.TaskListener;
+import hudson.util.ListBoxModel;
 import io.jenkins.plugins.security.scan.PluginParametersHandler;
 import io.jenkins.plugins.security.scan.SecurityScanner;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
@@ -704,5 +705,26 @@ public class ScanParametersFactory {
         }
 
         return result;
+    }
+
+    public static ListBoxModel getSecurityProductItems() {
+        ListBoxModel items = new ListBoxModel();
+        items.add(SecurityProduct.BLACKDUCKSCA.getProductLabel(),
+            SecurityProduct.BLACKDUCKSCA.name().toLowerCase());
+        items.add(SecurityProduct.COVERITY.getProductLabel(),
+            SecurityProduct.COVERITY.name().toLowerCase());
+        items.add(SecurityProduct.POLARIS.getProductLabel(),
+            SecurityProduct.POLARIS.name().toLowerCase());
+        items.add(SecurityProduct.SRM.getProductLabel(),
+            SecurityProduct.SRM.name().toLowerCase());
+        return items;
+    }
+
+    public static ListBoxModel getMarkBuildStatusItems() {
+        ListBoxModel items = new ListBoxModel();
+        items.add(BuildStatus.FAILURE.name(), BuildStatus.FAILURE.name());
+        items.add(BuildStatus.UNSTABLE.name(), BuildStatus.UNSTABLE.name());
+        items.add(BuildStatus.SUCCESS.name(), BuildStatus.SUCCESS.name());
+        return items;
     }
 }
