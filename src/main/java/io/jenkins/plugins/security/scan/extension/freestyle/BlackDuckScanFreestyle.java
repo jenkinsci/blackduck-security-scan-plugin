@@ -17,8 +17,7 @@ import jenkins.tasks.SimpleBuildStep;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 
-@Deprecated
-public class SecurityScanFreestyle extends Builder implements SecurityScan, FreestyleScan, SimpleBuildStep {
+public class BlackDuckScanFreestyle extends Builder implements SecurityScan, FreestyleScan, SimpleBuildStep {
     private String product;
     private String blackduck_url;
     private transient String blackduck_token;
@@ -115,7 +114,7 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     private String mark_build_status;
 
     @DataBoundConstructor
-    public SecurityScanFreestyle() {
+    public BlackDuckScanFreestyle() {
         // this block is kept empty intentionally
     }
 
@@ -525,7 +524,7 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     @DataBoundSetter
     public void setBlackduck_reports_sarif_groupSCAIssues(Boolean blackduck_reports_sarif_groupSCAIssues) {
         this.blackduck_reports_sarif_groupSCAIssues = this.blackduck_reports_sarif_groupSCAIssues_temporary =
-                blackduck_reports_sarif_groupSCAIssues ? true : false;
+            blackduck_reports_sarif_groupSCAIssues ? true : false;
     }
 
     @DataBoundSetter
@@ -681,7 +680,7 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     @DataBoundSetter
     public void setPolaris_reports_sarif_groupSCAIssues(Boolean polaris_reports_sarif_groupSCAIssues) {
         this.polaris_reports_sarif_groupSCAIssues = this.polaris_reports_sarif_groupSCAIssues_temporary =
-                polaris_reports_sarif_groupSCAIssues ? true : false;
+            polaris_reports_sarif_groupSCAIssues ? true : false;
     }
 
     @DataBoundSetter
@@ -752,7 +751,7 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     @DataBoundSetter
     public void setProject_source_preserveSymLinks(Boolean project_source_preserveSymLinks) {
         this.project_source_preserveSymLinks =
-                this.project_source_preserveSymLinks_actualValue = project_source_preserveSymLinks ? true : null;
+            this.project_source_preserveSymLinks_actualValue = project_source_preserveSymLinks ? true : null;
     }
 
     @DataBoundSetter
@@ -775,7 +774,7 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     public void setBlackduck_project_directory(String blackduck_project_directory) {
         if (getProduct().contentEquals(SecurityProduct.BLACKDUCK.name().toLowerCase()))
             this.blackduck_project_directory =
-                    this.project_directory = Util.fixEmptyAndTrim(blackduck_project_directory);
+                this.project_directory = Util.fixEmptyAndTrim(blackduck_project_directory);
     }
 
     @DataBoundSetter
@@ -906,32 +905,29 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     }
 
     private Map<String, Object> getParametersMap(FilePath workspace, TaskListener listener)
-            throws PluginExceptionHandler {
+        throws PluginExceptionHandler {
         return ScanParametersFactory.preparePipelineParametersMap(
-                this, ScanParametersFactory.getGlobalConfigurationValues(workspace, listener), listener);
+            this, ScanParametersFactory.getGlobalConfigurationValues(workspace, listener), listener);
     }
 
     @Override
     public void perform(
-            @NonNull Run<?, ?> run,
-            @NonNull FilePath workspace,
-            @NonNull EnvVars env,
-            @NonNull Launcher launcher,
-            @NonNull TaskListener listener) {
+        @NonNull Run<?, ?> run,
+        @NonNull FilePath workspace,
+        @NonNull EnvVars env,
+        @NonNull Launcher launcher,
+        @NonNull TaskListener listener) {
         int exitCode = 0;
         String undefinedErrorMessage = null;
         Exception unknownException = new Exception();
         LoggerWrapper logger = new LoggerWrapper(listener);
 
         logger.info(
-                "**************************** START EXECUTION OF SYNOPSYS SECURITY SCAN ****************************");
-
-        logger.warn("This build step is deprecated and will be removed in the future. Please use "
-            .concat(ApplicationConstants.DISPLAY_NAME_BLACKDUCK).concat(" instead."));
+            "**************************** START EXECUTION OF BLACK DUCK SECURITY SCAN ****************************");
 
         try {
             exitCode = ScanParametersFactory.createPipelineCommand(run, listener, env, launcher, null, workspace)
-                    .initializeScanner(getParametersMap(workspace, listener));
+                .initializeScanner(getParametersMap(workspace, listener));
         } catch (Exception e) {
             if (e instanceof PluginExceptionHandler) {
                 exitCode = ((PluginExceptionHandler) e).getCode();
@@ -953,15 +949,15 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     private void handleExitCode(Run<?, ?> run, LoggerWrapper logger, int exitCode, String exitMessage, Exception e) {
         if (exitCode != ErrorCode.BRIDGE_BUILD_BREAK && !Utility.isStringNullOrBlank(this.getMark_build_status())) {
             logger.info("Marking build status as " + this.getMark_build_status() + " is ignored since exit code is: "
-                    + exitCode);
+                + exitCode);
         }
 
         if (exitCode == ErrorCode.SCAN_SUCCESSFUL) {
             logger.info(
-                    "**************************** END EXECUTION OF SYNOPSYS SECURITY SCAN ****************************");
+                "**************************** END EXECUTION OF BLACK DUCK SECURITY SCAN ****************************");
         } else {
             Result result =
-                    ScanParametersFactory.getBuildResultIfIssuesAreFound(exitCode, this.getMark_build_status(), logger);
+                ScanParametersFactory.getBuildResultIfIssuesAreFound(exitCode, this.getMark_build_status(), logger);
 
             if (result != null) {
                 logger.info("Marking build as " + result + " since issues are present");
@@ -969,7 +965,7 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
             }
 
             logger.info(
-                    "**************************** END EXECUTION OF SYNOPSYS SECURITY SCAN ****************************");
+                "**************************** END EXECUTION OF BLACK DUCK SECURITY SCAN ****************************");
 
             if (result == null) {
                 if (exitCode == ErrorCode.UNDEFINED_PLUGIN_ERROR) {
@@ -986,7 +982,7 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
 
         @Override
         public String getDisplayName() {
-            return ApplicationConstants.DISPLAY_NAME;
+            return ApplicationConstants.DISPLAY_NAME_BLACKDUCK;
         }
 
         @Override
@@ -998,14 +994,7 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
         public ListBoxModel doFillProductItems() {
             ListBoxModel items = new ListBoxModel();
             items.add(new ListBoxModel.Option(ApplicationConstants.DEFAULT_DROPDOWN_OPTION_NAME, "select"));
-            items.add(SecurityProduct.BLACKDUCK.getProductLabel(),
-                SecurityProduct.BLACKDUCK.name().toLowerCase());
-            items.add(SecurityProduct.COVERITY.getProductLabel(),
-                SecurityProduct.COVERITY.name().toLowerCase());
-            items.add(SecurityProduct.POLARIS.getProductLabel(),
-                SecurityProduct.POLARIS.name().toLowerCase());
-            items.add(SecurityProduct.SRM.getProductLabel(),
-                SecurityProduct.SRM.name().toLowerCase());
+            items.addAll(ScanParametersFactory.getSecurityProductItems());
             return items;
         }
 

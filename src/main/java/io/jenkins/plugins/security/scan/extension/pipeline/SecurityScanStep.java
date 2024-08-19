@@ -988,7 +988,8 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
             logger.println(
                     "**************************** START EXECUTION OF SYNOPSYS SECURITY SCAN ****************************");
 
-            logger.warn("This step is deprecated. Please use ".concat(ApplicationConstants.PIPELINE_STEP_BLACKDUCK).concat(" instead."));
+            logger.warn("This step is deprecated and will be removed in the future. Please use "
+                .concat(ApplicationConstants.PIPELINE_STEP_BLACKDUCK).concat(" instead."));
 
             try {
                 verifyRequiredPlugins(logger, envVars);
