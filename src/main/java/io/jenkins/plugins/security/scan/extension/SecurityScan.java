@@ -3,27 +3,44 @@ package io.jenkins.plugins.security.scan.extension;
 public interface SecurityScan {
     public String getProduct();
 
-    public String getBlackduck_url();
+    public String getBlackducksca_url();
+    public String getBlackducksca_token();
+    public String getDetect_install_directory();
+    public Boolean isDetect_scan_full();
+    public Boolean isDetectIntelligentScan();
+    public String getBlackducksca_scan_failure_severities();
+    public String getBlackducksca_download_url();
+    public Integer getBlackducksca_search_depth();
+    public String getBlackducksca_config_path();
+    public String getBlackducksca_args();
+    public String getDetect_execution_path();
+    public Boolean isBlackducksca_reports_sarif_create();
+    public String getBlackducksca_reports_sarif_file_path();
+    public Boolean isBlackducksca_reports_sarif_groupSCAIssues();
+    public String getBlackducksca_reports_sarif_severities();
+    public Boolean isBlackducksca_reports_sarif_groupSCAIssues_temporary();
 
-    public String getBlackduck_token();
+    @Deprecated public String getBlackduck_url();
 
-    public String getBlackduck_install_directory();
+    @Deprecated public String getBlackduck_token();
 
-    public Boolean isBlackduck_scan_full();
+    @Deprecated public String getBlackduck_install_directory();
 
-    public Boolean isBlackduckIntelligentScan();
+    @Deprecated public Boolean isBlackduck_scan_full();
 
-    public String getBlackduck_scan_failure_severities();
+    @Deprecated public Boolean isBlackduckIntelligentScan();
 
-    public String getBlackduck_download_url();
+    @Deprecated public String getBlackduck_scan_failure_severities();
 
-    public Integer getBlackduck_search_depth();
+    @Deprecated public String getBlackduck_download_url();
 
-    public String getBlackduck_config_path();
+    @Deprecated public Integer getBlackduck_search_depth();
 
-    public String getBlackduck_args();
+    @Deprecated public String getBlackduck_config_path();
 
-    public String getBlackduck_execution_path();
+    @Deprecated public String getBlackduck_args();
+
+    @Deprecated public String getBlackduck_execution_path();
 
     public String getCoverity_url();
 

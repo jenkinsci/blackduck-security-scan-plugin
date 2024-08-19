@@ -139,6 +139,78 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
         return product;
     }
 
+    public String getBlackducksca_url() {
+        return null;
+    }
+
+    public String getBlackducksca_token() {
+        return null;
+    }
+
+    public String getDetect_install_directory() {
+        return null;
+    }
+
+    public Boolean isDetect_scan_full() {
+        return null;
+    }
+
+    public Boolean isDetectIntelligentScan() {
+        return null;
+    }
+
+    public String getBlackducksca_scan_failure_severities() {
+        return null;
+    }
+
+    public String getBlackducksca_download_url() {
+        return null;
+    }
+
+    public Boolean isBlackducksca_prComment_enabled() {
+        return null;
+    }
+
+    public Boolean isBlackducksca_prComment_enabled_actualValue() {
+        return null;
+    }
+
+    public Integer getBlackducksca_search_depth() {
+        return null;
+    }
+
+    public String getBlackducksca_config_path() {
+        return null;
+    }
+
+    public String getBlackducksca_args() {
+        return null;
+    }
+
+    public String getDetect_execution_path() {
+        return null;
+    }
+
+    public Boolean isBlackducksca_reports_sarif_create() {
+        return null;
+    }
+
+    public String getBlackducksca_reports_sarif_file_path() {
+        return null;
+    }
+
+    public Boolean isBlackducksca_reports_sarif_groupSCAIssues() {
+        return null;
+    }
+
+    public String getBlackducksca_reports_sarif_severities() {
+        return null;
+    }
+
+    public Boolean isBlackducksca_reports_sarif_groupSCAIssues_temporary() {
+        return null;
+    }
+
     public String getBlackduck_url() {
         return blackduck_url;
     }
@@ -955,7 +1027,6 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
         private final transient Launcher launcher;
         private final transient Node node;
         private final transient FlowNode flowNode;
-        private final transient StepDescriptor stepDescriptor;
 
         @SuppressFBWarnings("SE_TRANSIENT_FIELD_NOT_RESTORED")
         private final transient TaskListener listener;
@@ -975,7 +1046,6 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
             launcher = context.get(Launcher.class);
             node = context.get(Node.class);
             flowNode = context.get(FlowNode.class);
-            stepDescriptor = context.get(StepDescriptor.class);
         }
 
         @Override
@@ -994,9 +1064,9 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
             try {
                 verifyRequiredPlugins(logger, envVars);
 
-//                exitCode = ScanParametersFactory.createPipelineCommand(
-//                                run, listener, envVars, launcher, node, workspace)
-//                        .initializeScanner(getParametersMap(workspace, listener));
+                exitCode = ScanParametersFactory.createPipelineCommand(
+                                run, listener, envVars, launcher, node, workspace)
+                        .initializeScanner(getParametersMap(workspace, listener));
             } catch (Exception e) {
                 if (e instanceof PluginExceptionHandler) {
                     exitCode = ((PluginExceptionHandler) e).getCode();

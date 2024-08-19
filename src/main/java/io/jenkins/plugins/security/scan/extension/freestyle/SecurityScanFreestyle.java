@@ -22,8 +22,6 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     private String product;
     private String blackduck_url;
     private transient String blackduck_token;
-    private transient String github_token;
-    private transient String gitlab_token;
     private String blackduck_install_directory;
     private Boolean blackduck_scan_full;
     private Boolean blackduckIntelligentScan;
@@ -105,6 +103,8 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
 
     private String bitbucket_username;
     private transient String bitbucket_token;
+    private transient String github_token;
+    private transient String gitlab_token;
 
     private String synopsys_bridge_download_url;
     private String synopsys_bridge_download_version;
@@ -121,6 +121,10 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
 
     public String getProduct() {
         return product;
+    }
+
+    public String getBlackducksca_url() {
+        return null;
     }
 
     public String getBlackduck_url() {
@@ -185,6 +189,66 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
 
     public String getBlackduck_execution_path() {
         return blackduck_execution_path;
+    }
+
+    public String getBlackducksca_token() {
+        return null;
+    }
+
+    public String getDetect_install_directory() {
+        return null;
+    }
+
+    public Boolean isDetect_scan_full() {
+        return null;
+    }
+
+    public Boolean isDetectIntelligentScan() {
+        return null;
+    }
+
+    public String getBlackducksca_scan_failure_severities() {
+        return null;
+    }
+
+    public String getBlackducksca_download_url() {
+        return null;
+    }
+
+    public Integer getBlackducksca_search_depth() {
+        return null;
+    }
+
+    public String getBlackducksca_config_path() {
+        return null;
+    }
+
+    public String getBlackducksca_args() {
+        return null;
+    }
+
+    public String getDetect_execution_path() {
+        return null;
+    }
+
+    public Boolean isBlackducksca_reports_sarif_create() {
+        return null;
+    }
+
+    public String getBlackducksca_reports_sarif_file_path() {
+        return null;
+    }
+
+    public Boolean isBlackducksca_reports_sarif_groupSCAIssues() {
+        return null;
+    }
+
+    public String getBlackducksca_reports_sarif_severities() {
+        return null;
+    }
+
+    public Boolean isBlackducksca_reports_sarif_groupSCAIssues_temporary() {
+        return null;
     }
 
     public String getCoverity_url() {
