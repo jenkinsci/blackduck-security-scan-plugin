@@ -115,9 +115,9 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
     private transient String github_token;
     private transient String gitlab_token;
 
-    private String synopsys_bridge_download_url;
-    private String synopsys_bridge_download_version;
-    private String synopsys_bridge_install_directory;
+    private String bridgecli_download_url;
+    private String bridgecli_download_version;
+    private String bridgecli_install_directory;
     private Boolean include_diagnostics;
     private Boolean network_airgap;
     /*
@@ -467,16 +467,28 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
         return gitlab_token;
     }
 
+    public String getBridgecli_download_url() {
+        return bridgecli_download_url;
+    }
+
+    public String getBridgecli_download_version() {
+        return bridgecli_download_version;
+    }
+
+    public String getBridgecli_install_directory() {
+        return bridgecli_install_directory;
+    }
+
     public String getSynopsys_bridge_download_url() {
-        return synopsys_bridge_download_url;
+        return null;
     }
 
     public String getSynopsys_bridge_download_version() {
-        return synopsys_bridge_download_version;
+        return null;
     }
 
     public String getSynopsys_bridge_install_directory() {
-        return synopsys_bridge_install_directory;
+        return null;
     }
 
     public Boolean isInclude_diagnostics() {
@@ -831,18 +843,18 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
     }
 
     @DataBoundSetter
-    public void setSynopsys_bridge_download_url(String synopsys_bridge_download_url) {
-        this.synopsys_bridge_download_url = synopsys_bridge_download_url;
+    public void setBridgecli_download_url(String bridgecli_download_url) {
+        this.bridgecli_download_url = bridgecli_download_url;
     }
 
     @DataBoundSetter
-    public void setSynopsys_bridge_download_version(String synopsys_bridge_download_version) {
-        this.synopsys_bridge_download_version = synopsys_bridge_download_version;
+    public void setBridgecli_download_version(String bridgecli_download_version) {
+        this.bridgecli_download_version = bridgecli_download_version;
     }
 
     @DataBoundSetter
-    public void setSynopsys_bridge_install_directory(String synopsys_bridge_install_directory) {
-        this.synopsys_bridge_install_directory = synopsys_bridge_install_directory;
+    public void setBridgecli_install_directory(String bridgecli_install_directory) {
+        this.bridgecli_install_directory = bridgecli_install_directory;
     }
 
     @DataBoundSetter

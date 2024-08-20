@@ -112,7 +112,7 @@ public class PluginParametersHandler {
 
         logMessagesForAdditionalParameters(parametersCopy);
 
-        if ((Objects.equals(parametersCopy.get(ApplicationConstants.BLACKDUCK_REPORTS_SARIF_CREATE_KEY), true)
+        if ((Objects.equals(parametersCopy.get(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_CREATE_KEY), true)
                         || Objects.equals(
                                 parametersCopy.get(ApplicationConstants.POLARIS_REPORTS_SARIF_CREATE_KEY), true))
                 && envVars.get(ApplicationConstants.ENV_CHANGE_ID_KEY) != null) {
@@ -125,17 +125,16 @@ public class PluginParametersHandler {
 
         for (String product : securityProducts) {
             String securityProduct = product.toLowerCase();
-            logger.info("Parameters for %s:", securityProduct);
 
-            Map<String, Object> filteredParameters = filterParameter(scanParameters);
-            logFilteredParameters(filteredParameters, securityProduct);
+            logger.info("Parameters for %s:", securityProduct);
+            logParameters(scanParameters, securityProduct);
 
             logger.println(LogMessages.DASHES);
         }
     }
 
-    private void logFilteredParameters(Map<String, Object> filteredParameters, String securityProduct) {
-        for (Map.Entry<String, Object> entry : filteredParameters.entrySet()) {
+    private void logParameters(Map<String, Object> scanParameters, String securityProduct) {
+        for (Map.Entry<String, Object> entry : scanParameters.entrySet()) {
             String key = entry.getKey();
             Object value = entry.getValue();
 
@@ -153,16 +152,17 @@ public class PluginParametersHandler {
         List<String> arbitraryParamList = ApplicationConstants.ARBITRARY_PARAM_KEYS;
         return key.contains(securityProduct)
                 || key.equals(ApplicationConstants.PROJECT_DIRECTORY_KEY)
+                || key.startsWith("detect_")
                 || (securityProduct.equals(SecurityProduct.POLARIS.name().toLowerCase())
                         && (key.startsWith("project_") || arbitraryParamList.contains(key)))
                 || (securityProduct.equals(SecurityProduct.SRM.name().toLowerCase())
-                        && (key.equals(ApplicationConstants.SRM_SCA_EXECUTION_PATH_KEY)
+                        && (key.equals(ApplicationConstants.SRM_SCA_DETECT_EXECUTION_PATH_KEY)
                                 || key.equals(ApplicationConstants.SRM_SAST_EXECUTION_PATH_KEY)
                                 || arbitraryParamList.contains(key)));
     }
 
     private boolean isSensitiveKey(String key) {
-        return key.equals(ApplicationConstants.BLACKDUCK_TOKEN_KEY)
+        return key.equals(ApplicationConstants.BLACKDUCKSCA_TOKEN_KEY)
                 || key.equals(ApplicationConstants.POLARIS_ACCESS_TOKEN_KEY)
                 || key.equals(ApplicationConstants.COVERITY_PASSPHRASE_KEY)
                 || key.equals(ApplicationConstants.SRM_APIKEY_KEY);
@@ -173,9 +173,7 @@ public class PluginParametersHandler {
 
         for (Map.Entry<String, Object> entry : scanParameters.entrySet()) {
             String key = entry.getKey();
-            if (key.equals(ApplicationConstants.SYNOPSYS_BRIDGE_DOWNLOAD_URL)
-                    || key.equals(ApplicationConstants.SYNOPSYS_BRIDGE_DOWNLOAD_VERSION)
-                    || key.equals(ApplicationConstants.SYNOPSYS_BRIDGE_INSTALL_DIRECTORY)
+            if (key.startsWith("bridgecli_")
                     || key.equals(ApplicationConstants.INCLUDE_DIAGNOSTICS_KEY)
                     || key.equals(ApplicationConstants.NETWORK_AIRGAP_KEY)
                     || key.equals(ApplicationConstants.MARK_BUILD_STATUS)) {
@@ -194,25 +192,6 @@ public class PluginParametersHandler {
                 || key.equals(ApplicationConstants.COVERITY_AUTOMATION_PRCOMMENT_KEY)) {
             logger.warn(key + " is deprecated, use " + getNewMappedParameterName(key));
         }
-    }
-
-    public Map<String, Object> filterParameter(Map<String, Object> scanParameters) {
-        boolean blackduckPrCommentEnabled =
-                scanParameters.containsKey(ApplicationConstants.BLACKDUCK_PRCOMMENT_ENABLED_KEY);
-        boolean blackduckAutomationPrComment =
-                scanParameters.containsKey(ApplicationConstants.BLACKDUCK_AUTOMATION_PRCOMMENT_KEY);
-        boolean coverityPrCommentEnabled =
-                scanParameters.containsKey(ApplicationConstants.COVERITY_PRCOMMENT_ENABLED_KEY);
-        boolean coverityAutomationPrComment =
-                scanParameters.containsKey(ApplicationConstants.COVERITY_AUTOMATION_PRCOMMENT_KEY);
-
-        if (blackduckPrCommentEnabled && blackduckAutomationPrComment) {
-            scanParameters.remove(ApplicationConstants.BLACKDUCK_AUTOMATION_PRCOMMENT_KEY);
-        } else if (coverityPrCommentEnabled && coverityAutomationPrComment) {
-            scanParameters.remove(ApplicationConstants.COVERITY_AUTOMATION_PRCOMMENT_KEY);
-        }
-
-        return scanParameters;
     }
 
     public static String getNewMappedParameterName(String key) {

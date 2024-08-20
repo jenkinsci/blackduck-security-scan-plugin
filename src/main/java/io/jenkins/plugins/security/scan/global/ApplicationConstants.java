@@ -100,9 +100,7 @@ public class ApplicationConstants {
     public static final String BLACKDUCKSCA_TOKEN_KEY = "blackducksca_token";
     public static final String DETECT_INSTALL_DIRECTORY_KEY = "detect_install_directory";
     public static final String DETECT_SCAN_FULL_KEY = "detect_scan_full";
-    public static final String DETECT_EXECUTION_PATH_KEY = "detect_execution_path";
     public static final String BLACKDUCKSCA_SCAN_FAILURE_SEVERITIES_KEY = "blackducksca_scan_failure_severities";
-    public static final String BLACKDUCKSCA_AUTOMATION_FIXPR_KEY = "blackducksca_automation_fixpr";
     public static final String BLACKDUCKSCA_PRCOMMENT_ENABLED_KEY = "blackducksca_prComment_enabled";
     public static final String BLACKDUCKSCA_DOWNLOAD_URL_KEY = "blackducksca_download_url";
     public static final String BLACKDUCKSCA_REPORTS_SARIF_CREATE_KEY = "blackducksca_reports_sarif_create";
@@ -161,7 +159,11 @@ public class ApplicationConstants {
     public static final String SRM_PROJECT_ID_KEY = "srm_project_id";
     public static final String SRM_BRANCH_NAME_KEY = "srm_branch_name";
     public static final String SRM_BRANCH_PARENT_KEY = "srm_branch_parent";
+
+    @Deprecated
     public static final String SRM_SCA_EXECUTION_PATH_KEY = "blackduck_execution_path";
+
+    public static final String SRM_SCA_DETECT_EXECUTION_PATH_KEY = "detect_execution_path";
     public static final String SRM_SAST_EXECUTION_PATH_KEY = "coverity_execution_path";
 
     // Source Upload Parameters

@@ -68,6 +68,21 @@ public interface SecurityScan {
     @Deprecated
     public String getBlackduck_execution_path();
 
+    @Deprecated
+    public Boolean isBlackduck_reports_sarif_create();
+
+    @Deprecated
+    public String getBlackduck_reports_sarif_file_path();
+
+    @Deprecated
+    public Boolean isBlackduck_reports_sarif_groupSCAIssues();
+
+    @Deprecated
+    public String getBlackduck_reports_sarif_severities();
+
+    @Deprecated
+    public Boolean isBlackduck_reports_sarif_groupSCAIssues_temporary();
+
     public String getCoverity_url();
 
     public String getCoverity_user();
@@ -162,25 +177,24 @@ public interface SecurityScan {
 
     public String getGitlab_token();
 
+    @Deprecated
     public String getSynopsys_bridge_download_url();
 
+    @Deprecated
     public String getSynopsys_bridge_download_version();
 
+    @Deprecated
     public String getSynopsys_bridge_install_directory();
+
+    public String getBridgecli_download_url();
+
+    public String getBridgecli_download_version();
+
+    public String getBridgecli_install_directory();
 
     public Boolean isInclude_diagnostics();
 
     public Boolean isNetwork_airgap();
-
-    public Boolean isBlackduck_reports_sarif_create();
-
-    public String getBlackduck_reports_sarif_file_path();
-
-    public Boolean isBlackduck_reports_sarif_groupSCAIssues();
-
-    public String getBlackduck_reports_sarif_severities();
-
-    public Boolean isBlackduck_reports_sarif_groupSCAIssues_temporary();
 
     public String getMark_build_status();
 }

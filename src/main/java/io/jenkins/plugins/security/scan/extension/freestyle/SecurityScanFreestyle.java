@@ -467,6 +467,18 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
         return synopsys_bridge_install_directory;
     }
 
+    public String getBridgecli_download_url() {
+        return null;
+    }
+
+    public String getBridgecli_download_version() {
+        return null;
+    }
+
+    public String getBridgecli_install_directory() {
+        return null;
+    }
+
     public Boolean isInclude_diagnostics() {
         return include_diagnostics;
     }
