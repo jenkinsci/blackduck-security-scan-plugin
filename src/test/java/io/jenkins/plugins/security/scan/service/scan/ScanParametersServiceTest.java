@@ -98,10 +98,8 @@ public class ScanParametersServiceTest {
         scanParametersWithMultiplePlatforms.put(ApplicationConstants.PRODUCT_KEY, "blackduck, polaris");
         scanParametersWithSinglePlatform.put(ApplicationConstants.PRODUCT_KEY, "");
 
-        Set<String> multiplePlatforms =
-                scanParametersService.getSecurityProducts(scanParametersWithMultiplePlatforms);
-        Set<String> singlePlatform =
-                scanParametersService.getSecurityProducts(scanParametersWithSinglePlatform);
+        Set<String> multiplePlatforms = scanParametersService.getSecurityProducts(scanParametersWithMultiplePlatforms);
+        Set<String> singlePlatform = scanParametersService.getSecurityProducts(scanParametersWithSinglePlatform);
 
         assertEquals(2, multiplePlatforms.size());
         assertEquals(1, singlePlatform.size());

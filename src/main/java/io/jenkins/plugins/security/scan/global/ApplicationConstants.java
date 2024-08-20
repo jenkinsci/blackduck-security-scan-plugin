@@ -5,8 +5,10 @@ import java.util.List;
 public class ApplicationConstants {
     @Deprecated
     public static final String DISPLAY_NAME = "Synopsys Security Scan (Deprecated)";
+
     @Deprecated
     public static final String PIPELINE_NAME = "synopsys_scan";
+
     public static final String DISPLAY_NAME_BLACKDUCK = "Black Duck Security Scan";
     public static final String PIPELINE_STEP_BLACKDUCK = "blackduck_scan";
     public static final String BRIDGE_ARTIFACTORY_URL =
@@ -44,41 +46,56 @@ public class ApplicationConstants {
     // Product Key
     public static final String PRODUCT_KEY = "product";
 
-    //Blackduck Parameters (Deprecated)
+    // Blackduck Parameters (Deprecated)
     @Deprecated
     public static final String BLACKDUCK_URL_KEY = "blackduck_url";
+
     @Deprecated
     public static final String BLACKDUCK_TOKEN_KEY = "blackduck_token";
+
     @Deprecated
     public static final String BLACKDUCK_INSTALL_DIRECTORY_KEY = "blackduck_install_directory";
+
     @Deprecated
     public static final String BLACKDUCK_SCAN_FULL_KEY = "blackduck_scan_full";
+
     @Deprecated
     public static final String BLACKDUCK_SCAN_FAILURE_SEVERITIES_KEY = "blackduck_scan_failure_severities";
+
     @Deprecated
     public static final String BLACKDUCK_AUTOMATION_FIXPR_KEY = "blackduck_automation_fixpr";
+
     @Deprecated
     public static final String BLACKDUCK_AUTOMATION_PRCOMMENT_KEY = "blackduck_automation_prcomment";
+
     @Deprecated
     public static final String BLACKDUCK_PRCOMMENT_ENABLED_KEY = "blackduck_prComment_enabled";
+
     @Deprecated
     public static final String BLACKDUCK_DOWNLOAD_URL_KEY = "blackduck_download_url";
+
     @Deprecated
     public static final String BLACKDUCK_REPORTS_SARIF_CREATE_KEY = "blackduck_reports_sarif_create";
+
     @Deprecated
     public static final String BLACKDUCK_REPORTS_SARIF_FILE_PATH_KEY = "blackduck_reports_sarif_file_path";
+
     @Deprecated
     public static final String BLACKDUCK_REPORTS_SARIF_GROUPSCAISSUES_KEY = "blackduck_reports_sarif_groupSCAIssues";
+
     @Deprecated
     public static final String BLACKDUCK_REPORTS_SARIF_SEVERITIES_KEY = "blackduck_reports_sarif_severities";
+
     @Deprecated
     public static final String BLACKDUCK_SEARCH_DEPTH_KEY = "blackduck_search_depth";
+
     @Deprecated
     public static final String BLACKDUCK_CONFIG_PATH_KEY = "blackduck_config_path";
+
     @Deprecated
     public static final String BLACKDUCK_ARGS_KEY = "blackduck_args";
 
-    //Black Duck SCA Parameters
+    // Black Duck SCA Parameters
     public static final String BLACKDUCKSCA_URL_KEY = "blackducksca_url";
     public static final String BLACKDUCKSCA_TOKEN_KEY = "blackducksca_token";
     public static final String DETECT_INSTALL_DIRECTORY_KEY = "detect_install_directory";
@@ -90,7 +107,8 @@ public class ApplicationConstants {
     public static final String BLACKDUCKSCA_DOWNLOAD_URL_KEY = "blackducksca_download_url";
     public static final String BLACKDUCKSCA_REPORTS_SARIF_CREATE_KEY = "blackducksca_reports_sarif_create";
     public static final String BLACKDUCKSCA_REPORTS_SARIF_FILE_PATH_KEY = "blackducksca_reports_sarif_file_path";
-    public static final String BLACKDUCKSCA_REPORTS_SARIF_GROUPSCAISSUES_KEY = "blackducksca_reports_sarif_groupSCAIssues";
+    public static final String BLACKDUCKSCA_REPORTS_SARIF_GROUPSCAISSUES_KEY =
+            "blackducksca_reports_sarif_groupSCAIssues";
     public static final String BLACKDUCKSCA_REPORTS_SARIF_SEVERITIES_KEY = "blackducksca_reports_sarif_severities";
     public static final String BLACKDUCKSCA_SEARCH_DEPTH_KEY = "blackducksca_search_depth";
     public static final String BLACKDUCKSCA_CONFIG_PATH_KEY = "blackducksca_config_path";
@@ -108,8 +126,10 @@ public class ApplicationConstants {
     public static final String COVERITY_CLEAN_COMMAND_KEY = "coverity_clean_command";
     public static final String COVERITY_CONFIG_PATH_KEY = "coverity_config_path";
     public static final String COVERITY_ARGS_KEY = "coverity_args";
+
     @Deprecated
     public static final String COVERITY_AUTOMATION_PRCOMMENT_KEY = "coverity_automation_prcomment";
+
     public static final String COVERITY_PRCOMMENT_ENABLED_KEY = "coverity_prComment_enabled";
     public static final String COVERITY_VERSION_KEY = "coverity_version";
     public static final String COVERITY_LOCAL_KEY = "coverity_local";
@@ -163,10 +183,13 @@ public class ApplicationConstants {
     // Bridge Download Parameters
     @Deprecated
     public static final String SYNOPSYS_BRIDGE_DOWNLOAD_URL = "synopsys_bridge_download_url";
+
     @Deprecated
     public static final String SYNOPSYS_BRIDGE_DOWNLOAD_VERSION = "synopsys_bridge_download_version";
+
     @Deprecated
     public static final String SYNOPSYS_BRIDGE_INSTALL_DIRECTORY = "synopsys_bridge_install_directory";
+
     public static final String BRIDGECLI_DOWNLOAD_URL = "bridgecli_download_url";
     public static final String BRIDGECLI_DOWNLOAD_VERSION = "bridgecli_download_version";
     public static final String BRIDGECLI_INSTALL_DIRECTORY = "bridgecli_install_directory";
@@ -197,14 +220,18 @@ public class ApplicationConstants {
     public static final String DEFAULT_DROPDOWN_OPTION_NAME = "Select";
 
     public static final String BLACKDUCK_PRCOMMENT_INFO_FOR_NON_PR_SCANS =
-        "Black Duck PR Comment is ignored for non pull request scan";
+            "Black Duck PR Comment is ignored for non pull request scan";
     public static final String COVERITY_PRCOMMENT_INFO_FOR_NON_PR_SCANS =
-        "Coverity PR Comment is ignored for non pull request scan";
+            "Coverity PR Comment is ignored for non pull request scan";
     public static final String POLARIS_PRCOMMENT_INFO_FOR_NON_PR_SCANS =
-        "Polaris PR Comment is ignored for non pull request scan";
+            "Polaris PR Comment is ignored for non pull request scan";
 
-    public static final List<String> ARBITRARY_PARAM_KEYS =
-        List.of(BLACKDUCK_SEARCH_DEPTH_KEY, BLACKDUCK_CONFIG_PATH_KEY, BLACKDUCK_ARGS_KEY,
-            COVERITY_BUILD_COMMAND_KEY, COVERITY_CLEAN_COMMAND_KEY, COVERITY_CONFIG_PATH_KEY,
+    public static final List<String> ARBITRARY_PARAM_KEYS = List.of(
+            BLACKDUCK_SEARCH_DEPTH_KEY,
+            BLACKDUCK_CONFIG_PATH_KEY,
+            BLACKDUCK_ARGS_KEY,
+            COVERITY_BUILD_COMMAND_KEY,
+            COVERITY_CLEAN_COMMAND_KEY,
+            COVERITY_CONFIG_PATH_KEY,
             COVERITY_ARGS_KEY);
 }

@@ -103,8 +103,7 @@ public class SecurityScanner {
                         + (isPullRequest ? " (PR/MR Number: " + changeId + ")" : ""));
 
                 if (!isPullRequest) {
-                    ScanParametersService
-                        scanParametersService = new ScanParametersService(listener);
+                    ScanParametersService scanParametersService = new ScanParametersService(listener);
                     Set<String> scanType = scanParametersService.getSecurityProducts(scanParams);
                     boolean isBlackDuckScan = scanType.contains(SecurityProduct.BLACKDUCK.name());
                     boolean isPolarisDuckScan = scanType.contains(SecurityProduct.POLARIS.name());

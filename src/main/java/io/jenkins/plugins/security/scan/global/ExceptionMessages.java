@@ -21,15 +21,15 @@ public class ExceptionMessages {
         exitCodeToMessage.put(ErrorCode.INVALID_BLACKDUCK_PARAMETERS, "Invalid BlackDuck parameters");
         exitCodeToMessage.put(ErrorCode.INVALID_COVERITY_PARAMETERS, "Invalid Coverity parameters");
         exitCodeToMessage.put(ErrorCode.INVALID_POLARIS_PARAMETERS, "Invalid Polaris parameters");
-        exitCodeToMessage.put(ErrorCode.INVALID_BRIDGE_DOWNLOAD_PARAMETERS, "Bridge CLI download parameters are not valid");
+        exitCodeToMessage.put(
+                ErrorCode.INVALID_BRIDGE_DOWNLOAD_PARAMETERS, "Bridge CLI download parameters are not valid");
         exitCodeToMessage.put(ErrorCode.BRIDGE_CLI_DOWNLOAD_FAILED, "Bridge CLI download failed");
         exitCodeToMessage.put(
                 ErrorCode.BRIDGE_CLI_DOWNLOAD_FAILED_AND_WONT_RETRY,
                 "Bridge CLI download failed and will not retry to download");
         exitCodeToMessage.put(ErrorCode.BRIDGE_CLI_UNZIPPING_FAILED, "Bridge CLI unzipping failed");
         exitCodeToMessage.put(
-                ErrorCode.BRIDGE_CLI_NOT_FOUND_IN_PROVIDED_PATH,
-                "Bridge CLI could not be found in provided path");
+                ErrorCode.BRIDGE_CLI_NOT_FOUND_IN_PROVIDED_PATH, "Bridge CLI could not be found in provided path");
         exitCodeToMessage.put(ErrorCode.NO_BITBUCKET_TOKEN_FOUND, "No Bitbucket token found");
         exitCodeToMessage.put(ErrorCode.NO_GITHUB_TOKEN_FOUND, "No GitHub token found");
         exitCodeToMessage.put(ErrorCode.NO_GITLAB_TOKEN_FOUND, "No GitLab token found");

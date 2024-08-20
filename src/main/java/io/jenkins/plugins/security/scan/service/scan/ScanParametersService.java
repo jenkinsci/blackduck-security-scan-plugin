@@ -27,8 +27,7 @@ public class ScanParametersService {
         Set<String> securityProducts = getSecurityProducts(scanParameters);
 
         if (securityProducts.contains(SecurityProduct.BLACKDUCK.name())) {
-            BlackDuckParametersService
-                blackDuckParametersService = new BlackDuckParametersService(listener, envVars);
+            BlackDuckParametersService blackDuckParametersService = new BlackDuckParametersService(listener, envVars);
             if (!blackDuckParametersService.isValidBlackDuckParameters(scanParameters)) {
                 throw new PluginExceptionHandler(ErrorCode.INVALID_BLACKDUCK_PARAMETERS);
             }

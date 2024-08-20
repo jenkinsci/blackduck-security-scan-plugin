@@ -1,6 +1,7 @@
 package io.jenkins.plugins.security.scan.factory;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 import hudson.FilePath;
 import hudson.model.Result;
 import hudson.model.TaskListener;

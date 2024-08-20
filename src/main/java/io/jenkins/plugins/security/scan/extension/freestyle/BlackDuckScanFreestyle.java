@@ -588,7 +588,7 @@ public class BlackDuckScanFreestyle extends Builder implements SecurityScan, Fre
     @DataBoundSetter
     public void setBlackducksca_reports_sarif_groupSCAIssues(Boolean blackducksca_reports_sarif_groupSCAIssues) {
         this.blackducksca_reports_sarif_groupSCAIssues = this.blackducksca_reports_sarif_groupSCAIssues_temporary =
-            blackducksca_reports_sarif_groupSCAIssues ? true : false;
+                blackducksca_reports_sarif_groupSCAIssues ? true : false;
     }
 
     @DataBoundSetter
@@ -744,7 +744,7 @@ public class BlackDuckScanFreestyle extends Builder implements SecurityScan, Fre
     @DataBoundSetter
     public void setPolaris_reports_sarif_groupSCAIssues(Boolean polaris_reports_sarif_groupSCAIssues) {
         this.polaris_reports_sarif_groupSCAIssues = this.polaris_reports_sarif_groupSCAIssues_temporary =
-            polaris_reports_sarif_groupSCAIssues ? true : false;
+                polaris_reports_sarif_groupSCAIssues ? true : false;
     }
 
     @DataBoundSetter
@@ -815,7 +815,7 @@ public class BlackDuckScanFreestyle extends Builder implements SecurityScan, Fre
     @DataBoundSetter
     public void setProject_source_preserveSymLinks(Boolean project_source_preserveSymLinks) {
         this.project_source_preserveSymLinks =
-            this.project_source_preserveSymLinks_actualValue = project_source_preserveSymLinks ? true : null;
+                this.project_source_preserveSymLinks_actualValue = project_source_preserveSymLinks ? true : null;
     }
 
     @DataBoundSetter
@@ -838,7 +838,7 @@ public class BlackDuckScanFreestyle extends Builder implements SecurityScan, Fre
     public void setBlackducksca_project_directory(String blackducksca_project_directory) {
         if (getProduct().contentEquals(SecurityProduct.BLACKDUCK.name().toLowerCase()))
             this.blackducksca_project_directory =
-                this.project_directory = Util.fixEmptyAndTrim(blackducksca_project_directory);
+                    this.project_directory = Util.fixEmptyAndTrim(blackducksca_project_directory);
     }
 
     @DataBoundSetter
@@ -969,29 +969,29 @@ public class BlackDuckScanFreestyle extends Builder implements SecurityScan, Fre
     }
 
     private Map<String, Object> getParametersMap(FilePath workspace, TaskListener listener)
-        throws PluginExceptionHandler {
+            throws PluginExceptionHandler {
         return ScanParametersFactory.preparePipelineParametersMap(
-            this, ScanParametersFactory.getGlobalConfigurationValues(workspace, listener), listener);
+                this, ScanParametersFactory.getGlobalConfigurationValues(workspace, listener), listener);
     }
 
     @Override
     public void perform(
-        @NonNull Run<?, ?> run,
-        @NonNull FilePath workspace,
-        @NonNull EnvVars env,
-        @NonNull Launcher launcher,
-        @NonNull TaskListener listener) {
+            @NonNull Run<?, ?> run,
+            @NonNull FilePath workspace,
+            @NonNull EnvVars env,
+            @NonNull Launcher launcher,
+            @NonNull TaskListener listener) {
         int exitCode = 0;
         String undefinedErrorMessage = null;
         Exception unknownException = new Exception();
         LoggerWrapper logger = new LoggerWrapper(listener);
 
         logger.info(
-            "**************************** START EXECUTION OF BLACK DUCK SECURITY SCAN ****************************");
+                "**************************** START EXECUTION OF BLACK DUCK SECURITY SCAN ****************************");
 
         try {
             exitCode = ScanParametersFactory.createPipelineCommand(run, listener, env, launcher, null, workspace)
-                .initializeScanner(getParametersMap(workspace, listener));
+                    .initializeScanner(getParametersMap(workspace, listener));
         } catch (Exception e) {
             if (e instanceof PluginExceptionHandler) {
                 exitCode = ((PluginExceptionHandler) e).getCode();
@@ -1013,15 +1013,15 @@ public class BlackDuckScanFreestyle extends Builder implements SecurityScan, Fre
     private void handleExitCode(Run<?, ?> run, LoggerWrapper logger, int exitCode, String exitMessage, Exception e) {
         if (exitCode != ErrorCode.BRIDGE_BUILD_BREAK && !Utility.isStringNullOrBlank(this.getMark_build_status())) {
             logger.info("Marking build status as " + this.getMark_build_status() + " is ignored since exit code is: "
-                + exitCode);
+                    + exitCode);
         }
 
         if (exitCode == ErrorCode.SCAN_SUCCESSFUL) {
             logger.info(
-                "**************************** END EXECUTION OF BLACK DUCK SECURITY SCAN ****************************");
+                    "**************************** END EXECUTION OF BLACK DUCK SECURITY SCAN ****************************");
         } else {
             Result result =
-                ScanParametersFactory.getBuildResultIfIssuesAreFound(exitCode, this.getMark_build_status(), logger);
+                    ScanParametersFactory.getBuildResultIfIssuesAreFound(exitCode, this.getMark_build_status(), logger);
 
             if (result != null) {
                 logger.info("Marking build as " + result + " since issues are present");
@@ -1029,7 +1029,7 @@ public class BlackDuckScanFreestyle extends Builder implements SecurityScan, Fre
             }
 
             logger.info(
-                "**************************** END EXECUTION OF BLACK DUCK SECURITY SCAN ****************************");
+                    "**************************** END EXECUTION OF BLACK DUCK SECURITY SCAN ****************************");
 
             if (result == null) {
                 if (exitCode == ErrorCode.UNDEFINED_PLUGIN_ERROR) {

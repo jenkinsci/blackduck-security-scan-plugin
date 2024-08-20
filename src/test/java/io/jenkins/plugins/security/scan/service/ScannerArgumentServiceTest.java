@@ -1,6 +1,7 @@
 package io.jenkins.plugins.security.scan.service;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hudson.EnvVars;
@@ -371,8 +372,7 @@ public class ScannerArgumentServiceTest {
         scanParameters.put(ApplicationConstants.BLACKDUCK_REPORTS_SARIF_SEVERITIES_KEY, "HIGH,MEDIUM,LOW");
         scanParameters.put(ApplicationConstants.BLACKDUCK_REPORTS_SARIF_GROUPSCAISSUES_KEY, true);
 
-        Sarif
-            sarifObject = scannerArgumentService.prepareSarifObject(securityProducts, scanParameters);
+        Sarif sarifObject = scannerArgumentService.prepareSarifObject(securityProducts, scanParameters);
 
         assertNotNull(sarifObject);
         assertTrue(sarifObject.getCreate());
@@ -576,7 +576,9 @@ public class ScannerArgumentServiceTest {
         if (getOSNameForTest().contains("win")) {
             assertEquals(
                     commandLineArgs.get(0),
-                    workspace.child(ApplicationConstants.BRIDGE_CLI_EXECUTABLE_WINDOWS).getRemote());
+                    workspace
+                            .child(ApplicationConstants.BRIDGE_CLI_EXECUTABLE_WINDOWS)
+                            .getRemote());
         } else {
             assertEquals(
                     commandLineArgs.get(0),
@@ -615,7 +617,9 @@ public class ScannerArgumentServiceTest {
         if (getOSNameForTest().contains("win")) {
             assertEquals(
                     commandLineArgs.get(0),
-                    workspace.child(ApplicationConstants.BRIDGE_CLI_EXECUTABLE_WINDOWS).getRemote());
+                    workspace
+                            .child(ApplicationConstants.BRIDGE_CLI_EXECUTABLE_WINDOWS)
+                            .getRemote());
         } else {
             assertEquals(
                     commandLineArgs.get(0),
@@ -654,7 +658,9 @@ public class ScannerArgumentServiceTest {
         if (getOSNameForTest().contains("win")) {
             assertEquals(
                     commandLineArgs.get(0),
-                    workspace.child(ApplicationConstants.BRIDGE_CLI_EXECUTABLE_WINDOWS).getRemote());
+                    workspace
+                            .child(ApplicationConstants.BRIDGE_CLI_EXECUTABLE_WINDOWS)
+                            .getRemote());
         } else {
             assertEquals(
                     commandLineArgs.get(0),
@@ -694,7 +700,9 @@ public class ScannerArgumentServiceTest {
         if (getOSNameForTest().contains("win")) {
             assertEquals(
                     commandLineArgs.get(0),
-                    workspace.child(ApplicationConstants.BRIDGE_CLI_EXECUTABLE_WINDOWS).getRemote());
+                    workspace
+                            .child(ApplicationConstants.BRIDGE_CLI_EXECUTABLE_WINDOWS)
+                            .getRemote());
         } else {
             assertEquals(
                     commandLineArgs.get(0),

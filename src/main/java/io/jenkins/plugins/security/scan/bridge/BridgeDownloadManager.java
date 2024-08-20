@@ -40,8 +40,7 @@ public class BridgeDownloadManager {
 
         FilePath bridgeZipPath = bridgeDownload.downloadBridgeCLI(bridgeDownloadUrl, bridgeInstallationPath);
 
-        bridgeInstall.installBridgeCLI(
-                bridgeZipPath, new FilePath(workspace.getChannel(), bridgeInstallationPath));
+        bridgeInstall.installBridgeCLI(bridgeZipPath, new FilePath(workspace.getChannel(), bridgeInstallationPath));
     }
 
     public boolean isBridgeDownloadRequired(BridgeDownloadParameters bridgeDownloadParameters) {

@@ -55,8 +55,7 @@ public class BridgeDownload {
 
         if (!downloadSuccess) {
             logger.error(
-                    "Bridge CLI download failed after %s attempts",
-                    ApplicationConstants.BRIDGE_DOWNLOAD_MAX_RETRIES);
+                    "Bridge CLI download failed after %s attempts", ApplicationConstants.BRIDGE_DOWNLOAD_MAX_RETRIES);
         }
 
         if (bridgeZipFilePath == null) {
@@ -84,8 +83,7 @@ public class BridgeDownload {
 
         if (terminateRetry(statusCode)) {
             logger.error(
-                    "Bridge CLI download failed with status code: %s and plugin won't retry to download",
-                    statusCode);
+                    "Bridge CLI download failed with status code: %s and plugin won't retry to download", statusCode);
             throw new PluginExceptionHandler(ErrorCode.BRIDGE_CLI_DOWNLOAD_FAILED_AND_WONT_RETRY);
         }
 

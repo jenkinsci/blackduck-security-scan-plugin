@@ -119,8 +119,7 @@ public class ScannerArgumentService {
         }
 
         if (securityProducts.contains(SecurityProduct.BLACKDUCK.name())) {
-            BlackDuckParametersService
-                blackDuckParametersService = new BlackDuckParametersService(listener, envVars);
+            BlackDuckParametersService blackDuckParametersService = new BlackDuckParametersService(listener, envVars);
             BlackDuck blackDuck = blackDuckParametersService.prepareBlackDuckObjectForBridge(scanParameters);
             Project project = blackDuckParametersService.prepareProjectObjectForBridge(scanParameters);
 
@@ -138,8 +137,7 @@ public class ScannerArgumentService {
                     project));
         }
         if (securityProducts.contains(SecurityProduct.COVERITY.name())) {
-            CoverityParametersService
-                coverityParametersService = new CoverityParametersService(listener, envVars);
+            CoverityParametersService coverityParametersService = new CoverityParametersService(listener, envVars);
             Coverity coverity = coverityParametersService.prepareCoverityObjectForBridge(scanParameters);
             Project project = coverityParametersService.prepareProjectObjectForBridge(scanParameters);
 
@@ -157,8 +155,7 @@ public class ScannerArgumentService {
                     project));
         }
         if (securityProducts.contains(SecurityProduct.POLARIS.name())) {
-            PolarisParametersService
-                polarisParametersService = new PolarisParametersService(listener, envVars);
+            PolarisParametersService polarisParametersService = new PolarisParametersService(listener, envVars);
             Polaris polaris = polarisParametersService.preparePolarisObjectForBridge(scanParameters);
             Project project = polarisParametersService.prepareProjectObjectForBridge(scanParameters);
 

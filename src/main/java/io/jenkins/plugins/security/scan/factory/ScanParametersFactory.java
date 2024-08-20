@@ -42,7 +42,7 @@ public class ScanParametersFactory {
     }
 
     public static Map<String, Object> preparePipelineParametersMap(
-        SecurityScan securityScan, Map<String, Object> parametersMap, TaskListener listener)
+            SecurityScan securityScan, Map<String, Object> parametersMap, TaskListener listener)
             throws PluginExceptionHandler {
         String product = securityScan.getProduct();
 
@@ -100,7 +100,8 @@ public class ScanParametersFactory {
                     config.getBridgeDownloadUrlForLinux(),
                     config.getBridgeDownloadUrlForWindows());
 
-            addParameterIfNotBlank(globalParameters, ApplicationConstants.BLACKDUCK_URL_KEY, config.getBlackDuckSCAUrl());
+            addParameterIfNotBlank(
+                    globalParameters, ApplicationConstants.BLACKDUCK_URL_KEY, config.getBlackDuckSCAUrl());
             addParameterIfNotBlank(
                     globalParameters,
                     ApplicationConstants.BLACKDUCK_TOKEN_KEY,
@@ -679,8 +680,7 @@ public class ScanParametersFactory {
 
         if (!isValid) {
             logger.error("Invalid Security Product");
-            logger.info(
-                    "Supported values for security products: " + Arrays.toString(SecurityProduct.values()));
+            logger.info("Supported values for security products: " + Arrays.toString(SecurityProduct.values()));
         }
 
         return isValid;
@@ -709,14 +709,18 @@ public class ScanParametersFactory {
 
     public static ListBoxModel getSecurityProductItems() {
         ListBoxModel items = new ListBoxModel();
-        items.add(SecurityProduct.BLACKDUCKSCA.getProductLabel(),
-            SecurityProduct.BLACKDUCKSCA.name().toLowerCase());
-        items.add(SecurityProduct.COVERITY.getProductLabel(),
-            SecurityProduct.COVERITY.name().toLowerCase());
-        items.add(SecurityProduct.POLARIS.getProductLabel(),
-            SecurityProduct.POLARIS.name().toLowerCase());
-        items.add(SecurityProduct.SRM.getProductLabel(),
-            SecurityProduct.SRM.name().toLowerCase());
+        items.add(
+                SecurityProduct.BLACKDUCKSCA.getProductLabel(),
+                SecurityProduct.BLACKDUCKSCA.name().toLowerCase());
+        items.add(
+                SecurityProduct.COVERITY.getProductLabel(),
+                SecurityProduct.COVERITY.name().toLowerCase());
+        items.add(
+                SecurityProduct.POLARIS.getProductLabel(),
+                SecurityProduct.POLARIS.name().toLowerCase());
+        items.add(
+                SecurityProduct.SRM.getProductLabel(),
+                SecurityProduct.SRM.name().toLowerCase());
         return items;
     }
 

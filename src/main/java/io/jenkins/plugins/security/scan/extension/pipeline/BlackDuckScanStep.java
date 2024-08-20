@@ -17,6 +17,11 @@ import io.jenkins.plugins.security.scan.factory.ScanParametersFactory;
 import io.jenkins.plugins.security.scan.global.*;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import io.jenkins.plugins.security.scan.service.scm.SCMRepositoryService;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.*;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import jenkins.scm.api.SCMSource;
 import org.jenkinsci.plugins.github_branch_source.GitHubSCMSource;
 import org.jenkinsci.plugins.workflow.actions.WarningAction;
@@ -24,12 +29,6 @@ import org.jenkinsci.plugins.workflow.graph.FlowNode;
 import org.jenkinsci.plugins.workflow.steps.*;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.*;
 
 public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentScan, ReturnStatusScan, Serializable {
     private static final long serialVersionUID = 6294070801130995534L;
@@ -879,7 +878,8 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
     @DataBoundSetter
     public void setBlackducksca_reports_sarif_groupSCAIssues(Boolean blackducksca_reports_sarif_groupSCAIssues) {
         this.blackducksca_reports_sarif_groupSCAIssues = blackducksca_reports_sarif_groupSCAIssues ? true : null;
-        this.blackducksca_reports_sarif_groupSCAIssues_temporary = blackducksca_reports_sarif_groupSCAIssues ? true : false;
+        this.blackducksca_reports_sarif_groupSCAIssues_temporary =
+                blackducksca_reports_sarif_groupSCAIssues ? true : false;
     }
 
     @DataBoundSetter
@@ -949,9 +949,9 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
     }
 
     private Map<String, Object> getParametersMap(FilePath workspace, TaskListener listener)
-        throws PluginExceptionHandler {
+            throws PluginExceptionHandler {
         return ScanParametersFactory.preparePipelineParametersMap(
-            this, ScanParametersFactory.getGlobalConfigurationValues(workspace, listener), listener);
+                this, ScanParametersFactory.getGlobalConfigurationValues(workspace, listener), listener);
     }
 
     @Override
@@ -964,7 +964,7 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
         @Override
         public Set<? extends Class<?>> getRequiredContext() {
             return new HashSet<>(Arrays.asList(
-                Run.class, TaskListener.class, EnvVars.class, FilePath.class, Launcher.class, Node.class));
+                    Run.class, TaskListener.class, EnvVars.class, FilePath.class, Launcher.class, Node.class));
         }
 
         @Override
@@ -1039,7 +1039,7 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
             Exception unknownException = new Exception();
 
             logger.println(
-                "**************************** START EXECUTION OF BLACK DUCK SECURITY SCAN ****************************");
+                    "**************************** START EXECUTION OF BLACK DUCK SECURITY SCAN ****************************");
 
             try {
                 verifyRequiredPlugins(logger, envVars);
@@ -1068,18 +1068,18 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
         }
 
         private void handleExitCode(int exitCode, String exitMessage, Exception e, LoggerWrapper logger)
-            throws PluginExceptionHandler, ScannerException {
+                throws PluginExceptionHandler, ScannerException {
             if (exitCode != ErrorCode.BRIDGE_BUILD_BREAK && !Utility.isStringNullOrBlank(getMark_build_status())) {
                 logger.info("Marking build status as " + getMark_build_status() + " is ignored since exit code is: "
-                    + exitCode);
+                        + exitCode);
             }
 
             if (exitCode == ErrorCode.SCAN_SUCCESSFUL) {
                 logger.println(
-                    "**************************** END EXECUTION OF BLACK DUCK SECURITY SCAN ****************************");
+                        "**************************** END EXECUTION OF BLACK DUCK SECURITY SCAN ****************************");
             } else {
                 Result result =
-                    ScanParametersFactory.getBuildResultIfIssuesAreFound(exitCode, getMark_build_status(), logger);
+                        ScanParametersFactory.getBuildResultIfIssuesAreFound(exitCode, getMark_build_status(), logger);
                 if (result != null) {
                     logger.info("Marking build as " + result + " since issues are present");
                     handleNonZeroExitCode(exitCode, result, exitMessage, e, logger);
@@ -1090,13 +1090,13 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
         }
 
         private void handleNonZeroExitCode(
-            int exitCode, Result result, String exitMessage, Exception e, LoggerWrapper logger)
-            throws PluginExceptionHandler, ScannerException {
+                int exitCode, Result result, String exitMessage, Exception e, LoggerWrapper logger)
+                throws PluginExceptionHandler, ScannerException {
             flowNode.addOrReplaceAction(new WarningAction(result)); // Setting the stage result
             run.setResult(result); // Setting the build result
 
             logger.println(
-                "**************************** END EXECUTION OF BLACK DUCK SECURITY SCAN ****************************");
+                    "**************************** END EXECUTION OF BLACK DUCK SECURITY SCAN ****************************");
 
             if (Objects.equals(isReturn_status(), true)) {
                 return;
@@ -1118,21 +1118,21 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
             if (jobType.equalsIgnoreCase(ApplicationConstants.MULTIBRANCH_JOB_TYPE_NAME)) {
                 if (installedBranchSourceDependencies.isEmpty()) {
                     logger.error("Necessary 'Branch Source Plugin' is not installed in Jenkins instance. "
-                        + "Please install necessary 'Branch Source Plugin' in your Jenkins instance");
+                            + "Please install necessary 'Branch Source Plugin' in your Jenkins instance");
                     throw new PluginExceptionHandler(ErrorCode.REQUIRED_BRANCH_SOURCE_PLUGIN_NOT_INSTALLED);
                 }
                 SCMSource scmSource = scmRepositoryService.findSCMSource();
                 if (!((installedBranchSourceDependencies.getOrDefault(
-                    ApplicationConstants.BITBUCKET_BRANCH_SOURCE_PLUGIN_NAME, false)
-                    && scmSource instanceof BitbucketSCMSource)
-                    || (installedBranchSourceDependencies.getOrDefault(
-                    ApplicationConstants.GITHUB_BRANCH_SOURCE_PLUGIN_NAME, false)
-                    && scmSource instanceof GitHubSCMSource)
-                    || (installedBranchSourceDependencies.getOrDefault(
-                    ApplicationConstants.GITLAB_BRANCH_SOURCE_PLUGIN_NAME, false)
-                    && scmSource instanceof GitLabSCMSource))) {
+                                        ApplicationConstants.BITBUCKET_BRANCH_SOURCE_PLUGIN_NAME, false)
+                                && scmSource instanceof BitbucketSCMSource)
+                        || (installedBranchSourceDependencies.getOrDefault(
+                                        ApplicationConstants.GITHUB_BRANCH_SOURCE_PLUGIN_NAME, false)
+                                && scmSource instanceof GitHubSCMSource)
+                        || (installedBranchSourceDependencies.getOrDefault(
+                                        ApplicationConstants.GITLAB_BRANCH_SOURCE_PLUGIN_NAME, false)
+                                && scmSource instanceof GitLabSCMSource))) {
                     logger.error("Necessary 'Branch Source Plugin' is not installed in Jenkins instance. "
-                        + "Please install necessary 'Branch Source Plugin' in your Jenkins instance");
+                            + "Please install necessary 'Branch Source Plugin' in your Jenkins instance");
                     throw new PluginExceptionHandler(ErrorCode.REQUIRED_BRANCH_SOURCE_PLUGIN_NOT_INSTALLED);
                 }
             }

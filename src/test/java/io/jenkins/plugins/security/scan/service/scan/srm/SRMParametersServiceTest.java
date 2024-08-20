@@ -4,10 +4,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import hudson.EnvVars;
 import hudson.model.TaskListener;
-import io.jenkins.plugins.security.scan.input.srm.SRM;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.input.blackduck.BlackDuck;
 import io.jenkins.plugins.security.scan.input.coverity.Coverity;
+import io.jenkins.plugins.security.scan.input.srm.SRM;
 import io.jenkins.plugins.security.scan.service.scan.blackduck.BlackDuckParametersService;
 import io.jenkins.plugins.security.scan.service.scan.coverity.CoverityParametersService;
 import java.io.PrintStream;

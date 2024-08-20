@@ -991,7 +991,8 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
                 "**************************** START EXECUTION OF SYNOPSYS SECURITY SCAN ****************************");
 
         logger.warn("This build step is deprecated and will be removed in the future. Please use "
-            .concat(ApplicationConstants.DISPLAY_NAME_BLACKDUCK).concat(" instead."));
+                .concat(ApplicationConstants.DISPLAY_NAME_BLACKDUCK)
+                .concat(" instead."));
 
         try {
             exitCode = ScanParametersFactory.createPipelineCommand(run, listener, env, launcher, null, workspace)
@@ -1062,14 +1063,18 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
         public ListBoxModel doFillProductItems() {
             ListBoxModel items = new ListBoxModel();
             items.add(new ListBoxModel.Option(ApplicationConstants.DEFAULT_DROPDOWN_OPTION_NAME, "select"));
-            items.add(SecurityProduct.BLACKDUCK.getProductLabel(),
-                SecurityProduct.BLACKDUCK.name().toLowerCase());
-            items.add(SecurityProduct.COVERITY.getProductLabel(),
-                SecurityProduct.COVERITY.name().toLowerCase());
-            items.add(SecurityProduct.POLARIS.getProductLabel(),
-                SecurityProduct.POLARIS.name().toLowerCase());
-            items.add(SecurityProduct.SRM.getProductLabel(),
-                SecurityProduct.SRM.name().toLowerCase());
+            items.add(
+                    SecurityProduct.BLACKDUCK.getProductLabel(),
+                    SecurityProduct.BLACKDUCK.name().toLowerCase());
+            items.add(
+                    SecurityProduct.COVERITY.getProductLabel(),
+                    SecurityProduct.COVERITY.name().toLowerCase());
+            items.add(
+                    SecurityProduct.POLARIS.getProductLabel(),
+                    SecurityProduct.POLARIS.name().toLowerCase());
+            items.add(
+                    SecurityProduct.SRM.getProductLabel(),
+                    SecurityProduct.SRM.name().toLowerCase());
             return items;
         }
 

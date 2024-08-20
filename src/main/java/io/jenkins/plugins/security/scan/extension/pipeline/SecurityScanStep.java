@@ -992,14 +992,18 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
         public ListBoxModel doFillProductItems() {
             ListBoxModel items = new ListBoxModel();
             items.add(new Option(ApplicationConstants.DEFAULT_DROPDOWN_OPTION_NAME, ""));
-            items.add(SecurityProduct.BLACKDUCK.getProductLabel(),
-                SecurityProduct.BLACKDUCK.name().toLowerCase());
-            items.add(SecurityProduct.COVERITY.getProductLabel(),
-                SecurityProduct.COVERITY.name().toLowerCase());
-            items.add(SecurityProduct.POLARIS.getProductLabel(),
-                SecurityProduct.POLARIS.name().toLowerCase());
-            items.add(SecurityProduct.SRM.getProductLabel(),
-                SecurityProduct.SRM.name().toLowerCase());
+            items.add(
+                    SecurityProduct.BLACKDUCK.getProductLabel(),
+                    SecurityProduct.BLACKDUCK.name().toLowerCase());
+            items.add(
+                    SecurityProduct.COVERITY.getProductLabel(),
+                    SecurityProduct.COVERITY.name().toLowerCase());
+            items.add(
+                    SecurityProduct.POLARIS.getProductLabel(),
+                    SecurityProduct.POLARIS.name().toLowerCase());
+            items.add(
+                    SecurityProduct.SRM.getProductLabel(),
+                    SecurityProduct.SRM.name().toLowerCase());
             return items;
         }
 
@@ -1059,7 +1063,8 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
                     "**************************** START EXECUTION OF SYNOPSYS SECURITY SCAN ****************************");
 
             logger.warn("This step is deprecated and will be removed in the future. Please use "
-                .concat(ApplicationConstants.PIPELINE_STEP_BLACKDUCK).concat(" instead."));
+                    .concat(ApplicationConstants.PIPELINE_STEP_BLACKDUCK)
+                    .concat(" instead."));
 
             try {
                 verifyRequiredPlugins(logger, envVars);

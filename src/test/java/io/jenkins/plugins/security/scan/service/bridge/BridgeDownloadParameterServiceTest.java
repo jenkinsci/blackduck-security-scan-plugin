@@ -33,8 +33,7 @@ public class BridgeDownloadParameterServiceTest {
 
     @Test
     void performBridgeDownloadParameterValidationSuccessTest() throws PluginExceptionHandler {
-        BridgeDownloadParameters
-            bridgeDownloadParameters = new BridgeDownloadParameters(workspace, listenerMock);
+        BridgeDownloadParameters bridgeDownloadParameters = new BridgeDownloadParameters(workspace, listenerMock);
         bridgeDownloadParameters.setBridgeDownloadUrl("https://fake.url.com");
         bridgeDownloadParameters.setBridgeDownloadVersion("1.2.3");
 

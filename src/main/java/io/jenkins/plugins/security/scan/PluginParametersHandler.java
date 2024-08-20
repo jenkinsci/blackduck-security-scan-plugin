@@ -33,8 +33,7 @@ public class PluginParametersHandler {
 
     public int initializeScanner(Map<String, Object> scanParameters) throws PluginExceptionHandler {
         ScanParametersService scanParametersService = new ScanParametersService(listener);
-        BridgeDownloadParameters
-            bridgeDownloadParameters = new BridgeDownloadParameters(workspace, listener);
+        BridgeDownloadParameters bridgeDownloadParameters = new BridgeDownloadParameters(workspace, listener);
         BridgeDownloadParametersService bridgeDownloadParametersService =
                 new BridgeDownloadParametersService(workspace, listener);
         BridgeDownloadParameters bridgeDownloadParams =
@@ -46,8 +45,7 @@ public class PluginParametersHandler {
 
         bridgeDownloadParametersService.performBridgeDownloadParameterValidation(bridgeDownloadParams);
 
-        BridgeDownloadManager
-            bridgeDownloadManager = new BridgeDownloadManager(workspace, listener, envVars);
+        BridgeDownloadManager bridgeDownloadManager = new BridgeDownloadManager(workspace, listener, envVars);
         boolean isNetworkAirGap = checkNetworkAirgap(scanParameters);
         boolean isBridgeInstalled =
                 bridgeDownloadManager.checkIfBridgeInstalled(bridgeDownloadParams.getBridgeInstallationPath());
