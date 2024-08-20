@@ -174,7 +174,7 @@
             </f:entry>
         </f:section>
 
-        <f:section title="Black Duck SCA Tool Configuration Options">
+        <f:section title="Black Duck (SCA) Tool Configuration Options">
             <f:entry field="polaris_sca_search_depth" title="Black Duck SCA Search Depth (Optional)">
                 <f:textbox/>
             </f:entry>
@@ -228,7 +228,7 @@
             </f:entry>
         </f:section>
 
-        <f:section title="Black Duck SCA Tool Configuration Options">
+        <f:section title="Black Duck (SCA) Tool Configuration Options">
             <f:entry field="srm_sca_search_depth" title="Black Duck SCA Search Depth (Optional)">
                 <f:textbox/>
             </f:entry>

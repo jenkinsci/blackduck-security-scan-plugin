@@ -24,9 +24,6 @@
             <f:entry field="blackducksca_project_directory" title="Project Directory (Optional)">
                 <f:textbox/>
             </f:entry>
-            <!--        <f:entry field="bridge_blackducksca_automation_fixpr" title="Create Fix Pull Requests">-->
-            <!--            <f:checkbox/>-->
-            <!--        </f:entry>-->
         </f:section>
 
         <f:section title="SARIF Report Options">
@@ -185,7 +182,7 @@
     </div>
 
     <div id="blackducksca-tool-configuration" style="display: none;">
-        <f:section title="Black Duck SCA Tool Configuration Options">
+        <f:section title="Black Duck (SCA) Tool Configuration Options">
             <f:entry field="blackducksca_search_depth" title="Black Duck SCA Search Depth (Optional)">
                 <f:textbox/>
             </f:entry>

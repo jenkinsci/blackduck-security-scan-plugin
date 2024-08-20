@@ -17,11 +17,6 @@ import io.jenkins.plugins.security.scan.factory.ScanParametersFactory;
 import io.jenkins.plugins.security.scan.global.*;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import io.jenkins.plugins.security.scan.service.scm.SCMRepositoryService;
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.*;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import jenkins.scm.api.SCMSource;
 import org.jenkinsci.plugins.github_branch_source.GitHubSCMSource;
 import org.jenkinsci.plugins.workflow.actions.WarningAction;
@@ -29,6 +24,12 @@ import org.jenkinsci.plugins.workflow.graph.FlowNode;
 import org.jenkinsci.plugins.workflow.steps.*;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.*;
 
 public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentScan, ReturnStatusScan, Serializable {
     private static final long serialVersionUID = 6294070801130995534L;
@@ -167,22 +168,6 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
         return blackducksca_prComment_enabled_actualValue;
     }
 
-    public Boolean isBlackduck_automation_prcomment() {
-        return null;
-    }
-
-    public Boolean isBlackduck_automation_prcomment_actualValue() {
-        return null;
-    }
-
-    public Boolean isBlackduck_prComment_enabled() {
-        return null;
-    }
-
-    public Boolean isBlackduck_prComment_enabled_actualValue() {
-        return null;
-    }
-
     public String getBlackducksca_download_url() {
         return blackducksca_download_url;
     }
@@ -244,6 +229,22 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
     }
 
     public String getBlackduck_scan_failure_severities() {
+        return null;
+    }
+
+    public Boolean isBlackduck_automation_prcomment() {
+        return null;
+    }
+
+    public Boolean isBlackduck_automation_prcomment_actualValue() {
+        return null;
+    }
+
+    public Boolean isBlackduck_prComment_enabled() {
+        return null;
+    }
+
+    public Boolean isBlackduck_prComment_enabled_actualValue() {
         return null;
     }
 
