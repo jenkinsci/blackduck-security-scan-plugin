@@ -1,4 +1,4 @@
-package io.jenkins.plugins.security.scan.factory;
+package io.jenkins.plugins.security.scan.service;
 
 import hudson.EnvVars;
 import hudson.FilePath;
@@ -8,7 +8,7 @@ import hudson.model.Result;
 import hudson.model.Run;
 import hudson.model.TaskListener;
 import hudson.util.ListBoxModel;
-import io.jenkins.plugins.security.scan.PluginParametersHandler;
+import io.jenkins.plugins.security.scan.ScanInitializer;
 import io.jenkins.plugins.security.scan.SecurityScanner;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.extension.SecurityScan;
@@ -19,17 +19,16 @@ import io.jenkins.plugins.security.scan.extension.pipeline.ReturnStatusScan;
 import io.jenkins.plugins.security.scan.global.*;
 import io.jenkins.plugins.security.scan.global.enums.BuildStatus;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
-import io.jenkins.plugins.security.scan.service.ToolsParameterService;
 import jenkins.model.GlobalConfiguration;
 
 import java.util.*;
 
-public class ScanParametersFactory {
+public class ParameterMappingService {
     public static final List<String> DEPRECATED_PARAMETERS = new ArrayList<>();
 
-    public static PluginParametersHandler createPipelineCommand(
+    public static ScanInitializer createPipelineCommand(
             Run<?, ?> run, TaskListener listener, EnvVars envVars, Launcher launcher, Node node, FilePath workspace) {
-        return new PluginParametersHandler(
+        return new ScanInitializer(
                 new SecurityScanner(
                         run,
                         listener,

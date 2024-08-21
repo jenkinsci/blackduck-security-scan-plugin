@@ -16,12 +16,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-public class PluginParametersHandlerTest {
+public class ScanInitializerTest {
     private SecurityScanner securityScannerMock;
     private TaskListener listenerMock;
     private FilePath workspace;
     private EnvVars envVarsMock;
-    private PluginParametersHandler pluginParametersHandler;
+    private ScanInitializer scanInitializer;
 
     @BeforeEach
     void setUp() {
@@ -29,8 +29,8 @@ public class PluginParametersHandlerTest {
         workspace = new FilePath(new File(System.getProperty("user.home")));
         listenerMock = Mockito.mock(TaskListener.class);
         envVarsMock = Mockito.mock(EnvVars.class);
-        pluginParametersHandler =
-                new PluginParametersHandler(securityScannerMock, workspace, envVarsMock, listenerMock);
+        scanInitializer =
+                new ScanInitializer(securityScannerMock, workspace, envVarsMock, listenerMock);
 
         Mockito.when(listenerMock.getLogger()).thenReturn(Mockito.mock(PrintStream.class));
     }
@@ -42,7 +42,7 @@ public class PluginParametersHandlerTest {
         scanParameters.put(ApplicationConstants.BLACKDUCK_URL_KEY, "https://fake.blackduck.url");
         scanParameters.put(ApplicationConstants.BLACKDUCK_TOKEN_KEY, "MDJDSROSVC56FAKEKEY");
 
-        int exitCode = pluginParametersHandler.initializeScanner(scanParameters);
+        int exitCode = scanInitializer.initializeScanner(scanParameters);
 
         assertEquals(0, exitCode);
     }
@@ -52,7 +52,7 @@ public class PluginParametersHandlerTest {
         Map<String, Object> scanParameters = new HashMap<>();
         scanParameters.put(ApplicationConstants.PRODUCT_KEY, "BLACKDUCK");
 
-        assertThrows(PluginExceptionHandler.class, () -> pluginParametersHandler.initializeScanner(scanParameters));
+        assertThrows(PluginExceptionHandler.class, () -> scanInitializer.initializeScanner(scanParameters));
     }
 
     @Test
@@ -64,7 +64,7 @@ public class PluginParametersHandlerTest {
         scanParameters.put(ApplicationConstants.NETWORK_AIRGAP_KEY, true);
         scanParameters.put(ApplicationConstants.SYNOPSYS_BRIDGE_INSTALL_DIRECTORY, "/path/to/bridge");
 
-        assertThrows(PluginExceptionHandler.class, () -> pluginParametersHandler.initializeScanner(scanParameters));
+        assertThrows(PluginExceptionHandler.class, () -> scanInitializer.initializeScanner(scanParameters));
     }
 
     @Test
@@ -75,7 +75,7 @@ public class PluginParametersHandlerTest {
         scanParameters.put(ApplicationConstants.BLACKDUCK_TOKEN_KEY, "MDJDSROSVC56FAKEKEY");
         scanParameters.put(ApplicationConstants.NETWORK_AIRGAP_KEY, true);
 
-        int exitCode = pluginParametersHandler.initializeScanner(scanParameters);
+        int exitCode = scanInitializer.initializeScanner(scanParameters);
 
         assertEquals(0, exitCode);
     }

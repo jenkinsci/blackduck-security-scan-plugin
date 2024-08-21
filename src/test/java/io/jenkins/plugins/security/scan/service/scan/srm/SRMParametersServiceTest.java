@@ -8,7 +8,7 @@ import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.input.blackduck.BlackDuck;
 import io.jenkins.plugins.security.scan.input.coverity.Coverity;
 import io.jenkins.plugins.security.scan.input.srm.SRM;
-import io.jenkins.plugins.security.scan.service.scan.blackduck.BlackDuckParametersService;
+import io.jenkins.plugins.security.scan.service.scan.blackducksca.BlackDuckSCAParametersService;
 import io.jenkins.plugins.security.scan.service.scan.coverity.CoverityParametersService;
 import java.io.PrintStream;
 import java.util.Arrays;
@@ -21,7 +21,7 @@ import org.mockito.Mockito;
 public class SRMParametersServiceTest {
 
     private SRMParametersService srmParametersService;
-    private BlackDuckParametersService blackDuckParametersService;
+    private BlackDuckSCAParametersService blackDuckSCAParametersService;
     private CoverityParametersService coverityParametersService;
     private final TaskListener listenerMock = Mockito.mock(TaskListener.class);
     private final EnvVars envVarsMock = Mockito.mock(EnvVars.class);
@@ -95,11 +95,11 @@ public class SRMParametersServiceTest {
         srmParameters.put(ApplicationConstants.SRM_SCA_EXECUTION_PATH_KEY, TEST_BLACKDUCK_EXECUTION_PATH);
         srmParameters.put(ApplicationConstants.SRM_SAST_EXECUTION_PATH_KEY, TEST_COVERITY_EXECUTION_PATH);
 
-        blackDuckParametersService = new BlackDuckParametersService(listenerMock, envVarsMock);
+        blackDuckSCAParametersService = new BlackDuckSCAParametersService(listenerMock, envVarsMock);
         coverityParametersService = new CoverityParametersService(listenerMock, envVarsMock);
 
         SRM srm = srmParametersService.prepareSrmObjectForBridge(srmParameters);
-        BlackDuck blackDuck = blackDuckParametersService.prepareBlackDuckObjectForBridge(srmParameters);
+        BlackDuck blackDuck = blackDuckSCAParametersService.prepareBlackDuckObjectForBridge(srmParameters);
         Coverity coverity = coverityParametersService.prepareCoverityObjectForBridge(srmParameters);
 
         assertEquals(srm.getUrl(), TEST_SRM_SERVER_URL);

@@ -1,4 +1,4 @@
-package io.jenkins.plugins.security.scan.service.scan.blackduck;
+package io.jenkins.plugins.security.scan.service.scan.blackducksca;
 
 import hudson.EnvVars;
 import hudson.model.TaskListener;
@@ -12,11 +12,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class BlackDuckParametersService {
+public class BlackDuckSCAParametersService {
     private final LoggerWrapper logger;
     private final EnvVars envVars;
 
-    public BlackDuckParametersService(TaskListener listener, EnvVars envVars) {
+    public BlackDuckSCAParametersService(TaskListener listener, EnvVars envVars) {
         this.logger = new LoggerWrapper(listener);
         this.envVars = envVars;
     }

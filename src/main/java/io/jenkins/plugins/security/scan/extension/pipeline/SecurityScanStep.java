@@ -13,15 +13,10 @@ import io.jenkins.plugins.gitlabbranchsource.GitLabSCMSource;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.exception.ScannerException;
 import io.jenkins.plugins.security.scan.extension.SecurityScan;
-import io.jenkins.plugins.security.scan.factory.ScanParametersFactory;
 import io.jenkins.plugins.security.scan.global.*;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
+import io.jenkins.plugins.security.scan.service.ParameterMappingService;
 import io.jenkins.plugins.security.scan.service.scm.SCMRepositoryService;
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.*;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import jenkins.scm.api.SCMSource;
 import org.jenkinsci.plugins.github_branch_source.GitHubSCMSource;
 import org.jenkinsci.plugins.workflow.actions.WarningAction;
@@ -29,6 +24,12 @@ import org.jenkinsci.plugins.workflow.graph.FlowNode;
 import org.jenkinsci.plugins.workflow.steps.*;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.*;
 
 @Deprecated
 public class SecurityScanStep extends Step implements SecurityScan, PrCommentScan, ReturnStatusScan, Serializable {
@@ -971,8 +972,8 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
 
     private Map<String, Object> getParametersMap(FilePath workspace, TaskListener listener)
             throws PluginExceptionHandler {
-        return ScanParametersFactory.preparePipelineParametersMap(
-                this, ScanParametersFactory.getGlobalConfigurationValues(workspace, listener), listener);
+        return ParameterMappingService.preparePipelineParametersMap(
+                this, ParameterMappingService.getGlobalConfigurationValues(workspace, listener), listener);
     }
 
     @Override
@@ -1023,7 +1024,7 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
         public ListBoxModel doFillMark_build_statusItems() {
             ListBoxModel items = new ListBoxModel();
             items.add(ApplicationConstants.DEFAULT_DROPDOWN_OPTION_NAME, "");
-            items.addAll(ScanParametersFactory.getMarkBuildStatusItems());
+            items.addAll(ParameterMappingService.getMarkBuildStatusItems());
             return items;
         }
 
@@ -1081,7 +1082,7 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
             try {
                 verifyRequiredPlugins(logger, envVars);
 
-                exitCode = ScanParametersFactory.createPipelineCommand(
+                exitCode = ParameterMappingService.createPipelineCommand(
                                 run, listener, envVars, launcher, node, workspace)
                         .initializeScanner(getParametersMap(workspace, listener));
             } catch (Exception e) {
@@ -1116,7 +1117,7 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
                         "**************************** END EXECUTION OF SYNOPSYS SECURITY SCAN ****************************");
             } else {
                 Result result =
-                        ScanParametersFactory.getBuildResultIfIssuesAreFound(exitCode, getMark_build_status(), logger);
+                        ParameterMappingService.getBuildResultIfIssuesAreFound(exitCode, getMark_build_status(), logger);
                 if (result != null) {
                     logger.info("Marking build as " + result + " since issues are present");
                     handleNonZeroExitCode(exitCode, result, exitMessage, e, logger);

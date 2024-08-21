@@ -13,7 +13,7 @@ import io.jenkins.plugins.gitlabbranchsource.GitLabSCMSource;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.exception.ScannerException;
 import io.jenkins.plugins.security.scan.extension.SecurityScan;
-import io.jenkins.plugins.security.scan.factory.ScanParametersFactory;
+import io.jenkins.plugins.security.scan.service.ParameterMappingService;
 import io.jenkins.plugins.security.scan.global.*;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import io.jenkins.plugins.security.scan.service.scm.SCMRepositoryService;
@@ -962,8 +962,8 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
 
     private Map<String, Object> getParametersMap(FilePath workspace, TaskListener listener)
             throws PluginExceptionHandler {
-        return ScanParametersFactory.preparePipelineParametersMap(
-                this, ScanParametersFactory.getGlobalConfigurationValues(workspace, listener), listener);
+        return ParameterMappingService.preparePipelineParametersMap(
+                this, ParameterMappingService.getGlobalConfigurationValues(workspace, listener), listener);
     }
 
     @Override
@@ -994,7 +994,7 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
         public ListBoxModel doFillProductItems() {
             ListBoxModel items = new ListBoxModel();
             items.add(new Option(ApplicationConstants.DEFAULT_DROPDOWN_OPTION_NAME, ""));
-            items.addAll(ScanParametersFactory.getSecurityProductItems());
+            items.addAll(ParameterMappingService.getSecurityProductItems());
             return items;
         }
 
@@ -1002,7 +1002,7 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
         public ListBoxModel doFillMark_build_statusItems() {
             ListBoxModel items = new ListBoxModel();
             items.add(ApplicationConstants.DEFAULT_DROPDOWN_OPTION_NAME, "");
-            items.addAll(ScanParametersFactory.getMarkBuildStatusItems());
+            items.addAll(ParameterMappingService.getMarkBuildStatusItems());
             return items;
         }
 
@@ -1056,7 +1056,7 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
             try {
                 verifyRequiredPlugins(logger, envVars);
 
-                exitCode = ScanParametersFactory.createPipelineCommand(
+                exitCode = ParameterMappingService.createPipelineCommand(
                                 run, listener, envVars, launcher, node, workspace)
                         .initializeScanner(getParametersMap(workspace, listener));
             } catch (Exception e) {
@@ -1091,7 +1091,7 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
                         "**************************** END EXECUTION OF BLACK DUCK SECURITY SCAN ****************************");
             } else {
                 Result result =
-                        ScanParametersFactory.getBuildResultIfIssuesAreFound(exitCode, getMark_build_status(), logger);
+                        ParameterMappingService.getBuildResultIfIssuesAreFound(exitCode, getMark_build_status(), logger);
                 if (result != null) {
                     logger.info("Marking build as " + result + " since issues are present");
                     handleNonZeroExitCode(exitCode, result, exitMessage, e, logger);

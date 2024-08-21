@@ -6,7 +6,7 @@ import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.global.ErrorCode;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
-import io.jenkins.plugins.security.scan.service.scan.blackduck.BlackDuckParametersService;
+import io.jenkins.plugins.security.scan.service.scan.blackducksca.BlackDuckSCAParametersService;
 import io.jenkins.plugins.security.scan.service.scan.coverity.CoverityParametersService;
 import io.jenkins.plugins.security.scan.service.scan.polaris.PolarisParametersService;
 import io.jenkins.plugins.security.scan.service.scan.srm.SRMParametersService;
@@ -27,8 +27,8 @@ public class ScanParametersService {
         Set<String> securityProducts = getSecurityProducts(scanParameters);
 
         if (securityProducts.contains(SecurityProduct.BLACKDUCK.name())) {
-            BlackDuckParametersService blackDuckParametersService = new BlackDuckParametersService(listener, envVars);
-            if (!blackDuckParametersService.isValidBlackDuckParameters(scanParameters)) {
+            BlackDuckSCAParametersService blackDuckSCAParametersService = new BlackDuckSCAParametersService(listener, envVars);
+            if (!blackDuckSCAParametersService.isValidBlackDuckParameters(scanParameters)) {
                 throw new PluginExceptionHandler(ErrorCode.INVALID_BLACKDUCK_PARAMETERS);
             }
         }

@@ -9,7 +9,7 @@ import io.jenkins.plugins.security.scan.input.blackduck.BlackDuck;
 import io.jenkins.plugins.security.scan.input.coverity.Coverity;
 import io.jenkins.plugins.security.scan.input.polaris.Polaris;
 import io.jenkins.plugins.security.scan.input.project.Project;
-import io.jenkins.plugins.security.scan.service.scan.blackduck.BlackDuckParametersService;
+import io.jenkins.plugins.security.scan.service.scan.blackducksca.BlackDuckSCAParametersService;
 import io.jenkins.plugins.security.scan.service.scan.coverity.CoverityParametersService;
 import java.io.PrintStream;
 import java.util.Arrays;
@@ -21,7 +21,7 @@ import org.mockito.Mockito;
 
 public class PolarisParametersServiceTest {
     private PolarisParametersService polarisParametersService;
-    private BlackDuckParametersService blackDuckParametersService;
+    private BlackDuckSCAParametersService blackDuckSCAParametersService;
     private CoverityParametersService coverityParametersService;
     private final TaskListener listenerMock = Mockito.mock(TaskListener.class);
     private final EnvVars envVarsMock = Mockito.mock(EnvVars.class);
@@ -199,11 +199,11 @@ public class PolarisParametersServiceTest {
         polarisParameters.put(ApplicationConstants.COVERITY_CONFIG_PATH_KEY, TEST_COVERITY_CONFIG_FILE_PATH);
         polarisParameters.put(ApplicationConstants.COVERITY_ARGS_KEY, TEST_COVERITY_ARGS);
 
-        blackDuckParametersService = new BlackDuckParametersService(listenerMock, envVarsMock);
+        blackDuckSCAParametersService = new BlackDuckSCAParametersService(listenerMock, envVarsMock);
         coverityParametersService = new CoverityParametersService(listenerMock, envVarsMock);
 
         Polaris polaris = polarisParametersService.preparePolarisObjectForBridge(polarisParameters);
-        BlackDuck blackDuck = blackDuckParametersService.prepareBlackDuckObjectForBridge(polarisParameters);
+        BlackDuck blackDuck = blackDuckSCAParametersService.prepareBlackDuckObjectForBridge(polarisParameters);
         Coverity coverity = coverityParametersService.prepareCoverityObjectForBridge(polarisParameters);
 
         assertEquals(polaris.getServerUrl(), TEST_POLARIS_SERVER_URL);

@@ -1,4 +1,4 @@
-package io.jenkins.plugins.security.scan.factory;
+package io.jenkins.plugins.security.scan.service;
 
 import hudson.FilePath;
 import hudson.model.Result;
@@ -23,7 +23,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ScanParametersFactoryTest {
+public class ParameterMappingServiceTest {
     private TaskListener listenerMock;
     private FilePath workspace;
     private SecurityScanStep securityScanStep;
@@ -51,7 +51,7 @@ public class ScanParametersFactoryTest {
         globalConfigValues.put(ApplicationConstants.SYNOPSYS_BRIDGE_INSTALL_DIRECTORY, "/fake/path");
 
         Map<String, Object> result =
-                ScanParametersFactory.preparePipelineParametersMap(securityScanStep, globalConfigValues, listenerMock);
+                ParameterMappingService.preparePipelineParametersMap(securityScanStep, globalConfigValues, listenerMock);
 
         assertEquals(8, result.size());
         assertEquals("BLACKDUCK", result.get(ApplicationConstants.PRODUCT_KEY));
@@ -65,7 +65,7 @@ public class ScanParametersFactoryTest {
 
         assertThrows(
                 PluginExceptionHandler.class,
-                () -> ScanParametersFactory.preparePipelineParametersMap(
+                () -> ParameterMappingService.preparePipelineParametersMap(
                         securityScanStep, globalConfigValues, listenerMock));
     }
 
@@ -84,7 +84,7 @@ public class ScanParametersFactoryTest {
         securityScanStep.setBlackduck_args("--o");
 
         Map<String, Object> blackDuckParametersMap =
-                ScanParametersFactory.prepareBlackDuckParametersMap(securityScanStep);
+                ParameterMappingService.prepareBlackDuckParametersMap(securityScanStep);
 
         assertEquals(11, blackDuckParametersMap.size());
         assertEquals("https://fake.blackduck-url", blackDuckParametersMap.get(ApplicationConstants.BLACKDUCK_URL_KEY));
@@ -103,7 +103,7 @@ public class ScanParametersFactoryTest {
                 blackDuckParametersMap.get(ApplicationConstants.BLACKDUCK_CONFIG_PATH_KEY));
         assertEquals("--o", blackDuckParametersMap.get(ApplicationConstants.BLACKDUCK_ARGS_KEY));
         Map<String, Object> emptyBlackDuckParametersMap =
-                ScanParametersFactory.prepareBlackDuckParametersMap(new SecurityScanStep());
+                ParameterMappingService.prepareBlackDuckParametersMap(new SecurityScanStep());
 
         assertEquals(0, emptyBlackDuckParametersMap.size());
     }
@@ -122,7 +122,7 @@ public class ScanParametersFactoryTest {
         securityScanFreestyle.setBlackduck_args("--o");
 
         Map<String, Object> blackDuckParametersMap =
-                ScanParametersFactory.prepareBlackDuckParametersMap(securityScanFreestyle);
+                ParameterMappingService.prepareBlackDuckParametersMap(securityScanFreestyle);
 
         assertEquals(10, blackDuckParametersMap.size());
         assertEquals("https://fake.blackduck-url", blackDuckParametersMap.get(ApplicationConstants.BLACKDUCK_URL_KEY));
@@ -140,7 +140,7 @@ public class ScanParametersFactoryTest {
                 blackDuckParametersMap.get(ApplicationConstants.BLACKDUCK_CONFIG_PATH_KEY));
         assertEquals("--o", blackDuckParametersMap.get(ApplicationConstants.BLACKDUCK_ARGS_KEY));
         Map<String, Object> emptyBlackDuckParametersMap =
-                ScanParametersFactory.prepareBlackDuckParametersMap(new SecurityScanStep());
+                ParameterMappingService.prepareBlackDuckParametersMap(new SecurityScanStep());
 
         assertEquals(0, emptyBlackDuckParametersMap.size());
     }
@@ -164,7 +164,7 @@ public class ScanParametersFactoryTest {
         securityScanStep.setCoverity_args("--o");
 
         Map<String, Object> coverityParametersMap =
-                ScanParametersFactory.prepareCoverityParametersMap(securityScanStep);
+                ParameterMappingService.prepareCoverityParametersMap(securityScanStep);
 
         assertEquals(15, coverityParametersMap.size());
         assertEquals("https://fake.coverity-url", coverityParametersMap.get(ApplicationConstants.COVERITY_URL_KEY));
@@ -184,7 +184,7 @@ public class ScanParametersFactoryTest {
         assertEquals("--o", coverityParametersMap.get(ApplicationConstants.COVERITY_ARGS_KEY));
 
         Map<String, Object> emptyCoverityParametersMap =
-                ScanParametersFactory.prepareCoverityParametersMap(new SecurityScanStep());
+                ParameterMappingService.prepareCoverityParametersMap(new SecurityScanStep());
         assertEquals(0, emptyCoverityParametersMap.size());
     }
 
@@ -206,7 +206,7 @@ public class ScanParametersFactoryTest {
         securityScanFreestyle.setCoverity_args("--o");
 
         Map<String, Object> coverityParametersMap =
-                ScanParametersFactory.prepareCoverityParametersMap(securityScanFreestyle);
+                ParameterMappingService.prepareCoverityParametersMap(securityScanFreestyle);
 
         assertEquals(14, coverityParametersMap.size());
         assertEquals("https://fake.coverity-url", coverityParametersMap.get(ApplicationConstants.COVERITY_URL_KEY));
@@ -225,7 +225,7 @@ public class ScanParametersFactoryTest {
         assertEquals("--o", coverityParametersMap.get(ApplicationConstants.COVERITY_ARGS_KEY));
 
         Map<String, Object> emptyCoverityParametersMap =
-                ScanParametersFactory.prepareCoverityParametersMap(new SecurityScanStep());
+                ParameterMappingService.prepareCoverityParametersMap(new SecurityScanStep());
         assertEquals(0, emptyCoverityParametersMap.size());
     }
 
@@ -237,7 +237,7 @@ public class ScanParametersFactoryTest {
         securityScanStep.setInclude_diagnostics(true);
         securityScanStep.setNetwork_airgap(true);
 
-        Map<String, Object> bridgeParametersMap = ScanParametersFactory.prepareAddtionalParametersMap(securityScanStep);
+        Map<String, Object> bridgeParametersMap = ParameterMappingService.prepareAddtionalParametersMap(securityScanStep);
 
         assertEquals(5, bridgeParametersMap.size());
         assertEquals(
@@ -249,7 +249,7 @@ public class ScanParametersFactoryTest {
         assertTrue((boolean) bridgeParametersMap.get(ApplicationConstants.NETWORK_AIRGAP_KEY));
 
         Map<String, Object> emptyBridgeParametersMap =
-                ScanParametersFactory.prepareAddtionalParametersMap(new SecurityScanStep());
+                ParameterMappingService.prepareAddtionalParametersMap(new SecurityScanStep());
 
         assertEquals(0, emptyBridgeParametersMap.size());
     }
@@ -272,7 +272,7 @@ public class ScanParametersFactoryTest {
         securityScanStep.setProject_source_preserveSymLinks(true);
         securityScanStep.setProject_source_excludes("test_exclude");
 
-        Map<String, Object> polarisParametersMap = ScanParametersFactory.preparePolarisParametersMap(securityScanStep);
+        Map<String, Object> polarisParametersMap = ParameterMappingService.preparePolarisParametersMap(securityScanStep);
 
         assertEquals(15, polarisParametersMap.size());
         assertEquals(
@@ -312,7 +312,7 @@ public class ScanParametersFactoryTest {
         securityScanFreestyle.setPolaris_sca_args("--o");
 
         Map<String, Object> polarisParametersMap =
-                ScanParametersFactory.preparePolarisParametersMap(securityScanFreestyle);
+                ParameterMappingService.preparePolarisParametersMap(securityScanFreestyle);
 
         assertEquals(13, polarisParametersMap.size());
         assertEquals(
@@ -343,7 +343,7 @@ public class ScanParametersFactoryTest {
         securityScanStep.setBlackduck_execution_path("/fake/path/bd");
         securityScanStep.setCoverity_execution_path("/fake/path/cov");
 
-        Map<String, Object> srmParametersMap = ScanParametersFactory.prepareSrmParametersMap(securityScanStep);
+        Map<String, Object> srmParametersMap = ParameterMappingService.prepareSrmParametersMap(securityScanStep);
 
         assertEquals(9, srmParametersMap.size());
         assertEquals("https://fake.srm-url", srmParametersMap.get(ApplicationConstants.SRM_URL_KEY));
@@ -357,7 +357,7 @@ public class ScanParametersFactoryTest {
         assertEquals("/fake/path/cov", srmParametersMap.get(ApplicationConstants.SRM_SAST_EXECUTION_PATH_KEY));
 
         Map<String, Object> emptySrmParametersMap =
-                ScanParametersFactory.prepareSrmParametersMap(new SecurityScanStep());
+                ParameterMappingService.prepareSrmParametersMap(new SecurityScanStep());
 
         assertEquals(0, emptySrmParametersMap.size());
     }
@@ -381,7 +381,7 @@ public class ScanParametersFactoryTest {
         securityScanFreestyle.setSrm_sca_config_path("fake/path/application.properties");
         securityScanFreestyle.setSrm_sca_args("--o");
 
-        Map<String, Object> srmParametersMap = ScanParametersFactory.prepareSrmParametersMap(securityScanFreestyle);
+        Map<String, Object> srmParametersMap = ParameterMappingService.prepareSrmParametersMap(securityScanFreestyle);
 
         assertEquals(16, srmParametersMap.size());
         assertEquals("https://fake.srm-url", srmParametersMap.get(ApplicationConstants.SRM_URL_KEY));
@@ -400,7 +400,7 @@ public class ScanParametersFactoryTest {
         assertEquals(2, srmParametersMap.get(ApplicationConstants.BLACKDUCK_SEARCH_DEPTH_KEY));
 
         Map<String, Object> emptySrmParametersMap =
-                ScanParametersFactory.prepareSrmParametersMap(new SecurityScanStep());
+                ParameterMappingService.prepareSrmParametersMap(new SecurityScanStep());
 
         assertEquals(0, emptySrmParametersMap.size());
     }
@@ -413,7 +413,7 @@ public class ScanParametersFactoryTest {
         securityScanStep.setBlackduck_reports_sarif_groupSCAIssues(true);
 
         Map<String, Object> sarifParametersMap =
-                ScanParametersFactory.prepareSarifReportParametersMap(securityScanStep);
+                ParameterMappingService.prepareSarifReportParametersMap(securityScanStep);
 
         assertEquals(4, sarifParametersMap.size());
         assertTrue((boolean) sarifParametersMap.get(ApplicationConstants.BLACKDUCK_REPORTS_SARIF_CREATE_KEY));
@@ -422,7 +422,7 @@ public class ScanParametersFactoryTest {
         assertTrue((boolean) sarifParametersMap.get(ApplicationConstants.BLACKDUCK_REPORTS_SARIF_GROUPSCAISSUES_KEY));
 
         Map<String, Object> emptySarifParametersMap =
-                ScanParametersFactory.prepareSarifReportParametersMap(new SecurityScanStep());
+                ParameterMappingService.prepareSarifReportParametersMap(new SecurityScanStep());
 
         assertEquals(0, emptySarifParametersMap.size());
     }
@@ -434,7 +434,7 @@ public class ScanParametersFactoryTest {
         String downloadUrlWindows = "https://fake-url.com/windows";
 
         String os = System.getProperty("os.name").toLowerCase();
-        String agentSpecificDownloadUrl = ScanParametersFactory.getBridgeDownloadUrlBasedOnAgentOS(
+        String agentSpecificDownloadUrl = ParameterMappingService.getBridgeDownloadUrlBasedOnAgentOS(
                 workspace, listenerMock, downloadUrlMac, downloadUrlLinux, downloadUrlWindows);
 
         if (os.contains("linux")) {
@@ -448,13 +448,13 @@ public class ScanParametersFactoryTest {
 
     @Test
     public void validateProductTest() {
-        assertTrue(ScanParametersFactory.validateProduct("blackduck", listenerMock));
-        assertTrue(ScanParametersFactory.validateProduct("blackducksca", listenerMock));
-        assertTrue(ScanParametersFactory.validateProduct("POLARIS", listenerMock));
-        assertTrue(ScanParametersFactory.validateProduct("COveRiTy", listenerMock));
-        assertFalse(ScanParametersFactory.validateProduct("polar1s", listenerMock));
-        assertTrue(ScanParametersFactory.validateProduct("sRm", listenerMock));
-        assertTrue(ScanParametersFactory.validateProduct("SRM", listenerMock));
+        assertTrue(ParameterMappingService.validateProduct("blackduck", listenerMock));
+        assertTrue(ParameterMappingService.validateProduct("blackducksca", listenerMock));
+        assertTrue(ParameterMappingService.validateProduct("POLARIS", listenerMock));
+        assertTrue(ParameterMappingService.validateProduct("COveRiTy", listenerMock));
+        assertFalse(ParameterMappingService.validateProduct("polar1s", listenerMock));
+        assertTrue(ParameterMappingService.validateProduct("sRm", listenerMock));
+        assertTrue(ParameterMappingService.validateProduct("SRM", listenerMock));
     }
 
     @Test
@@ -462,26 +462,26 @@ public class ScanParametersFactoryTest {
         LoggerWrapper loggerMock = new LoggerWrapper(listenerMock);
 
         assertEquals(
-                ScanParametersFactory.getBuildResultIfIssuesAreFound(
+                ParameterMappingService.getBuildResultIfIssuesAreFound(
                         ErrorCode.BRIDGE_BUILD_BREAK, "FAILURE", loggerMock),
                 Result.FAILURE);
         assertEquals(
-                ScanParametersFactory.getBuildResultIfIssuesAreFound(
+                ParameterMappingService.getBuildResultIfIssuesAreFound(
                         ErrorCode.BRIDGE_BUILD_BREAK, "UNSTABLE", loggerMock),
                 Result.UNSTABLE);
         assertEquals(
-                ScanParametersFactory.getBuildResultIfIssuesAreFound(
+                ParameterMappingService.getBuildResultIfIssuesAreFound(
                         ErrorCode.BRIDGE_BUILD_BREAK, "SUCCESS", loggerMock),
                 Result.SUCCESS);
-        assertNull(ScanParametersFactory.getBuildResultIfIssuesAreFound(
+        assertNull(ParameterMappingService.getBuildResultIfIssuesAreFound(
                 ErrorCode.BRIDGE_BUILD_BREAK, "ABORTED", loggerMock));
-        assertNull(ScanParametersFactory.getBuildResultIfIssuesAreFound(
+        assertNull(ParameterMappingService.getBuildResultIfIssuesAreFound(
                 ErrorCode.BRIDGE_ADAPTER_ERROR, "UNSTABLE", loggerMock));
     }
 
     @Test
     public void getSecurityProductItemsTest() {
-        ListBoxModel items = ScanParametersFactory.getSecurityProductItems();
+        ListBoxModel items = ParameterMappingService.getSecurityProductItems();
 
         assertEquals(4, items.size());
 
@@ -500,7 +500,7 @@ public class ScanParametersFactoryTest {
 
     @Test
     public void getMarkBuildStatusItemsTest() {
-        ListBoxModel items = ScanParametersFactory.getMarkBuildStatusItems();
+        ListBoxModel items = ParameterMappingService.getMarkBuildStatusItems();
 
         assertEquals(3, items.size());
 

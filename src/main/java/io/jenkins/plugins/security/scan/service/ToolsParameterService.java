@@ -31,7 +31,7 @@ import io.jenkins.plugins.security.scan.input.scm.github.Github;
 import io.jenkins.plugins.security.scan.input.scm.gitlab.Gitlab;
 import io.jenkins.plugins.security.scan.input.srm.SRM;
 import io.jenkins.plugins.security.scan.service.scan.ScanParametersService;
-import io.jenkins.plugins.security.scan.service.scan.blackduck.BlackDuckParametersService;
+import io.jenkins.plugins.security.scan.service.scan.blackducksca.BlackDuckSCAParametersService;
 import io.jenkins.plugins.security.scan.service.scan.coverity.CoverityParametersService;
 import io.jenkins.plugins.security.scan.service.scan.polaris.PolarisParametersService;
 import io.jenkins.plugins.security.scan.service.scan.srm.SRMParametersService;
@@ -119,9 +119,9 @@ public class ToolsParameterService {
         }
 
         if (securityProducts.contains(SecurityProduct.BLACKDUCK.name())) {
-            BlackDuckParametersService blackDuckParametersService = new BlackDuckParametersService(listener, envVars);
-            BlackDuck blackDuck = blackDuckParametersService.prepareBlackDuckObjectForBridge(scanParameters);
-            Project project = blackDuckParametersService.prepareProjectObjectForBridge(scanParameters);
+            BlackDuckSCAParametersService blackDuckSCAParametersService = new BlackDuckSCAParametersService(listener, envVars);
+            BlackDuck blackDuck = blackDuckSCAParametersService.prepareBlackDuckObjectForBridge(scanParameters);
+            Project project = blackDuckSCAParametersService.prepareProjectObjectForBridge(scanParameters);
 
             scanCommands.add(BridgeParams.STAGE_OPTION);
             scanCommands.add(BridgeParams.BLACKDUCKSCA_STAGE);

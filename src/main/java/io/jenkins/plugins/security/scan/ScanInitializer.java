@@ -6,7 +6,7 @@ import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.bridge.BridgeDownloadManager;
 import io.jenkins.plugins.security.scan.bridge.BridgeDownloadParameters;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
-import io.jenkins.plugins.security.scan.factory.ScanParametersFactory;
+import io.jenkins.plugins.security.scan.service.ParameterMappingService;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.global.ErrorCode;
 import io.jenkins.plugins.security.scan.global.LogMessages;
@@ -17,14 +17,14 @@ import io.jenkins.plugins.security.scan.service.scan.ScanParametersService;
 
 import java.util.*;
 
-public class PluginParametersHandler {
+public class ScanInitializer {
     private final SecurityScanner scanner;
     private final FilePath workspace;
     private final TaskListener listener;
     private final EnvVars envVars;
     private final LoggerWrapper logger;
 
-    public PluginParametersHandler(
+    public ScanInitializer(
             SecurityScanner scanner, FilePath workspace, EnvVars envVars, TaskListener listener) {
         this.scanner = scanner;
         this.workspace = workspace;
@@ -199,11 +199,11 @@ public class PluginParametersHandler {
     }
 
     private void logWarningForDeprecatedParameters() {
-        if (!ScanParametersFactory.DEPRECATED_PARAMETERS.isEmpty()) {
-            logger.warn(ScanParametersFactory.DEPRECATED_PARAMETERS + " is/are deprecated and will be removed in future. " +
+        if (!ParameterMappingService.DEPRECATED_PARAMETERS.isEmpty()) {
+            logger.warn(ParameterMappingService.DEPRECATED_PARAMETERS + " is/are deprecated and will be removed in future. " +
                     "Check documentation for new parameters: " + ApplicationConstants.SYNOPSYS_SECURITY_SCAN_PLUGIN_DOCS_URL);
 
-            ScanParametersFactory.DEPRECATED_PARAMETERS.clear();
+            ParameterMappingService.DEPRECATED_PARAMETERS.clear();
         }
     }
 }

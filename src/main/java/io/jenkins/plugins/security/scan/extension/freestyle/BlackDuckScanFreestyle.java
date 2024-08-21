@@ -9,7 +9,7 @@ import hudson.util.ListBoxModel;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.exception.ScannerException;
 import io.jenkins.plugins.security.scan.extension.SecurityScan;
-import io.jenkins.plugins.security.scan.factory.ScanParametersFactory;
+import io.jenkins.plugins.security.scan.service.ParameterMappingService;
 import io.jenkins.plugins.security.scan.global.*;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import java.util.Map;
@@ -982,8 +982,8 @@ public class BlackDuckScanFreestyle extends Builder implements SecurityScan, Fre
 
     private Map<String, Object> getParametersMap(FilePath workspace, TaskListener listener)
             throws PluginExceptionHandler {
-        return ScanParametersFactory.preparePipelineParametersMap(
-                this, ScanParametersFactory.getGlobalConfigurationValues(workspace, listener), listener);
+        return ParameterMappingService.preparePipelineParametersMap(
+                this, ParameterMappingService.getGlobalConfigurationValues(workspace, listener), listener);
     }
 
     @Override
@@ -1002,7 +1002,7 @@ public class BlackDuckScanFreestyle extends Builder implements SecurityScan, Fre
                 "**************************** START EXECUTION OF BLACK DUCK SECURITY SCAN ****************************");
 
         try {
-            exitCode = ScanParametersFactory.createPipelineCommand(run, listener, env, launcher, null, workspace)
+            exitCode = ParameterMappingService.createPipelineCommand(run, listener, env, launcher, null, workspace)
                     .initializeScanner(getParametersMap(workspace, listener));
         } catch (Exception e) {
             if (e instanceof PluginExceptionHandler) {
@@ -1033,7 +1033,7 @@ public class BlackDuckScanFreestyle extends Builder implements SecurityScan, Fre
                     "**************************** END EXECUTION OF BLACK DUCK SECURITY SCAN ****************************");
         } else {
             Result result =
-                    ScanParametersFactory.getBuildResultIfIssuesAreFound(exitCode, this.getMark_build_status(), logger);
+                    ParameterMappingService.getBuildResultIfIssuesAreFound(exitCode, this.getMark_build_status(), logger);
 
             if (result != null) {
                 logger.info("Marking build as " + result + " since issues are present");
@@ -1070,7 +1070,7 @@ public class BlackDuckScanFreestyle extends Builder implements SecurityScan, Fre
         public ListBoxModel doFillProductItems() {
             ListBoxModel items = new ListBoxModel();
             items.add(new ListBoxModel.Option(ApplicationConstants.DEFAULT_DROPDOWN_OPTION_NAME, "select"));
-            items.addAll(ScanParametersFactory.getSecurityProductItems());
+            items.addAll(ParameterMappingService.getSecurityProductItems());
             return items;
         }
 
@@ -1078,7 +1078,7 @@ public class BlackDuckScanFreestyle extends Builder implements SecurityScan, Fre
         public ListBoxModel doFillMark_build_statusItems() {
             ListBoxModel items = new ListBoxModel();
             items.add(ApplicationConstants.DEFAULT_DROPDOWN_OPTION_NAME, "");
-            items.addAll(ScanParametersFactory.getMarkBuildStatusItems());
+            items.addAll(ParameterMappingService.getMarkBuildStatusItems());
             return items;
         }
 
