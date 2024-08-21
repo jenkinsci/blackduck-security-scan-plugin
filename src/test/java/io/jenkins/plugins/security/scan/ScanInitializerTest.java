@@ -1,20 +1,21 @@
 package io.jenkins.plugins.security.scan;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import hudson.EnvVars;
 import hudson.FilePath;
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
 import java.io.File;
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ScanInitializerTest {
     private SecurityScanner securityScannerMock;
@@ -38,9 +39,9 @@ public class ScanInitializerTest {
     @Test
     public void initializeScannerValidParametersTest() throws PluginExceptionHandler {
         Map<String, Object> scanParameters = new HashMap<>();
-        scanParameters.put(ApplicationConstants.PRODUCT_KEY, "BLACKDUCK");
-        scanParameters.put(ApplicationConstants.BLACKDUCK_URL_KEY, "https://fake.blackduck.url");
-        scanParameters.put(ApplicationConstants.BLACKDUCK_TOKEN_KEY, "MDJDSROSVC56FAKEKEY");
+        scanParameters.put(ApplicationConstants.PRODUCT_KEY, "BLACKDUCKSCA");
+        scanParameters.put(ApplicationConstants.BLACKDUCKSCA_URL_KEY, "https://fake.blackduck.url");
+        scanParameters.put(ApplicationConstants.BLACKDUCKSCA_TOKEN_KEY, "MDJDSROSVC56FAKEKEY");
 
         int exitCode = scanInitializer.initializeScanner(scanParameters);
 
@@ -50,7 +51,7 @@ public class ScanInitializerTest {
     @Test
     public void initializeScannerInvalidParametersTest() {
         Map<String, Object> scanParameters = new HashMap<>();
-        scanParameters.put(ApplicationConstants.PRODUCT_KEY, "BLACKDUCK");
+        scanParameters.put(ApplicationConstants.PRODUCT_KEY, "BLACKDUCKSCA");
 
         assertThrows(PluginExceptionHandler.class, () -> scanInitializer.initializeScanner(scanParameters));
     }
@@ -58,11 +59,11 @@ public class ScanInitializerTest {
     @Test
     public void initializeScannerAirGapFailureTest() {
         Map<String, Object> scanParameters = new HashMap<>();
-        scanParameters.put(ApplicationConstants.PRODUCT_KEY, "BLACKDUCK");
-        scanParameters.put(ApplicationConstants.BLACKDUCK_URL_KEY, "https://fake.blackduck.url");
-        scanParameters.put(ApplicationConstants.BLACKDUCK_TOKEN_KEY, "MDJDSROSVC56FAKEKEY");
+        scanParameters.put(ApplicationConstants.PRODUCT_KEY, "BLACKDUCKSCA");
+        scanParameters.put(ApplicationConstants.BLACKDUCKSCA_URL_KEY, "https://fake.blackduck.url");
+        scanParameters.put(ApplicationConstants.BLACKDUCKSCA_TOKEN_KEY, "MDJDSROSVC56FAKEKEY");
         scanParameters.put(ApplicationConstants.NETWORK_AIRGAP_KEY, true);
-        scanParameters.put(ApplicationConstants.SYNOPSYS_BRIDGE_INSTALL_DIRECTORY, "/path/to/bridge");
+        scanParameters.put(ApplicationConstants.BRIDGECLI_INSTALL_DIRECTORY, "/path/to/bridge");
 
         assertThrows(PluginExceptionHandler.class, () -> scanInitializer.initializeScanner(scanParameters));
     }
@@ -70,9 +71,9 @@ public class ScanInitializerTest {
     @Test
     public void initializeScannerAirGapSuccessTest() throws PluginExceptionHandler {
         Map<String, Object> scanParameters = new HashMap<>();
-        scanParameters.put(ApplicationConstants.PRODUCT_KEY, "BLACKDUCK");
-        scanParameters.put(ApplicationConstants.BLACKDUCK_URL_KEY, "https://fake.blackduck.url");
-        scanParameters.put(ApplicationConstants.BLACKDUCK_TOKEN_KEY, "MDJDSROSVC56FAKEKEY");
+        scanParameters.put(ApplicationConstants.PRODUCT_KEY, "BLACKDUCKSCA");
+        scanParameters.put(ApplicationConstants.BLACKDUCKSCA_URL_KEY, "https://fake.blackduck.url");
+        scanParameters.put(ApplicationConstants.BLACKDUCKSCA_TOKEN_KEY, "MDJDSROSVC56FAKEKEY");
         scanParameters.put(ApplicationConstants.NETWORK_AIRGAP_KEY, true);
 
         int exitCode = scanInitializer.initializeScanner(scanParameters);

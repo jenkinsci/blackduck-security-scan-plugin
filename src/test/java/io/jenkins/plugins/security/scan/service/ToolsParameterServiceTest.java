@@ -368,10 +368,10 @@ public class ToolsParameterServiceTest {
         securityProducts.add(SecurityProduct.BLACKDUCK.name());
         Map<String, Object> scanParameters = new HashMap<>();
 
-        scanParameters.put(ApplicationConstants.BLACKDUCK_REPORTS_SARIF_CREATE_KEY, true);
-        scanParameters.put(ApplicationConstants.BLACKDUCK_REPORTS_SARIF_FILE_PATH_KEY, "/path/to/sarif/file");
-        scanParameters.put(ApplicationConstants.BLACKDUCK_REPORTS_SARIF_SEVERITIES_KEY, "HIGH,MEDIUM,LOW");
-        scanParameters.put(ApplicationConstants.BLACKDUCK_REPORTS_SARIF_GROUPSCAISSUES_KEY, true);
+        scanParameters.put(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_CREATE_KEY, true);
+        scanParameters.put(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_FILE_PATH_KEY, "/path/to/sarif/file");
+        scanParameters.put(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_SEVERITIES_KEY, "HIGH,MEDIUM,LOW");
+        scanParameters.put(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_GROUPSCAISSUES_KEY, true);
 
         Sarif sarifObject = toolsParameterService.prepareSarifObject(securityProducts, scanParameters);
 
@@ -563,9 +563,9 @@ public class ToolsParameterServiceTest {
     public void getCommandLineArgsForBlackDuckTest() throws PluginExceptionHandler {
         Map<String, Object> blackDuckParametersMap = new HashMap<>();
         blackDuckParametersMap.put(ApplicationConstants.PRODUCT_KEY, "blackduck");
-        blackDuckParametersMap.put(ApplicationConstants.BLACKDUCK_URL_KEY, "https://fake.blackduck.url");
-        blackDuckParametersMap.put(ApplicationConstants.BLACKDUCK_TOKEN_KEY, TOKEN);
-        blackDuckParametersMap.put(ApplicationConstants.BLACKDUCK_AUTOMATION_PRCOMMENT_KEY, false);
+        blackDuckParametersMap.put(ApplicationConstants.BLACKDUCKSCA_URL_KEY, "https://fake.blackduck.url");
+        blackDuckParametersMap.put(ApplicationConstants.BLACKDUCKSCA_TOKEN_KEY, TOKEN);
+        blackDuckParametersMap.put(ApplicationConstants.BLACKDUCKSCA_PRCOMMENT_ENABLED_KEY, false);
         blackDuckParametersMap.put(ApplicationConstants.INCLUDE_DIAGNOSTICS_KEY, true);
 
         Map<String, Boolean> installedDependencies = new HashMap<>();
@@ -586,7 +586,7 @@ public class ToolsParameterServiceTest {
                     workspace.child(ApplicationConstants.BRIDGE_CLI_EXECUTABLE).getRemote());
         }
         assertEquals(commandLineArgs.get(1), BridgeParams.STAGE_OPTION);
-        assertEquals(commandLineArgs.get(2), BridgeParams.BLACKDUCK_STAGE);
+        assertEquals(commandLineArgs.get(2), BridgeParams.BLACKDUCKSCA_STAGE);
         assertNotEquals(commandLineArgs.get(2), BridgeParams.COVERITY_STAGE);
         assertNotEquals(commandLineArgs.get(2), BridgeParams.POLARIS_STAGE);
         assertEquals(commandLineArgs.get(3), BridgeParams.INPUT_OPTION);
@@ -629,7 +629,7 @@ public class ToolsParameterServiceTest {
         assertEquals(commandLineArgs.get(1), BridgeParams.STAGE_OPTION);
         assertEquals(commandLineArgs.get(2), BridgeParams.COVERITY_STAGE);
         assertNotEquals(commandLineArgs.get(2), BridgeParams.POLARIS_STAGE);
-        assertNotEquals(commandLineArgs.get(2), BridgeParams.BLACKDUCK_STAGE);
+        assertNotEquals(commandLineArgs.get(2), BridgeParams.BLACKDUCKSCA_STAGE);
         assertEquals(commandLineArgs.get(3), BridgeParams.INPUT_OPTION);
         assertTrue(
                 Files.exists(Path.of(commandLineArgs.get(4))),
@@ -670,7 +670,7 @@ public class ToolsParameterServiceTest {
         assertEquals(commandLineArgs.get(1), BridgeParams.STAGE_OPTION);
         assertEquals(commandLineArgs.get(2), BridgeParams.POLARIS_STAGE);
         assertNotEquals(commandLineArgs.get(2), BridgeParams.COVERITY_STAGE);
-        assertNotEquals(commandLineArgs.get(2), BridgeParams.BLACKDUCK_STAGE);
+        assertNotEquals(commandLineArgs.get(2), BridgeParams.BLACKDUCKSCA_STAGE);
         assertEquals(commandLineArgs.get(3), BridgeParams.INPUT_OPTION);
         assertTrue(
                 Files.exists(Path.of(commandLineArgs.get(4))),
@@ -712,7 +712,7 @@ public class ToolsParameterServiceTest {
         assertEquals(commandLineArgs.get(1), BridgeParams.STAGE_OPTION);
         assertEquals(commandLineArgs.get(2), BridgeParams.SRM_STAGE);
         assertNotEquals(commandLineArgs.get(2), BridgeParams.COVERITY_STAGE);
-        assertNotEquals(commandLineArgs.get(2), BridgeParams.BLACKDUCK_STAGE);
+        assertNotEquals(commandLineArgs.get(2), BridgeParams.BLACKDUCKSCA_STAGE);
         assertNotEquals(commandLineArgs.get(2), BridgeParams.POLARIS_STAGE);
         assertEquals(commandLineArgs.get(3), BridgeParams.INPUT_OPTION);
         assertTrue(
@@ -728,11 +728,11 @@ public class ToolsParameterServiceTest {
     public void isPrCommentValueSetTest() {
         Map<String, Object> scanParameters = new HashMap<>();
 
-        scanParameters.put(ApplicationConstants.BLACKDUCK_AUTOMATION_PRCOMMENT_KEY, true);
+        scanParameters.put(ApplicationConstants.BLACKDUCKSCA_PRCOMMENT_ENABLED_KEY, true);
         assertTrue(toolsParameterService.isPrCommentValueSet(scanParameters));
 
         scanParameters.clear();
-        scanParameters.put(ApplicationConstants.COVERITY_AUTOMATION_PRCOMMENT_KEY, true);
+        scanParameters.put(ApplicationConstants.COVERITY_PRCOMMENT_ENABLED_KEY, true);
         assertTrue(toolsParameterService.isPrCommentValueSet(scanParameters));
 
         scanParameters.clear();
