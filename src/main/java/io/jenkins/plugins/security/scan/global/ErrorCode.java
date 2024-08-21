@@ -11,7 +11,7 @@ public class ErrorCode {
 
     // Plugin specific error codes
     public static final int INVALID_SECURITY_PRODUCT = 101;
-    public static final int INVALID_BLACKDUCK_PARAMETERS = 102;
+    public static final int INVALID_BLACKDUCKSCA_PARAMETERS = 102;
     public static final int INVALID_COVERITY_PARAMETERS = 103;
     public static final int INVALID_POLARIS_PARAMETERS = 104;
     public static final int INVALID_BRIDGE_DOWNLOAD_PARAMETERS = 105;

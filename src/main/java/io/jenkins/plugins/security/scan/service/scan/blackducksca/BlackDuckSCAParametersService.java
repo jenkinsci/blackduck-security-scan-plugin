@@ -28,7 +28,7 @@ public class BlackDuckSCAParametersService {
 
         List<String> invalidParams = new ArrayList<>();
 
-        Arrays.asList(ApplicationConstants.BLACKDUCK_URL_KEY, ApplicationConstants.BLACKDUCK_TOKEN_KEY)
+        Arrays.asList(ApplicationConstants.BLACKDUCKSCA_URL_KEY, ApplicationConstants.BLACKDUCKSCA_TOKEN_KEY)
                 .forEach(key -> {
                     boolean isKeyValid = blackDuckParameters.containsKey(key)
                             && blackDuckParameters.get(key) != null
@@ -54,87 +54,79 @@ public class BlackDuckSCAParametersService {
         Scan scan = new Scan();
         Automation automation = new Automation();
 
-        if (blackDuckParameters.containsKey(ApplicationConstants.BLACKDUCK_URL_KEY)) {
+        if (blackDuckParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_URL_KEY)) {
             blackDuck.setUrl(blackDuckParameters
-                    .get(ApplicationConstants.BLACKDUCK_URL_KEY)
+                    .get(ApplicationConstants.BLACKDUCKSCA_URL_KEY)
                     .toString()
                     .trim());
         }
 
-        if (blackDuckParameters.containsKey(ApplicationConstants.BLACKDUCK_TOKEN_KEY)) {
+        if (blackDuckParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_TOKEN_KEY)) {
             blackDuck.setToken(blackDuckParameters
-                    .get(ApplicationConstants.BLACKDUCK_TOKEN_KEY)
+                    .get(ApplicationConstants.BLACKDUCKSCA_TOKEN_KEY)
                     .toString()
                     .trim());
         }
 
-        if (blackDuckParameters.containsKey(ApplicationConstants.BLACKDUCK_INSTALL_DIRECTORY_KEY)) {
+        if (blackDuckParameters.containsKey(ApplicationConstants.DETECT_INSTALL_DIRECTORY_KEY)) {
             String value = blackDuckParameters
-                    .get(ApplicationConstants.BLACKDUCK_INSTALL_DIRECTORY_KEY)
+                    .get(ApplicationConstants.DETECT_INSTALL_DIRECTORY_KEY)
                     .toString()
                     .trim();
             setInstallDirectory(blackDuck, value);
         }
 
-        if (blackDuckParameters.containsKey(ApplicationConstants.BLACKDUCK_SCAN_FULL_KEY)) {
+        if (blackDuckParameters.containsKey(ApplicationConstants.DETECT_SCAN_FULL_KEY)) {
             String value = blackDuckParameters
-                    .get(ApplicationConstants.BLACKDUCK_SCAN_FULL_KEY)
+                    .get(ApplicationConstants.DETECT_SCAN_FULL_KEY)
                     .toString()
                     .trim();
             setScanFull(blackDuck, value, scan);
         }
 
-        if (blackDuckParameters.containsKey(ApplicationConstants.BLACKDUCK_SCAN_FAILURE_SEVERITIES_KEY)) {
+        if (blackDuckParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_SCAN_FAILURE_SEVERITIES_KEY)) {
             String value = blackDuckParameters
-                    .get(ApplicationConstants.BLACKDUCK_SCAN_FAILURE_SEVERITIES_KEY)
+                    .get(ApplicationConstants.BLACKDUCKSCA_SCAN_FAILURE_SEVERITIES_KEY)
                     .toString()
                     .trim();
             setScanFailureSeverities(blackDuck, value, scan);
         }
 
-        if (blackDuckParameters.containsKey(ApplicationConstants.BLACKDUCK_AUTOMATION_FIXPR_KEY)) {
+        if (blackDuckParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_PRCOMMENT_ENABLED_KEY)) {
             String value = blackDuckParameters
-                    .get(ApplicationConstants.BLACKDUCK_AUTOMATION_FIXPR_KEY)
-                    .toString()
-                    .trim();
-            setAutomationFixpr(blackDuck, value, automation);
-        }
-
-        if (blackDuckParameters.containsKey(ApplicationConstants.BLACKDUCK_AUTOMATION_PRCOMMENT_KEY)) {
-            String value = blackDuckParameters
-                    .get(ApplicationConstants.BLACKDUCK_AUTOMATION_PRCOMMENT_KEY)
+                    .get(ApplicationConstants.BLACKDUCKSCA_PRCOMMENT_ENABLED_KEY)
                     .toString()
                     .trim();
             setAutomationPrComment(blackDuck, value, automation);
         }
 
-        if (blackDuckParameters.containsKey(ApplicationConstants.BLACKDUCK_DOWNLOAD_URL_KEY)) {
+        if (blackDuckParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_DOWNLOAD_URL_KEY)) {
             String value = blackDuckParameters
-                    .get(ApplicationConstants.BLACKDUCK_DOWNLOAD_URL_KEY)
+                    .get(ApplicationConstants.BLACKDUCKSCA_DOWNLOAD_URL_KEY)
                     .toString()
                     .trim();
             setDownloadUrl(blackDuck, String.valueOf(Integer.parseInt(value)));
         }
 
-        if (blackDuckParameters.containsKey(ApplicationConstants.BLACKDUCK_SEARCH_DEPTH_KEY)) {
+        if (blackDuckParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_SEARCH_DEPTH_KEY)) {
             String value = blackDuckParameters
-                    .get(ApplicationConstants.BLACKDUCK_SEARCH_DEPTH_KEY)
+                    .get(ApplicationConstants.BLACKDUCKSCA_SEARCH_DEPTH_KEY)
                     .toString()
                     .trim();
             setSearchDepth(blackDuck, Integer.parseInt(value));
         }
 
-        if (blackDuckParameters.containsKey(ApplicationConstants.BLACKDUCK_CONFIG_PATH_KEY)) {
+        if (blackDuckParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_CONFIG_PATH_KEY)) {
             String value = blackDuckParameters
-                    .get(ApplicationConstants.BLACKDUCK_CONFIG_PATH_KEY)
+                    .get(ApplicationConstants.BLACKDUCKSCA_CONFIG_PATH_KEY)
                     .toString()
                     .trim();
             setConfigPath(blackDuck, value);
         }
 
-        if (blackDuckParameters.containsKey(ApplicationConstants.BLACKDUCK_ARGS_KEY)) {
+        if (blackDuckParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_ARGS_KEY)) {
             String value = blackDuckParameters
-                    .get(ApplicationConstants.BLACKDUCK_ARGS_KEY)
+                    .get(ApplicationConstants.BLACKDUCKSCA_ARGS_KEY)
                     .toString()
                     .trim();
             blackDuck.setArgs(value);
@@ -172,13 +164,6 @@ public class BlackDuckSCAParametersService {
         if (isBoolean(value)) {
             scan.setFull(Boolean.parseBoolean(value));
             blackDuck.setScan(scan);
-        }
-    }
-
-    private void setAutomationFixpr(BlackDuck blackDuck, String value, Automation automation) {
-        if (isBoolean(value)) {
-            automation.setFixpr(Boolean.parseBoolean(value));
-            blackDuck.setAutomation(automation);
         }
     }
 

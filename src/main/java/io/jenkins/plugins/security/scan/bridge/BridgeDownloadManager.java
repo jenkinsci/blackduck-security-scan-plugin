@@ -7,11 +7,13 @@ import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.global.Utility;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -60,7 +62,7 @@ public class BridgeDownloadManager {
         String installedBridgeVersion = getBridgeVersionFromVersionFile(installedBridgeVersionFilePath);
         String latestBridgeVersion = getLatestBridgeVersionFromArtifactory(bridgeDownloadUrl);
 
-        return !latestBridgeVersion.equals(installedBridgeVersion);
+        return !Objects.equals(installedBridgeVersion, latestBridgeVersion);
     }
 
     public boolean checkIfBridgeInstalled(String bridgeInstallationPath) {

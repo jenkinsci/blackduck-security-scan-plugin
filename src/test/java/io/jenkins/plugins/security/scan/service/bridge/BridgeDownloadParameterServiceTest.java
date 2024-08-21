@@ -1,23 +1,20 @@
 package io.jenkins.plugins.security.scan.service.bridge;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import hudson.FilePath;
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.bridge.BridgeDownloadParameters;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
 import java.io.File;
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BridgeDownloadParameterServiceTest {
     private BridgeDownloadParametersService bridgeDownloadParametersService;
@@ -98,9 +95,9 @@ public class BridgeDownloadParameterServiceTest {
     @Test
     void getBridgeDownloadParamsTest() {
         Map<String, Object> scanParams = new HashMap<>();
-        scanParams.put(ApplicationConstants.SYNOPSYS_BRIDGE_DOWNLOAD_VERSION, "3.0.0");
-        scanParams.put(ApplicationConstants.SYNOPSYS_BRIDGE_INSTALL_DIRECTORY, "/path/to/bridge");
-        scanParams.put(ApplicationConstants.SYNOPSYS_BRIDGE_DOWNLOAD_URL, "https://fake.url.com");
+        scanParams.put(ApplicationConstants.BRIDGECLI_DOWNLOAD_VERSION, "3.0.0");
+        scanParams.put(ApplicationConstants.BRIDGECLI_INSTALL_DIRECTORY, "/path/to/bridge");
+        scanParams.put(ApplicationConstants.BRIDGECLI_DOWNLOAD_URL, "https://fake.url.com");
 
         BridgeDownloadParameters bridgeDownloadParameters = new BridgeDownloadParameters(workspace, listenerMock);
 
@@ -114,8 +111,8 @@ public class BridgeDownloadParameterServiceTest {
     @Test
     void getBridgeDownloadParamsWithAirgapEnabledAndVersionTest() {
         Map<String, Object> scanParams = new HashMap<>();
-        scanParams.put(ApplicationConstants.SYNOPSYS_BRIDGE_DOWNLOAD_VERSION, "3.0.0");
-        scanParams.put(ApplicationConstants.SYNOPSYS_BRIDGE_INSTALL_DIRECTORY, "/path/to/bridge");
+        scanParams.put(ApplicationConstants.BRIDGECLI_DOWNLOAD_VERSION, "3.0.0");
+        scanParams.put(ApplicationConstants.BRIDGECLI_INSTALL_DIRECTORY, "/path/to/bridge");
         scanParams.put(ApplicationConstants.NETWORK_AIRGAP_KEY, true);
 
         BridgeDownloadParameters bridgeDownloadParameters = new BridgeDownloadParameters(workspace, listenerMock);
@@ -130,7 +127,7 @@ public class BridgeDownloadParameterServiceTest {
     @Test
     void getBridgeDownloadParamsForAirgapTest() {
         Map<String, Object> scanParams = new HashMap<>();
-        scanParams.put(ApplicationConstants.SYNOPSYS_BRIDGE_INSTALL_DIRECTORY, "/path/to/bridge");
+        scanParams.put(ApplicationConstants.BRIDGECLI_INSTALL_DIRECTORY, "/path/to/bridge");
         scanParams.put(ApplicationConstants.NETWORK_AIRGAP_KEY, true);
 
         BridgeDownloadParameters bridgeDownloadParameters = new BridgeDownloadParameters(workspace, listenerMock);
@@ -146,9 +143,9 @@ public class BridgeDownloadParameterServiceTest {
     void getBridgeDownloadParamsForAirgapWithURLTest() {
         Map<String, Object> scanParams = new HashMap<>();
         scanParams.put(ApplicationConstants.NETWORK_AIRGAP_KEY, true);
-        scanParams.put(ApplicationConstants.SYNOPSYS_BRIDGE_INSTALL_DIRECTORY, "/path/to/bridge");
+        scanParams.put(ApplicationConstants.BRIDGECLI_INSTALL_DIRECTORY, "/path/to/bridge");
         scanParams.put(
-                ApplicationConstants.SYNOPSYS_BRIDGE_DOWNLOAD_URL, "https://bridge.fake.url.com/synopsys-bridge.zip");
+                ApplicationConstants.BRIDGECLI_DOWNLOAD_URL, "https://bridge.fake.url.com/synopsys-bridge.zip");
 
         BridgeDownloadParameters bridgeDownloadParameters = new BridgeDownloadParameters(workspace, listenerMock);
 

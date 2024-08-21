@@ -26,10 +26,11 @@ public class ScanParametersService {
             throws PluginExceptionHandler {
         Set<String> securityProducts = getSecurityProducts(scanParameters);
 
-        if (securityProducts.contains(SecurityProduct.BLACKDUCK.name())) {
+        if (securityProducts.contains(SecurityProduct.BLACKDUCK.name())
+                || securityProducts.contains(SecurityProduct.BLACKDUCKSCA.name())) {
             BlackDuckSCAParametersService blackDuckSCAParametersService = new BlackDuckSCAParametersService(listener, envVars);
             if (!blackDuckSCAParametersService.isValidBlackDuckParameters(scanParameters)) {
-                throw new PluginExceptionHandler(ErrorCode.INVALID_BLACKDUCK_PARAMETERS);
+                throw new PluginExceptionHandler(ErrorCode.INVALID_BLACKDUCKSCA_PARAMETERS);
             }
         }
         if (securityProducts.contains(SecurityProduct.COVERITY.name())) {

@@ -165,7 +165,7 @@ public class CoverityParametersService {
             setCoverityInstallDirectory(coverityParameters, coverity);
         }
 
-        if (coverityParameters.containsKey(ApplicationConstants.COVERITY_AUTOMATION_PRCOMMENT_KEY)) {
+        if (coverityParameters.containsKey(ApplicationConstants.COVERITY_PRCOMMENT_ENABLED_KEY)) {
             setCoverityPrComment(coverityParameters, coverity);
         }
 
@@ -214,7 +214,7 @@ public class CoverityParametersService {
 
     private void setCoverityPrComment(Map<String, Object> coverityParameters, Coverity coverity) {
         String isEnabled = coverityParameters
-                .get(ApplicationConstants.COVERITY_AUTOMATION_PRCOMMENT_KEY)
+                .get(ApplicationConstants.COVERITY_PRCOMMENT_ENABLED_KEY)
                 .toString()
                 .trim();
         if (isEnabled.equals("true")) {

@@ -118,7 +118,8 @@ public class ToolsParameterService {
             sarif = prepareSarifObject(securityProducts, scanParameters);
         }
 
-        if (securityProducts.contains(SecurityProduct.BLACKDUCK.name())) {
+        if (securityProducts.contains(SecurityProduct.BLACKDUCK.name())
+                || securityProducts.contains(SecurityProduct.BLACKDUCKSCA.name())) {
             BlackDuckSCAParametersService blackDuckSCAParametersService = new BlackDuckSCAParametersService(listener, envVars);
             BlackDuck blackDuck = blackDuckSCAParametersService.prepareBlackDuckObjectForBridge(scanParameters);
             Project project = blackDuckSCAParametersService.prepareProjectObjectForBridge(scanParameters);

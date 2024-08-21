@@ -85,7 +85,7 @@ public class ScanInitializer {
         }
     }
 
-    private void handleBridgeDownload(
+    public void handleBridgeDownload(
             boolean isBridgeDownloadRequired,
             boolean isNetworkAirgap,
             BridgeDownloadParameters bridgeDownloadParams,

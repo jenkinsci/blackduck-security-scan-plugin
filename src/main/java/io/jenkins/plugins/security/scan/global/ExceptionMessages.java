@@ -18,7 +18,7 @@ public class ExceptionMessages {
         exitCodeToMessage.put(ErrorCode.BRIDGE_STARTUP_FAILED, "Bridge initialization failed");
 
         exitCodeToMessage.put(ErrorCode.INVALID_SECURITY_PRODUCT, "Invalid Security Product");
-        exitCodeToMessage.put(ErrorCode.INVALID_BLACKDUCK_PARAMETERS, "Invalid BlackDuck parameters");
+        exitCodeToMessage.put(ErrorCode.INVALID_BLACKDUCKSCA_PARAMETERS, "Invalid BlackDuck parameters");
         exitCodeToMessage.put(ErrorCode.INVALID_COVERITY_PARAMETERS, "Invalid Coverity parameters");
         exitCodeToMessage.put(ErrorCode.INVALID_POLARIS_PARAMETERS, "Invalid Polaris parameters");
         exitCodeToMessage.put(
