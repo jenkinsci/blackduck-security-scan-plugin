@@ -1,18 +1,19 @@
 package io.jenkins.plugins.security.scan.service.scan;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import hudson.EnvVars;
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ScanParametersServiceTest {
     private ScanParametersService scanParametersService;
@@ -28,9 +29,9 @@ public class ScanParametersServiceTest {
     @Test
     void performScanParameterValidationSuccessForBlackDuckTest() throws PluginExceptionHandler {
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put(ApplicationConstants.PRODUCT_KEY, "blackduck");
-        parameters.put(ApplicationConstants.BLACKDUCK_URL_KEY, "https://fake.blackduck.url");
-        parameters.put(ApplicationConstants.BLACKDUCK_TOKEN_KEY, "MDJDSROSVC56FAKEKEY");
+        parameters.put(ApplicationConstants.PRODUCT_KEY, "blackducksca");
+        parameters.put(ApplicationConstants.BLACKDUCKSCA_URL_KEY, "https://fake.blackduck.url");
+        parameters.put(ApplicationConstants.BLACKDUCKSCA_TOKEN_KEY, "MDJDSROSVC56FAKEKEY");
 
         assertTrue(scanParametersService.performScanParameterValidation(parameters, envVarsMock));
     }
@@ -39,8 +40,8 @@ public class ScanParametersServiceTest {
     void performScanParameterValidationFailureForBlackDuckAndPolarisTest() {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put(ApplicationConstants.PRODUCT_KEY, "blackduck, polaris");
-        parameters.put(ApplicationConstants.BLACKDUCK_URL_KEY, "https://fake.blackduck.url");
-        parameters.put(ApplicationConstants.BLACKDUCK_TOKEN_KEY, "MDJDSROSVC56FAKEKEY");
+        parameters.put(ApplicationConstants.BLACKDUCKSCA_URL_KEY, "https://fake.blackduck.url");
+        parameters.put(ApplicationConstants.BLACKDUCKSCA_TOKEN_KEY, "MDJDSROSVC56FAKEKEY");
 
         assertThrows(
                 PluginExceptionHandler.class,
@@ -52,8 +53,8 @@ public class ScanParametersServiceTest {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put(ApplicationConstants.PRODUCT_KEY, "blackduck, polaris");
 
-        parameters.put(ApplicationConstants.BLACKDUCK_URL_KEY, "https://fake.blackduck.url");
-        parameters.put(ApplicationConstants.BLACKDUCK_TOKEN_KEY, "MDJDSROSVC56FAKEKEY");
+        parameters.put(ApplicationConstants.BLACKDUCKSCA_URL_KEY, "https://fake.blackduck.url");
+        parameters.put(ApplicationConstants.BLACKDUCKSCA_TOKEN_KEY, "MDJDSROSVC56FAKEKEY");
 
         parameters.put(ApplicationConstants.POLARIS_SERVER_URL_KEY, "https://fake.polaris.url");
         parameters.put(ApplicationConstants.POLARIS_ACCESS_TOKEN_KEY, "MDJDSRRTRDFYJGH66FAKEKEY");

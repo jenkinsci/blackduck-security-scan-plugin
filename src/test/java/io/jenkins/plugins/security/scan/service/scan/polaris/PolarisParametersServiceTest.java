@@ -1,7 +1,5 @@
 package io.jenkins.plugins.security.scan.service.scan.polaris;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import hudson.EnvVars;
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
@@ -11,13 +9,16 @@ import io.jenkins.plugins.security.scan.input.polaris.Polaris;
 import io.jenkins.plugins.security.scan.input.project.Project;
 import io.jenkins.plugins.security.scan.service.scan.blackducksca.BlackDuckSCAParametersService;
 import io.jenkins.plugins.security.scan.service.scan.coverity.CoverityParametersService;
-import java.io.PrintStream;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import java.io.PrintStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PolarisParametersServiceTest {
     private PolarisParametersService polarisParametersService;
@@ -39,8 +40,8 @@ public class PolarisParametersServiceTest {
     private final String TEST_PROJECT_SOURCE_ARCHIVE = "TEST.ZIP";
     private final String TEST_PROJECT_SOURCE_EXCLUDES = "TEST1, TEST2";
     private final Boolean TEST_PROJECT_SOURCE_PRESERVE_SYM_LINKS = true;
-    private final String TEST_BLACKDUCK_ARGS = "--detect.diagnostic=true";
-    private final String TEST_BLACKDUCK_CONFIG_FILE_PATH = "DIR/CONFIG/application.properties";
+    private final String TEST_BLACKDUCKSCA_ARGS = "--detect.diagnostic=true";
+    private final String TEST_BLACKDUCKSCA_CONFIG_FILE_PATH = "DIR/CONFIG/application.properties";
     private final String TEST_COVERITY_CLEAN_COMMAND = "mvn clean";
     private final String TEST_COVERITY_BUILD_COMMAND = "mvn clean install";
     private final String TEST_COVERITY_ARGS = "-o capture.build.clean-command=\"mvn clean\" -- mvn clean install";
@@ -110,7 +111,7 @@ public class PolarisParametersServiceTest {
         assertEquals(polaris.getAccessToken(), TEST_POLARIS_ACCESS_TOKEN);
         assertEquals(polaris.getApplicationName().getName(), TEST_APPLICATION_NAME);
         assertEquals(polaris.getProjectName().getName(), "fake-project-name");
-        assertEquals(polaris.getAssessmentTypes().getTypes(), Arrays.asList("SAST"));
+        assertEquals(polaris.getAssessmentTypes().getTypes(), List.of("SAST"));
         assertEquals(polaris.getTriage(), "REQUIRED");
         assertEquals(polaris.getBranch().getName(), "test-branch");
         assertEquals(polaris.getTest().getSca().getType(), "SCA-PACKAGE");
@@ -142,12 +143,12 @@ public class PolarisParametersServiceTest {
         assertEquals(polaris.getAccessToken(), TEST_POLARIS_ACCESS_TOKEN);
         assertEquals(polaris.getApplicationName().getName(), TEST_APPLICATION_NAME);
         assertEquals(polaris.getProjectName().getName(), "fake-project-name");
-        assertEquals(polaris.getAssessmentTypes().getTypes(), Arrays.asList("SAST"));
+        assertEquals(polaris.getAssessmentTypes().getTypes(), List.of("SAST"));
         assertEquals(polaris.getTriage(), "REQUIRED");
         assertEquals(polaris.getBranch().getName(), "test-branch");
         assertEquals(polaris.getBranch().getParent().getName(), "test-parent-branch");
         assertEquals(polaris.getPrcomment().getEnabled(), true);
-        assertEquals(polaris.getPrcomment().getSeverities(), Arrays.asList("HIGH"));
+        assertEquals(polaris.getPrcomment().getSeverities(), List.of("HIGH"));
         assertEquals(polaris.getTest().getSca().getType(), "SCA-SIGNATURE");
     }
 
@@ -174,11 +175,11 @@ public class PolarisParametersServiceTest {
         assertEquals(polaris.getAccessToken(), TEST_POLARIS_ACCESS_TOKEN);
         assertEquals(polaris.getApplicationName().getName(), TEST_APPLICATION_NAME);
         assertEquals(polaris.getProjectName().getName(), "fake-project-name");
-        assertEquals(polaris.getAssessmentTypes().getTypes(), Arrays.asList("SAST"));
+        assertEquals(polaris.getAssessmentTypes().getTypes(), List.of("SAST"));
         assertEquals(polaris.getAssessmentTypes().getMode(), TEST_POLARIS_ASSESSMENT_MODE);
         assertEquals(project.getDirectory(), TEST_PROJECT_DIRECTORY);
         assertEquals(project.getSource().getArchive(), TEST_PROJECT_SOURCE_ARCHIVE);
-        assertEquals(project.getSource().getExcludes(), Arrays.asList("TEST"));
+        assertEquals(project.getSource().getExcludes(), List.of("TEST"));
         assertTrue(project.getSource().getPreserveSymLinks());
     }
 
@@ -191,9 +192,9 @@ public class PolarisParametersServiceTest {
         polarisParameters.put(ApplicationConstants.POLARIS_APPLICATION_NAME_KEY, TEST_APPLICATION_NAME);
         polarisParameters.put(ApplicationConstants.POLARIS_PROJECT_NAME_KEY, "fake-project-name");
         polarisParameters.put(ApplicationConstants.POLARIS_ASSESSMENT_TYPES_KEY, "SAST");
-        polarisParameters.put(ApplicationConstants.BLACKDUCK_SEARCH_DEPTH_KEY, 2);
-        polarisParameters.put(ApplicationConstants.BLACKDUCK_CONFIG_PATH_KEY, TEST_BLACKDUCK_CONFIG_FILE_PATH);
-        polarisParameters.put(ApplicationConstants.BLACKDUCK_ARGS_KEY, TEST_BLACKDUCK_ARGS);
+        polarisParameters.put(ApplicationConstants.BLACKDUCKSCA_SEARCH_DEPTH_KEY, 2);
+        polarisParameters.put(ApplicationConstants.BLACKDUCKSCA_CONFIG_PATH_KEY, TEST_BLACKDUCKSCA_CONFIG_FILE_PATH);
+        polarisParameters.put(ApplicationConstants.BLACKDUCKSCA_ARGS_KEY, TEST_BLACKDUCKSCA_ARGS);
         polarisParameters.put(ApplicationConstants.COVERITY_BUILD_COMMAND_KEY, TEST_COVERITY_BUILD_COMMAND);
         polarisParameters.put(ApplicationConstants.COVERITY_CLEAN_COMMAND_KEY, TEST_COVERITY_CLEAN_COMMAND);
         polarisParameters.put(ApplicationConstants.COVERITY_CONFIG_PATH_KEY, TEST_COVERITY_CONFIG_FILE_PATH);
@@ -210,10 +211,10 @@ public class PolarisParametersServiceTest {
         assertEquals(polaris.getAccessToken(), TEST_POLARIS_ACCESS_TOKEN);
         assertEquals(polaris.getApplicationName().getName(), TEST_APPLICATION_NAME);
         assertEquals(polaris.getProjectName().getName(), "fake-project-name");
-        assertEquals(polaris.getAssessmentTypes().getTypes(), Arrays.asList("SAST"));
+        assertEquals(polaris.getAssessmentTypes().getTypes(), List.of("SAST"));
         assertEquals(2, blackDuck.getSearch().getDepth());
-        assertEquals(TEST_BLACKDUCK_CONFIG_FILE_PATH, blackDuck.getConfig().getPath());
-        assertEquals(TEST_BLACKDUCK_ARGS, blackDuck.getArgs());
+        assertEquals(TEST_BLACKDUCKSCA_CONFIG_FILE_PATH, blackDuck.getConfig().getPath());
+        assertEquals(TEST_BLACKDUCKSCA_ARGS, blackDuck.getArgs());
         assertEquals(coverity.getBuild().getCommand(), TEST_COVERITY_BUILD_COMMAND);
         assertEquals(coverity.getClean().getCommand(), TEST_COVERITY_CLEAN_COMMAND);
         assertEquals(coverity.getConfig().getPath(), TEST_COVERITY_CONFIG_FILE_PATH);
