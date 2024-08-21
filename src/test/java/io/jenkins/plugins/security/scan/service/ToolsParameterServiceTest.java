@@ -1,7 +1,5 @@
 package io.jenkins.plugins.security.scan.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hudson.EnvVars;
@@ -27,6 +25,10 @@ import io.jenkins.plugins.security.scan.input.srm.SRM;
 import io.jenkins.plugins.security.scan.service.scm.bitbucket.BitbucketRepositoryService;
 import io.jenkins.plugins.security.scan.service.scm.github.GithubRepositoryService;
 import io.jenkins.plugins.security.scan.service.scm.gitlab.GitlabRepositoryService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -34,13 +36,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
-public class ScannerArgumentServiceTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+public class ToolsParameterServiceTest {
     private Bitbucket bitBucket;
-    private ScannerArgumentService scannerArgumentService;
+    private ToolsParameterService toolsParameterService;
     private final TaskListener listenerMock = Mockito.mock(TaskListener.class);
     private final EnvVars envVarsMock = Mockito.mock(EnvVars.class);
     private final String CLOUD_API_URI = "https://api.github.com";
@@ -61,7 +62,7 @@ public class ScannerArgumentServiceTest {
         Mockito.doReturn("fake-main").when(envVarsMock).get(ApplicationConstants.ENV_CHANGE_TARGET_KEY);
         Mockito.doReturn("fake-pr-branch").when(envVarsMock).get(ApplicationConstants.ENV_CHANGE_BRANCH_KEY);
 
-        scannerArgumentService = new ScannerArgumentService(listenerMock, envVarsMock, workspace);
+        toolsParameterService = new ToolsParameterService(listenerMock, envVarsMock, workspace);
     }
 
     @Test
@@ -71,7 +72,7 @@ public class ScannerArgumentServiceTest {
         blackDuck.setToken(TOKEN);
         Map<String, Object> scanParameters = new HashMap<>();
 
-        String inputJsonPath = scannerArgumentService.createBridgeInputJson(
+        String inputJsonPath = toolsParameterService.createBridgeInputJson(
                 scanParameters,
                 blackDuck,
                 bitBucket,
@@ -106,7 +107,7 @@ public class ScannerArgumentServiceTest {
             String jsonStringNonPrCommentOrFixPr =
                     "{\"data\":{\"blackduck\":{\"url\":\"https://fake.blackduck.url\",\"token\":\"MDJDSROSVC56FAKEKEY\"}}}";
 
-            String inputJsonPathForNonFixPr = scannerArgumentService.createBridgeInputJson(
+            String inputJsonPathForNonFixPr = toolsParameterService.createBridgeInputJson(
                     scanParameters,
                     blackDuck,
                     bitbucketObject,
@@ -132,7 +133,7 @@ public class ScannerArgumentServiceTest {
         try {
             String jsonStringForPrComment =
                     "{\"data\":{\"blackduck\":{\"url\":\"https://fake.blackduck.url\",\"token\":\"MDJDSROSVC56FAKEKEY\"},\"bitbucket\":{\"api\":{\"url\":\"\",\"user\":{\"name\":\"fake-user\"},\"token\":\"MDJDSROSVC56FAKEKEY\"},\"project\":{\"repository\":{\"pull\":{\"number\":12},\"name\":\"test\"},\"key\":\"abc\"}}}}";
-            String inputJsonPathForPrComment = scannerArgumentService.createBridgeInputJson(
+            String inputJsonPathForPrComment = toolsParameterService.createBridgeInputJson(
                     scanParameters,
                     blackDuck,
                     bitbucketObject,
@@ -163,7 +164,7 @@ public class ScannerArgumentServiceTest {
         polaris.setAccessToken(TOKEN);
         Map<String, Object> scanParameters = new HashMap<>();
 
-        String inputJsonPath = scannerArgumentService.createBridgeInputJson(
+        String inputJsonPath = toolsParameterService.createBridgeInputJson(
                 scanParameters,
                 polaris,
                 bitBucket,
@@ -198,7 +199,7 @@ public class ScannerArgumentServiceTest {
             String jsonStringNonPrCommentOrFixPr =
                     "{\"data\":{\"polaris\":{\"accesstoken\":\"MDJDSROSVC56FAKEKEY\",\"application\":{\"name\":\"test\"},\"project\":{\"name\":\"test\"},\"assessment\":{},\"serverUrl\":\"https://fake.polaris.url\",\"branch\":{\"name\":\"fake-pr-branch\"}}}}";
 
-            String inputJsonPathForNonFixPr = scannerArgumentService.createBridgeInputJson(
+            String inputJsonPathForNonFixPr = toolsParameterService.createBridgeInputJson(
                     scanParameters,
                     polaris,
                     bitbucketObject,
@@ -224,7 +225,7 @@ public class ScannerArgumentServiceTest {
         try {
             String jsonStringForPrComment =
                     "{\"data\":{\"polaris\":{\"accesstoken\":\"MDJDSROSVC56FAKEKEY\",\"application\":{\"name\":\"test\"},\"project\":{\"name\":\"test\"},\"assessment\":{},\"serverUrl\":\"https://fake.polaris.url\",\"branch\":{\"name\":\"fake-pr-branch\"}},\"bitbucket\":{\"api\":{\"url\":\"\",\"user\":{\"name\":\"fake-username\"},\"token\":\"MDJDSROSVC56FAKEKEY\"},\"project\":{\"repository\":{\"pull\":{\"number\":12},\"name\":\"test\"},\"key\":\"abc\"}}}}";
-            String inputJsonPathForPrComment = scannerArgumentService.createBridgeInputJson(
+            String inputJsonPathForPrComment = toolsParameterService.createBridgeInputJson(
                     scanParameters,
                     polaris,
                     bitbucketObject,
@@ -256,7 +257,7 @@ public class ScannerArgumentServiceTest {
         srm.getAssessmentTypes().setTypes(List.of("SCA"));
         Map<String, Object> scanParameters = new HashMap<>();
 
-        String inputJsonPath = scannerArgumentService.createBridgeInputJson(
+        String inputJsonPath = toolsParameterService.createBridgeInputJson(
                 scanParameters, srm, bitBucket, false, null, null, ApplicationConstants.SRM_INPUT_JSON_PREFIX, null);
         Path filePath = Paths.get(inputJsonPath);
 
@@ -285,7 +286,7 @@ public class ScannerArgumentServiceTest {
             String jsonStringNonPrCommentOrFixPr =
                     "{\"data\":{\"srm\":{\"url\":\"https://fake.srm.url\",\"apikey\":\"MDJDSROSVC56FAKEKEY\",\"assessment\":{\"types\":[\"SCA\"]},\"project\":{\"name\":\"test\"}}}}";
 
-            String inputJsonPathForNonFixPr = scannerArgumentService.createBridgeInputJson(
+            String inputJsonPathForNonFixPr = toolsParameterService.createBridgeInputJson(
                     scanParameters,
                     srm,
                     bitbucketObject,
@@ -311,7 +312,7 @@ public class ScannerArgumentServiceTest {
         try {
             String jsonStringForPrComment =
                     "{\"data\":{\"srm\":{\"url\":\"https://fake.srm.url\",\"apikey\":\"MDJDSROSVC56FAKEKEY\",\"assessment\":{\"types\":[\"SCA\"]},\"project\":{\"name\":\"test\"}},\"bitbucket\":{\"api\":{\"url\":\"\",\"user\":{\"name\":\"fake-user\"},\"token\":\"MDJDSROSVC56FAKEKEY\"},\"project\":{\"repository\":{\"pull\":{\"number\":12},\"name\":\"test\"},\"key\":\"abc\"}}}}";
-            String inputJsonPathForPrComment = scannerArgumentService.createBridgeInputJson(
+            String inputJsonPathForPrComment = toolsParameterService.createBridgeInputJson(
                     scanParameters,
                     srm,
                     bitbucketObject,
@@ -342,13 +343,13 @@ public class ScannerArgumentServiceTest {
         Github github = Mockito.mock(Github.class);
         Gitlab gitlab = Mockito.mock(Gitlab.class);
 
-        scannerArgumentService.setScmObject(bridgeInput, bitbucket);
+        toolsParameterService.setScmObject(bridgeInput, bitbucket);
         Mockito.verify(bridgeInput).setBitbucket(bitbucket);
 
-        scannerArgumentService.setScmObject(bridgeInput, github);
+        toolsParameterService.setScmObject(bridgeInput, github);
         Mockito.verify(bridgeInput).setGithub(github);
 
-        scannerArgumentService.setScmObject(bridgeInput, gitlab);
+        toolsParameterService.setScmObject(bridgeInput, gitlab);
         Mockito.verify(bridgeInput).setGitlab(gitlab);
     }
 
@@ -357,7 +358,7 @@ public class ScannerArgumentServiceTest {
         BridgeInput bridgeInput = Mockito.mock(BridgeInput.class);
         Project project = Mockito.mock(Project.class);
 
-        scannerArgumentService.setProjectObject(bridgeInput, project);
+        toolsParameterService.setProjectObject(bridgeInput, project);
         Mockito.verify(bridgeInput).setProject(project);
     }
 
@@ -372,7 +373,7 @@ public class ScannerArgumentServiceTest {
         scanParameters.put(ApplicationConstants.BLACKDUCK_REPORTS_SARIF_SEVERITIES_KEY, "HIGH,MEDIUM,LOW");
         scanParameters.put(ApplicationConstants.BLACKDUCK_REPORTS_SARIF_GROUPSCAISSUES_KEY, true);
 
-        Sarif sarifObject = scannerArgumentService.prepareSarifObject(securityProducts, scanParameters);
+        Sarif sarifObject = toolsParameterService.prepareSarifObject(securityProducts, scanParameters);
 
         assertNotNull(sarifObject);
         assertTrue(sarifObject.getCreate());
@@ -393,7 +394,7 @@ public class ScannerArgumentServiceTest {
         scanParameters.put(ApplicationConstants.POLARIS_REPORTS_SARIF_GROUPSCAISSUES_KEY, true);
         scanParameters.put(ApplicationConstants.POLARIS_REPORTS_SARIF_ISSUE_TYPES_KEY, "SCA");
 
-        Sarif sarifObject = scannerArgumentService.prepareSarifObject(securityProducts, scanParameters);
+        Sarif sarifObject = toolsParameterService.prepareSarifObject(securityProducts, scanParameters);
 
         assertNotNull(sarifObject);
         assertTrue(sarifObject.getCreate());
@@ -408,7 +409,7 @@ public class ScannerArgumentServiceTest {
         String jsonString =
                 "{\"data\":{\"blackduck\":{\"url\":\"https://fake.blackduck.url\",\"token\":\"MDJDSROSVC56FAKEKEY\"}}}";
 
-        String jsonPath = scannerArgumentService.writeInputJsonToFile(
+        String jsonPath = toolsParameterService.writeInputJsonToFile(
                 jsonString, ApplicationConstants.BLACKDUCK_INPUT_JSON_PREFIX);
         String fileContent = null;
         try {
@@ -436,7 +437,7 @@ public class ScannerArgumentServiceTest {
         coverity.getConnect().getUser().setPassword("fakeUserPassword");
         Map<String, Object> scanParameters = new HashMap<>();
 
-        String inputJsonPath = scannerArgumentService.createBridgeInputJson(
+        String inputJsonPath = toolsParameterService.createBridgeInputJson(
                 scanParameters,
                 coverity,
                 bitBucket,
@@ -480,7 +481,7 @@ public class ScannerArgumentServiceTest {
         try {
             Github github = githubRepositoryService.createGithubObject(
                     scanParametersMap, "fake-repo", "fake-owner", 1, "fake-branch", true, CLOUD_API_URI);
-            String inputJsonPath = scannerArgumentService.createBridgeInputJson(
+            String inputJsonPath = toolsParameterService.createBridgeInputJson(
                     scanParametersMap,
                     coverity,
                     github,
@@ -534,7 +535,7 @@ public class ScannerArgumentServiceTest {
                     "fake-gitlab-branch",
                     "https://gitlab.com/fake-group/fake-gitlab-repo.git",
                     true);
-            String inputJsonPathForGitlabPrComment = scannerArgumentService.createBridgeInputJson(
+            String inputJsonPathForGitlabPrComment = toolsParameterService.createBridgeInputJson(
                     scanParametersMap,
                     blackDuck,
                     gitlabObject,
@@ -571,7 +572,7 @@ public class ScannerArgumentServiceTest {
         installedDependencies.put(ApplicationConstants.BITBUCKET_BRANCH_SOURCE_PLUGIN_NAME, true);
 
         List<String> commandLineArgs =
-                scannerArgumentService.getCommandLineArgs(installedDependencies, blackDuckParametersMap, workspace);
+                toolsParameterService.getCommandLineArgs(installedDependencies, blackDuckParametersMap, workspace);
 
         if (getOSNameForTest().contains("win")) {
             assertEquals(
@@ -612,7 +613,7 @@ public class ScannerArgumentServiceTest {
         installedDependencies.put(ApplicationConstants.BITBUCKET_BRANCH_SOURCE_PLUGIN_NAME, true);
 
         List<String> commandLineArgs =
-                scannerArgumentService.getCommandLineArgs(installedDependencies, coverityParameters, workspace);
+                toolsParameterService.getCommandLineArgs(installedDependencies, coverityParameters, workspace);
 
         if (getOSNameForTest().contains("win")) {
             assertEquals(
@@ -653,7 +654,7 @@ public class ScannerArgumentServiceTest {
         installedDependencies.put(ApplicationConstants.BITBUCKET_BRANCH_SOURCE_PLUGIN_NAME, true);
 
         List<String> commandLineArgs =
-                scannerArgumentService.getCommandLineArgs(installedDependencies, polarisParameters, workspace);
+                toolsParameterService.getCommandLineArgs(installedDependencies, polarisParameters, workspace);
 
         if (getOSNameForTest().contains("win")) {
             assertEquals(
@@ -694,8 +695,8 @@ public class ScannerArgumentServiceTest {
         installedDependencies.put(ApplicationConstants.BITBUCKET_BRANCH_SOURCE_PLUGIN_NAME, true);
 
         List<String> commandLineArgs =
-                scannerArgumentService.getCommandLineArgs(installedDependencies, srmParameters, workspace);
-        scannerArgumentService.getCommandLineArgs(installedDependencies, srmParameters, workspace);
+                toolsParameterService.getCommandLineArgs(installedDependencies, srmParameters, workspace);
+        toolsParameterService.getCommandLineArgs(installedDependencies, srmParameters, workspace);
 
         if (getOSNameForTest().contains("win")) {
             assertEquals(
@@ -728,18 +729,18 @@ public class ScannerArgumentServiceTest {
         Map<String, Object> scanParameters = new HashMap<>();
 
         scanParameters.put(ApplicationConstants.BLACKDUCK_AUTOMATION_PRCOMMENT_KEY, true);
-        assertTrue(scannerArgumentService.isPrCommentValueSet(scanParameters));
+        assertTrue(toolsParameterService.isPrCommentValueSet(scanParameters));
 
         scanParameters.clear();
         scanParameters.put(ApplicationConstants.COVERITY_AUTOMATION_PRCOMMENT_KEY, true);
-        assertTrue(scannerArgumentService.isPrCommentValueSet(scanParameters));
+        assertTrue(toolsParameterService.isPrCommentValueSet(scanParameters));
 
         scanParameters.clear();
         scanParameters.put(ApplicationConstants.POLARIS_PRCOMMENT_ENABLED_KEY, true);
-        assertTrue(scannerArgumentService.isPrCommentValueSet(scanParameters));
+        assertTrue(toolsParameterService.isPrCommentValueSet(scanParameters));
 
         scanParameters.clear();
-        assertFalse(scannerArgumentService.isPrCommentValueSet(scanParameters));
+        assertFalse(toolsParameterService.isPrCommentValueSet(scanParameters));
     }
 
     @Test
@@ -759,7 +760,7 @@ public class ScannerArgumentServiceTest {
             }
         }
 
-        scannerArgumentService.removeTemporaryInputJson(inputJsonPath);
+        toolsParameterService.removeTemporaryInputJson(inputJsonPath);
 
         for (String path : inputJsonPath) {
             assertFalse(Files.exists(Paths.get(path)));

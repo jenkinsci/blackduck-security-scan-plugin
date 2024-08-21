@@ -19,7 +19,7 @@ import io.jenkins.plugins.security.scan.extension.pipeline.ReturnStatusScan;
 import io.jenkins.plugins.security.scan.global.*;
 import io.jenkins.plugins.security.scan.global.enums.BuildStatus;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
-import io.jenkins.plugins.security.scan.service.ScannerArgumentService;
+import io.jenkins.plugins.security.scan.service.ToolsParameterService;
 import jenkins.model.GlobalConfiguration;
 
 import java.util.*;
@@ -36,7 +36,7 @@ public class ScanParametersFactory {
                         launcher,
                         workspace,
                         envVars,
-                        new ScannerArgumentService(listener, envVars, workspace)),
+                        new ToolsParameterService(listener, envVars, workspace)),
                 workspace,
                 envVars,
                 listener);

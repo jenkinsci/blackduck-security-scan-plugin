@@ -39,14 +39,14 @@ import io.jenkins.plugins.security.scan.service.scm.SCMRepositoryService;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-public class ScannerArgumentService {
+public class ToolsParameterService {
     private final TaskListener listener;
     private final EnvVars envVars;
     private final FilePath workspace;
     private static final String DATA_KEY = "data";
     private final LoggerWrapper logger;
 
-    public ScannerArgumentService(TaskListener listener, EnvVars envVars, FilePath workspace) {
+    public ToolsParameterService(TaskListener listener, EnvVars envVars, FilePath workspace) {
         this.listener = listener;
         this.envVars = envVars;
         this.workspace = workspace;
@@ -112,7 +112,7 @@ public class ScannerArgumentService {
             networkAirGap.setAirgap(isNetworkAirgap);
         }
 
-        if ((scanParameters.containsKey(ApplicationConstants.BLACKDUCK_REPORTS_SARIF_CREATE_KEY)
+        if ((scanParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_CREATE_KEY)
                         || scanParameters.containsKey(ApplicationConstants.POLARIS_REPORTS_SARIF_CREATE_KEY))
                 && envVars.get(ApplicationConstants.ENV_CHANGE_ID_KEY) == null) {
             sarif = prepareSarifObject(securityProducts, scanParameters);
@@ -124,7 +124,7 @@ public class ScannerArgumentService {
             Project project = blackDuckParametersService.prepareProjectObjectForBridge(scanParameters);
 
             scanCommands.add(BridgeParams.STAGE_OPTION);
-            scanCommands.add(BridgeParams.BLACKDUCK_STAGE);
+            scanCommands.add(BridgeParams.BLACKDUCKSCA_STAGE);
             scanCommands.add(BridgeParams.INPUT_OPTION);
             scanCommands.add(createBridgeInputJson(
                     scanParameters,
@@ -291,9 +291,9 @@ public class ScannerArgumentService {
 
     private void handleSrmSCAInstallationPath(
             BridgeInput bridgeInput, Map<String, Object> scanParameters, BlackDuck blackDuck) {
-        if (scanParameters.containsKey(ApplicationConstants.SRM_SCA_EXECUTION_PATH_KEY)) {
+        if (scanParameters.containsKey(ApplicationConstants.SRM_SCA_DETECT_EXECUTION_PATH_KEY)) {
             String installationPath = scanParameters
-                    .get(ApplicationConstants.SRM_SCA_EXECUTION_PATH_KEY)
+                    .get(ApplicationConstants.SRM_SCA_DETECT_EXECUTION_PATH_KEY)
                     .toString()
                     .trim();
             if (installationPath != null && !installationPath.isBlank()) {
@@ -376,9 +376,9 @@ public class ScannerArgumentService {
     }
 
     private BlackDuck setSearchDepth(Map<String, Object> scanParameters, BlackDuck blackDuck) {
-        if (scanParameters.containsKey(ApplicationConstants.BLACKDUCK_SEARCH_DEPTH_KEY)) {
+        if (scanParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_SEARCH_DEPTH_KEY)) {
             String searchDepth = scanParameters
-                    .get(ApplicationConstants.BLACKDUCK_SEARCH_DEPTH_KEY)
+                    .get(ApplicationConstants.BLACKDUCKSCA_SEARCH_DEPTH_KEY)
                     .toString()
                     .trim();
             if (searchDepth != null && !searchDepth.isBlank()) {
@@ -392,9 +392,9 @@ public class ScannerArgumentService {
     }
 
     private BlackDuck setConfigPath(Map<String, Object> scanParameters, BlackDuck blackDuck) {
-        if (scanParameters.containsKey(ApplicationConstants.BLACKDUCK_CONFIG_PATH_KEY)) {
+        if (scanParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_CONFIG_PATH_KEY)) {
             String configPath = scanParameters
-                    .get(ApplicationConstants.BLACKDUCK_CONFIG_PATH_KEY)
+                    .get(ApplicationConstants.BLACKDUCKSCA_CONFIG_PATH_KEY)
                     .toString()
                     .trim();
             if (configPath != null && !configPath.isBlank()) {
@@ -408,9 +408,9 @@ public class ScannerArgumentService {
     }
 
     private BlackDuck setBlackDuckArgs(Map<String, Object> scanParameters, BlackDuck blackDuck) {
-        if (scanParameters.containsKey(ApplicationConstants.BLACKDUCK_ARGS_KEY)) {
+        if (scanParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_ARGS_KEY)) {
             String blackduckArgs = scanParameters
-                    .get(ApplicationConstants.BLACKDUCK_ARGS_KEY)
+                    .get(ApplicationConstants.BLACKDUCKSCA_ARGS_KEY)
                     .toString()
                     .trim();
             if (blackduckArgs != null && !blackduckArgs.isBlank()) {
@@ -585,11 +585,11 @@ public class ScannerArgumentService {
     }
 
     public boolean isPrCommentValueSet(Map<String, Object> scanParameters) {
-        if (scanParameters.containsKey(ApplicationConstants.BLACKDUCK_AUTOMATION_PRCOMMENT_KEY)
-                && Objects.equals(scanParameters.get(ApplicationConstants.BLACKDUCK_AUTOMATION_PRCOMMENT_KEY), true)) {
+        if (scanParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_PRCOMMENT_ENABLED_KEY)
+                && Objects.equals(scanParameters.get(ApplicationConstants.BLACKDUCKSCA_PRCOMMENT_ENABLED_KEY), true)) {
             return true;
-        } else if (scanParameters.containsKey(ApplicationConstants.COVERITY_AUTOMATION_PRCOMMENT_KEY)
-                && Objects.equals(scanParameters.get(ApplicationConstants.COVERITY_AUTOMATION_PRCOMMENT_KEY), true)) {
+        } else if (scanParameters.containsKey(ApplicationConstants.COVERITY_PRCOMMENT_ENABLED_KEY)
+                && Objects.equals(scanParameters.get(ApplicationConstants.COVERITY_PRCOMMENT_ENABLED_KEY), true)) {
             return true;
         } else if (scanParameters.containsKey(ApplicationConstants.POLARIS_PRCOMMENT_ENABLED_KEY)
                 && Objects.equals(scanParameters.get(ApplicationConstants.POLARIS_PRCOMMENT_ENABLED_KEY), true)) {
@@ -609,7 +609,8 @@ public class ScannerArgumentService {
     public Sarif prepareSarifObject(Set<String> securityProducts, Map<String, Object> scanParameters) {
         Sarif sarif = new Sarif();
 
-        if (securityProducts.contains(SecurityProduct.BLACKDUCK.name())) {
+        if (securityProducts.contains(SecurityProduct.BLACKDUCK.name())
+                || securityProducts.contains(SecurityProduct.BLACKDUCKSCA.name())) {
             handleBlackDuck(scanParameters, sarif);
             return sarif;
 
@@ -621,22 +622,22 @@ public class ScannerArgumentService {
     }
 
     private void handleBlackDuck(Map<String, Object> scanParameters, Sarif sarif) {
-        if (scanParameters.containsKey(ApplicationConstants.BLACKDUCK_REPORTS_SARIF_CREATE_KEY)) {
+        if (scanParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_CREATE_KEY)) {
             Boolean isReports_sarif_create =
-                    (Boolean) scanParameters.get(ApplicationConstants.BLACKDUCK_REPORTS_SARIF_CREATE_KEY);
+                    (Boolean) scanParameters.get(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_CREATE_KEY);
             sarif.setCreate(isReports_sarif_create);
         }
-        if (scanParameters.containsKey(ApplicationConstants.BLACKDUCK_REPORTS_SARIF_FILE_PATH_KEY)) {
+        if (scanParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_FILE_PATH_KEY)) {
             String reports_sarif_file_path =
-                    (String) scanParameters.get(ApplicationConstants.BLACKDUCK_REPORTS_SARIF_FILE_PATH_KEY);
+                    (String) scanParameters.get(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_FILE_PATH_KEY);
             if (reports_sarif_file_path != null) {
                 sarif.setFile(new File());
                 sarif.getFile().setPath(reports_sarif_file_path);
             }
         }
-        if (scanParameters.containsKey(ApplicationConstants.BLACKDUCK_REPORTS_SARIF_SEVERITIES_KEY)) {
+        if (scanParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_SEVERITIES_KEY)) {
             String reports_sarif_severities =
-                    (String) scanParameters.get(ApplicationConstants.BLACKDUCK_REPORTS_SARIF_SEVERITIES_KEY);
+                    (String) scanParameters.get(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_SEVERITIES_KEY);
             List<String> severities = new ArrayList<>();
             String[] reports_sarif_severitiesInput =
                     reports_sarif_severities.toUpperCase().split(",");
@@ -646,9 +647,9 @@ public class ScannerArgumentService {
                 sarif.setSeverities(severities);
             }
         }
-        if (scanParameters.containsKey(ApplicationConstants.BLACKDUCK_REPORTS_SARIF_GROUPSCAISSUES_KEY)) {
+        if (scanParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_GROUPSCAISSUES_KEY)) {
             Boolean reports_sarif_groupSCAIssues =
-                    (Boolean) scanParameters.get(ApplicationConstants.BLACKDUCK_REPORTS_SARIF_GROUPSCAISSUES_KEY);
+                    (Boolean) scanParameters.get(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_GROUPSCAISSUES_KEY);
             sarif.setGroupSCAIssues(reports_sarif_groupSCAIssues);
         }
     }

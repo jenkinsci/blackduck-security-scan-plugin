@@ -1,7 +1,5 @@
 package io.jenkins.plugins.security.scan.factory;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import hudson.FilePath;
 import hudson.model.Result;
 import hudson.model.TaskListener;
@@ -14,13 +12,16 @@ import io.jenkins.plugins.security.scan.global.ErrorCode;
 import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.global.enums.BuildStatus;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
 import java.io.File;
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ScanParametersFactoryTest {
     private TaskListener listenerMock;
@@ -448,6 +449,7 @@ public class ScanParametersFactoryTest {
     @Test
     public void validateProductTest() {
         assertTrue(ScanParametersFactory.validateProduct("blackduck", listenerMock));
+        assertTrue(ScanParametersFactory.validateProduct("blackducksca", listenerMock));
         assertTrue(ScanParametersFactory.validateProduct("POLARIS", listenerMock));
         assertTrue(ScanParametersFactory.validateProduct("COveRiTy", listenerMock));
         assertFalse(ScanParametersFactory.validateProduct("polar1s", listenerMock));

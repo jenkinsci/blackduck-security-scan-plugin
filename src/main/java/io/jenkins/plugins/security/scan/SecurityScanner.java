@@ -12,7 +12,7 @@ import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.global.Utility;
 import io.jenkins.plugins.security.scan.global.enums.ReportType;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
-import io.jenkins.plugins.security.scan.service.ScannerArgumentService;
+import io.jenkins.plugins.security.scan.service.ToolsParameterService;
 import io.jenkins.plugins.security.scan.service.diagnostics.UploadReportService;
 import io.jenkins.plugins.security.scan.service.scan.ScanParametersService;
 import java.util.List;
@@ -28,7 +28,7 @@ public class SecurityScanner {
     private final Launcher launcher;
     private final FilePath workspace;
     private final EnvVars envVars;
-    private final ScannerArgumentService scannerArgumentService;
+    private final ToolsParameterService toolsParameterService;
 
     public SecurityScanner(
             Run<?, ?> run,
@@ -36,13 +36,13 @@ public class SecurityScanner {
             Launcher launcher,
             FilePath workspace,
             EnvVars envVars,
-            ScannerArgumentService scannerArgumentService) {
+            ToolsParameterService toolsParameterService) {
         this.run = run;
         this.listener = listener;
         this.launcher = launcher;
         this.workspace = workspace;
         this.envVars = envVars;
-        this.scannerArgumentService = scannerArgumentService;
+        this.toolsParameterService = toolsParameterService;
         this.logger = new LoggerWrapper(listener);
     }
 
@@ -50,7 +50,7 @@ public class SecurityScanner {
             throws PluginExceptionHandler {
         int scanner = 0;
 
-        List<String> commandLineArgs = scannerArgumentService.getCommandLineArgs(
+        List<String> commandLineArgs = toolsParameterService.getCommandLineArgs(
                 Utility.installedBranchSourceDependencies(), scanParams, bridgeInstallationPath);
 
         logger.info("Executable command line arguments: "
@@ -80,7 +80,7 @@ public class SecurityScanner {
                     "******************************* %s *******************************",
                     "END EXECUTION OF BRIDGE CLI");
 
-            scannerArgumentService.removeTemporaryInputJson(commandLineArgs);
+            toolsParameterService.removeTemporaryInputJson(commandLineArgs);
 
             if (Objects.equals(scanParams.get(ApplicationConstants.INCLUDE_DIAGNOSTICS_KEY), true)) {
                 UploadReportService uploadReportService = new UploadReportService(
