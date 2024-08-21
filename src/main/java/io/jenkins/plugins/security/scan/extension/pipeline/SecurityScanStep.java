@@ -10,6 +10,8 @@ import hudson.model.TaskListener;
 import hudson.util.ListBoxModel;
 import hudson.util.ListBoxModel.Option;
 import io.jenkins.plugins.gitlabbranchsource.GitLabSCMSource;
+import io.jenkins.plugins.security.scan.ScanInitializer;
+import io.jenkins.plugins.security.scan.SecurityScanner;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.exception.ScannerException;
 import io.jenkins.plugins.security.scan.extension.SecurityScan;
@@ -1042,7 +1044,6 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
         private static final long serialVersionUID = -2514079516220990421L;
         private final transient Run<?, ?> run;
         private final transient Launcher launcher;
-        private final transient Node node;
         private final transient FlowNode flowNode;
 
         @SuppressFBWarnings("SE_TRANSIENT_FIELD_NOT_RESTORED")
@@ -1061,7 +1062,6 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
             envVars = context.get(EnvVars.class);
             workspace = context.get(FilePath.class);
             launcher = context.get(Launcher.class);
-            node = context.get(Node.class);
             flowNode = context.get(FlowNode.class);
         }
 
@@ -1082,9 +1082,10 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
             try {
                 verifyRequiredPlugins(logger, envVars);
 
-                exitCode = ParameterMappingService.createPipelineCommand(
-                                run, listener, envVars, launcher, node, workspace)
-                        .initializeScanner(getParametersMap(workspace, listener));
+                SecurityScanner securityScanner = new SecurityScanner(run, listener, launcher, workspace, envVars);
+                ScanInitializer scanInitializer = new ScanInitializer(securityScanner, workspace, envVars, listener);
+
+                exitCode = scanInitializer.initializeScanner(getParametersMap(workspace, listener));
             } catch (Exception e) {
                 if (e instanceof PluginExceptionHandler) {
                     exitCode = ((PluginExceptionHandler) e).getCode();

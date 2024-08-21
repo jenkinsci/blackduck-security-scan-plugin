@@ -1,15 +1,9 @@
 package io.jenkins.plugins.security.scan.service;
 
-import hudson.EnvVars;
 import hudson.FilePath;
-import hudson.Launcher;
-import hudson.model.Node;
 import hudson.model.Result;
-import hudson.model.Run;
 import hudson.model.TaskListener;
 import hudson.util.ListBoxModel;
-import io.jenkins.plugins.security.scan.ScanInitializer;
-import io.jenkins.plugins.security.scan.SecurityScanner;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.extension.SecurityScan;
 import io.jenkins.plugins.security.scan.extension.freestyle.FreestyleScan;
@@ -25,21 +19,6 @@ import java.util.*;
 
 public class ParameterMappingService {
     public static final List<String> DEPRECATED_PARAMETERS = new ArrayList<>();
-
-    public static ScanInitializer createPipelineCommand(
-            Run<?, ?> run, TaskListener listener, EnvVars envVars, Launcher launcher, Node node, FilePath workspace) {
-        return new ScanInitializer(
-                new SecurityScanner(
-                        run,
-                        listener,
-                        launcher,
-                        workspace,
-                        envVars,
-                        new ToolsParameterService(listener, envVars, workspace)),
-                workspace,
-                envVars,
-                listener);
-    }
 
     public static Map<String, Object> preparePipelineParametersMap(
             SecurityScan securityScan, Map<String, Object> parametersMap, TaskListener listener)

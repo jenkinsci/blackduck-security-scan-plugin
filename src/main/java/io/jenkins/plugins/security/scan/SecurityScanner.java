@@ -35,14 +35,13 @@ public class SecurityScanner {
             TaskListener listener,
             Launcher launcher,
             FilePath workspace,
-            EnvVars envVars,
-            ToolsParameterService toolsParameterService) {
+            EnvVars envVars) {
         this.run = run;
         this.listener = listener;
         this.launcher = launcher;
         this.workspace = workspace;
         this.envVars = envVars;
-        this.toolsParameterService = toolsParameterService;
+        this.toolsParameterService = new ToolsParameterService(listener, envVars, workspace);
         this.logger = new LoggerWrapper(listener);
     }
 

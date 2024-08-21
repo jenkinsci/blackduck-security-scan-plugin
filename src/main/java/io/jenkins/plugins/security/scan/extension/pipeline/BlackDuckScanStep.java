@@ -10,18 +10,15 @@ import hudson.model.TaskListener;
 import hudson.util.ListBoxModel;
 import hudson.util.ListBoxModel.Option;
 import io.jenkins.plugins.gitlabbranchsource.GitLabSCMSource;
+import io.jenkins.plugins.security.scan.ScanInitializer;
+import io.jenkins.plugins.security.scan.SecurityScanner;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.exception.ScannerException;
 import io.jenkins.plugins.security.scan.extension.SecurityScan;
-import io.jenkins.plugins.security.scan.service.ParameterMappingService;
 import io.jenkins.plugins.security.scan.global.*;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
+import io.jenkins.plugins.security.scan.service.ParameterMappingService;
 import io.jenkins.plugins.security.scan.service.scm.SCMRepositoryService;
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.*;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import jenkins.scm.api.SCMSource;
 import org.jenkinsci.plugins.github_branch_source.GitHubSCMSource;
 import org.jenkinsci.plugins.workflow.actions.WarningAction;
@@ -29,6 +26,12 @@ import org.jenkinsci.plugins.workflow.graph.FlowNode;
 import org.jenkinsci.plugins.workflow.steps.*;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.*;
 
 public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentScan, ReturnStatusScan, Serializable {
     private static final long serialVersionUID = 6294070801130995534L;
@@ -1020,7 +1023,6 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
         private static final long serialVersionUID = -2514079516220990421L;
         private final transient Run<?, ?> run;
         private final transient Launcher launcher;
-        private final transient Node node;
         private final transient FlowNode flowNode;
 
         @SuppressFBWarnings("SE_TRANSIENT_FIELD_NOT_RESTORED")
@@ -1039,7 +1041,6 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
             envVars = context.get(EnvVars.class);
             workspace = context.get(FilePath.class);
             launcher = context.get(Launcher.class);
-            node = context.get(Node.class);
             flowNode = context.get(FlowNode.class);
         }
 
@@ -1056,9 +1057,10 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
             try {
                 verifyRequiredPlugins(logger, envVars);
 
-                exitCode = ParameterMappingService.createPipelineCommand(
-                                run, listener, envVars, launcher, node, workspace)
-                        .initializeScanner(getParametersMap(workspace, listener));
+                SecurityScanner securityScanner = new SecurityScanner(run, listener, launcher, workspace, envVars);
+                ScanInitializer scanInitializer = new ScanInitializer(securityScanner, workspace, envVars, listener);
+
+                exitCode = scanInitializer.initializeScanner(getParametersMap(workspace, listener));
             } catch (Exception e) {
                 if (e instanceof PluginExceptionHandler) {
                     exitCode = ((PluginExceptionHandler) e).getCode();

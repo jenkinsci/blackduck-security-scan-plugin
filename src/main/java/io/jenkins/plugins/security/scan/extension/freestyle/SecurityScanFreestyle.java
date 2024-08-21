@@ -6,16 +6,19 @@ import hudson.model.*;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.Builder;
 import hudson.util.ListBoxModel;
+import io.jenkins.plugins.security.scan.ScanInitializer;
+import io.jenkins.plugins.security.scan.SecurityScanner;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.exception.ScannerException;
 import io.jenkins.plugins.security.scan.extension.SecurityScan;
-import io.jenkins.plugins.security.scan.service.ParameterMappingService;
 import io.jenkins.plugins.security.scan.global.*;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
-import java.util.Map;
+import io.jenkins.plugins.security.scan.service.ParameterMappingService;
 import jenkins.tasks.SimpleBuildStep;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
+
+import java.util.Map;
 
 @Deprecated
 public class SecurityScanFreestyle extends Builder implements SecurityScan, FreestyleScan, SimpleBuildStep {
@@ -991,7 +994,7 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     public void perform(
             @NonNull Run<?, ?> run,
             @NonNull FilePath workspace,
-            @NonNull EnvVars env,
+            @NonNull EnvVars envVars,
             @NonNull Launcher launcher,
             @NonNull TaskListener listener) {
         int exitCode = 0;
@@ -1007,8 +1010,10 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
                 .concat(" instead."));
 
         try {
-            exitCode = ParameterMappingService.createPipelineCommand(run, listener, env, launcher, null, workspace)
-                    .initializeScanner(getParametersMap(workspace, listener));
+            SecurityScanner securityScanner = new SecurityScanner(run, listener, launcher, workspace, envVars);
+            ScanInitializer scanInitializer = new ScanInitializer(securityScanner, workspace, envVars, listener);
+
+            exitCode = scanInitializer.initializeScanner(getParametersMap(workspace, listener));
         } catch (Exception e) {
             if (e instanceof PluginExceptionHandler) {
                 exitCode = ((PluginExceptionHandler) e).getCode();
