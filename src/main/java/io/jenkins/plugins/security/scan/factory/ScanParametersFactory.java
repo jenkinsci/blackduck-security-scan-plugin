@@ -20,12 +20,13 @@ import io.jenkins.plugins.security.scan.global.*;
 import io.jenkins.plugins.security.scan.global.enums.BuildStatus;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import io.jenkins.plugins.security.scan.service.ScannerArgumentService;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import jenkins.model.GlobalConfiguration;
 
+import java.util.*;
+
 public class ScanParametersFactory {
+    public static final List<String> DEPRECATED_PARAMETERS = new ArrayList<>();
+
     public static PluginParametersHandler createPipelineCommand(
             Run<?, ?> run, TaskListener listener, EnvVars envVars, Launcher launcher, Node node, FilePath workspace) {
         return new PluginParametersHandler(
@@ -57,27 +58,16 @@ public class ScanParametersFactory {
             parametersMap.putAll(prepareSrmParametersMap(securityScan));
             parametersMap.putAll(prepareSarifReportParametersMap(securityScan));
 
-            if (!Utility.isStringNullOrBlank(securityScan.getBitbucket_username())) {
-                parametersMap.put(ApplicationConstants.BITBUCKET_USERNAME_KEY, securityScan.getBitbucket_username());
-            }
-            if (!Utility.isStringNullOrBlank(securityScan.getBitbucket_token())) {
-                parametersMap.put(ApplicationConstants.BITBUCKET_TOKEN_KEY, securityScan.getBitbucket_token());
-            }
-            if (!Utility.isStringNullOrBlank(securityScan.getGitlab_token())) {
-                parametersMap.put(ApplicationConstants.GITLAB_TOKEN_KEY, securityScan.getGitlab_token());
-            }
-
-            if (!Utility.isStringNullOrBlank(securityScan.getGithub_token())) {
-                parametersMap.put(ApplicationConstants.GITHUB_TOKEN_KEY, securityScan.getGithub_token());
-            }
+            addParameterIfNotBlank(parametersMap, ApplicationConstants.BITBUCKET_USERNAME_KEY, securityScan.getBitbucket_username());
+            addParameterIfNotBlank(parametersMap, ApplicationConstants.BITBUCKET_TOKEN_KEY, securityScan.getBitbucket_token());
+            addParameterIfNotBlank(parametersMap, ApplicationConstants.GITLAB_TOKEN_KEY, securityScan.getGitlab_token());
+            addParameterIfNotBlank(parametersMap, ApplicationConstants.GITHUB_TOKEN_KEY, securityScan.getGithub_token());
 
             parametersMap.putAll(prepareAddtionalParametersMap(securityScan));
 
             if (securityScan instanceof ReturnStatusScan) {
                 ReturnStatusScan returnStatusScan = (ReturnStatusScan) securityScan;
-                if (returnStatusScan.isReturn_status() != null) {
-                    parametersMap.put(ApplicationConstants.RETURN_STATUS_KEY, returnStatusScan.isReturn_status());
-                }
+                addParameterIfNotBlank(parametersMap, ApplicationConstants.RETURN_STATUS_KEY, returnStatusScan.isReturn_status());
             }
 
             return parametersMap;
@@ -199,9 +189,23 @@ public class ScanParametersFactory {
         }
     }
 
+    public static void addDeprecatedParameterIfNotBlank(Map<String, Object> parameters, String key, String value) {
+        if (!Utility.isStringNullOrBlank(value)) {
+            parameters.put(key, value);
+            DEPRECATED_PARAMETERS.add(key);
+        }
+    }
+
     public static void addParameterIfNotBlank(Map<String, Object> parameters, String key, Integer value) {
         if (value != null) {
             parameters.put(key, value);
+        }
+    }
+
+    public static void addDeprecatedParameterIfNotBlank(Map<String, Object> parameters, String key, Integer value) {
+        if (value != null) {
+            parameters.put(key, value);
+            DEPRECATED_PARAMETERS.add(key);
         }
     }
 
@@ -211,20 +215,27 @@ public class ScanParametersFactory {
         }
     }
 
+    public static void addDeprecatedParameterIfNotBlank(Map<String, Object> parameters, String key, Boolean value) {
+        if (value != null) {
+            parameters.put(key, value);
+            DEPRECATED_PARAMETERS.add(key);
+        }
+    }
+
     public static Map<String, Object> prepareBlackDuckParametersMap(SecurityScan securityScan) {
         Map<String, Object> blackDuckParameters = new HashMap<>();
 
-        addParameterIfNotBlank(
+        addDeprecatedParameterIfNotBlank(
                 blackDuckParameters, ApplicationConstants.BLACKDUCKSCA_URL_KEY, securityScan.getBlackduck_url());
         addParameterIfNotBlank(
                 blackDuckParameters, ApplicationConstants.BLACKDUCKSCA_URL_KEY, securityScan.getBlackducksca_url());
 
-        addParameterIfNotBlank(
+        addDeprecatedParameterIfNotBlank(
                 blackDuckParameters, ApplicationConstants.BLACKDUCKSCA_TOKEN_KEY, securityScan.getBlackduck_token());
         addParameterIfNotBlank(
                 blackDuckParameters, ApplicationConstants.BLACKDUCKSCA_TOKEN_KEY, securityScan.getBlackducksca_token());
 
-        addParameterIfNotBlank(
+        addDeprecatedParameterIfNotBlank(
                 blackDuckParameters,
                 ApplicationConstants.DETECT_INSTALL_DIRECTORY_KEY,
                 securityScan.getBlackduck_install_directory());
@@ -233,7 +244,7 @@ public class ScanParametersFactory {
                 ApplicationConstants.DETECT_INSTALL_DIRECTORY_KEY,
                 securityScan.getDetect_install_directory());
 
-        addParameterIfNotBlank(
+        addDeprecatedParameterIfNotBlank(
                 blackDuckParameters,
                 ApplicationConstants.BLACKDUCKSCA_SCAN_FAILURE_SEVERITIES_KEY,
                 securityScan.getBlackduck_scan_failure_severities());
@@ -242,7 +253,7 @@ public class ScanParametersFactory {
                 ApplicationConstants.BLACKDUCKSCA_SCAN_FAILURE_SEVERITIES_KEY,
                 securityScan.getBlackducksca_scan_failure_severities());
 
-        addParameterIfNotBlank(
+        addDeprecatedParameterIfNotBlank(
                 blackDuckParameters,
                 ApplicationConstants.DETECT_SCAN_FULL_KEY,
                 securityScan.isBlackduckIntelligentScan());
@@ -251,11 +262,11 @@ public class ScanParametersFactory {
 
         if (securityScan instanceof PrCommentScan) {
             PrCommentScan prCommentScan = (PrCommentScan) securityScan;
-            addParameterIfNotBlank(
+            addDeprecatedParameterIfNotBlank(
                     blackDuckParameters,
                     ApplicationConstants.BLACKDUCKSCA_PRCOMMENT_ENABLED_KEY,
                     prCommentScan.isBlackduck_automation_prcomment_actualValue());
-            addParameterIfNotBlank(
+            addDeprecatedParameterIfNotBlank(
                     blackDuckParameters,
                     ApplicationConstants.BLACKDUCKSCA_PRCOMMENT_ENABLED_KEY,
                     prCommentScan.isBlackduck_prComment_enabled_actualValue());
@@ -265,7 +276,7 @@ public class ScanParametersFactory {
                     prCommentScan.isBlackducksca_prComment_enabled_actualValue());
         }
 
-        addParameterIfNotBlank(
+        addDeprecatedParameterIfNotBlank(
                 blackDuckParameters,
                 ApplicationConstants.BLACKDUCKSCA_DOWNLOAD_URL_KEY,
                 securityScan.getBlackduck_download_url());
@@ -318,7 +329,7 @@ public class ScanParametersFactory {
 
         if (securityScan instanceof PrCommentScan) {
             PrCommentScan prCommentScan = (PrCommentScan) securityScan;
-            addParameterIfNotBlank(
+            addDeprecatedParameterIfNotBlank(
                     coverityParameters,
                     ApplicationConstants.COVERITY_PRCOMMENT_ENABLED_KEY,
                     prCommentScan.isCoverity_automation_prcomment_actualValue());
@@ -429,7 +440,7 @@ public class ScanParametersFactory {
                 srmParametersMap, ApplicationConstants.SRM_BRANCH_NAME_KEY, securityScan.getSrm_branch_name());
         addParameterIfNotBlank(
                 srmParametersMap, ApplicationConstants.SRM_BRANCH_PARENT_KEY, securityScan.getSrm_branch_parent());
-        addParameterIfNotBlank(
+        addDeprecatedParameterIfNotBlank(
                 srmParametersMap,
                 ApplicationConstants.SRM_SCA_DETECT_EXECUTION_PATH_KEY,
                 securityScan.getBlackduck_execution_path());
@@ -470,7 +481,7 @@ public class ScanParametersFactory {
 
     private static void prepareBlackDuckToolConfigurationParametersMap(
             Map<String, Object> blackDuckParameters, SecurityScan securityScan) {
-        addParameterIfNotBlank(
+        addDeprecatedParameterIfNotBlank(
                 blackDuckParameters,
                 ApplicationConstants.BLACKDUCKSCA_SEARCH_DEPTH_KEY,
                 securityScan.getBlackduck_search_depth());
@@ -479,7 +490,7 @@ public class ScanParametersFactory {
                 ApplicationConstants.BLACKDUCKSCA_SEARCH_DEPTH_KEY,
                 securityScan.getBlackducksca_search_depth());
 
-        addParameterIfNotBlank(
+        addDeprecatedParameterIfNotBlank(
                 blackDuckParameters,
                 ApplicationConstants.BLACKDUCKSCA_CONFIG_PATH_KEY,
                 securityScan.getBlackduck_config_path());
@@ -488,7 +499,7 @@ public class ScanParametersFactory {
                 ApplicationConstants.BLACKDUCKSCA_CONFIG_PATH_KEY,
                 securityScan.getBlackducksca_config_path());
 
-        addParameterIfNotBlank(
+        addDeprecatedParameterIfNotBlank(
                 blackDuckParameters, ApplicationConstants.BLACKDUCKSCA_ARGS_KEY, securityScan.getBlackduck_args());
         addParameterIfNotBlank(
                 blackDuckParameters, ApplicationConstants.BLACKDUCKSCA_ARGS_KEY, securityScan.getBlackducksca_args());
@@ -553,7 +564,7 @@ public class ScanParametersFactory {
     public static Map<String, Object> prepareAddtionalParametersMap(SecurityScan securityScan) {
         Map<String, Object> bridgeParameters = new HashMap<>();
 
-        addParameterIfNotBlank(
+        addDeprecatedParameterIfNotBlank(
                 bridgeParameters,
                 ApplicationConstants.BRIDGECLI_DOWNLOAD_URL,
                 securityScan.getSynopsys_bridge_download_url());
@@ -561,7 +572,7 @@ public class ScanParametersFactory {
                 bridgeParameters,
                 ApplicationConstants.BRIDGECLI_DOWNLOAD_URL,
                 securityScan.getBridgecli_download_url());
-        addParameterIfNotBlank(
+        addDeprecatedParameterIfNotBlank(
                 bridgeParameters,
                 ApplicationConstants.BRIDGECLI_DOWNLOAD_VERSION,
                 securityScan.getSynopsys_bridge_download_version());
@@ -569,7 +580,7 @@ public class ScanParametersFactory {
                 bridgeParameters,
                 ApplicationConstants.BRIDGECLI_DOWNLOAD_VERSION,
                 securityScan.getBridgecli_download_version());
-        addParameterIfNotBlank(
+        addDeprecatedParameterIfNotBlank(
                 bridgeParameters,
                 ApplicationConstants.BRIDGECLI_INSTALL_DIRECTORY,
                 securityScan.getSynopsys_bridge_install_directory());
@@ -591,7 +602,7 @@ public class ScanParametersFactory {
     public static Map<String, Object> prepareSarifReportParametersMap(SecurityScan securityScan) {
         Map<String, Object> sarifParameters = new HashMap<>();
 
-        addParameterIfNotBlank(
+        addDeprecatedParameterIfNotBlank(
                 sarifParameters,
                 ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_CREATE_KEY,
                 securityScan.isBlackduck_reports_sarif_create());
@@ -599,7 +610,7 @@ public class ScanParametersFactory {
                 sarifParameters,
                 ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_CREATE_KEY,
                 securityScan.isBlackducksca_reports_sarif_create());
-        addParameterIfNotBlank(
+        addDeprecatedParameterIfNotBlank(
                 sarifParameters,
                 ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_FILE_PATH_KEY,
                 securityScan.getBlackduck_reports_sarif_file_path());
@@ -607,7 +618,7 @@ public class ScanParametersFactory {
                 sarifParameters,
                 ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_FILE_PATH_KEY,
                 securityScan.getBlackducksca_reports_sarif_file_path());
-        addParameterIfNotBlank(
+        addDeprecatedParameterIfNotBlank(
                 sarifParameters,
                 ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_GROUPSCAISSUES_KEY,
                 securityScan.isBlackduck_reports_sarif_groupSCAIssues_temporary());
@@ -615,7 +626,7 @@ public class ScanParametersFactory {
                 sarifParameters,
                 ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_GROUPSCAISSUES_KEY,
                 securityScan.isBlackducksca_reports_sarif_groupSCAIssues_temporary());
-        addParameterIfNotBlank(
+        addDeprecatedParameterIfNotBlank(
                 sarifParameters,
                 ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_SEVERITIES_KEY,
                 securityScan.getBlackduck_reports_sarif_severities());
@@ -672,6 +683,7 @@ public class ScanParametersFactory {
                         .map(String::trim)
                         .map(String::toUpperCase)
                         .allMatch(p -> p.equals(SecurityProduct.BLACKDUCK.name())
+                                || p.equals(SecurityProduct.BLACKDUCKSCA.name())
                                 || p.equals(SecurityProduct.POLARIS.name())
                                 || p.equals(SecurityProduct.COVERITY.name())
                                 || p.equals(SecurityProduct.SRM.name()));

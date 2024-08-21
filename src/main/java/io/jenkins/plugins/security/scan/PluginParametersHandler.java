@@ -6,6 +6,7 @@ import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.bridge.BridgeDownloadManager;
 import io.jenkins.plugins.security.scan.bridge.BridgeDownloadParameters;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
+import io.jenkins.plugins.security.scan.factory.ScanParametersFactory;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.global.ErrorCode;
 import io.jenkins.plugins.security.scan.global.LogMessages;
@@ -13,6 +14,7 @@ import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import io.jenkins.plugins.security.scan.service.bridge.BridgeDownloadParametersService;
 import io.jenkins.plugins.security.scan.service.scan.ScanParametersService;
+
 import java.util.*;
 
 public class PluginParametersHandler {
@@ -123,6 +125,14 @@ public class PluginParametersHandler {
     private void logMessagesForProductParameters(Map<String, Object> scanParameters, Set<String> securityProducts) {
         logger.info(LogMessages.LOG_DASH + ApplicationConstants.PRODUCT_KEY + " = " + securityProducts.toString());
 
+        // Warning message for blackduck stage
+        if (securityProducts.contains(SecurityProduct.BLACKDUCK.name())) {
+            logger.warn(SecurityProduct.BLACKDUCK.name().toLowerCase()
+                    .concat(" product is deprecated and will be removed in future. Please use "
+                    .concat(SecurityProduct.BLACKDUCKSCA.name())
+                            .concat(" and its corresponding parameters instead.")));
+        }
+
         for (String product : securityProducts) {
             String securityProduct = product.toLowerCase();
 
@@ -144,7 +154,8 @@ public class PluginParametersHandler {
                 }
                 logger.info(LogMessages.LOG_DASH + key + " = " + value.toString());
             }
-            logDeprecatedParameterWarning(key);
+
+            logWarningForDeprecatedParameters();
         }
     }
 
@@ -187,21 +198,12 @@ public class PluginParametersHandler {
         }
     }
 
-    private void logDeprecatedParameterWarning(String key) {
-        if (key.equals(ApplicationConstants.BLACKDUCK_AUTOMATION_PRCOMMENT_KEY)
-                || key.equals(ApplicationConstants.COVERITY_AUTOMATION_PRCOMMENT_KEY)) {
-            logger.warn(key + " is deprecated, use " + getNewMappedParameterName(key));
-        }
-    }
+    private void logWarningForDeprecatedParameters() {
+        if (!ScanParametersFactory.DEPRECATED_PARAMETERS.isEmpty()) {
+            logger.warn(ScanParametersFactory.DEPRECATED_PARAMETERS + " is/are deprecated and will be removed in future. " +
+                    "Check documentation for new parameters: " + ApplicationConstants.SYNOPSYS_SECURITY_SCAN_PLUGIN_DOCS_URL);
 
-    public static String getNewMappedParameterName(String key) {
-        switch (key) {
-            case ApplicationConstants.BLACKDUCK_AUTOMATION_PRCOMMENT_KEY:
-                return ApplicationConstants.BLACKDUCK_PRCOMMENT_ENABLED_KEY;
-            case ApplicationConstants.COVERITY_AUTOMATION_PRCOMMENT_KEY:
-                return ApplicationConstants.COVERITY_PRCOMMENT_ENABLED_KEY;
-            default:
-                return "";
+            ScanParametersFactory.DEPRECATED_PARAMETERS.clear();
         }
     }
 }
