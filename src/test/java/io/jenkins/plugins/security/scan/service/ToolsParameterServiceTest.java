@@ -696,7 +696,6 @@ public class ToolsParameterServiceTest {
 
         List<String> commandLineArgs =
                 toolsParameterService.getCommandLineArgs(installedDependencies, srmParameters, workspace);
-        toolsParameterService.getCommandLineArgs(installedDependencies, srmParameters, workspace);
 
         if (getOSNameForTest().contains("win")) {
             assertEquals(
@@ -719,7 +718,7 @@ public class ToolsParameterServiceTest {
                 Files.exists(Path.of(commandLineArgs.get(4))),
                 String.format(
                         "File %s does not exist at the specified path.",
-                        ApplicationConstants.COVERITY_INPUT_JSON_PREFIX.concat(".json")));
+                        ApplicationConstants.SRM_INPUT_JSON_PREFIX.concat(".json")));
 
         Utility.removeFile(commandLineArgs.get(4), workspace, listenerMock);
     }
