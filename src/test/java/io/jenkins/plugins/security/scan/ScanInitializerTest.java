@@ -11,11 +11,14 @@ import org.mockito.Mockito;
 
 import java.io.File;
 import java.io.PrintStream;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
 public class ScanInitializerTest {
     private SecurityScanner securityScannerMock;
@@ -23,6 +26,7 @@ public class ScanInitializerTest {
     private FilePath workspace;
     private EnvVars envVarsMock;
     private ScanInitializer scanInitializer;
+    private ScanInitializer scanInitializerMock;
 
     @BeforeEach
     void setUp() {
@@ -30,6 +34,7 @@ public class ScanInitializerTest {
         workspace = new FilePath(new File(System.getProperty("user.home")));
         listenerMock = Mockito.mock(TaskListener.class);
         envVarsMock = Mockito.mock(EnvVars.class);
+        scanInitializerMock = mock(ScanInitializer.class);
         scanInitializer =
                 new ScanInitializer(securityScannerMock, workspace, envVarsMock, listenerMock);
 
@@ -79,5 +84,18 @@ public class ScanInitializerTest {
         int exitCode = scanInitializer.initializeScanner(scanParameters);
 
         assertEquals(0, exitCode);
+    }
+
+    @Test
+    public void testLogMessagesForParameters_basic() {
+        Map<String, Object> scanParameters = new HashMap<>();
+        Set<String> securityProducts = Collections.emptySet();
+
+        doNothing().when(scanInitializerMock).logMessagesForParameters(isA(Map.class), isA(Set.class));
+
+        scanInitializerMock.logMessagesForParameters(scanParameters, securityProducts);
+
+        verify(scanInitializerMock, times(1))
+                .logMessagesForParameters(scanParameters, securityProducts);
     }
 }

@@ -53,7 +53,7 @@ public class BlackDuckSCAParametersServiceTest {
         assertEquals(TEST_BLACKDUCKSCA_TOKEN, blackDuck.getToken());
         assertEquals(
                 TEST_DETECT_INSTALL_DIRECTORY_PATH, blackDuck.getInstall().getDirectory());
-        assertEquals(null, blackDuck.getAutomation());
+        assertNull(blackDuck.getAutomation());
         assertEquals(true, blackDuck.getScan().getFull());
         assertEquals(
                 List.of("BLOCKER", "CRITICAL", "MAJOR", "MINOR"),

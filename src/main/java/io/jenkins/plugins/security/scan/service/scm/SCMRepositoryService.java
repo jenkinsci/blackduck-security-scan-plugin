@@ -10,11 +10,12 @@ import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.service.scm.bitbucket.BitbucketRepositoryService;
 import io.jenkins.plugins.security.scan.service.scm.github.GithubRepositoryService;
 import io.jenkins.plugins.security.scan.service.scm.gitlab.GitlabRepositoryService;
-import java.util.Map;
 import jenkins.model.Jenkins;
 import jenkins.scm.api.SCMSource;
 import jenkins.scm.api.SCMSourceOwner;
 import org.jenkinsci.plugins.github_branch_source.GitHubSCMSource;
+
+import java.util.Map;
 
 public class SCMRepositoryService {
     private final TaskListener listener;
@@ -85,6 +86,9 @@ public class SCMRepositoryService {
 
     public SCMSource findSCMSource() {
         String jobName = envVars.get(ApplicationConstants.ENV_JOB_NAME_KEY);
+        if (jobName == null || !jobName.contains("/")) {
+            return null;
+        }
         jobName = jobName.substring(0, jobName.indexOf("/"));
         logger.info("Jenkins Job name: " + jobName);
 

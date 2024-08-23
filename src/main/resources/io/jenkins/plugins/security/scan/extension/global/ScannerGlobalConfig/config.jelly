@@ -25,7 +25,7 @@
             <f:entry field="blackDuckSCACredentialsId" title="Black Duck SCA Token">
                  <c:select/>
             </f:entry>
-            <f:entry field="detectInstallationPath" title="Black Duck SCA Install Directory(Optional)">
+            <f:entry field="detectInstallationPath" title="Detect Install Directory (Optional)">
                 <f:textbox name="detectInstallationPath" />
             </f:entry>
             <div class="button-container">

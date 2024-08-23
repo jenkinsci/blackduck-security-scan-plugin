@@ -232,9 +232,9 @@ public class ApplicationConstants {
             "https://sig-product-docs.synopsys.com/bundle/bridge/page/documentation/c_using-synopsys-jenkins-plugin.html";
 
     public static final List<String> ARBITRARY_PARAM_KEYS = List.of(
-            BLACKDUCK_SEARCH_DEPTH_KEY,
-            BLACKDUCK_CONFIG_PATH_KEY,
-            BLACKDUCK_ARGS_KEY,
+            BLACKDUCKSCA_SEARCH_DEPTH_KEY,
+            BLACKDUCKSCA_CONFIG_PATH_KEY,
+            BLACKDUCKSCA_ARGS_KEY,
             COVERITY_BUILD_COMMAND_KEY,
             COVERITY_CLEAN_COMMAND_KEY,
             COVERITY_CONFIG_PATH_KEY,

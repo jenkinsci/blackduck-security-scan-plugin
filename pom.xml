@@ -185,6 +185,7 @@
             <exclude>io/jenkins/plugins/security/scan/extension/**/*.class</exclude>
             <exclude>io/jenkins/plugins/security/scan/SecurityScanner.class</exclude>
             <exclude>io/jenkins/plugins/security/scan/input/**</exclude>
+            <exclude>io/jenkins/plugins/security/scan/service/scm/SCMRepositoryService.class</exclude>
           </excludes>
         </configuration>
         <executions>

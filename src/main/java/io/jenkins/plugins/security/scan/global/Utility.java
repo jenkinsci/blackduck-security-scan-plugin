@@ -6,18 +6,13 @@ import hudson.model.Result;
 import hudson.model.TaskListener;
 import hudson.model.TopLevelItem;
 import io.jenkins.plugins.security.scan.global.enums.BuildStatus;
+import jenkins.model.Jenkins;
+
 import java.io.File;
 import java.io.IOException;
-import java.net.Authenticator;
-import java.net.HttpURLConnection;
-import java.net.InetSocketAddress;
-import java.net.MalformedURLException;
-import java.net.PasswordAuthentication;
-import java.net.Proxy;
-import java.net.URL;
+import java.net.*;
 import java.util.HashMap;
 import java.util.Map;
-import jenkins.model.Jenkins;
 
 public class Utility {
 
@@ -233,7 +228,7 @@ public class Utility {
     public static String getCustomSarifReportFilePath(
             Map<String, Object> scanParams, boolean isBlackDuckScan, boolean isPolarisDuckScan) {
         return isBlackDuckScan
-                ? (String) scanParams.get(ApplicationConstants.BLACKDUCK_REPORTS_SARIF_FILE_PATH_KEY)
+                ? (String) scanParams.get(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_FILE_PATH_KEY)
                 : isPolarisDuckScan
                         ? (String) scanParams.get(ApplicationConstants.POLARIS_REPORTS_SARIF_FILE_PATH_KEY)
                         : "";
