@@ -38,14 +38,7 @@ public class PolarisParametersService {
             logger.info("Polaris parameters are validated successfully");
             return true;
         } else {
-            String message;
-            if (missingMandatoryParams.size() == 1) {
-                message = "Required parameter Polaris is missing: " + missingMandatoryParams.get(0);
-            } else {
-                message = "Required parameters Polaris are missing: " + String.join(", ", missingMandatoryParams);
-            }
-
-            logger.error(message);
+            logger.error(missingMandatoryParams + " - required parameters for Polaris is missing");
             return false;
         }
     }

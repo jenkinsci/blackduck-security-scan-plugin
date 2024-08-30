@@ -26,7 +26,7 @@ public class BlackDuckSCAParametersService {
             return false;
         }
 
-        List<String> invalidParams = new ArrayList<>();
+        List<String> missingMandatoryParams = new ArrayList<>();
 
         Arrays.asList(ApplicationConstants.BLACKDUCKSCA_URL_KEY, ApplicationConstants.BLACKDUCKSCA_TOKEN_KEY)
                 .forEach(key -> {
@@ -35,16 +35,15 @@ public class BlackDuckSCAParametersService {
                             && !blackDuckSCAParameters.get(key).toString().isEmpty();
 
                     if (!isKeyValid) {
-                        invalidParams.add(key);
+                        missingMandatoryParams.add(key);
                     }
                 });
 
-        if (invalidParams.isEmpty()) {
-            logger.info("BlackDuck parameters are validated successfully");
+        if (missingMandatoryParams.isEmpty()) {
+            logger.info("Black Duck SCA parameters are validated successfully");
             return true;
         } else {
-            logger.error("BlackDuck parameters are not valid");
-            logger.error("Invalid BlackDuck parameters: " + invalidParams);
+            logger.error(missingMandatoryParams + " - required parameters for Black Duck SCA is missing");
             return false;
         }
     }

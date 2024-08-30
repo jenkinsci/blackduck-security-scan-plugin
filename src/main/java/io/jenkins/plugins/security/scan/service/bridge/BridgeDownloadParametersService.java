@@ -52,7 +52,7 @@ public class BridgeDownloadParametersService {
             new URL(url);
             return true;
         } catch (MalformedURLException me) {
-            logger.warn("The provided Bridge download URL is not valid: %s", me.getMessage());
+            logger.error("The provided Bridge download URL is not valid: %s", me.getMessage());
             return false;
         }
     }
@@ -63,7 +63,7 @@ public class BridgeDownloadParametersService {
         if (matcher.matches() || version.equals(ApplicationConstants.BRIDGE_CLI_LATEST_VERSION)) {
             return true;
         } else {
-            logger.warn("The provided Bridge download version is not valid: %s", version);
+            logger.error("The provided Bridge download version is not valid: %s", version);
             return false;
         }
     }
@@ -80,14 +80,14 @@ public class BridgeDownloadParametersService {
                 if (isWritable) {
                     return true;
                 } else {
-                    logger.warn("The bridge installation parent path: %s is not writable", parentPath.toURI());
+                    logger.error("The bridge installation parent path: %s is not writable", parentPath.toURI());
                     return false;
                 }
             } else {
                 if (parentPath == null || !parentPath.exists()) {
-                    logger.warn("The bridge installation parent path: %s doesn't exist", path.toURI());
+                    logger.error("The bridge installation parent path: %s doesn't exist", path.toURI());
                 } else if (!parentPath.isDirectory()) {
-                    logger.warn("The bridge installation parent path: %s is not a directory", parentPath.toURI());
+                    logger.error("The bridge installation parent path: %s is not a directory", parentPath.toURI());
                 }
                 return false;
             }

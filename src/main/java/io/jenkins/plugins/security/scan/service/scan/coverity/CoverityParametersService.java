@@ -33,14 +33,7 @@ public class CoverityParametersService {
             logger.info("Coverity parameters are validated successfully");
             return true;
         } else {
-            String message;
-            if (missingMandatoryParams.size() == 1) {
-                message = "Required parameter Coverity is missing: " + missingMandatoryParams.get(0);
-            } else {
-                message = "Required parameters Coverity are missing: " + String.join(", ", missingMandatoryParams);
-            }
-
-            logger.error(message);
+            logger.error(missingMandatoryParams + " - required parameters for Coverity is missing");
             return false;
         }
     }

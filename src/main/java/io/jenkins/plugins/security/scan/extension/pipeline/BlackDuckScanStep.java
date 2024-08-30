@@ -545,7 +545,7 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
     // Returning the null value because if we return any other value, blackduck_project_directory field will be visible
     // in the pipeline syntax script
     @Nullable
-    public String getBlackduck_project_directory() {
+    public String getBlackducksca_project_directory() {
         return null;
     }
 

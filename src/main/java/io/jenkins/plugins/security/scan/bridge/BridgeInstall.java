@@ -7,8 +7,9 @@ import io.jenkins.plugins.security.scan.global.ErrorCode;
 import io.jenkins.plugins.security.scan.global.HomeDirectoryTask;
 import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.global.Utility;
-import java.io.IOException;
 import jenkins.model.Jenkins;
+
+import java.io.IOException;
 
 public class BridgeInstall {
     private final LoggerWrapper logger;
@@ -76,7 +77,7 @@ public class BridgeInstall {
                 logger.info("Created bridge installation directory at: " + directory.getRemote());
             }
         } catch (IOException | InterruptedException e) {
-            logger.error("Failed to create directory: " + directory.getRemote());
+            logger.error("Failed to create default installation directory: " + directory.getRemote());
             Thread.currentThread().interrupt();
         }
     }
