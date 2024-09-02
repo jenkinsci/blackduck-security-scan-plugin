@@ -40,21 +40,21 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
 
     private String blackducksca_url;
     private transient String blackducksca_token;
-    private String detect_install_directory;
-    private Boolean detect_scan_full;
-    private Boolean detectIntelligentScan;
     private String blackducksca_scan_failure_severities;
     private Boolean blackducksca_prComment_enabled;
     private Boolean blackducksca_prComment_enabled_actualValue;
-    private String blackducksca_download_url;
     private Boolean blackducksca_reports_sarif_create;
     private String blackducksca_reports_sarif_file_path;
     private Boolean blackducksca_reports_sarif_groupSCAIssues;
     private String blackducksca_reports_sarif_severities;
     private Boolean blackducksca_reports_sarif_groupSCAIssues_temporary;
-    private Integer blackducksca_search_depth;
-    private String blackducksca_config_path;
-    private String blackducksca_args;
+    private String detect_install_directory;
+    private Boolean detect_scan_full;
+    private Boolean detectIntelligentScan;
+    private String detect_download_url;
+    private Integer detect_search_depth;
+    private String detect_config_path;
+    private String detect_args;
     private String detect_execution_path;
 
     private String coverity_url;
@@ -170,20 +170,20 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
         return blackducksca_prComment_enabled_actualValue;
     }
 
-    public String getBlackducksca_download_url() {
-        return blackducksca_download_url;
+    public String getDetect_download_url() {
+        return detect_download_url;
     }
 
-    public Integer getBlackducksca_search_depth() {
-        return blackducksca_search_depth;
+    public Integer getDetect_search_depth() {
+        return detect_search_depth;
     }
 
-    public String getBlackducksca_config_path() {
-        return blackducksca_config_path;
+    public String getDetect_config_path() {
+        return detect_config_path;
     }
 
-    public String getBlackducksca_args() {
-        return blackducksca_args;
+    public String getDetect_args() {
+        return detect_args;
     }
 
     public String getDetect_execution_path() {
@@ -613,23 +613,23 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
     }
 
     @DataBoundSetter
-    public void setBlackducksca_download_url(String blackducksca_download_url) {
-        this.blackducksca_download_url = Util.fixEmptyAndTrim(blackducksca_download_url);
+    public void setDetect_download_url(String detect_download_url) {
+        this.detect_download_url = Util.fixEmptyAndTrim(detect_download_url);
     }
 
     @DataBoundSetter
-    public void setBlackducksca_search_depth(Integer blackducksca_search_depth) {
-        this.blackducksca_search_depth = blackducksca_search_depth;
+    public void setDetect_search_depth(Integer detect_search_depth) {
+        this.detect_search_depth = detect_search_depth;
     }
 
     @DataBoundSetter
-    public void setBlackducksca_config_path(String blackducksca_config_path) {
-        this.blackducksca_config_path = Util.fixEmptyAndTrim(blackducksca_config_path);
+    public void setDetect_config_path(String detect_config_path) {
+        this.detect_config_path = Util.fixEmptyAndTrim(detect_config_path);
     }
 
     @DataBoundSetter
-    public void setBlackducksca_args(String blackducksca_args) {
-        this.blackducksca_args = Util.fixEmptyAndTrim(blackducksca_args);
+    public void setDetect_args(String detect_args) {
+        this.detect_args = Util.fixEmptyAndTrim(detect_args);
     }
 
     @DataBoundSetter

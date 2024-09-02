@@ -98,19 +98,19 @@ public class ApplicationConstants {
     // Black Duck SCA Parameters
     public static final String BLACKDUCKSCA_URL_KEY = "blackducksca_url";
     public static final String BLACKDUCKSCA_TOKEN_KEY = "blackducksca_token";
-    public static final String DETECT_INSTALL_DIRECTORY_KEY = "detect_install_directory";
-    public static final String DETECT_SCAN_FULL_KEY = "detect_scan_full";
     public static final String BLACKDUCKSCA_SCAN_FAILURE_SEVERITIES_KEY = "blackducksca_scan_failure_severities";
     public static final String BLACKDUCKSCA_PRCOMMENT_ENABLED_KEY = "blackducksca_prComment_enabled";
-    public static final String BLACKDUCKSCA_DOWNLOAD_URL_KEY = "blackducksca_download_url";
     public static final String BLACKDUCKSCA_REPORTS_SARIF_CREATE_KEY = "blackducksca_reports_sarif_create";
     public static final String BLACKDUCKSCA_REPORTS_SARIF_FILE_PATH_KEY = "blackducksca_reports_sarif_file_path";
     public static final String BLACKDUCKSCA_REPORTS_SARIF_GROUPSCAISSUES_KEY =
             "blackducksca_reports_sarif_groupSCAIssues";
     public static final String BLACKDUCKSCA_REPORTS_SARIF_SEVERITIES_KEY = "blackducksca_reports_sarif_severities";
-    public static final String BLACKDUCKSCA_SEARCH_DEPTH_KEY = "blackducksca_search_depth";
-    public static final String BLACKDUCKSCA_CONFIG_PATH_KEY = "blackducksca_config_path";
-    public static final String BLACKDUCKSCA_ARGS_KEY = "blackducksca_args";
+    public static final String DETECT_INSTALL_DIRECTORY_KEY = "detect_install_directory";
+    public static final String DETECT_SCAN_FULL_KEY = "detect_scan_full";
+    public static final String DETECT_DOWNLOAD_URL_KEY = "detect_download_url";
+    public static final String DETECT_SEARCH_DEPTH_KEY = "detect_search_depth";
+    public static final String DETECT_CONFIG_PATH_KEY = "detect_config_path";
+    public static final String DETECT_ARGS_KEY = "detect_args";
 
     // Coverity Parameters
     public static final String COVERITY_URL_KEY = "coverity_url";
@@ -232,9 +232,9 @@ public class ApplicationConstants {
             "https://sig-product-docs.synopsys.com/bundle/bridge/page/documentation/c_using-synopsys-jenkins-plugin.html";
 
     public static final List<String> ARBITRARY_PARAM_KEYS = List.of(
-            BLACKDUCKSCA_SEARCH_DEPTH_KEY,
-            BLACKDUCKSCA_CONFIG_PATH_KEY,
-            BLACKDUCKSCA_ARGS_KEY,
+            DETECT_SEARCH_DEPTH_KEY,
+            DETECT_CONFIG_PATH_KEY,
+            DETECT_ARGS_KEY,
             COVERITY_BUILD_COMMAND_KEY,
             COVERITY_CLEAN_COMMAND_KEY,
             COVERITY_CONFIG_PATH_KEY,

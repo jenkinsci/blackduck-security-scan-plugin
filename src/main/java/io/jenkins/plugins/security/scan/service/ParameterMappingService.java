@@ -256,12 +256,12 @@ public class ParameterMappingService {
 
         addDeprecatedParameterIfNotBlank(
                 blackDuckParameters,
-                ApplicationConstants.BLACKDUCKSCA_DOWNLOAD_URL_KEY,
+                ApplicationConstants.DETECT_DOWNLOAD_URL_KEY,
                 securityScan.getBlackduck_download_url());
         addParameterIfNotBlank(
                 blackDuckParameters,
-                ApplicationConstants.BLACKDUCKSCA_DOWNLOAD_URL_KEY,
-                securityScan.getBlackducksca_download_url());
+                ApplicationConstants.DETECT_DOWNLOAD_URL_KEY,
+                securityScan.getDetect_download_url());
 
         addParameterIfNotBlank(
                 blackDuckParameters, ApplicationConstants.PROJECT_DIRECTORY_KEY, securityScan.getProject_directory());
@@ -461,40 +461,40 @@ public class ParameterMappingService {
             Map<String, Object> blackDuckParameters, SecurityScan securityScan) {
         addDeprecatedParameterIfNotBlank(
                 blackDuckParameters,
-                ApplicationConstants.BLACKDUCKSCA_SEARCH_DEPTH_KEY,
+                ApplicationConstants.DETECT_SEARCH_DEPTH_KEY,
                 securityScan.getBlackduck_search_depth());
         addParameterIfNotBlank(
                 blackDuckParameters,
-                ApplicationConstants.BLACKDUCKSCA_SEARCH_DEPTH_KEY,
-                securityScan.getBlackducksca_search_depth());
+                ApplicationConstants.DETECT_SEARCH_DEPTH_KEY,
+                securityScan.getDetect_search_depth());
 
         addDeprecatedParameterIfNotBlank(
                 blackDuckParameters,
-                ApplicationConstants.BLACKDUCKSCA_CONFIG_PATH_KEY,
+                ApplicationConstants.DETECT_CONFIG_PATH_KEY,
                 securityScan.getBlackduck_config_path());
         addParameterIfNotBlank(
                 blackDuckParameters,
-                ApplicationConstants.BLACKDUCKSCA_CONFIG_PATH_KEY,
-                securityScan.getBlackducksca_config_path());
+                ApplicationConstants.DETECT_CONFIG_PATH_KEY,
+                securityScan.getDetect_config_path());
 
         addDeprecatedParameterIfNotBlank(
-                blackDuckParameters, ApplicationConstants.BLACKDUCKSCA_ARGS_KEY, securityScan.getBlackduck_args());
+                blackDuckParameters, ApplicationConstants.DETECT_ARGS_KEY, securityScan.getBlackduck_args());
         addParameterIfNotBlank(
-                blackDuckParameters, ApplicationConstants.BLACKDUCKSCA_ARGS_KEY, securityScan.getBlackducksca_args());
+                blackDuckParameters, ApplicationConstants.DETECT_ARGS_KEY, securityScan.getDetect_args());
     }
 
     private static void preparePolarisToolConfigurationParametersMap(
             Map<String, Object> polarisParametersMap, FreestyleScan freestyleScan) {
         addParameterIfNotBlank(
                 polarisParametersMap,
-                ApplicationConstants.BLACKDUCKSCA_SEARCH_DEPTH_KEY,
+                ApplicationConstants.DETECT_SEARCH_DEPTH_KEY,
                 freestyleScan.getPolaris_sca_search_depth());
         addParameterIfNotBlank(
                 polarisParametersMap,
-                ApplicationConstants.BLACKDUCKSCA_CONFIG_PATH_KEY,
+                ApplicationConstants.DETECT_CONFIG_PATH_KEY,
                 freestyleScan.getPolaris_sca_config_path());
         addParameterIfNotBlank(
-                polarisParametersMap, ApplicationConstants.BLACKDUCKSCA_ARGS_KEY, freestyleScan.getPolaris_sca_args());
+                polarisParametersMap, ApplicationConstants.DETECT_ARGS_KEY, freestyleScan.getPolaris_sca_args());
         addParameterIfNotBlank(
                 polarisParametersMap,
                 ApplicationConstants.COVERITY_BUILD_COMMAND_KEY,
@@ -515,14 +515,14 @@ public class ParameterMappingService {
             Map<String, Object> srmParametersMap, FreestyleScan freestyleScan) {
         addParameterIfNotBlank(
                 srmParametersMap,
-                ApplicationConstants.BLACKDUCKSCA_SEARCH_DEPTH_KEY,
+                ApplicationConstants.DETECT_SEARCH_DEPTH_KEY,
                 freestyleScan.getSrm_sca_search_depth());
         addParameterIfNotBlank(
                 srmParametersMap,
-                ApplicationConstants.BLACKDUCKSCA_CONFIG_PATH_KEY,
+                ApplicationConstants.DETECT_CONFIG_PATH_KEY,
                 freestyleScan.getSrm_sca_config_path());
         addParameterIfNotBlank(
-                srmParametersMap, ApplicationConstants.BLACKDUCKSCA_ARGS_KEY, freestyleScan.getSrm_sca_args());
+                srmParametersMap, ApplicationConstants.DETECT_ARGS_KEY, freestyleScan.getSrm_sca_args());
         addParameterIfNotBlank(
                 srmParametersMap,
                 ApplicationConstants.COVERITY_BUILD_COMMAND_KEY,

@@ -377,9 +377,9 @@ public class ToolsParameterService {
     }
 
     private BlackDuck setSearchDepth(Map<String, Object> scanParameters, BlackDuck blackDuck) {
-        if (scanParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_SEARCH_DEPTH_KEY)) {
+        if (scanParameters.containsKey(ApplicationConstants.DETECT_SEARCH_DEPTH_KEY)) {
             String searchDepth = scanParameters
-                    .get(ApplicationConstants.BLACKDUCKSCA_SEARCH_DEPTH_KEY)
+                    .get(ApplicationConstants.DETECT_SEARCH_DEPTH_KEY)
                     .toString()
                     .trim();
             if (searchDepth != null && !searchDepth.isBlank()) {
@@ -393,9 +393,9 @@ public class ToolsParameterService {
     }
 
     private BlackDuck setConfigPath(Map<String, Object> scanParameters, BlackDuck blackDuck) {
-        if (scanParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_CONFIG_PATH_KEY)) {
+        if (scanParameters.containsKey(ApplicationConstants.DETECT_CONFIG_PATH_KEY)) {
             String configPath = scanParameters
-                    .get(ApplicationConstants.BLACKDUCKSCA_CONFIG_PATH_KEY)
+                    .get(ApplicationConstants.DETECT_CONFIG_PATH_KEY)
                     .toString()
                     .trim();
             if (configPath != null && !configPath.isBlank()) {
@@ -409,9 +409,9 @@ public class ToolsParameterService {
     }
 
     private BlackDuck setBlackDuckArgs(Map<String, Object> scanParameters, BlackDuck blackDuck) {
-        if (scanParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_ARGS_KEY)) {
+        if (scanParameters.containsKey(ApplicationConstants.DETECT_ARGS_KEY)) {
             String blackduckArgs = scanParameters
-                    .get(ApplicationConstants.BLACKDUCKSCA_ARGS_KEY)
+                    .get(ApplicationConstants.DETECT_ARGS_KEY)
                     .toString()
                     .trim();
             if (blackduckArgs != null && !blackduckArgs.isBlank()) {

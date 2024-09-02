@@ -76,12 +76,12 @@ public class ParameterMappingServiceTest {
         blackDuckScanStep.setDetect_install_directory("/fake/path");
         blackDuckScanStep.setDetect_scan_full(true);
         blackDuckScanStep.setBlackducksca_prComment_enabled(true);
-        blackDuckScanStep.setBlackducksca_download_url("https://fake.blackduck-download-url");
+        blackDuckScanStep.setDetect_download_url("https://fake.blackduck-download-url");
         blackDuckScanStep.setBlackducksca_scan_failure_severities("MAJOR");
         blackDuckScanStep.setProject_directory("test/directory");
-        blackDuckScanStep.setBlackducksca_search_depth(2);
-        blackDuckScanStep.setBlackducksca_config_path("fake/directory/application.properties");
-        blackDuckScanStep.setBlackducksca_args("--o");
+        blackDuckScanStep.setDetect_search_depth(2);
+        blackDuckScanStep.setDetect_config_path("fake/directory/application.properties");
+        blackDuckScanStep.setDetect_args("--o");
 
         Map<String, Object> blackDuckParametersMap =
                 ParameterMappingService.prepareBlackDuckParametersMap(blackDuckScanStep);
@@ -94,14 +94,14 @@ public class ParameterMappingServiceTest {
         assertTrue((boolean) blackDuckParametersMap.get(ApplicationConstants.BLACKDUCKSCA_PRCOMMENT_ENABLED_KEY));
         assertEquals(
                 "https://fake.blackduck-download-url",
-                blackDuckParametersMap.get(ApplicationConstants.BLACKDUCKSCA_DOWNLOAD_URL_KEY));
+                blackDuckParametersMap.get(ApplicationConstants.DETECT_DOWNLOAD_URL_KEY));
         assertEquals("MAJOR", blackDuckParametersMap.get(ApplicationConstants.BLACKDUCKSCA_SCAN_FAILURE_SEVERITIES_KEY));
         assertEquals("test/directory", blackDuckParametersMap.get(ApplicationConstants.PROJECT_DIRECTORY_KEY));
-        assertEquals(2, blackDuckParametersMap.get(ApplicationConstants.BLACKDUCKSCA_SEARCH_DEPTH_KEY));
+        assertEquals(2, blackDuckParametersMap.get(ApplicationConstants.DETECT_SEARCH_DEPTH_KEY));
         assertEquals(
                 "fake/directory/application.properties",
-                blackDuckParametersMap.get(ApplicationConstants.BLACKDUCKSCA_CONFIG_PATH_KEY));
-        assertEquals("--o", blackDuckParametersMap.get(ApplicationConstants.BLACKDUCKSCA_ARGS_KEY));
+                blackDuckParametersMap.get(ApplicationConstants.DETECT_CONFIG_PATH_KEY));
+        assertEquals("--o", blackDuckParametersMap.get(ApplicationConstants.DETECT_ARGS_KEY));
         Map<String, Object> emptyBlackDuckParametersMap =
                 ParameterMappingService.prepareBlackDuckParametersMap(new BlackDuckScanStep());
 
@@ -114,12 +114,12 @@ public class ParameterMappingServiceTest {
         blackDuckScanFreestyle.setBlackducksca_token("fake-token");
         blackDuckScanFreestyle.setDetect_install_directory("/fake/path");
         blackDuckScanFreestyle.setDetect_scan_full(true);
-        blackDuckScanFreestyle.setBlackducksca_download_url("https://fake.blackduck-download-url");
+        blackDuckScanFreestyle.setDetect_download_url("https://fake.blackduck-download-url");
         blackDuckScanFreestyle.setBlackducksca_scan_failure_severities("MAJOR");
         blackDuckScanFreestyle.setProject_directory("test/directory");
-        blackDuckScanFreestyle.setBlackducksca_search_depth(2);
-        blackDuckScanFreestyle.setBlackducksca_config_path("fake/directory/application.properties");
-        blackDuckScanFreestyle.setBlackducksca_args("--o");
+        blackDuckScanFreestyle.setDetect_search_depth(2);
+        blackDuckScanFreestyle.setDetect_config_path("fake/directory/application.properties");
+        blackDuckScanFreestyle.setDetect_args("--o");
 
         Map<String, Object> blackDuckParametersMap =
                 ParameterMappingService.prepareBlackDuckParametersMap(blackDuckScanFreestyle);
@@ -131,14 +131,14 @@ public class ParameterMappingServiceTest {
         assertTrue((boolean) blackDuckParametersMap.get(ApplicationConstants.DETECT_SCAN_FULL_KEY));
         assertEquals(
                 "https://fake.blackduck-download-url",
-                blackDuckParametersMap.get(ApplicationConstants.BLACKDUCKSCA_DOWNLOAD_URL_KEY));
+                blackDuckParametersMap.get(ApplicationConstants.DETECT_DOWNLOAD_URL_KEY));
         assertEquals("MAJOR", blackDuckParametersMap.get(ApplicationConstants.BLACKDUCKSCA_SCAN_FAILURE_SEVERITIES_KEY));
         assertEquals("test/directory", blackDuckParametersMap.get(ApplicationConstants.PROJECT_DIRECTORY_KEY));
-        assertEquals(2, blackDuckParametersMap.get(ApplicationConstants.BLACKDUCKSCA_SEARCH_DEPTH_KEY));
+        assertEquals(2, blackDuckParametersMap.get(ApplicationConstants.DETECT_SEARCH_DEPTH_KEY));
         assertEquals(
                 "fake/directory/application.properties",
-                blackDuckParametersMap.get(ApplicationConstants.BLACKDUCKSCA_CONFIG_PATH_KEY));
-        assertEquals("--o", blackDuckParametersMap.get(ApplicationConstants.BLACKDUCKSCA_ARGS_KEY));
+                blackDuckParametersMap.get(ApplicationConstants.DETECT_CONFIG_PATH_KEY));
+        assertEquals("--o", blackDuckParametersMap.get(ApplicationConstants.DETECT_ARGS_KEY));
         Map<String, Object> emptyBlackDuckParametersMap =
                 ParameterMappingService.prepareBlackDuckParametersMap(new BlackDuckScanStep());
 
@@ -324,11 +324,11 @@ public class ParameterMappingServiceTest {
         assertEquals("mvn clean install", polarisParametersMap.get(ApplicationConstants.COVERITY_CLEAN_COMMAND_KEY));
         assertEquals("fake/path/config.yml", polarisParametersMap.get(ApplicationConstants.COVERITY_CONFIG_PATH_KEY));
         assertEquals("--o", polarisParametersMap.get(ApplicationConstants.COVERITY_ARGS_KEY));
-        assertEquals(2, polarisParametersMap.get(ApplicationConstants.BLACKDUCKSCA_SEARCH_DEPTH_KEY));
+        assertEquals(2, polarisParametersMap.get(ApplicationConstants.DETECT_SEARCH_DEPTH_KEY));
         assertEquals(
                 "fake/path/application.properties",
-                polarisParametersMap.get(ApplicationConstants.BLACKDUCKSCA_CONFIG_PATH_KEY));
-        assertEquals("--o", polarisParametersMap.get(ApplicationConstants.BLACKDUCKSCA_ARGS_KEY));
+                polarisParametersMap.get(ApplicationConstants.DETECT_CONFIG_PATH_KEY));
+        assertEquals("--o", polarisParametersMap.get(ApplicationConstants.DETECT_ARGS_KEY));
     }
 
     @Test
@@ -397,7 +397,7 @@ public class ParameterMappingServiceTest {
         assertEquals("mvn clean install", srmParametersMap.get(ApplicationConstants.COVERITY_CLEAN_COMMAND_KEY));
         assertEquals("fake/path/config.yml", srmParametersMap.get(ApplicationConstants.COVERITY_CONFIG_PATH_KEY));
         assertEquals("--o", srmParametersMap.get(ApplicationConstants.COVERITY_ARGS_KEY));
-        assertEquals(2, srmParametersMap.get(ApplicationConstants.BLACKDUCKSCA_SEARCH_DEPTH_KEY));
+        assertEquals(2, srmParametersMap.get(ApplicationConstants.DETECT_SEARCH_DEPTH_KEY));
 
         Map<String, Object> emptySrmParametersMap =
                 ParameterMappingService.prepareSrmParametersMap(new BlackDuckScanStep());

@@ -86,9 +86,9 @@ public class SRMParametersServiceTest {
         srmParameters.put(ApplicationConstants.SRM_ASSESSMENT_TYPES_KEY, TEST_SRM_ASSESSMENT_TYPES);
         srmParameters.put(ApplicationConstants.SRM_BRANCH_NAME_KEY, TEST_SRM_BRANCH_NAME);
         srmParameters.put(ApplicationConstants.SRM_BRANCH_PARENT_KEY, TEST_SRM_BRANCH_PARENT_NAME);
-        srmParameters.put(ApplicationConstants.BLACKDUCKSCA_SEARCH_DEPTH_KEY, 2);
-        srmParameters.put(ApplicationConstants.BLACKDUCKSCA_CONFIG_PATH_KEY, TEST_BLACKDUCKSCA_CONFIG_FILE_PATH);
-        srmParameters.put(ApplicationConstants.BLACKDUCKSCA_ARGS_KEY, TEST_BLACKDUCKSCA_ARGS);
+        srmParameters.put(ApplicationConstants.DETECT_SEARCH_DEPTH_KEY, 2);
+        srmParameters.put(ApplicationConstants.DETECT_CONFIG_PATH_KEY, TEST_BLACKDUCKSCA_CONFIG_FILE_PATH);
+        srmParameters.put(ApplicationConstants.DETECT_ARGS_KEY, TEST_BLACKDUCKSCA_ARGS);
         srmParameters.put(ApplicationConstants.COVERITY_BUILD_COMMAND_KEY, TEST_COVERITY_BUILD_COMMAND);
         srmParameters.put(ApplicationConstants.COVERITY_CLEAN_COMMAND_KEY, TEST_COVERITY_CLEAN_COMMAND);
         srmParameters.put(ApplicationConstants.COVERITY_CONFIG_PATH_KEY, TEST_COVERITY_CONFIG_FILE_PATH);

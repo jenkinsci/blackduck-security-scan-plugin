@@ -138,9 +138,9 @@ public class BlackDuckSCAParametersServiceTest {
 
         blackDuckParametersMap.put(ApplicationConstants.BLACKDUCKSCA_URL_KEY, TEST_BLACKDUCKSCA_URL);
         blackDuckParametersMap.put(ApplicationConstants.BLACKDUCKSCA_TOKEN_KEY, TEST_BLACKDUCKSCA_TOKEN);
-        blackDuckParametersMap.put(ApplicationConstants.BLACKDUCKSCA_SEARCH_DEPTH_KEY, 2);
-        blackDuckParametersMap.put(ApplicationConstants.BLACKDUCKSCA_CONFIG_PATH_KEY, TEST_BLACKDUCKSCA_CONFIG_FILE_PATH);
-        blackDuckParametersMap.put(ApplicationConstants.BLACKDUCKSCA_ARGS_KEY, TEST_BLACKDUCKSCA_ARGS);
+        blackDuckParametersMap.put(ApplicationConstants.DETECT_SEARCH_DEPTH_KEY, 2);
+        blackDuckParametersMap.put(ApplicationConstants.DETECT_CONFIG_PATH_KEY, TEST_BLACKDUCKSCA_CONFIG_FILE_PATH);
+        blackDuckParametersMap.put(ApplicationConstants.DETECT_ARGS_KEY, TEST_BLACKDUCKSCA_ARGS);
 
         BlackDuck blackDuck = blackDuckSCAParametersService.prepareBlackDuckObjectForBridge(blackDuckParametersMap);
 

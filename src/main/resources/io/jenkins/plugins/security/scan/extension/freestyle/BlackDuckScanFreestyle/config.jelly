@@ -13,7 +13,7 @@
             <f:entry field="blackducksca_scan_failure_severities" title="Black Duck SCA Scan Failure Severities (Optional)">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="blackducksca_download_url" title="Black Duck SCA Download URL (Optional)">
+            <f:entry field="detect_download_url" title="Detect Download URL (Optional)">
                 <f:textbox/>
             </f:entry>
             <f:entry field="detect_scan_full" title="Detect Full Scan (Optional)">
@@ -40,13 +40,13 @@
         </f:section>
 
         <f:section title="Black Duck SCA Tool Configuration Options">
-            <f:entry field="blackducksca_search_depth" title="Black Duck SCA Search Depth (Optional)">
+            <f:entry field="detect_search_depth" title="Detect Search Depth (Optional)">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="blackducksca_config_path" title="Black Duck SCA Config File Path (Optional)">
+            <f:entry field="detect_config_path" title="Detect Config File Path (Optional)">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="blackducksca_args" title="Black Duck SCA Additional Arguments (Optional)">
+            <f:entry field="detect_args" title="Detect Additional Arguments (Optional)">
                 <f:textbox/>
             </f:entry>
         </f:section>
@@ -175,13 +175,13 @@
         </f:section>
 
         <f:section title="Black Duck (SCA) Tool Configuration Options">
-            <f:entry field="polaris_sca_search_depth" title="Black Duck SCA Search Depth (Optional)">
+            <f:entry field="polaris_sca_search_depth" title="Detect Search Depth (Optional)">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="polaris_sca_config_path" title="Black Duck SCA Config File Path (Optional)">
+            <f:entry field="polaris_sca_config_path" title="Detect Config File Path (Optional)">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="polaris_sca_args" title="Black Duck SCA Additional Arguments (Optional)">
+            <f:entry field="polaris_sca_args" title="Detect Additional Arguments (Optional)">
                 <f:textbox/>
             </f:entry>
         </f:section>
@@ -229,13 +229,13 @@
         </f:section>
 
         <f:section title="Black Duck (SCA) Tool Configuration Options">
-            <f:entry field="srm_sca_search_depth" title="Black Duck SCA Search Depth (Optional)">
+            <f:entry field="srm_sca_search_depth" title="Detect Search Depth (Optional)">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="srm_sca_config_path" title="Black Duck SCA Config File Path (Optional)">
+            <f:entry field="srm_sca_config_path" title="Detect Config File Path (Optional)">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="srm_sca_args" title="Black Duck SCA Additional Arguments (Optional)">
+            <f:entry field="srm_sca_args" title="Detect Additional Arguments (Optional)">
                 <f:textbox/>
             </f:entry>
         </f:section>

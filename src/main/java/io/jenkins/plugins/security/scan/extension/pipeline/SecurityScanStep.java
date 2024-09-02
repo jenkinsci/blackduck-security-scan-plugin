@@ -166,7 +166,7 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
         return null;
     }
 
-    public String getBlackducksca_download_url() {
+    public String getDetect_download_url() {
         return null;
     }
 
@@ -178,15 +178,15 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
         return null;
     }
 
-    public Integer getBlackducksca_search_depth() {
+    public Integer getDetect_search_depth() {
         return null;
     }
 
-    public String getBlackducksca_config_path() {
+    public String getDetect_config_path() {
         return null;
     }
 
-    public String getBlackducksca_args() {
+    public String getDetect_args() {
         return null;
     }
 

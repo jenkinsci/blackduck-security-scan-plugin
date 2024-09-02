@@ -99,33 +99,33 @@ public class BlackDuckSCAParametersService {
             setAutomationPrComment(blackDuck, value, automation);
         }
 
-        if (blackDuckSCAParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_DOWNLOAD_URL_KEY)) {
+        if (blackDuckSCAParameters.containsKey(ApplicationConstants.DETECT_DOWNLOAD_URL_KEY)) {
             String value = blackDuckSCAParameters
-                    .get(ApplicationConstants.BLACKDUCKSCA_DOWNLOAD_URL_KEY)
+                    .get(ApplicationConstants.DETECT_DOWNLOAD_URL_KEY)
                     .toString()
                     .trim();
             setDownloadUrl(blackDuck, String.valueOf(Integer.parseInt(value)));
         }
 
-        if (blackDuckSCAParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_SEARCH_DEPTH_KEY)) {
+        if (blackDuckSCAParameters.containsKey(ApplicationConstants.DETECT_SEARCH_DEPTH_KEY)) {
             String value = blackDuckSCAParameters
-                    .get(ApplicationConstants.BLACKDUCKSCA_SEARCH_DEPTH_KEY)
+                    .get(ApplicationConstants.DETECT_SEARCH_DEPTH_KEY)
                     .toString()
                     .trim();
             setSearchDepth(blackDuck, Integer.parseInt(value));
         }
 
-        if (blackDuckSCAParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_CONFIG_PATH_KEY)) {
+        if (blackDuckSCAParameters.containsKey(ApplicationConstants.DETECT_CONFIG_PATH_KEY)) {
             String value = blackDuckSCAParameters
-                    .get(ApplicationConstants.BLACKDUCKSCA_CONFIG_PATH_KEY)
+                    .get(ApplicationConstants.DETECT_CONFIG_PATH_KEY)
                     .toString()
                     .trim();
             setConfigPath(blackDuck, value);
         }
 
-        if (blackDuckSCAParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_ARGS_KEY)) {
+        if (blackDuckSCAParameters.containsKey(ApplicationConstants.DETECT_ARGS_KEY)) {
             String value = blackDuckSCAParameters
-                    .get(ApplicationConstants.BLACKDUCKSCA_ARGS_KEY)
+                    .get(ApplicationConstants.DETECT_ARGS_KEY)
                     .toString()
                     .trim();
             blackDuck.setArgs(value);
