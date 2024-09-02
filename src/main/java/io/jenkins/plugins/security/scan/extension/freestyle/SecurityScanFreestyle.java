@@ -125,10 +125,6 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
         return product;
     }
 
-    public String getBlackducksca_url() {
-        return null;
-    }
-
     public String getBlackduck_url() {
         return blackduck_url;
     }
@@ -193,6 +189,10 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
         return blackduck_execution_path;
     }
 
+    public String getBlackducksca_url() {
+        return null;
+    }
+
     public String getBlackducksca_token() {
         return null;
     }
@@ -202,11 +202,11 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     }
 
     public Boolean isDetect_scan_full() {
-        return null;
+        return blackduck_scan_full;
     }
 
     public Boolean isDetectIntelligentScan() {
-        return null;
+        return blackduckIntelligentScan;
     }
 
     public String getBlackducksca_scan_failure_severities() {
@@ -234,7 +234,7 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     }
 
     public Boolean isBlackducksca_reports_sarif_create() {
-        return null;
+        return blackduck_reports_sarif_create;
     }
 
     public String getBlackducksca_reports_sarif_file_path() {
@@ -242,7 +242,7 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     }
 
     public Boolean isBlackducksca_reports_sarif_groupSCAIssues() {
-        return null;
+        return blackduck_reports_sarif_groupSCAIssues;
     }
 
     public String getBlackducksca_reports_sarif_severities() {
@@ -250,7 +250,7 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     }
 
     public Boolean isBlackducksca_reports_sarif_groupSCAIssues_temporary() {
-        return null;
+        return blackduck_reports_sarif_groupSCAIssues_temporary;
     }
 
     public String getCoverity_url() {

@@ -45,8 +45,6 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     private Boolean blackduckIntelligentScan;
     private String blackduck_scan_failure_severities;
     //    private Boolean blackduck_automation_fixpr;
-    private Boolean blackduck_automation_prcomment;
-    private Boolean blackduck_automation_prcomment_actualValue;
     private Boolean blackduck_prComment_enabled;
     private Boolean blackduck_prComment_enabled_actualValue;
     private String blackduck_download_url;
@@ -67,8 +65,6 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     private String coverity_stream_name;
     private String coverity_policy_view;
     private String coverity_install_directory;
-    private Boolean coverity_automation_prcomment;
-    private Boolean coverity_automation_prcomment_actualValue;
     private Boolean coverity_prComment_enabled;
     private Boolean coverity_prComment_enabled_actualValue;
     private String coverity_version;
@@ -150,15 +146,15 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     }
 
     public String getDetect_install_directory() {
-        return null;
+        return blackduck_install_directory;
     }
 
     public Boolean isDetect_scan_full() {
-        return null;
+        return blackduck_scan_full;
     }
 
     public Boolean isDetectIntelligentScan() {
-        return null;
+        return blackduckIntelligentScan;
     }
 
     public String getBlackducksca_scan_failure_severities() {
@@ -170,11 +166,11 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     }
 
     public Boolean isBlackducksca_prComment_enabled() {
-        return null;
+        return blackduck_prComment_enabled;
     }
 
     public Boolean isBlackducksca_prComment_enabled_actualValue() {
-        return null;
+        return blackduck_prComment_enabled_actualValue;
     }
 
     public Integer getDetect_search_depth() {
@@ -194,7 +190,7 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     }
 
     public Boolean isBlackducksca_reports_sarif_create() {
-        return null;
+        return blackduck_reports_sarif_create;
     }
 
     public String getBlackducksca_reports_sarif_file_path() {
@@ -202,7 +198,7 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     }
 
     public Boolean isBlackducksca_reports_sarif_groupSCAIssues() {
-        return null;
+        return blackduck_reports_sarif_groupSCAIssues;
     }
 
     public String getBlackducksca_reports_sarif_severities() {
@@ -210,7 +206,7 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     }
 
     public Boolean isBlackducksca_reports_sarif_groupSCAIssues_temporary() {
-        return null;
+        return blackduck_reports_sarif_groupSCAIssues_temporary;
     }
 
     public String getBlackduck_url() {
@@ -235,14 +231,6 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
 
     public String getBlackduck_scan_failure_severities() {
         return blackduck_scan_failure_severities;
-    }
-
-    public Boolean isBlackduck_automation_prcomment() {
-        return blackduck_automation_prcomment;
-    }
-
-    public Boolean isBlackduck_automation_prcomment_actualValue() {
-        return blackduck_automation_prcomment_actualValue;
     }
 
     public Boolean isBlackduck_prComment_enabled() {
@@ -299,14 +287,6 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
 
     public String getCoverity_install_directory() {
         return coverity_install_directory;
-    }
-
-    public Boolean isCoverity_automation_prcomment() {
-        return coverity_automation_prcomment;
-    }
-
-    public Boolean isCoverity_automation_prcomment_actualValue() {
-        return coverity_automation_prcomment_actualValue;
     }
 
     public Boolean isCoverity_prComment_enabled() {
@@ -610,12 +590,6 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     }
 
     @DataBoundSetter
-    public void setBlackduck_automation_prcomment(Boolean blackduck_automation_prcomment) {
-        this.blackduck_automation_prcomment = blackduck_automation_prcomment ? true : null;
-        this.blackduck_automation_prcomment_actualValue = blackduck_automation_prcomment ? true : false;
-    }
-
-    @DataBoundSetter
     public void setBlackduck_prComment_enabled(Boolean blackduck_prComment_enabled) {
         this.blackduck_prComment_enabled = blackduck_prComment_enabled ? true : null;
         this.blackduck_prComment_enabled_actualValue = blackduck_prComment_enabled ? true : false;
@@ -679,12 +653,6 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     @DataBoundSetter
     public void setCoverity_install_directory(String coverity_install_directory) {
         this.coverity_install_directory = coverity_install_directory;
-    }
-
-    @DataBoundSetter
-    public void setCoverity_automation_prcomment(Boolean coverity_automation_prcomment) {
-        this.coverity_automation_prcomment = coverity_automation_prcomment ? true : null;
-        this.coverity_automation_prcomment_actualValue = coverity_automation_prcomment ? true : false;
     }
 
     @DataBoundSetter

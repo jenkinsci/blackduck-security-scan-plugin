@@ -22,7 +22,7 @@ public class ApplicationConstants {
     public static final String MAC_ARM_COMPATIBLE_BRIDGE_VERSION = "2.1.0";
     public static final String DEFAULT_DIRECTORY_NAME = "bridge-cli";
     public static final String BRIDGE_REPORT_DIRECTORY = ".bridge";
-    public static final String DEFAULT_BLACKDUCK_SARIF_REPORT_FILE_PATH = ".bridge/Blackduck SARIF Generator/";
+    public static final String DEFAULT_BLACKDUCKSCA_SARIF_REPORT_FILE_PATH = ".bridge/Blackduck SCA SARIF Generator/";
     public static final String DEFAULT_POLARIS_SARIF_REPORT_FILE_PATH = ".bridge/Polaris SARIF Generator/";
     public static final String SARIF_REPORT_FILENAME = "report.sarif.json";
     public static final int BRIDGE_DOWNLOAD_MAX_RETRIES = 3;

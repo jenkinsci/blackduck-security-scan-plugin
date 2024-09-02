@@ -216,7 +216,7 @@ public class Utility {
 
     public static String getDefaultSarifReportFilePath(boolean isBlackDuckScan, boolean isPolarisDuckScan) {
         return isBlackDuckScan
-                ? ApplicationConstants.DEFAULT_BLACKDUCK_SARIF_REPORT_FILE_PATH.concat(
+                ? ApplicationConstants.DEFAULT_BLACKDUCKSCA_SARIF_REPORT_FILE_PATH.concat(
                         ApplicationConstants.SARIF_REPORT_FILENAME)
                 : isPolarisDuckScan
                         ? ApplicationConstants.DEFAULT_POLARIS_SARIF_REPORT_FILE_PATH.concat(

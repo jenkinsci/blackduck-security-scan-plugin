@@ -157,7 +157,7 @@ public class ParameterMappingServiceTest {
         blackDuckScanStep.setCoverity_stream_name("fake-stream");
         blackDuckScanStep.setCoverity_policy_view("fake-policy");
         blackDuckScanStep.setCoverity_install_directory("/fake/path");
-        blackDuckScanStep.setCoverity_automation_prcomment(true);
+        blackDuckScanStep.setCoverity_prComment_enabled(true);
         blackDuckScanStep.setCoverity_version("1.0.0");
         blackDuckScanStep.setCoverity_local(true);
         blackDuckScanStep.setProject_directory("test/directory");

@@ -13,11 +13,12 @@ import io.jenkins.plugins.security.scan.extension.pipeline.ReturnStatusScan;
 import io.jenkins.plugins.security.scan.global.*;
 import io.jenkins.plugins.security.scan.global.enums.BuildStatus;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
-import java.util.*;
 import jenkins.model.GlobalConfiguration;
 
+import java.util.*;
+
 public class ParameterMappingService {
-    public static final List<String> DEPRECATED_PARAMETERS = new ArrayList<>();
+    public static final List<String> DEPRECATED_PARAMETERS = Collections.unmodifiableList(new ArrayList<>());
 
     public static Map<String, Object> preparePipelineParametersMap(
             SecurityScan securityScan, Map<String, Object> parametersMap, TaskListener listener)
@@ -247,10 +248,6 @@ public class ParameterMappingService {
             addDeprecatedParameterIfNotBlank(
                     blackDuckParameters,
                     ApplicationConstants.BLACKDUCKSCA_PRCOMMENT_ENABLED_KEY,
-                    prCommentScan.isBlackduck_automation_prcomment_actualValue());
-            addDeprecatedParameterIfNotBlank(
-                    blackDuckParameters,
-                    ApplicationConstants.BLACKDUCKSCA_PRCOMMENT_ENABLED_KEY,
                     prCommentScan.isBlackduck_prComment_enabled_actualValue());
             addParameterIfNotBlank(
                     blackDuckParameters,
@@ -311,10 +308,6 @@ public class ParameterMappingService {
 
         if (securityScan instanceof PrCommentScan) {
             PrCommentScan prCommentScan = (PrCommentScan) securityScan;
-            addDeprecatedParameterIfNotBlank(
-                    coverityParameters,
-                    ApplicationConstants.COVERITY_PRCOMMENT_ENABLED_KEY,
-                    prCommentScan.isCoverity_automation_prcomment_actualValue());
             addParameterIfNotBlank(
                     coverityParameters,
                     ApplicationConstants.COVERITY_PRCOMMENT_ENABLED_KEY,

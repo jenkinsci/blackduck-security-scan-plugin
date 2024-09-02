@@ -181,7 +181,7 @@ public class UtilityTest {
     public void testGetDefaultSarifReportFilePath_BlackDuckScan() {
         boolean isBlackDuckScan = true;
         boolean isPolarisDuckScan = false;
-        String expected = ApplicationConstants.DEFAULT_BLACKDUCK_SARIF_REPORT_FILE_PATH.concat(
+        String expected = ApplicationConstants.DEFAULT_BLACKDUCKSCA_SARIF_REPORT_FILE_PATH.concat(
                 ApplicationConstants.SARIF_REPORT_FILENAME);
         String result = Utility.getDefaultSarifReportFilePath(isBlackDuckScan, isPolarisDuckScan);
         assertEquals(expected, result);

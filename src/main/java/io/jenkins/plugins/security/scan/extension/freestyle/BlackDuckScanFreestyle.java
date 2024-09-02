@@ -185,11 +185,11 @@ public class BlackDuckScanFreestyle extends Builder implements SecurityScan, Fre
     }
 
     public Boolean isBlackduck_scan_full() {
-        return null;
+        return detect_scan_full;
     }
 
     public Boolean isBlackduckIntelligentScan() {
-        return null;
+        return detectIntelligentScan;
     }
 
     public String getBlackduck_scan_failure_severities() {
@@ -214,6 +214,26 @@ public class BlackDuckScanFreestyle extends Builder implements SecurityScan, Fre
 
     public String getBlackduck_execution_path() {
         return null;
+    }
+
+    public Boolean isBlackduck_reports_sarif_create() {
+        return blackducksca_reports_sarif_create;
+    }
+
+    public String getBlackduck_reports_sarif_file_path() {
+        return null;
+    }
+
+    public Boolean isBlackduck_reports_sarif_groupSCAIssues() {
+        return blackducksca_reports_sarif_groupSCAIssues;
+    }
+
+    public String getBlackduck_reports_sarif_severities() {
+        return null;
+    }
+
+    public Boolean isBlackduck_reports_sarif_groupSCAIssues_temporary() {
+        return blackducksca_reports_sarif_groupSCAIssues_temporary;
     }
 
     public Integer getDetect_search_depth() {
@@ -466,26 +486,6 @@ public class BlackDuckScanFreestyle extends Builder implements SecurityScan, Fre
 
     public Boolean isNetwork_airgap() {
         return network_airgap;
-    }
-
-    public Boolean isBlackduck_reports_sarif_create() {
-        return null;
-    }
-
-    public String getBlackduck_reports_sarif_file_path() {
-        return null;
-    }
-
-    public Boolean isBlackduck_reports_sarif_groupSCAIssues() {
-        return null;
-    }
-
-    public String getBlackduck_reports_sarif_severities() {
-        return null;
-    }
-
-    public Boolean isBlackduck_reports_sarif_groupSCAIssues_temporary() {
-        return null;
     }
 
     public String getMark_build_status() {
