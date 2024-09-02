@@ -19,6 +19,11 @@ import io.jenkins.plugins.security.scan.global.*;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import io.jenkins.plugins.security.scan.service.ParameterMappingService;
 import io.jenkins.plugins.security.scan.service.scm.SCMRepositoryService;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.*;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import jenkins.scm.api.SCMSource;
 import org.jenkinsci.plugins.github_branch_source.GitHubSCMSource;
 import org.jenkinsci.plugins.workflow.actions.WarningAction;
@@ -26,12 +31,6 @@ import org.jenkinsci.plugins.workflow.graph.FlowNode;
 import org.jenkinsci.plugins.workflow.steps.*;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.*;
 
 public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentScan, ReturnStatusScan, Serializable {
     private static final long serialVersionUID = 6294070801130995534L;
@@ -1092,8 +1091,8 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
                 logger.println(
                         "**************************** END EXECUTION OF BLACK DUCK SECURITY SCAN ****************************");
             } else {
-                Result result =
-                        ParameterMappingService.getBuildResultIfIssuesAreFound(exitCode, getMark_build_status(), logger);
+                Result result = ParameterMappingService.getBuildResultIfIssuesAreFound(
+                        exitCode, getMark_build_status(), logger);
                 if (result != null) {
                     logger.info("Marking build as " + result + " since issues are present");
                     handleNonZeroExitCode(exitCode, result, exitMessage, e, logger);

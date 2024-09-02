@@ -31,11 +31,7 @@ public class SecurityScanner {
     private final ToolsParameterService toolsParameterService;
 
     public SecurityScanner(
-            Run<?, ?> run,
-            TaskListener listener,
-            Launcher launcher,
-            FilePath workspace,
-            EnvVars envVars) {
+            Run<?, ?> run, TaskListener listener, Launcher launcher, FilePath workspace, EnvVars envVars) {
         this.run = run;
         this.listener = listener;
         this.launcher = launcher;

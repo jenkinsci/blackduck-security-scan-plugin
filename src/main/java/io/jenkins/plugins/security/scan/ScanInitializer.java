@@ -6,15 +6,14 @@ import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.bridge.BridgeDownloadManager;
 import io.jenkins.plugins.security.scan.bridge.BridgeDownloadParameters;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
-import io.jenkins.plugins.security.scan.service.ParameterMappingService;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.global.ErrorCode;
 import io.jenkins.plugins.security.scan.global.LogMessages;
 import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
+import io.jenkins.plugins.security.scan.service.ParameterMappingService;
 import io.jenkins.plugins.security.scan.service.bridge.BridgeDownloadParametersService;
 import io.jenkins.plugins.security.scan.service.scan.ScanParametersService;
-
 import java.util.*;
 
 public class ScanInitializer {
@@ -24,8 +23,7 @@ public class ScanInitializer {
     private final EnvVars envVars;
     private final LoggerWrapper logger;
 
-    public ScanInitializer(
-            SecurityScanner scanner, FilePath workspace, EnvVars envVars, TaskListener listener) {
+    public ScanInitializer(SecurityScanner scanner, FilePath workspace, EnvVars envVars, TaskListener listener) {
         this.scanner = scanner;
         this.workspace = workspace;
         this.listener = listener;
@@ -127,9 +125,11 @@ public class ScanInitializer {
 
         // Warning message for blackduck stage
         if (securityProducts.contains(SecurityProduct.BLACKDUCK.name())) {
-            logger.warn(SecurityProduct.BLACKDUCK.name().toLowerCase()
+            logger.warn(SecurityProduct.BLACKDUCK
+                    .name()
+                    .toLowerCase()
                     .concat(" product is deprecated and will be removed in future. Please use "
-                    .concat(SecurityProduct.BLACKDUCKSCA.name())
+                            .concat(SecurityProduct.BLACKDUCKSCA.name())
                             .concat(" and its corresponding parameters instead.")));
         }
 
@@ -200,8 +200,9 @@ public class ScanInitializer {
 
     private void logWarningForDeprecatedParameters() {
         if (!ParameterMappingService.DEPRECATED_PARAMETERS.isEmpty()) {
-            logger.warn(ParameterMappingService.DEPRECATED_PARAMETERS + " is/are deprecated and will be removed in future. " +
-                    "Check documentation for new parameters: " + ApplicationConstants.SYNOPSYS_SECURITY_SCAN_PLUGIN_DOCS_URL);
+            logger.warn(ParameterMappingService.DEPRECATED_PARAMETERS
+                    + " is/are deprecated and will be removed in future. " + "Check documentation for new parameters: "
+                    + ApplicationConstants.SYNOPSYS_SECURITY_SCAN_PLUGIN_DOCS_URL);
 
             ParameterMappingService.DEPRECATED_PARAMETERS.clear();
         }

@@ -1,20 +1,19 @@
 package io.jenkins.plugins.security.scan.service.bridge;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import hudson.FilePath;
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.bridge.BridgeDownloadParameters;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
 import java.io.File;
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 public class BridgeDownloadParameterServiceTest {
     private BridgeDownloadParametersService bridgeDownloadParametersService;
@@ -144,8 +143,7 @@ public class BridgeDownloadParameterServiceTest {
         Map<String, Object> scanParams = new HashMap<>();
         scanParams.put(ApplicationConstants.NETWORK_AIRGAP_KEY, true);
         scanParams.put(ApplicationConstants.BRIDGECLI_INSTALL_DIRECTORY, "/path/to/bridge");
-        scanParams.put(
-                ApplicationConstants.BRIDGECLI_DOWNLOAD_URL, "https://bridge.fake.url.com/synopsys-bridge.zip");
+        scanParams.put(ApplicationConstants.BRIDGECLI_DOWNLOAD_URL, "https://bridge.fake.url.com/synopsys-bridge.zip");
 
         BridgeDownloadParameters bridgeDownloadParameters = new BridgeDownloadParameters(workspace, listenerMock);
 

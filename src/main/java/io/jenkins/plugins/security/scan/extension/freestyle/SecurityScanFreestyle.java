@@ -14,11 +14,10 @@ import io.jenkins.plugins.security.scan.extension.SecurityScan;
 import io.jenkins.plugins.security.scan.global.*;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import io.jenkins.plugins.security.scan.service.ParameterMappingService;
+import java.util.Map;
 import jenkins.tasks.SimpleBuildStep;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
-
-import java.util.Map;
 
 @Deprecated
 public class SecurityScanFreestyle extends Builder implements SecurityScan, FreestyleScan, SimpleBuildStep {
@@ -1042,8 +1041,8 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
             logger.info(
                     "**************************** END EXECUTION OF SYNOPSYS SECURITY SCAN ****************************");
         } else {
-            Result result =
-                    ParameterMappingService.getBuildResultIfIssuesAreFound(exitCode, this.getMark_build_status(), logger);
+            Result result = ParameterMappingService.getBuildResultIfIssuesAreFound(
+                    exitCode, this.getMark_build_status(), logger);
 
             if (result != null) {
                 logger.info("Marking build as " + result + " since issues are present");

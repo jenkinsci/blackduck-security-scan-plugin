@@ -1,5 +1,7 @@
 package io.jenkins.plugins.security.scan.service;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import hudson.FilePath;
 import hudson.model.Result;
 import hudson.model.TaskListener;
@@ -12,16 +14,13 @@ import io.jenkins.plugins.security.scan.global.ErrorCode;
 import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.global.enums.BuildStatus;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
 import java.io.File;
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 public class ParameterMappingServiceTest {
     private TaskListener listenerMock;
@@ -50,8 +49,8 @@ public class ParameterMappingServiceTest {
         globalConfigValues.put(ApplicationConstants.BLACKDUCKSCA_TOKEN_KEY, "fake-blackduck-token");
         globalConfigValues.put(ApplicationConstants.BRIDGECLI_INSTALL_DIRECTORY, "/fake/path");
 
-        Map<String, Object> result =
-                ParameterMappingService.preparePipelineParametersMap(blackDuckScanStep, globalConfigValues, listenerMock);
+        Map<String, Object> result = ParameterMappingService.preparePipelineParametersMap(
+                blackDuckScanStep, globalConfigValues, listenerMock);
 
         assertEquals(8, result.size());
         assertEquals("BLACKDUCKSCA", result.get(ApplicationConstants.PRODUCT_KEY));
@@ -87,7 +86,8 @@ public class ParameterMappingServiceTest {
                 ParameterMappingService.prepareBlackDuckParametersMap(blackDuckScanStep);
 
         assertEquals(11, blackDuckParametersMap.size());
-        assertEquals("https://fake.blackduck-url", blackDuckParametersMap.get(ApplicationConstants.BLACKDUCKSCA_URL_KEY));
+        assertEquals(
+                "https://fake.blackduck-url", blackDuckParametersMap.get(ApplicationConstants.BLACKDUCKSCA_URL_KEY));
         assertEquals("fake-token", blackDuckParametersMap.get(ApplicationConstants.BLACKDUCKSCA_TOKEN_KEY));
         assertEquals("/fake/path", blackDuckParametersMap.get(ApplicationConstants.DETECT_INSTALL_DIRECTORY_KEY));
         assertTrue((boolean) blackDuckParametersMap.get(ApplicationConstants.DETECT_SCAN_FULL_KEY));
@@ -95,7 +95,8 @@ public class ParameterMappingServiceTest {
         assertEquals(
                 "https://fake.blackduck-download-url",
                 blackDuckParametersMap.get(ApplicationConstants.DETECT_DOWNLOAD_URL_KEY));
-        assertEquals("MAJOR", blackDuckParametersMap.get(ApplicationConstants.BLACKDUCKSCA_SCAN_FAILURE_SEVERITIES_KEY));
+        assertEquals(
+                "MAJOR", blackDuckParametersMap.get(ApplicationConstants.BLACKDUCKSCA_SCAN_FAILURE_SEVERITIES_KEY));
         assertEquals("test/directory", blackDuckParametersMap.get(ApplicationConstants.PROJECT_DIRECTORY_KEY));
         assertEquals(2, blackDuckParametersMap.get(ApplicationConstants.DETECT_SEARCH_DEPTH_KEY));
         assertEquals(
@@ -125,14 +126,16 @@ public class ParameterMappingServiceTest {
                 ParameterMappingService.prepareBlackDuckParametersMap(blackDuckScanFreestyle);
 
         assertEquals(10, blackDuckParametersMap.size());
-        assertEquals("https://fake.blackduck-url", blackDuckParametersMap.get(ApplicationConstants.BLACKDUCKSCA_URL_KEY));
+        assertEquals(
+                "https://fake.blackduck-url", blackDuckParametersMap.get(ApplicationConstants.BLACKDUCKSCA_URL_KEY));
         assertEquals("fake-token", blackDuckParametersMap.get(ApplicationConstants.BLACKDUCKSCA_TOKEN_KEY));
         assertEquals("/fake/path", blackDuckParametersMap.get(ApplicationConstants.DETECT_INSTALL_DIRECTORY_KEY));
         assertTrue((boolean) blackDuckParametersMap.get(ApplicationConstants.DETECT_SCAN_FULL_KEY));
         assertEquals(
                 "https://fake.blackduck-download-url",
                 blackDuckParametersMap.get(ApplicationConstants.DETECT_DOWNLOAD_URL_KEY));
-        assertEquals("MAJOR", blackDuckParametersMap.get(ApplicationConstants.BLACKDUCKSCA_SCAN_FAILURE_SEVERITIES_KEY));
+        assertEquals(
+                "MAJOR", blackDuckParametersMap.get(ApplicationConstants.BLACKDUCKSCA_SCAN_FAILURE_SEVERITIES_KEY));
         assertEquals("test/directory", blackDuckParametersMap.get(ApplicationConstants.PROJECT_DIRECTORY_KEY));
         assertEquals(2, blackDuckParametersMap.get(ApplicationConstants.DETECT_SEARCH_DEPTH_KEY));
         assertEquals(
@@ -237,7 +240,8 @@ public class ParameterMappingServiceTest {
         blackDuckScanStep.setInclude_diagnostics(true);
         blackDuckScanStep.setNetwork_airgap(true);
 
-        Map<String, Object> bridgeParametersMap = ParameterMappingService.prepareAddtionalParametersMap(blackDuckScanStep);
+        Map<String, Object> bridgeParametersMap =
+                ParameterMappingService.prepareAddtionalParametersMap(blackDuckScanStep);
 
         assertEquals(5, bridgeParametersMap.size());
         assertEquals(
@@ -272,7 +276,8 @@ public class ParameterMappingServiceTest {
         blackDuckScanStep.setProject_source_preserveSymLinks(true);
         blackDuckScanStep.setProject_source_excludes("test_exclude");
 
-        Map<String, Object> polarisParametersMap = ParameterMappingService.preparePolarisParametersMap(blackDuckScanStep);
+        Map<String, Object> polarisParametersMap =
+                ParameterMappingService.preparePolarisParametersMap(blackDuckScanStep);
 
         assertEquals(15, polarisParametersMap.size());
         assertEquals(
@@ -417,9 +422,12 @@ public class ParameterMappingServiceTest {
 
         assertEquals(4, sarifParametersMap.size());
         assertTrue((boolean) sarifParametersMap.get(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_CREATE_KEY));
-        assertEquals("/fake/path", sarifParametersMap.get(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_FILE_PATH_KEY));
-        assertEquals("CRITICAL", sarifParametersMap.get(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_SEVERITIES_KEY));
-        assertTrue((boolean) sarifParametersMap.get(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_GROUPSCAISSUES_KEY));
+        assertEquals(
+                "/fake/path", sarifParametersMap.get(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_FILE_PATH_KEY));
+        assertEquals(
+                "CRITICAL", sarifParametersMap.get(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_SEVERITIES_KEY));
+        assertTrue(
+                (boolean) sarifParametersMap.get(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_GROUPSCAISSUES_KEY));
 
         Map<String, Object> emptySarifParametersMap =
                 ParameterMappingService.prepareSarifReportParametersMap(new BlackDuckScanStep());

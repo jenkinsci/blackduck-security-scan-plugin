@@ -7,9 +7,8 @@ import io.jenkins.plugins.security.scan.global.ErrorCode;
 import io.jenkins.plugins.security.scan.global.HomeDirectoryTask;
 import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.global.Utility;
-import jenkins.model.Jenkins;
-
 import java.io.IOException;
+import jenkins.model.Jenkins;
 
 public class BridgeInstall {
     private final LoggerWrapper logger;

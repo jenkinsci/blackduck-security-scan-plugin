@@ -1,14 +1,13 @@
 package io.jenkins.plugins.security.scan.global;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
+
 import hudson.EnvVars;
 import hudson.FilePath;
 import hudson.model.Result;
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.global.enums.BuildStatus;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -16,9 +15,9 @@ import java.net.*;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 public class UtilityTest {
     private FilePath workspace;
@@ -201,7 +200,8 @@ public class UtilityTest {
     @Test
     public void testGetCustomSarifReportFilePath_BlackDuckScan() {
         Map<String, Object> scanParams = new HashMap<>();
-        scanParams.put(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_FILE_PATH_KEY, "customPath/report_blackduck.json");
+        scanParams.put(
+                ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_FILE_PATH_KEY, "customPath/report_blackduck.json");
         boolean isBlackDuckScan = true;
         boolean isPolarisDuckScan = false;
         String result = Utility.getCustomSarifReportFilePath(scanParams, isBlackDuckScan, isPolarisDuckScan);

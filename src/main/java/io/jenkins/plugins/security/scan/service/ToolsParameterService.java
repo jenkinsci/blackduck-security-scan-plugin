@@ -120,7 +120,8 @@ public class ToolsParameterService {
 
         if (securityProducts.contains(SecurityProduct.BLACKDUCK.name())
                 || securityProducts.contains(SecurityProduct.BLACKDUCKSCA.name())) {
-            BlackDuckSCAParametersService blackDuckSCAParametersService = new BlackDuckSCAParametersService(listener, envVars);
+            BlackDuckSCAParametersService blackDuckSCAParametersService =
+                    new BlackDuckSCAParametersService(listener, envVars);
             BlackDuck blackDuck = blackDuckSCAParametersService.prepareBlackDuckObjectForBridge(scanParameters);
             Project project = blackDuckSCAParametersService.prepareProjectObjectForBridge(scanParameters);
 

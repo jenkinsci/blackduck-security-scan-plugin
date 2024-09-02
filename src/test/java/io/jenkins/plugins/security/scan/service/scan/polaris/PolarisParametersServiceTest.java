@@ -1,5 +1,7 @@
 package io.jenkins.plugins.security.scan.service.scan.polaris;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import hudson.EnvVars;
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
@@ -9,16 +11,13 @@ import io.jenkins.plugins.security.scan.input.polaris.Polaris;
 import io.jenkins.plugins.security.scan.input.project.Project;
 import io.jenkins.plugins.security.scan.service.scan.blackducksca.BlackDuckSCAParametersService;
 import io.jenkins.plugins.security.scan.service.scan.coverity.CoverityParametersService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 public class PolarisParametersServiceTest {
     private PolarisParametersService polarisParametersService;

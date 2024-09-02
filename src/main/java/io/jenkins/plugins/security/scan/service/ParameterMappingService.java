@@ -13,9 +13,8 @@ import io.jenkins.plugins.security.scan.extension.pipeline.ReturnStatusScan;
 import io.jenkins.plugins.security.scan.global.*;
 import io.jenkins.plugins.security.scan.global.enums.BuildStatus;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
-import jenkins.model.GlobalConfiguration;
-
 import java.util.*;
+import jenkins.model.GlobalConfiguration;
 
 public class ParameterMappingService {
     public static final List<String> DEPRECATED_PARAMETERS = new ArrayList<>();
@@ -36,16 +35,21 @@ public class ParameterMappingService {
             parametersMap.putAll(prepareSrmParametersMap(securityScan));
             parametersMap.putAll(prepareSarifReportParametersMap(securityScan));
 
-            addParameterIfNotBlank(parametersMap, ApplicationConstants.BITBUCKET_USERNAME_KEY, securityScan.getBitbucket_username());
-            addParameterIfNotBlank(parametersMap, ApplicationConstants.BITBUCKET_TOKEN_KEY, securityScan.getBitbucket_token());
-            addParameterIfNotBlank(parametersMap, ApplicationConstants.GITLAB_TOKEN_KEY, securityScan.getGitlab_token());
-            addParameterIfNotBlank(parametersMap, ApplicationConstants.GITHUB_TOKEN_KEY, securityScan.getGithub_token());
+            addParameterIfNotBlank(
+                    parametersMap, ApplicationConstants.BITBUCKET_USERNAME_KEY, securityScan.getBitbucket_username());
+            addParameterIfNotBlank(
+                    parametersMap, ApplicationConstants.BITBUCKET_TOKEN_KEY, securityScan.getBitbucket_token());
+            addParameterIfNotBlank(
+                    parametersMap, ApplicationConstants.GITLAB_TOKEN_KEY, securityScan.getGitlab_token());
+            addParameterIfNotBlank(
+                    parametersMap, ApplicationConstants.GITHUB_TOKEN_KEY, securityScan.getGithub_token());
 
             parametersMap.putAll(prepareAddtionalParametersMap(securityScan));
 
             if (securityScan instanceof ReturnStatusScan) {
                 ReturnStatusScan returnStatusScan = (ReturnStatusScan) securityScan;
-                addParameterIfNotBlank(parametersMap, ApplicationConstants.RETURN_STATUS_KEY, returnStatusScan.isReturn_status());
+                addParameterIfNotBlank(
+                        parametersMap, ApplicationConstants.RETURN_STATUS_KEY, returnStatusScan.isReturn_status());
             }
 
             return parametersMap;
@@ -473,9 +477,7 @@ public class ParameterMappingService {
                 ApplicationConstants.DETECT_CONFIG_PATH_KEY,
                 securityScan.getBlackduck_config_path());
         addParameterIfNotBlank(
-                blackDuckParameters,
-                ApplicationConstants.DETECT_CONFIG_PATH_KEY,
-                securityScan.getDetect_config_path());
+                blackDuckParameters, ApplicationConstants.DETECT_CONFIG_PATH_KEY, securityScan.getDetect_config_path());
 
         addDeprecatedParameterIfNotBlank(
                 blackDuckParameters, ApplicationConstants.DETECT_ARGS_KEY, securityScan.getBlackduck_args());
@@ -518,11 +520,8 @@ public class ParameterMappingService {
                 ApplicationConstants.DETECT_SEARCH_DEPTH_KEY,
                 freestyleScan.getSrm_sca_search_depth());
         addParameterIfNotBlank(
-                srmParametersMap,
-                ApplicationConstants.DETECT_CONFIG_PATH_KEY,
-                freestyleScan.getSrm_sca_config_path());
-        addParameterIfNotBlank(
-                srmParametersMap, ApplicationConstants.DETECT_ARGS_KEY, freestyleScan.getSrm_sca_args());
+                srmParametersMap, ApplicationConstants.DETECT_CONFIG_PATH_KEY, freestyleScan.getSrm_sca_config_path());
+        addParameterIfNotBlank(srmParametersMap, ApplicationConstants.DETECT_ARGS_KEY, freestyleScan.getSrm_sca_args());
         addParameterIfNotBlank(
                 srmParametersMap,
                 ApplicationConstants.COVERITY_BUILD_COMMAND_KEY,

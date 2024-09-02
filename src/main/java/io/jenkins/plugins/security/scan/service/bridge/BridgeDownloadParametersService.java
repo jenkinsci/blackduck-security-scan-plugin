@@ -115,8 +115,7 @@ public class BridgeDownloadParametersService {
                     .get(ApplicationConstants.BRIDGECLI_DOWNLOAD_URL)
                     .toString()
                     .trim());
-        } else if (scanParameters.containsKey(ApplicationConstants.BRIDGECLI_DOWNLOAD_VERSION)
-                && !isNetworkAirgap) {
+        } else if (scanParameters.containsKey(ApplicationConstants.BRIDGECLI_DOWNLOAD_VERSION) && !isNetworkAirgap) {
             String desiredVersion = scanParameters
                     .get(ApplicationConstants.BRIDGECLI_DOWNLOAD_VERSION)
                     .toString()

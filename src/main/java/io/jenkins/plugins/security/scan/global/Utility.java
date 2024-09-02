@@ -6,13 +6,12 @@ import hudson.model.Result;
 import hudson.model.TaskListener;
 import hudson.model.TopLevelItem;
 import io.jenkins.plugins.security.scan.global.enums.BuildStatus;
-import jenkins.model.Jenkins;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.*;
 import java.util.HashMap;
 import java.util.Map;
+import jenkins.model.Jenkins;
 
 public class Utility {
 
