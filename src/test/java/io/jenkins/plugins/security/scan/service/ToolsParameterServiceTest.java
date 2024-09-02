@@ -1,7 +1,5 @@
 package io.jenkins.plugins.security.scan.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hudson.EnvVars;
@@ -15,6 +13,7 @@ import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import io.jenkins.plugins.security.scan.input.BridgeInput;
 import io.jenkins.plugins.security.scan.input.blackducksca.Automation;
 import io.jenkins.plugins.security.scan.input.blackducksca.BlackDuckSCA;
+import io.jenkins.plugins.security.scan.input.blackducksca.Detect;
 import io.jenkins.plugins.security.scan.input.coverity.Connect;
 import io.jenkins.plugins.security.scan.input.coverity.Coverity;
 import io.jenkins.plugins.security.scan.input.polaris.Polaris;
@@ -27,6 +26,10 @@ import io.jenkins.plugins.security.scan.input.srm.SRM;
 import io.jenkins.plugins.security.scan.service.scm.bitbucket.BitbucketRepositoryService;
 import io.jenkins.plugins.security.scan.service.scm.github.GithubRepositoryService;
 import io.jenkins.plugins.security.scan.service.scm.gitlab.GitlabRepositoryService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -34,9 +37,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ToolsParameterServiceTest {
     private Bitbucket bitBucket;
@@ -104,7 +106,7 @@ public class ToolsParameterServiceTest {
 
         try {
             String jsonStringNonPrCommentOrFixPr =
-                    "{\"data\":{\"blackduck\":{\"url\":\"https://fake.blackduck.url\",\"token\":\"MDJDSROSVC56FAKEKEY\"}}}";
+                    "{\"data\":{\"blackducksca\":{\"url\":\"https://fake.blackduck.url\",\"token\":\"MDJDSROSVC56FAKEKEY\"}}}";
 
             String inputJsonPathForNonFixPr = toolsParameterService.createBridgeInputJson(
                     scanParameters,
@@ -131,7 +133,7 @@ public class ToolsParameterServiceTest {
 
         try {
             String jsonStringForPrComment =
-                    "{\"data\":{\"blackduck\":{\"url\":\"https://fake.blackduck.url\",\"token\":\"MDJDSROSVC56FAKEKEY\"},\"bitbucket\":{\"api\":{\"url\":\"\",\"user\":{\"name\":\"fake-user\"},\"token\":\"MDJDSROSVC56FAKEKEY\"},\"project\":{\"repository\":{\"pull\":{\"number\":12},\"name\":\"test\"},\"key\":\"abc\"}}}}";
+                    "{\"data\":{\"blackducksca\":{\"url\":\"https://fake.blackduck.url\",\"token\":\"MDJDSROSVC56FAKEKEY\"},\"bitbucket\":{\"api\":{\"url\":\"\",\"user\":{\"name\":\"fake-user\"},\"token\":\"MDJDSROSVC56FAKEKEY\"},\"project\":{\"repository\":{\"pull\":{\"number\":12},\"name\":\"test\"},\"key\":\"abc\"}}}}";
             String inputJsonPathForPrComment = toolsParameterService.createBridgeInputJson(
                     scanParameters,
                     blackDuckSCA,
@@ -524,7 +526,7 @@ public class ToolsParameterServiceTest {
         blackDuckSCA.getAutomation().setPrComment(true);
 
         String jsonStringForPrComment =
-                "{\"data\":{\"blackduck\":{\"url\":\"https://fake.blackduck.url\",\"token\":\"MDJDSROSVC56FAKEKEY\",\"automation\":{\"prComment\":true}},\"gitlab\":{\"user\":{\"token\":\"MDJDSROSVC56FAKEKEY\"},\"repository\":{\"branch\":{\"name\":\"fake-gitlab-branch\"},\"pull\":{\"number\":12},\"name\":\"fake-group/fake-gitlab-repo\"}}}}";
+                "{\"data\":{\"blackducksca\":{\"url\":\"https://fake.blackduck.url\",\"token\":\"MDJDSROSVC56FAKEKEY\",\"automation\":{\"prComment\":true}},\"gitlab\":{\"user\":{\"token\":\"MDJDSROSVC56FAKEKEY\"},\"repository\":{\"branch\":{\"name\":\"fake-gitlab-branch\"},\"pull\":{\"number\":12},\"name\":\"fake-group/fake-gitlab-repo\"}}}}";
 
         try {
             Gitlab gitlabObject = gitlabRepositoryService.createGitlabObject(
@@ -764,6 +766,62 @@ public class ToolsParameterServiceTest {
             assertFalse(Files.exists(Paths.get(path)));
         }
     }
+
+    @Test
+    public void testHandleDetectInputs_forNoDetectInputs() {
+        BridgeInput bridgeInput = new BridgeInput();
+        Map<String, Object> detectParametersMap = new HashMap<>();
+
+        Detect detect = toolsParameterService.handleDetectInputs(bridgeInput, detectParametersMap);
+
+        assertNull(detect);
+        assertEquals(detect, bridgeInput.getDetect());
+    }
+
+    @Test
+    public void testHandleDetectInputs() {
+        BridgeInput bridgeInput = new BridgeInput();
+        Map<String, Object> detectParametersMap = new HashMap<>();
+
+        detectParametersMap.put(ApplicationConstants.DETECT_SCAN_FULL_KEY, true);
+        detectParametersMap.put(ApplicationConstants.DETECT_INSTALL_DIRECTORY_KEY, "/user/tmp/detect");
+        detectParametersMap.put(ApplicationConstants.DETECT_DOWNLOAD_URL_KEY, "https://fake.detect.url");
+
+        Detect detect = toolsParameterService.handleDetectInputs(bridgeInput, detectParametersMap);
+
+        assertNotNull(detect);
+        assertEquals(detect, bridgeInput.getDetect());
+        assertEquals(detect.getScan().getFull(), true);
+        assertEquals(detect.getInstall().getDirectory(), "/user/tmp/detect");
+        assertEquals(detect.getDownload().getUrl(), "https://fake.detect.url");
+        assertNull(detect.getArgs());
+        assertNull(detect.getConfig());
+        assertNull(detect.getSearch());
+    }
+
+    @Test
+    public void testHandleDetectInputsTest_forArbitaryInputs() {
+        BridgeInput bridgeInput = new BridgeInput();
+        Map<String, Object> detectParametersMap = new HashMap<>();
+
+        detectParametersMap.put(ApplicationConstants.DETECT_ARGS_KEY, "--detect.diagnostic=true");
+        detectParametersMap.put(ApplicationConstants.DETECT_SEARCH_DEPTH_KEY, 2);
+        detectParametersMap.put(ApplicationConstants.DETECT_CONFIG_PATH_KEY, "DIR/CONFIG/application.properties");
+
+        Detect detect = toolsParameterService.handleDetectInputs(bridgeInput, detectParametersMap);
+
+        assertNotNull(detect);
+        assertEquals(detect, bridgeInput.getDetect());
+        assertEquals(detect.getArgs(), "--detect.diagnostic=true");
+        assertEquals(detect.getSearch().getDepth(), 2);
+        assertEquals(detect.getConfig().getPath(), "DIR/CONFIG/application.properties");
+        assertNull(detect.getScan());
+        assertNull(detect.getInstall());
+        assertNull(detect.getDownload());
+    }
+
+    @Test
+    public void handleDetectInputsTest_forArbitaryInputs() {}
 
     public String getHomeDirectoryForTest() {
         return System.getProperty("user.home");

@@ -349,7 +349,7 @@ public class ToolsParameterService {
         bridgeInput.setPolaris(polaris);
     }
 
-    private Detect handleDetectInputs(BridgeInput bridgeInput, Map<String, Object> scanParameters) {
+    public Detect handleDetectInputs(BridgeInput bridgeInput, Map<String, Object> scanParameters) {
         Detect detect = null;
 
         detect = setScanFull(scanParameters, detect);

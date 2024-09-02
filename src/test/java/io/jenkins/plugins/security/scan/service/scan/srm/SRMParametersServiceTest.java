@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import hudson.EnvVars;
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
-import io.jenkins.plugins.security.scan.input.blackducksca.BlackDuckSCA;
 import io.jenkins.plugins.security.scan.input.coverity.Coverity;
 import io.jenkins.plugins.security.scan.input.srm.SRM;
 import io.jenkins.plugins.security.scan.service.scan.blackducksca.BlackDuckSCAParametersService;
@@ -99,7 +98,6 @@ public class SRMParametersServiceTest {
         coverityParametersService = new CoverityParametersService(listenerMock, envVarsMock);
 
         SRM srm = srmParametersService.prepareSrmObjectForBridge(srmParameters);
-        BlackDuckSCA blackDuckSCA = blackDuckSCAParametersService.prepareBlackDuckSCAObjectForBridge(srmParameters);
         Coverity coverity = coverityParametersService.prepareCoverityObjectForBridge(srmParameters);
 
         assertEquals(srm.getUrl(), TEST_SRM_SERVER_URL);
@@ -109,10 +107,6 @@ public class SRMParametersServiceTest {
         assertEquals(srm.getBranch().getName(), TEST_SRM_BRANCH_NAME);
         assertEquals(srm.getBranch().getParent(), TEST_SRM_BRANCH_PARENT_NAME);
         assertEquals(srm.getAssessmentTypes().getTypes(), List.of(TEST_SRM_ASSESSMENT_TYPES));
-        assertEquals(2, blackDuckSCA.getSearch().getDepth());
-        assertEquals(
-                TEST_BLACKDUCKSCA_CONFIG_FILE_PATH, blackDuckSCA.getConfig().getPath());
-        assertEquals(TEST_BLACKDUCKSCA_ARGS, blackDuckSCA.getArgs());
         assertEquals(coverity.getBuild().getCommand(), TEST_COVERITY_BUILD_COMMAND);
         assertEquals(coverity.getClean().getCommand(), TEST_COVERITY_CLEAN_COMMAND);
         assertEquals(coverity.getConfig().getPath(), TEST_COVERITY_CONFIG_FILE_PATH);
