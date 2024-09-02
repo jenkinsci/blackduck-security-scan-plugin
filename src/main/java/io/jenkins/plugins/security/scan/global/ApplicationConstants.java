@@ -63,12 +63,6 @@ public class ApplicationConstants {
     public static final String BLACKDUCK_SCAN_FAILURE_SEVERITIES_KEY = "blackduck_scan_failure_severities";
 
     @Deprecated
-    public static final String BLACKDUCK_AUTOMATION_FIXPR_KEY = "blackduck_automation_fixpr";
-
-    @Deprecated
-    public static final String BLACKDUCK_AUTOMATION_PRCOMMENT_KEY = "blackduck_automation_prcomment";
-
-    @Deprecated
     public static final String BLACKDUCK_PRCOMMENT_ENABLED_KEY = "blackduck_prComment_enabled";
 
     @Deprecated
@@ -124,10 +118,6 @@ public class ApplicationConstants {
     public static final String COVERITY_CLEAN_COMMAND_KEY = "coverity_clean_command";
     public static final String COVERITY_CONFIG_PATH_KEY = "coverity_config_path";
     public static final String COVERITY_ARGS_KEY = "coverity_args";
-
-    @Deprecated
-    public static final String COVERITY_AUTOMATION_PRCOMMENT_KEY = "coverity_automation_prcomment";
-
     public static final String COVERITY_PRCOMMENT_ENABLED_KEY = "coverity_prComment_enabled";
     public static final String COVERITY_VERSION_KEY = "coverity_version";
     public static final String COVERITY_LOCAL_KEY = "coverity_local";

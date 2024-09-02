@@ -1,7 +1,5 @@
 package io.jenkins.plugins.security.scan.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import hudson.FilePath;
 import hudson.model.Result;
 import hudson.model.TaskListener;
@@ -14,13 +12,17 @@ import io.jenkins.plugins.security.scan.global.ErrorCode;
 import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.global.enums.BuildStatus;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
-import java.io.File;
-import java.io.PrintStream;
-import java.util.HashMap;
-import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import java.io.File;
+import java.io.PrintStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ParameterMappingServiceTest {
     private TaskListener listenerMock;
@@ -34,7 +36,25 @@ public class ParameterMappingServiceTest {
         listenerMock = Mockito.mock(TaskListener.class);
         blackDuckScanStep = new BlackDuckScanStep();
         blackDuckScanFreestyle = new BlackDuckScanFreestyle();
+        ParameterMappingService.getDeprecatedParameters().clear();
         Mockito.when(listenerMock.getLogger()).thenReturn(Mockito.mock(PrintStream.class));
+    }
+
+    @Test
+    void testGetDeprecatedParameters_initiallyEmpty() {
+        List<String> deprecatedParameters = ParameterMappingService.getDeprecatedParameters();
+        assertTrue(deprecatedParameters.isEmpty(), "DEPRECATED_PARAMETERS should be initially empty");
+    }
+
+    @Test
+    void testGetDeprecatedParameters_reflectsInternalChanges() {
+        ParameterMappingService.addDeprecatedParameter("param1");
+        ParameterMappingService.addDeprecatedParameter("param2");
+
+        List<String> deprecatedParameters = ParameterMappingService.getDeprecatedParameters();
+        assertEquals(2, deprecatedParameters.size());
+        assertTrue(deprecatedParameters.contains("param1"));
+        assertTrue(deprecatedParameters.contains("param2"));
     }
 
     @Test

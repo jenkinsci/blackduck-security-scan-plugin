@@ -18,7 +18,16 @@ import jenkins.model.GlobalConfiguration;
 import java.util.*;
 
 public class ParameterMappingService {
-    public static final List<String> DEPRECATED_PARAMETERS = Collections.unmodifiableList(new ArrayList<>());
+    private static final List<String> DEPRECATED_PARAMETERS = new ArrayList<>();
+
+    public static void addDeprecatedParameter(String param) {
+        DEPRECATED_PARAMETERS.add(param);
+    }
+
+    public static List<String> getDeprecatedParameters() {
+        return DEPRECATED_PARAMETERS;
+    }
+
 
     public static Map<String, Object> preparePipelineParametersMap(
             SecurityScan securityScan, Map<String, Object> parametersMap, TaskListener listener)
@@ -175,7 +184,7 @@ public class ParameterMappingService {
     public static void addDeprecatedParameterIfNotBlank(Map<String, Object> parameters, String key, String value) {
         if (!Utility.isStringNullOrBlank(value)) {
             parameters.put(key, value);
-            DEPRECATED_PARAMETERS.add(key);
+            addDeprecatedParameter(key);
         }
     }
 
@@ -188,7 +197,7 @@ public class ParameterMappingService {
     public static void addDeprecatedParameterIfNotBlank(Map<String, Object> parameters, String key, Integer value) {
         if (value != null) {
             parameters.put(key, value);
-            DEPRECATED_PARAMETERS.add(key);
+            addDeprecatedParameter(key);
         }
     }
 
@@ -201,7 +210,7 @@ public class ParameterMappingService {
     public static void addDeprecatedParameterIfNotBlank(Map<String, Object> parameters, String key, Boolean value) {
         if (value != null) {
             parameters.put(key, value);
-            DEPRECATED_PARAMETERS.add(key);
+            addDeprecatedParameter(key);
         }
     }
 
