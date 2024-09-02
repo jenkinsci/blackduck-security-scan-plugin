@@ -13,9 +13,8 @@ import io.jenkins.plugins.security.scan.extension.pipeline.ReturnStatusScan;
 import io.jenkins.plugins.security.scan.global.*;
 import io.jenkins.plugins.security.scan.global.enums.BuildStatus;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
-import jenkins.model.GlobalConfiguration;
-
 import java.util.*;
+import jenkins.model.GlobalConfiguration;
 
 public class ParameterMappingService {
     private static final List<String> DEPRECATED_PARAMETERS = new ArrayList<>();
@@ -27,7 +26,6 @@ public class ParameterMappingService {
     public static List<String> getDeprecatedParameters() {
         return DEPRECATED_PARAMETERS;
     }
-
 
     public static Map<String, Object> preparePipelineParametersMap(
             SecurityScan securityScan, Map<String, Object> parametersMap, TaskListener listener)

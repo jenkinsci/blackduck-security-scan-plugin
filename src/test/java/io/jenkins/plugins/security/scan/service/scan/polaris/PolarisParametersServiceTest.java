@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import hudson.EnvVars;
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
-import io.jenkins.plugins.security.scan.input.blackduck.BlackDuck;
+import io.jenkins.plugins.security.scan.input.blackducksca.BlackDuckSCA;
 import io.jenkins.plugins.security.scan.input.coverity.Coverity;
 import io.jenkins.plugins.security.scan.input.polaris.Polaris;
 import io.jenkins.plugins.security.scan.input.project.Project;
@@ -203,7 +203,7 @@ public class PolarisParametersServiceTest {
         coverityParametersService = new CoverityParametersService(listenerMock, envVarsMock);
 
         Polaris polaris = polarisParametersService.preparePolarisObjectForBridge(polarisParameters);
-        BlackDuck blackDuck = blackDuckSCAParametersService.prepareBlackDuckObjectForBridge(polarisParameters);
+        BlackDuckSCA blackDuckSCA = blackDuckSCAParametersService.prepareBlackDuckSCAObjectForBridge(polarisParameters);
         Coverity coverity = coverityParametersService.prepareCoverityObjectForBridge(polarisParameters);
 
         assertEquals(polaris.getServerUrl(), TEST_POLARIS_SERVER_URL);
@@ -211,9 +211,10 @@ public class PolarisParametersServiceTest {
         assertEquals(polaris.getApplicationName().getName(), TEST_APPLICATION_NAME);
         assertEquals(polaris.getProjectName().getName(), "fake-project-name");
         assertEquals(polaris.getAssessmentTypes().getTypes(), List.of("SAST"));
-        assertEquals(2, blackDuck.getSearch().getDepth());
-        assertEquals(TEST_BLACKDUCKSCA_CONFIG_FILE_PATH, blackDuck.getConfig().getPath());
-        assertEquals(TEST_BLACKDUCKSCA_ARGS, blackDuck.getArgs());
+        assertEquals(2, blackDuckSCA.getSearch().getDepth());
+        assertEquals(
+                TEST_BLACKDUCKSCA_CONFIG_FILE_PATH, blackDuckSCA.getConfig().getPath());
+        assertEquals(TEST_BLACKDUCKSCA_ARGS, blackDuckSCA.getArgs());
         assertEquals(coverity.getBuild().getCommand(), TEST_COVERITY_BUILD_COMMAND);
         assertEquals(coverity.getClean().getCommand(), TEST_COVERITY_CLEAN_COMMAND);
         assertEquals(coverity.getConfig().getPath(), TEST_COVERITY_CONFIG_FILE_PATH);

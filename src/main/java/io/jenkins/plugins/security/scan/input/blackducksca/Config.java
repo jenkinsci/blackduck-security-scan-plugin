@@ -1,4 +1,4 @@
-package io.jenkins.plugins.security.scan.input.blackduck;
+package io.jenkins.plugins.security.scan.input.blackducksca;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

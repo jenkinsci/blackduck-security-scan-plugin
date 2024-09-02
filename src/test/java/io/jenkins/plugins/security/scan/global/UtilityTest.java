@@ -258,6 +258,13 @@ public class UtilityTest {
         assertEquals(Utility.getMappedResultForBuildStatus(BuildStatus.SUCCESS), Result.SUCCESS);
     }
 
+    @Test
+    public void isBooleanTest() {
+        assertTrue(Utility.isBoolean("true"));
+        assertFalse(Utility.isBoolean("false"));
+        assertFalse(Utility.isBoolean("null"));
+    }
+
     public String getHomeDirectory() {
         return System.getProperty("user.home");
     }

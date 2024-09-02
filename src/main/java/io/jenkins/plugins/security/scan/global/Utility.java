@@ -260,4 +260,8 @@ public class Utility {
         }
         return null;
     }
+
+    public static boolean isBoolean(String value) {
+        return value.equals("true") || value.equals("false");
+    }
 }

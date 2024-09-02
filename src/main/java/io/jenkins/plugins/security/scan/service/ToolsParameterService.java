@@ -13,9 +13,7 @@ import io.jenkins.plugins.security.scan.global.Utility;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import io.jenkins.plugins.security.scan.input.BridgeInput;
 import io.jenkins.plugins.security.scan.input.NetworkAirGap;
-import io.jenkins.plugins.security.scan.input.blackduck.BlackDuck;
-import io.jenkins.plugins.security.scan.input.blackduck.Config;
-import io.jenkins.plugins.security.scan.input.blackduck.Search;
+import io.jenkins.plugins.security.scan.input.blackducksca.*;
 import io.jenkins.plugins.security.scan.input.coverity.Build;
 import io.jenkins.plugins.security.scan.input.coverity.Clean;
 import io.jenkins.plugins.security.scan.input.coverity.Coverity;
@@ -122,7 +120,8 @@ public class ToolsParameterService {
                 || securityProducts.contains(SecurityProduct.BLACKDUCKSCA.name())) {
             BlackDuckSCAParametersService blackDuckSCAParametersService =
                     new BlackDuckSCAParametersService(listener, envVars);
-            BlackDuck blackDuck = blackDuckSCAParametersService.prepareBlackDuckObjectForBridge(scanParameters);
+            BlackDuckSCA blackDuckSCA =
+                    blackDuckSCAParametersService.prepareBlackDuckSCAObjectForBridge(scanParameters);
             Project project = blackDuckSCAParametersService.prepareProjectObjectForBridge(scanParameters);
 
             scanCommands.add(BridgeParams.STAGE_OPTION);
@@ -130,7 +129,7 @@ public class ToolsParameterService {
             scanCommands.add(BridgeParams.INPUT_OPTION);
             scanCommands.add(createBridgeInputJson(
                     scanParameters,
-                    blackDuck,
+                    blackDuckSCA,
                     scmObject,
                     isPrCommentSet,
                     networkAirGap,
@@ -259,14 +258,14 @@ public class ToolsParameterService {
             Object scmObject,
             Sarif sarifObject,
             Map<String, Object> scanParameters) {
-
-        if (scanObject instanceof BlackDuck) {
-            BlackDuck blackDuck = (BlackDuck) scanObject;
+        if (scanObject instanceof BlackDuckSCA) {
+            BlackDuckSCA blackDuckSCA = (BlackDuckSCA) scanObject;
             if (sarifObject != null) {
-                blackDuck.setReports(new Reports());
-                blackDuck.getReports().setSarif(sarifObject);
+                blackDuckSCA.setReports(new Reports());
+                blackDuckSCA.getReports().setSarif(sarifObject);
             }
-            bridgeInput.setBlackDuck(blackDuck);
+            bridgeInput.setBlackDuckSCA(blackDuckSCA);
+            handleDetectInputs(bridgeInput, scanParameters);
         } else if (scanObject instanceof Coverity) {
             Coverity coverity = (Coverity) scanObject;
             if (scmObject != null) {
@@ -283,28 +282,28 @@ public class ToolsParameterService {
                     setDefaultValueSrmParams(srm, scmObject);
                 }
             }
-            BlackDuck blackDuck = handleScaArbitary(bridgeInput, scanParameters);
+            Detect detect = handleDetectInputs(bridgeInput, scanParameters);
             Coverity coverity = handleSastArbitary(bridgeInput, scanParameters);
-            handleSrmSCAInstallationPath(bridgeInput, scanParameters, blackDuck);
+            handleSrmSCAInstallationPath(bridgeInput, scanParameters, detect);
             handleSrmSASTInstallationPath(bridgeInput, scanParameters, coverity);
             bridgeInput.setSrm(srm);
         }
     }
 
     private void handleSrmSCAInstallationPath(
-            BridgeInput bridgeInput, Map<String, Object> scanParameters, BlackDuck blackDuck) {
+            BridgeInput bridgeInput, Map<String, Object> scanParameters, Detect detect) {
         if (scanParameters.containsKey(ApplicationConstants.SRM_SCA_DETECT_EXECUTION_PATH_KEY)) {
             String installationPath = scanParameters
                     .get(ApplicationConstants.SRM_SCA_DETECT_EXECUTION_PATH_KEY)
                     .toString()
                     .trim();
             if (installationPath != null && !installationPath.isBlank()) {
-                if (blackDuck == null) blackDuck = new BlackDuck();
-                io.jenkins.plugins.security.scan.input.blackduck.Execution execution =
-                        new io.jenkins.plugins.security.scan.input.blackduck.Execution();
+                if (detect == null) detect = new Detect();
+                io.jenkins.plugins.security.scan.input.blackducksca.Execution execution =
+                        new io.jenkins.plugins.security.scan.input.blackducksca.Execution();
                 execution.setPath(installationPath);
-                blackDuck.setExecution(execution);
-                bridgeInput.setBlackDuck(blackDuck);
+                detect.setExecution(execution);
+                bridgeInput.setDetect(detect);
             }
         }
     }
@@ -344,23 +343,26 @@ public class ToolsParameterService {
             setDefaultValuesForPolarisParams(polaris, scmObject);
         }
 
-        handleScaArbitary(bridgeInput, scanParameters);
+        handleDetectInputs(bridgeInput, scanParameters);
         handleSastArbitary(bridgeInput, scanParameters);
 
         bridgeInput.setPolaris(polaris);
     }
 
-    private BlackDuck handleScaArbitary(BridgeInput bridgeInput, Map<String, Object> scanParameters) {
-        BlackDuck blackDuck = null;
+    private Detect handleDetectInputs(BridgeInput bridgeInput, Map<String, Object> scanParameters) {
+        Detect detect = null;
 
-        blackDuck = setSearchDepth(scanParameters, blackDuck);
-        blackDuck = setConfigPath(scanParameters, blackDuck);
-        blackDuck = setBlackDuckArgs(scanParameters, blackDuck);
+        detect = setScanFull(scanParameters, detect);
+        detect = setInstallDirectory(scanParameters, detect);
+        detect = setDownloadUrl(scanParameters, detect);
+        detect = setSearchDepth(scanParameters, detect);
+        detect = setConfigPath(scanParameters, detect);
+        detect = setBlackDuckArgs(scanParameters, detect);
 
-        if (blackDuck != null) {
-            bridgeInput.setBlackDuck(blackDuck);
+        if (detect != null) {
+            bridgeInput.setDetect(detect);
         }
-        return blackDuck;
+        return detect;
     }
 
     private Coverity handleSastArbitary(BridgeInput bridgeInput, Map<String, Object> scanParameters) {
@@ -377,50 +379,98 @@ public class ToolsParameterService {
         return coverity;
     }
 
-    private BlackDuck setSearchDepth(Map<String, Object> scanParameters, BlackDuck blackDuck) {
+    private Detect setScanFull(Map<String, Object> scanParameters, Detect detect) {
+        if (scanParameters.containsKey(ApplicationConstants.DETECT_SCAN_FULL_KEY)) {
+            String value = scanParameters
+                    .get(ApplicationConstants.DETECT_SCAN_FULL_KEY)
+                    .toString()
+                    .trim();
+            if (Utility.isBoolean(value)) {
+                if (detect == null) detect = new Detect();
+                Scan scan = new Scan();
+                scan.setFull(Boolean.parseBoolean(value));
+                detect.setScan(scan);
+            }
+        }
+        return detect;
+    }
+
+    private Detect setInstallDirectory(Map<String, Object> scanParameters, Detect detect) {
+        if (scanParameters.containsKey(ApplicationConstants.DETECT_INSTALL_DIRECTORY_KEY)) {
+            String value = scanParameters
+                    .get(ApplicationConstants.DETECT_INSTALL_DIRECTORY_KEY)
+                    .toString()
+                    .trim();
+            if (value != null) {
+                if (detect == null) detect = new Detect();
+                Install install = new Install();
+                install.setDirectory(value);
+                detect.setInstall(install);
+            }
+        }
+        return detect;
+    }
+
+    private Detect setDownloadUrl(Map<String, Object> scanParameters, Detect detect) {
+        if (scanParameters.containsKey(ApplicationConstants.DETECT_DOWNLOAD_URL_KEY)) {
+            String value = scanParameters
+                    .get(ApplicationConstants.DETECT_DOWNLOAD_URL_KEY)
+                    .toString()
+                    .trim();
+            if (value != null) {
+                if (detect == null) detect = new Detect();
+                Download download = new Download();
+                download.setUrl(value);
+                detect.setDownload(download);
+            }
+        }
+        return detect;
+    }
+
+    private Detect setSearchDepth(Map<String, Object> scanParameters, Detect detect) {
         if (scanParameters.containsKey(ApplicationConstants.DETECT_SEARCH_DEPTH_KEY)) {
             String searchDepth = scanParameters
                     .get(ApplicationConstants.DETECT_SEARCH_DEPTH_KEY)
                     .toString()
                     .trim();
             if (searchDepth != null && !searchDepth.isBlank()) {
-                if (blackDuck == null) blackDuck = new BlackDuck();
+                if (detect == null) detect = new Detect();
                 Search search = new Search();
                 search.setDepth(Integer.parseInt(searchDepth));
-                blackDuck.setSearch(search);
+                detect.setSearch(search);
             }
         }
-        return blackDuck;
+        return detect;
     }
 
-    private BlackDuck setConfigPath(Map<String, Object> scanParameters, BlackDuck blackDuck) {
+    private Detect setConfigPath(Map<String, Object> scanParameters, Detect detect) {
         if (scanParameters.containsKey(ApplicationConstants.DETECT_CONFIG_PATH_KEY)) {
             String configPath = scanParameters
                     .get(ApplicationConstants.DETECT_CONFIG_PATH_KEY)
                     .toString()
                     .trim();
             if (configPath != null && !configPath.isBlank()) {
-                if (blackDuck == null) blackDuck = new BlackDuck();
+                if (detect == null) detect = new Detect();
                 Config config = new Config();
                 config.setPath(configPath);
-                blackDuck.setConfig(config);
+                detect.setConfig(config);
             }
         }
-        return blackDuck;
+        return detect;
     }
 
-    private BlackDuck setBlackDuckArgs(Map<String, Object> scanParameters, BlackDuck blackDuck) {
+    private Detect setBlackDuckArgs(Map<String, Object> scanParameters, Detect detect) {
         if (scanParameters.containsKey(ApplicationConstants.DETECT_ARGS_KEY)) {
-            String blackduckArgs = scanParameters
+            String detectArgs = scanParameters
                     .get(ApplicationConstants.DETECT_ARGS_KEY)
                     .toString()
                     .trim();
-            if (blackduckArgs != null && !blackduckArgs.isBlank()) {
-                if (blackDuck == null) blackDuck = new BlackDuck();
-                blackDuck.setArgs(blackduckArgs);
+            if (detectArgs != null && !detectArgs.isBlank()) {
+                if (detect == null) detect = new Detect();
+                detect.setArgs(detectArgs);
             }
         }
-        return blackDuck;
+        return detect;
     }
 
     private Coverity setBuildCommand(Map<String, Object> scanParameters, Coverity coverity) {

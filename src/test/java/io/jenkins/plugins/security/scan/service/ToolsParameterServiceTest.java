@@ -13,8 +13,8 @@ import io.jenkins.plugins.security.scan.global.BridgeParams;
 import io.jenkins.plugins.security.scan.global.Utility;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import io.jenkins.plugins.security.scan.input.BridgeInput;
-import io.jenkins.plugins.security.scan.input.blackduck.Automation;
-import io.jenkins.plugins.security.scan.input.blackduck.BlackDuck;
+import io.jenkins.plugins.security.scan.input.blackducksca.Automation;
+import io.jenkins.plugins.security.scan.input.blackducksca.BlackDuckSCA;
 import io.jenkins.plugins.security.scan.input.coverity.Connect;
 import io.jenkins.plugins.security.scan.input.coverity.Coverity;
 import io.jenkins.plugins.security.scan.input.polaris.Polaris;
@@ -66,14 +66,14 @@ public class ToolsParameterServiceTest {
 
     @Test
     void createBlackDuckInputJsonTest() {
-        BlackDuck blackDuck = new BlackDuck();
-        blackDuck.setUrl("https://fake.blackduck.url");
-        blackDuck.setToken(TOKEN);
+        BlackDuckSCA blackDuckSCA = new BlackDuckSCA();
+        blackDuckSCA.setUrl("https://fake.blackduck.url");
+        blackDuckSCA.setToken(TOKEN);
         Map<String, Object> scanParameters = new HashMap<>();
 
         String inputJsonPath = toolsParameterService.createBridgeInputJson(
                 scanParameters,
-                blackDuck,
+                blackDuckSCA,
                 bitBucket,
                 false,
                 null,
@@ -94,9 +94,9 @@ public class ToolsParameterServiceTest {
     void bitbucket_blackDuckInputJsonTest() {
         ObjectMapper objectMapper = new ObjectMapper();
 
-        BlackDuck blackDuck = new BlackDuck();
-        blackDuck.setUrl("https://fake.blackduck.url");
-        blackDuck.setToken(TOKEN);
+        BlackDuckSCA blackDuckSCA = new BlackDuckSCA();
+        blackDuckSCA.setUrl("https://fake.blackduck.url");
+        blackDuckSCA.setToken(TOKEN);
         Map<String, Object> scanParameters = new HashMap<>();
 
         Bitbucket bitbucketObject = BitbucketRepositoryService.createBitbucketObject(
@@ -108,7 +108,7 @@ public class ToolsParameterServiceTest {
 
             String inputJsonPathForNonFixPr = toolsParameterService.createBridgeInputJson(
                     scanParameters,
-                    blackDuck,
+                    blackDuckSCA,
                     bitbucketObject,
                     false,
                     null,
@@ -134,7 +134,7 @@ public class ToolsParameterServiceTest {
                     "{\"data\":{\"blackduck\":{\"url\":\"https://fake.blackduck.url\",\"token\":\"MDJDSROSVC56FAKEKEY\"},\"bitbucket\":{\"api\":{\"url\":\"\",\"user\":{\"name\":\"fake-user\"},\"token\":\"MDJDSROSVC56FAKEKEY\"},\"project\":{\"repository\":{\"pull\":{\"number\":12},\"name\":\"test\"},\"key\":\"abc\"}}}}";
             String inputJsonPathForPrComment = toolsParameterService.createBridgeInputJson(
                     scanParameters,
-                    blackDuck,
+                    blackDuckSCA,
                     bitbucketObject,
                     true,
                     null,
@@ -517,11 +517,11 @@ public class ToolsParameterServiceTest {
         Map<String, Object> scanParametersMap = new HashMap<>();
         scanParametersMap.put(ApplicationConstants.GITLAB_TOKEN_KEY, TOKEN);
 
-        BlackDuck blackDuck = new BlackDuck();
-        blackDuck.setUrl("https://fake.blackduck.url");
-        blackDuck.setToken(TOKEN);
-        blackDuck.setAutomation(new Automation());
-        blackDuck.getAutomation().setPrComment(true);
+        BlackDuckSCA blackDuckSCA = new BlackDuckSCA();
+        blackDuckSCA.setUrl("https://fake.blackduck.url");
+        blackDuckSCA.setToken(TOKEN);
+        blackDuckSCA.setAutomation(new Automation());
+        blackDuckSCA.getAutomation().setPrComment(true);
 
         String jsonStringForPrComment =
                 "{\"data\":{\"blackduck\":{\"url\":\"https://fake.blackduck.url\",\"token\":\"MDJDSROSVC56FAKEKEY\",\"automation\":{\"prComment\":true}},\"gitlab\":{\"user\":{\"token\":\"MDJDSROSVC56FAKEKEY\"},\"repository\":{\"branch\":{\"name\":\"fake-gitlab-branch\"},\"pull\":{\"number\":12},\"name\":\"fake-group/fake-gitlab-repo\"}}}}";
@@ -536,7 +536,7 @@ public class ToolsParameterServiceTest {
                     true);
             String inputJsonPathForGitlabPrComment = toolsParameterService.createBridgeInputJson(
                     scanParametersMap,
-                    blackDuck,
+                    blackDuckSCA,
                     gitlabObject,
                     true,
                     null,

@@ -1,7 +1,8 @@
 package io.jenkins.plugins.security.scan.input;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.jenkins.plugins.security.scan.input.blackduck.BlackDuck;
+import io.jenkins.plugins.security.scan.input.blackducksca.BlackDuckSCA;
+import io.jenkins.plugins.security.scan.input.blackducksca.Detect;
 import io.jenkins.plugins.security.scan.input.coverity.Coverity;
 import io.jenkins.plugins.security.scan.input.polaris.Polaris;
 import io.jenkins.plugins.security.scan.input.project.Project;
@@ -12,8 +13,11 @@ import io.jenkins.plugins.security.scan.input.scm.gitlab.Gitlab;
 import io.jenkins.plugins.security.scan.input.srm.SRM;
 
 public class BridgeInput {
-    @JsonProperty("blackduck")
-    private BlackDuck blackDuck;
+    @JsonProperty("blackducksca")
+    private BlackDuckSCA blackDuckSCA;
+
+    @JsonProperty("detect")
+    private Detect detect;
 
     @JsonProperty("coverity")
     private Coverity coverity;
@@ -50,12 +54,20 @@ public class BridgeInput {
         this.reports = reports;
     }
 
-    public BlackDuck getBlackDuck() {
-        return blackDuck;
+    public BlackDuckSCA getBlackDuckSCA() {
+        return blackDuckSCA;
     }
 
-    public void setBlackDuck(BlackDuck blackDuck) {
-        this.blackDuck = blackDuck;
+    public void setBlackDuckSCA(BlackDuckSCA blackDuckSCA) {
+        this.blackDuckSCA = blackDuckSCA;
+    }
+
+    public Detect getDetect() {
+        return detect;
+    }
+
+    public void setDetect(Detect detect) {
+        this.detect = detect;
     }
 
     public Coverity getCoverity() {
