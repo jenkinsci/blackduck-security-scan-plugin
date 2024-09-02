@@ -261,7 +261,7 @@ public class UtilityTest {
     @Test
     public void isBooleanTest() {
         assertTrue(Utility.isBoolean("true"));
-        assertFalse(Utility.isBoolean("false"));
+        assertTrue(Utility.isBoolean("false"));
         assertFalse(Utility.isBoolean("null"));
     }
 
