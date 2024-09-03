@@ -11,6 +11,12 @@ import io.jenkins.plugins.security.scan.input.polaris.Prcomment;
 import io.jenkins.plugins.security.scan.input.polaris.Test;
 import io.jenkins.plugins.security.scan.input.project.Project;
 import io.jenkins.plugins.security.scan.input.project.Source;
+import io.jenkins.plugins.security.scan.input.report.File;
+import io.jenkins.plugins.security.scan.input.report.Issue;
+import io.jenkins.plugins.security.scan.input.report.Reports;
+import io.jenkins.plugins.security.scan.input.report.Sarif;
+import io.jenkins.plugins.security.scan.service.ToolsParameterService;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -65,6 +71,12 @@ public class PolarisParametersService {
             missingMandatoryParams.addAll(getPolarisMissingMandatoryParamsForFreeStyleAndPipeline(polarisParameters));
         }
 
+        showErrorMessageForJobType(missingMandatoryParams, jobType);
+
+        return missingMandatoryParams;
+    }
+
+    private void showErrorMessageForJobType(List<String> missingMandatoryParams, String jobType) {
         if (!missingMandatoryParams.isEmpty()) {
             String jobTypeName;
             if (jobType.equalsIgnoreCase(ApplicationConstants.FREESTYLE_JOB_TYPE_NAME)) {
@@ -75,18 +87,8 @@ public class PolarisParametersService {
                 jobTypeName = "Pipeline";
             }
 
-            String message;
-            if (missingMandatoryParams.size() == 1) {
-                message = missingMandatoryParams.get(0) + " is mandatory parameter for " + jobTypeName + " job type";
-            } else {
-                message = String.join(", ", missingMandatoryParams) + " is mandatory parameter for " + jobTypeName
-                        + " job type";
-            }
-
-            logger.error(message);
+            logger.error(missingMandatoryParams + " - required parameters for " + jobTypeName + " job type is missing");
         }
-
-        return missingMandatoryParams;
     }
 
     private List<String> getPolarisMissingMandatoryParamsForFreeStyleAndPipeline(
@@ -114,51 +116,112 @@ public class PolarisParametersService {
         Polaris polaris = new Polaris();
         Prcomment prcomment = new Prcomment();
 
+        setServerUrl(polarisParameters, polaris);
+        setAccessToken(polarisParameters, polaris);
+        setAssessmentTypes(polarisParameters, polaris);
+        setApplicationName(polarisParameters, polaris);
+        setProjectName(polarisParameters, polaris);
+        setBranchName(polarisParameters, polaris);
+
+        setTriage(polarisParameters, polaris);
+        setTestScaType(polarisParameters, polaris);
+        setPolarisPrCommentInputs(polarisParameters, prcomment, polaris);
+        setAssessmentMode(polarisParameters, polaris);
+
+        setSarif(polarisParameters, polaris);
+
+        return polaris;
+    }
+
+    private void setServerUrl(Map<String, Object> polarisParameters, Polaris polaris) {
         if (polarisParameters.containsKey(ApplicationConstants.POLARIS_SERVER_URL_KEY)) {
             polaris.setServerUrl(polarisParameters
                     .get(ApplicationConstants.POLARIS_SERVER_URL_KEY)
                     .toString()
                     .trim());
         }
+    }
 
+    private void setAccessToken(Map<String, Object> polarisParameters, Polaris polaris) {
         if (polarisParameters.containsKey(ApplicationConstants.POLARIS_ACCESS_TOKEN_KEY)) {
             polaris.setAccessToken(polarisParameters
                     .get(ApplicationConstants.POLARIS_ACCESS_TOKEN_KEY)
                     .toString()
                     .trim());
         }
+    }
+    private void setAssessmentTypes(Map<String, Object> polarisParameters, Polaris polaris) {
+        if (polarisParameters.containsKey(ApplicationConstants.POLARIS_ASSESSMENT_TYPES_KEY)) {
+            String assessmentTypesValue = polarisParameters
+                    .get(ApplicationConstants.POLARIS_ASSESSMENT_TYPES_KEY)
+                    .toString()
+                    .trim();
+            if (!assessmentTypesValue.isEmpty()) {
+                List<String> assessmentTypes = Stream.of(
+                                assessmentTypesValue.toUpperCase().split(","))
+                        .map(String::trim)
+                        .collect(Collectors.toList());
+                polaris.getAssessmentTypes().setTypes(assessmentTypes);
+            }
+        }
+    }
 
+
+    private void setApplicationName(Map<String, Object> polarisParameters, Polaris polaris) {
         if (polarisParameters.containsKey(ApplicationConstants.POLARIS_APPLICATION_NAME_KEY)) {
             polaris.getApplicationName()
                     .setName(polarisParameters
                             .get(ApplicationConstants.POLARIS_APPLICATION_NAME_KEY)
                             .toString()
                             .trim());
+        } else {
+            String repoName = ToolsParameterService.getScmRepoName();
+            polaris.getApplicationName().setName(repoName);
+            logger.info("Polaris Application Name: " + repoName);
         }
+    }
 
+    private void setProjectName(Map<String, Object> polarisParameters, Polaris polaris) {
         if (polarisParameters.containsKey(ApplicationConstants.POLARIS_PROJECT_NAME_KEY)) {
-            polaris.getProjectName()
+            polaris.getPolarisProject()
                     .setName(polarisParameters
                             .get(ApplicationConstants.POLARIS_PROJECT_NAME_KEY)
                             .toString()
                             .trim());
+        } else {
+            String repoName = ToolsParameterService.getScmRepoName();
+            polaris.getPolarisProject().setName(repoName);
+            logger.info("Polaris Project Name: " + repoName);
         }
+    }
 
-        if (polarisParameters.containsKey(ApplicationConstants.POLARIS_TRIAGE_KEY)) {
-            polaris.setTriage(polarisParameters
-                    .get(ApplicationConstants.POLARIS_TRIAGE_KEY)
-                    .toString()
-                    .trim());
-        }
-
+    private void setBranchName(Map<String, Object> polarisParameters, Polaris polaris) {
         if (polarisParameters.containsKey(ApplicationConstants.POLARIS_BRANCH_NAME_KEY)) {
             polaris.getBranch()
                     .setName(polarisParameters
                             .get(ApplicationConstants.POLARIS_BRANCH_NAME_KEY)
                             .toString()
                             .trim());
+        } else {
+            boolean isPullRequest = envVars.get(ApplicationConstants.ENV_CHANGE_ID_KEY) != null;
+            String branchName = isPullRequest
+                    ? envVars.get(ApplicationConstants.ENV_CHANGE_BRANCH_KEY)
+                    : envVars.get(ApplicationConstants.ENV_BRANCH_NAME_KEY);
+            polaris.getBranch().setName(branchName);
+            logger.info("Polaris Branch Name: " + branchName);
         }
+    }
 
+    private void setTriage(Map<String, Object> polarisParameters, Polaris polaris) {
+        if (polarisParameters.containsKey(ApplicationConstants.POLARIS_TRIAGE_KEY)) {
+            polaris.setTriage(polarisParameters
+                    .get(ApplicationConstants.POLARIS_TRIAGE_KEY)
+                    .toString()
+                    .trim());
+        }
+    }
+
+    private void setTestScaType(Map<String, Object> polarisParameters, Polaris polaris) {
         if (polarisParameters.containsKey(ApplicationConstants.POLARIS_TEST_SCA_TYPE_KEY)) {
             Test test = new Test();
             polaris.setTest(test);
@@ -169,73 +232,58 @@ public class PolarisParametersService {
                             .toString()
                             .trim());
         }
-
-        if (polarisParameters.containsKey(ApplicationConstants.POLARIS_PRCOMMENT_ENABLED_KEY)) {
-            setPolarisPrCommentInputs(polarisParameters, prcomment, polaris);
-        }
-
-        if (polarisParameters.containsKey(ApplicationConstants.POLARIS_ASSESSMENT_TYPES_KEY)) {
-            setAssessmentTypes(polarisParameters, polaris);
-        }
-
-        if (polarisParameters.containsKey(ApplicationConstants.POLARIS_ASSESSMENT_MODE_KEY)) {
-            setAssessmentMode(polarisParameters, polaris);
-        }
-
-        return polaris;
     }
 
-    private void setAssessmentTypes(Map<String, Object> polarisParameters, Polaris polaris) {
-        String assessmentTypesValue = polarisParameters
-                .get(ApplicationConstants.POLARIS_ASSESSMENT_TYPES_KEY)
-                .toString()
-                .trim();
-        if (!assessmentTypesValue.isEmpty()) {
-            List<String> assessmentTypes = Stream.of(
-                            assessmentTypesValue.toUpperCase().split(","))
-                    .map(String::trim)
-                    .collect(Collectors.toList());
-            polaris.getAssessmentTypes().setTypes(assessmentTypes);
+    private void setSarif(Map<String, Object> polarisParameters, Polaris polaris) {
+        if (polarisParameters.containsKey(ApplicationConstants.POLARIS_REPORTS_SARIF_CREATE_KEY)
+                && envVars.get(ApplicationConstants.ENV_CHANGE_ID_KEY) == null) {
+            Sarif sarif = prepareSarifObject(polarisParameters);
+            polaris.setReports(new Reports());
+            polaris.getReports().setSarif(sarif);
         }
     }
 
     private void setAssessmentMode(Map<String, Object> polarisParameters, Polaris polaris) {
-        String assessmentModeValue = polarisParameters
-                .get(ApplicationConstants.POLARIS_ASSESSMENT_MODE_KEY)
-                .toString()
-                .trim();
-        if (!assessmentModeValue.isEmpty()) {
-            polaris.getAssessmentTypes().setMode(assessmentModeValue);
+        if (polarisParameters.containsKey(ApplicationConstants.POLARIS_ASSESSMENT_MODE_KEY)) {
+            String assessmentModeValue = polarisParameters
+                    .get(ApplicationConstants.POLARIS_ASSESSMENT_MODE_KEY)
+                    .toString()
+                    .trim();
+            if (!assessmentModeValue.isEmpty()) {
+                polaris.getAssessmentTypes().setMode(assessmentModeValue);
+            }
         }
     }
 
     private void setPolarisPrCommentInputs(
             Map<String, Object> polarisParameters, Prcomment prcomment, Polaris polaris) {
-        String isEnabled = polarisParameters
-                .get(ApplicationConstants.POLARIS_PRCOMMENT_ENABLED_KEY)
-                .toString()
-                .trim();
-        if (isEnabled.equals("true")) {
-            boolean isPullRequestEvent = Utility.isPullRequestEvent(envVars);
-            if (isPullRequestEvent) {
-                prcomment.setEnabled(true);
+        if (polarisParameters.containsKey(ApplicationConstants.POLARIS_PRCOMMENT_ENABLED_KEY)) {
+            String isEnabled = polarisParameters
+                    .get(ApplicationConstants.POLARIS_PRCOMMENT_ENABLED_KEY)
+                    .toString()
+                    .trim();
+            if (isEnabled.equals("true")) {
+                boolean isPullRequestEvent = Utility.isPullRequestEvent(envVars);
+                if (isPullRequestEvent) {
+                    prcomment.setEnabled(true);
 
-                if (polarisParameters.containsKey(ApplicationConstants.POLARIS_PRCOMMENT_SEVERITIES_KEY)) {
-                    String prCommentSeveritiesValue = polarisParameters
-                            .get(ApplicationConstants.POLARIS_PRCOMMENT_SEVERITIES_KEY)
-                            .toString()
-                            .trim();
-                    if (!prCommentSeveritiesValue.isEmpty()) {
-                        List<String> prCommentSeverities = Arrays.asList(
-                                prCommentSeveritiesValue.toUpperCase().split(","));
-                        prcomment.setSeverities(prCommentSeverities);
+                    if (polarisParameters.containsKey(ApplicationConstants.POLARIS_PRCOMMENT_SEVERITIES_KEY)) {
+                        String prCommentSeveritiesValue = polarisParameters
+                                .get(ApplicationConstants.POLARIS_PRCOMMENT_SEVERITIES_KEY)
+                                .toString()
+                                .trim();
+                        if (!prCommentSeveritiesValue.isEmpty()) {
+                            List<String> prCommentSeverities = Arrays.asList(
+                                    prCommentSeveritiesValue.toUpperCase().split(","));
+                            prcomment.setSeverities(prCommentSeverities);
+                        }
                     }
-                }
 
-                polaris.setPrcomment(prcomment);
-                setBranchParent(polarisParameters, polaris);
-            } else {
-                logger.info(ApplicationConstants.POLARIS_PRCOMMENT_INFO_FOR_NON_PR_SCANS);
+                    polaris.setPrcomment(prcomment);
+                    setBranchParent(polarisParameters, polaris);
+                } else {
+                    logger.info(ApplicationConstants.POLARIS_PRCOMMENT_INFO_FOR_NON_PR_SCANS);
+                }
             }
         }
     }
@@ -309,5 +357,53 @@ public class PolarisParametersService {
         }
 
         return project;
+    }
+
+    public Sarif prepareSarifObject(Map<String, Object> sarifParameters) {
+        Sarif sarif = new Sarif();
+
+        if (sarifParameters.containsKey(ApplicationConstants.POLARIS_REPORTS_SARIF_CREATE_KEY)) {
+            Boolean isReports_sarif_create =
+                    (Boolean) sarifParameters.get(ApplicationConstants.POLARIS_REPORTS_SARIF_CREATE_KEY);
+            sarif.setCreate(isReports_sarif_create);
+        }
+        if (sarifParameters.containsKey(ApplicationConstants.POLARIS_REPORTS_SARIF_FILE_PATH_KEY)) {
+            String reports_sarif_file_path =
+                    (String) sarifParameters.get(ApplicationConstants.POLARIS_REPORTS_SARIF_FILE_PATH_KEY);
+            if (reports_sarif_file_path != null) {
+                sarif.setFile(new File());
+                sarif.getFile().setPath(reports_sarif_file_path);
+            }
+        }
+        if (sarifParameters.containsKey(ApplicationConstants.POLARIS_REPORTS_SARIF_SEVERITIES_KEY)) {
+            String reports_sarif_severities =
+                    (String) sarifParameters.get(ApplicationConstants.POLARIS_REPORTS_SARIF_SEVERITIES_KEY);
+            String[] reports_sarif_severitiesInput =
+                    reports_sarif_severities.toUpperCase().split(",");
+            List<String> severities = Arrays.stream(reports_sarif_severitiesInput)
+                    .map(String::trim).collect(Collectors.toList());
+            if (!severities.isEmpty()) {
+                sarif.setSeverities(severities);
+            }
+        }
+        if (sarifParameters.containsKey(ApplicationConstants.POLARIS_REPORTS_SARIF_GROUPSCAISSUES_KEY)) {
+            Boolean reports_sarif_groupSCAIssues =
+                    (Boolean) sarifParameters.get(ApplicationConstants.POLARIS_REPORTS_SARIF_GROUPSCAISSUES_KEY);
+            sarif.setGroupSCAIssues(reports_sarif_groupSCAIssues);
+        }
+        if (sarifParameters.containsKey(ApplicationConstants.POLARIS_REPORTS_SARIF_ISSUE_TYPES_KEY)) {
+            String reports_sarif_issue_types =
+                    (String) sarifParameters.get(ApplicationConstants.POLARIS_REPORTS_SARIF_ISSUE_TYPES_KEY);
+            String[] reports_sarif_issue_typesInput =
+                    reports_sarif_issue_types.toUpperCase().split(",");
+            List<String> issueTypes = Arrays.stream(reports_sarif_issue_typesInput)
+                    .map(String::trim).collect(Collectors.toList());
+            if (!issueTypes.isEmpty()) {
+                sarif.setIssue(new Issue());
+                sarif.getIssue().setTypes(issueTypes);
+            }
+        }
+
+        return sarif;
     }
 }

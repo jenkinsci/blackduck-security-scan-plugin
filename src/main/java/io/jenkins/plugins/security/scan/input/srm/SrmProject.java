@@ -2,7 +2,7 @@ package io.jenkins.plugins.security.scan.input.srm;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Project {
+public class SrmProject {
     @JsonProperty("name")
     private String name;
 

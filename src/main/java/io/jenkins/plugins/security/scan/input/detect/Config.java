@@ -1,8 +1,8 @@
-package io.jenkins.plugins.security.scan.input.blackducksca;
+package io.jenkins.plugins.security.scan.input.detect;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Execution {
+public class Config {
     @JsonProperty("path")
     private String path;
 

@@ -8,6 +8,8 @@ import io.jenkins.plugins.security.scan.global.Utility;
 import io.jenkins.plugins.security.scan.input.project.Project;
 import io.jenkins.plugins.security.scan.input.srm.Branch;
 import io.jenkins.plugins.security.scan.input.srm.SRM;
+import io.jenkins.plugins.security.scan.service.ToolsParameterService;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,14 +37,7 @@ public class SRMParametersService {
             logger.info("SRM parameters are validated successfully");
             return true;
         } else {
-            String message;
-            if (missingMandatoryParams.size() == 1) {
-                message = "Required parameter for SRM is missing: " + missingMandatoryParams.get(0);
-            } else {
-                message = "Required parameters for SRM are missing: " + String.join(", ", missingMandatoryParams);
-            }
-
-            logger.error(message);
+            logger.error(missingMandatoryParams + " - required parameters for SRM is missing");
             return false;
         }
     }
@@ -87,6 +82,12 @@ public class SRMParametersService {
             }
         }
 
+        showErrorMessageForJobType(missingMandatoryParams, jobType);
+
+        return missingMandatoryParams;
+    }
+
+    private void showErrorMessageForJobType(List<String> missingMandatoryParams, String jobType) {
         if (!missingMandatoryParams.isEmpty()) {
             String jobTypeName;
             if (jobType.equalsIgnoreCase(ApplicationConstants.FREESTYLE_JOB_TYPE_NAME)) {
@@ -96,58 +97,69 @@ public class SRMParametersService {
             } else {
                 jobTypeName = "Pipeline";
             }
-            String message;
-            if (missingMandatoryParams.size() == 1) {
-                message = missingMandatoryParams.get(0) + " is mandatory parameter for " + jobTypeName + " job type";
-            } else {
-                message = String.join(", ", missingMandatoryParams) + " is mandatory parameter for " + jobTypeName
-                        + " job type";
-            }
 
-            logger.error(message);
+            logger.error(missingMandatoryParams + " - required parameters for " + jobTypeName + " job type is missing");
         }
-
-        return missingMandatoryParams;
     }
 
     public SRM prepareSrmObjectForBridge(Map<String, Object> srmParameters) {
         SRM srm = new SRM();
         Branch branch = new Branch();
 
+        setUrl(srmParameters, srm);
+        setApiKey(srmParameters, srm);
+        setAssessmentTypes(srmParameters, srm);
+        setProjectName(srmParameters, srm);
+        setProjectId(srmParameters, srm);
+        setBranchName(srmParameters, branch, srm);
+        setBranchParent(srmParameters, branch, srm);
+
+        return srm;
+    }
+
+    private void setUrl(Map<String, Object> srmParameters, SRM srm) {
         if (srmParameters.containsKey(ApplicationConstants.SRM_URL_KEY)) {
             srm.setUrl(srmParameters
                     .get(ApplicationConstants.SRM_URL_KEY)
                     .toString()
                     .trim());
         }
+    }
 
+    private void setApiKey(Map<String, Object> srmParameters, SRM srm) {
         if (srmParameters.containsKey(ApplicationConstants.SRM_APIKEY_KEY)) {
             srm.setApikey(srmParameters
                     .get(ApplicationConstants.SRM_APIKEY_KEY)
                     .toString()
                     .trim());
         }
+    }
 
-        if (srmParameters.containsKey(ApplicationConstants.SRM_ASSESSMENT_TYPES_KEY)) {
-            setAssessmentTypes(srmParameters, srm);
-        }
-
+    private void setProjectName(Map<String, Object> srmParameters, SRM srm) {
         if (srmParameters.containsKey(ApplicationConstants.SRM_PROJECT_NAME_KEY)) {
-            srm.getProject()
+            srm.getSrmProject()
                     .setName(srmParameters
                             .get(ApplicationConstants.SRM_PROJECT_NAME_KEY)
                             .toString()
                             .trim());
+        } else if (!srmParameters.containsKey(ApplicationConstants.SRM_PROJECT_ID_KEY)) {
+            String repoName = ToolsParameterService.getScmRepoName();
+            srm.getSrmProject().setName(repoName);
+            logger.info("SRM Project Name: " + repoName);
         }
+    }
 
+    private void setProjectId(Map<String, Object> srmParameters, SRM srm) {
         if (srmParameters.containsKey(ApplicationConstants.SRM_PROJECT_ID_KEY)) {
-            srm.getProject()
+            srm.getSrmProject()
                     .setId(srmParameters
                             .get(ApplicationConstants.SRM_PROJECT_ID_KEY)
                             .toString()
                             .trim());
         }
+    }
 
+    private void setBranchName(Map<String, Object> srmParameters, Branch branch, SRM srm) {
         if (srmParameters.containsKey(ApplicationConstants.SRM_BRANCH_NAME_KEY)) {
             branch.setName(srmParameters
                     .get(ApplicationConstants.SRM_BRANCH_NAME_KEY)
@@ -155,7 +167,9 @@ public class SRMParametersService {
                     .trim());
             srm.setBranch(branch);
         }
+    }
 
+    private void setBranchParent(Map<String, Object> srmParameters, Branch branch, SRM srm) {
         if (srmParameters.containsKey(ApplicationConstants.SRM_BRANCH_PARENT_KEY)) {
             branch.setParent(srmParameters
                     .get(ApplicationConstants.SRM_BRANCH_PARENT_KEY)
@@ -163,21 +177,21 @@ public class SRMParametersService {
                     .trim());
             srm.setBranch(branch);
         }
-
-        return srm;
     }
 
     private void setAssessmentTypes(Map<String, Object> srmParameters, SRM srm) {
-        String assessmentTypesValue = srmParameters
-                .get(ApplicationConstants.SRM_ASSESSMENT_TYPES_KEY)
-                .toString()
-                .trim();
-        if (!assessmentTypesValue.isEmpty()) {
-            List<String> assessmentTypes = Stream.of(
-                            assessmentTypesValue.toUpperCase().split(","))
-                    .map(String::trim)
-                    .collect(Collectors.toList());
-            srm.getAssessmentTypes().setTypes(assessmentTypes);
+        if (srmParameters.containsKey(ApplicationConstants.SRM_ASSESSMENT_TYPES_KEY)) {
+            String assessmentTypesValue = srmParameters
+                    .get(ApplicationConstants.SRM_ASSESSMENT_TYPES_KEY)
+                    .toString()
+                    .trim();
+            if (!assessmentTypesValue.isEmpty()) {
+                List<String> assessmentTypes = Stream.of(
+                                assessmentTypesValue.toUpperCase().split(","))
+                        .map(String::trim)
+                        .collect(Collectors.toList());
+                srm.getAssessmentTypes().setTypes(assessmentTypes);
+            }
         }
     }
 

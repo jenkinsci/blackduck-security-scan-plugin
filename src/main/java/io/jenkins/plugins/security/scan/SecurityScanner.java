@@ -45,8 +45,7 @@ public class SecurityScanner {
             throws PluginExceptionHandler {
         int scanner = 0;
 
-        List<String> commandLineArgs = toolsParameterService.getCommandLineArgs(
-                Utility.installedBranchSourceDependencies(), scanParams, bridgeInstallationPath);
+        List<String> commandLineArgs = toolsParameterService.getCommandLineArgs(scanParams, bridgeInstallationPath);
 
         logger.info("Executable command line arguments: "
                 + commandLineArgs.stream()

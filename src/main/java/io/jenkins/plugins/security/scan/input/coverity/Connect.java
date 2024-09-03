@@ -10,7 +10,7 @@ public class Connect {
     private User user;
 
     @JsonProperty("project")
-    private Project project;
+    private CoverityProject coverityProject;
 
     @JsonProperty("stream")
     private Stream stream;
@@ -20,7 +20,7 @@ public class Connect {
 
     public Connect() {
         user = new User();
-        project = new Project();
+        coverityProject = new CoverityProject();
         stream = new Stream();
     }
 
@@ -40,12 +40,12 @@ public class Connect {
         this.user = user;
     }
 
-    public Project getProject() {
-        return project;
+    public CoverityProject getCoverityProject() {
+        return coverityProject;
     }
 
-    public void setProject(Project project) {
-        this.project = project;
+    public void setCoverityProject(CoverityProject coverityProject) {
+        this.coverityProject = coverityProject;
     }
 
     public Stream getStream() {

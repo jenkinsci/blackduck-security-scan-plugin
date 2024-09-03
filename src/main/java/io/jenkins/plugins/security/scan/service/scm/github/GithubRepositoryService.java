@@ -9,8 +9,10 @@ import io.jenkins.plugins.security.scan.global.Utility;
 import io.jenkins.plugins.security.scan.input.scm.common.Pull;
 import io.jenkins.plugins.security.scan.input.scm.github.Github;
 import io.jenkins.plugins.security.scan.input.scm.github.Host;
-import java.util.Map;
+import io.jenkins.plugins.security.scan.service.ToolsParameterService;
 import org.apache.commons.lang.StringUtils;
+
+import java.util.Map;
 
 public class GithubRepositoryService {
     private final LoggerWrapper logger;
@@ -28,10 +30,10 @@ public class GithubRepositoryService {
             String repositoryOwner,
             Integer projectRepositoryPullNumber,
             String branchName,
-            boolean isPrCommentSet,
             String githubApiUri)
             throws PluginExceptionHandler {
         String githubToken = (String) scanParameters.get(ApplicationConstants.GITHUB_TOKEN_KEY);
+        boolean isPrCommentSet = ToolsParameterService.isPrCommentValueSet(scanParameters);
 
         if (isPrCommentSet && Utility.isStringNullOrBlank(githubToken)) {
             logger.error("PrComment is set true but no GitHub token found!");

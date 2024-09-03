@@ -105,6 +105,9 @@ public class ApplicationConstants {
     public static final String DETECT_SEARCH_DEPTH_KEY = "detect_search_depth";
     public static final String DETECT_CONFIG_PATH_KEY = "detect_config_path";
     public static final String DETECT_ARGS_KEY = "detect_args";
+    public static final String DETECT_EXECUTION_PATH_KEY = "detect_execution_path";
+    @Deprecated
+    public static final String SRM_SCA_EXECUTION_PATH_KEY = "blackduck_execution_path";
 
     // Coverity Parameters
     public static final String COVERITY_URL_KEY = "coverity_url";
@@ -121,6 +124,7 @@ public class ApplicationConstants {
     public static final String COVERITY_PRCOMMENT_ENABLED_KEY = "coverity_prComment_enabled";
     public static final String COVERITY_VERSION_KEY = "coverity_version";
     public static final String COVERITY_LOCAL_KEY = "coverity_local";
+    public static final String SRM_SAST_EXECUTION_PATH_KEY = "coverity_execution_path";
 
     // Polaris Parameters
     public static final String POLARIS_SERVER_URL_KEY = "polaris_server_url";
@@ -149,12 +153,6 @@ public class ApplicationConstants {
     public static final String SRM_PROJECT_ID_KEY = "srm_project_id";
     public static final String SRM_BRANCH_NAME_KEY = "srm_branch_name";
     public static final String SRM_BRANCH_PARENT_KEY = "srm_branch_parent";
-
-    @Deprecated
-    public static final String SRM_SCA_EXECUTION_PATH_KEY = "blackduck_execution_path";
-
-    public static final String SRM_SCA_DETECT_EXECUTION_PATH_KEY = "detect_execution_path";
-    public static final String SRM_SAST_EXECUTION_PATH_KEY = "coverity_execution_path";
 
     // Source Upload Parameters
     public static final String PROJECT_DIRECTORY_KEY = "project_directory";

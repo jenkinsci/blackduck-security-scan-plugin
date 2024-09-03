@@ -7,14 +7,18 @@ import io.jenkins.plugins.gitlabbranchsource.GitLabSCMSource;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.global.LoggerWrapper;
+import io.jenkins.plugins.security.scan.input.scm.bitbucket.Bitbucket;
+import io.jenkins.plugins.security.scan.input.scm.github.Github;
+import io.jenkins.plugins.security.scan.input.scm.gitlab.Gitlab;
 import io.jenkins.plugins.security.scan.service.scm.bitbucket.BitbucketRepositoryService;
 import io.jenkins.plugins.security.scan.service.scm.github.GithubRepositoryService;
 import io.jenkins.plugins.security.scan.service.scm.gitlab.GitlabRepositoryService;
-import java.util.Map;
 import jenkins.model.Jenkins;
 import jenkins.scm.api.SCMSource;
 import jenkins.scm.api.SCMSourceOwner;
 import org.jenkinsci.plugins.github_branch_source.GitHubSCMSource;
+
+import java.util.Map;
 
 public class SCMRepositoryService {
     private final TaskListener listener;
@@ -29,8 +33,7 @@ public class SCMRepositoryService {
 
     public Object fetchSCMRepositoryDetails(
             Map<String, Boolean> installedBranchSourceDependencies,
-            Map<String, Object> scanParameters,
-            boolean isPrCommentSet)
+            Map<String, Object> scanParameters)
             throws PluginExceptionHandler {
         String pullRequestNumber = envVars.get(ApplicationConstants.ENV_CHANGE_ID_KEY);
         Integer projectRepositoryPullNumber = pullRequestNumber != null ? Integer.parseInt(pullRequestNumber) : null;
@@ -42,7 +45,7 @@ public class SCMRepositoryService {
             BitbucketRepositoryService bitbucketRepositoryService = new BitbucketRepositoryService(listener);
             BitbucketSCMSource bitbucketSCMSource = (BitbucketSCMSource) scmSource;
             return bitbucketRepositoryService.fetchBitbucketRepositoryDetails(
-                    scanParameters, bitbucketSCMSource, projectRepositoryPullNumber, isPrCommentSet);
+                    scanParameters, bitbucketSCMSource, projectRepositoryPullNumber);
         } else if (installedBranchSourceDependencies.getOrDefault(
                         ApplicationConstants.GITHUB_BRANCH_SOURCE_PLUGIN_NAME, false)
                 && scmSource instanceof GitHubSCMSource) {
@@ -60,7 +63,6 @@ public class SCMRepositoryService {
                     repositoryOwner,
                     projectRepositoryPullNumber,
                     branchName,
-                    isPrCommentSet,
                     apiUri);
         } else if (installedBranchSourceDependencies.getOrDefault(
                         ApplicationConstants.GITLAB_BRANCH_SOURCE_PLUGIN_NAME, false)
@@ -77,8 +79,7 @@ public class SCMRepositoryService {
                     repositoryName,
                     projectRepositoryPullNumber,
                     branchName,
-                    repositoryUrl,
-                    isPrCommentSet);
+                    repositoryUrl);
         }
         return null;
     }
@@ -101,5 +102,32 @@ public class SCMRepositoryService {
             }
         }
         return null;
+    }
+
+    public String getRepositoryName(Object scmObject) {
+        if (scmObject instanceof Bitbucket) {
+            Bitbucket bitbucket = (Bitbucket) scmObject;
+            return bitbucket.getProject().getRepository().getName();
+        } else if (scmObject instanceof Github) {
+            Github github = (Github) scmObject;
+            return github.getRepository().getName();
+        } else if (scmObject instanceof Gitlab) {
+            Gitlab gitlab = (Gitlab) scmObject;
+            String fullName = gitlab.getRepository().getName();
+            return extractLastPart(fullName);
+        }
+
+        return null;
+    }
+
+    private String extractLastPart(String fullRepoName) {
+        if (fullRepoName != null && !fullRepoName.isEmpty()) {
+            int lastSlashIndex = fullRepoName.lastIndexOf('/');
+            if (lastSlashIndex != -1 && lastSlashIndex < fullRepoName.length() - 1) {
+                return fullRepoName.substring(lastSlashIndex + 1);
+            }
+        }
+
+        return fullRepoName;
     }
 }

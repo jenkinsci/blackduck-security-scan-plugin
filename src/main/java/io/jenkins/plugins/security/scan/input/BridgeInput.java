@@ -2,7 +2,7 @@ package io.jenkins.plugins.security.scan.input;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jenkins.plugins.security.scan.input.blackducksca.BlackDuckSCA;
-import io.jenkins.plugins.security.scan.input.blackducksca.Detect;
+import io.jenkins.plugins.security.scan.input.detect.Detect;
 import io.jenkins.plugins.security.scan.input.coverity.Coverity;
 import io.jenkins.plugins.security.scan.input.polaris.Polaris;
 import io.jenkins.plugins.security.scan.input.project.Project;

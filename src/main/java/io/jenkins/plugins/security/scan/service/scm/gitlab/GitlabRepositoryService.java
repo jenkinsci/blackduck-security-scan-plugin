@@ -9,6 +9,8 @@ import io.jenkins.plugins.security.scan.global.Utility;
 import io.jenkins.plugins.security.scan.input.scm.common.Pull;
 import io.jenkins.plugins.security.scan.input.scm.gitlab.Api;
 import io.jenkins.plugins.security.scan.input.scm.gitlab.Gitlab;
+import io.jenkins.plugins.security.scan.service.ToolsParameterService;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
@@ -27,10 +29,10 @@ public class GitlabRepositoryService {
             String repositoryName,
             Integer projectRepositoryPullNumber,
             String branchName,
-            String repositoryUrl,
-            boolean isPrCommentSet)
+            String repositoryUrl)
             throws PluginExceptionHandler {
         String gitlabToken = (String) scanParameters.get(ApplicationConstants.GITLAB_TOKEN_KEY);
+        boolean isPrCommentSet = ToolsParameterService.isPrCommentValueSet(scanParameters);
 
         if (isPrCommentSet && Utility.isStringNullOrBlank(gitlabToken)) {
             logger.error("PrComment is set true but no GitLab token found!");

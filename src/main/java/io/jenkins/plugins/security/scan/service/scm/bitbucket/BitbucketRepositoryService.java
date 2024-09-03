@@ -13,6 +13,8 @@ import io.jenkins.plugins.security.scan.input.scm.bitbucket.Bitbucket;
 import io.jenkins.plugins.security.scan.input.scm.bitbucket.Repository;
 import io.jenkins.plugins.security.scan.input.scm.bitbucket.User;
 import io.jenkins.plugins.security.scan.input.scm.common.Pull;
+import io.jenkins.plugins.security.scan.service.ToolsParameterService;
+
 import java.util.Map;
 
 public class BitbucketRepositoryService {
@@ -26,8 +28,7 @@ public class BitbucketRepositoryService {
     public Bitbucket fetchBitbucketRepositoryDetails(
             Map<String, Object> scanParameters,
             BitbucketSCMSource bitbucketSCMSource,
-            Integer projectRepositoryPullNumber,
-            boolean isPrCommentSet)
+            Integer projectRepositoryPullNumber)
             throws PluginExceptionHandler {
 
         String bitbucketToken = (String) scanParameters.get(ApplicationConstants.BITBUCKET_TOKEN_KEY);
@@ -35,6 +36,7 @@ public class BitbucketRepositoryService {
         String serverUrl = bitbucketSCMSource.getServerUrl();
         String repositoryName = null;
         String projectKey = null;
+        boolean isPrCommentSet = ToolsParameterService.isPrCommentValueSet(scanParameters);
 
         if (isPrCommentSet && Utility.isStringNullOrBlank(bitbucketToken)) {
             logger.error("PrComment is set true but no Bitbucket token found!");

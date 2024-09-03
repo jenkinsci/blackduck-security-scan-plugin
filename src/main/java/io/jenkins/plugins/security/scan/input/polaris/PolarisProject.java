@@ -2,7 +2,7 @@ package io.jenkins.plugins.security.scan.input.polaris;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class ProjectName {
+public class PolarisProject {
     @JsonProperty("name")
     private String name;
 

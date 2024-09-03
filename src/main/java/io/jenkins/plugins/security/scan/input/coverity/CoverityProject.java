@@ -2,7 +2,7 @@ package io.jenkins.plugins.security.scan.input.coverity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Project {
+public class CoverityProject {
     @JsonProperty("name")
     private String name;
 

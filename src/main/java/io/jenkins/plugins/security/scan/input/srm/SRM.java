@@ -15,14 +15,14 @@ public class SRM {
     private AssessmentTypes assessmentTypes;
 
     @JsonProperty("project")
-    private Project project;
+    private SrmProject srmProject;
 
     @JsonProperty("branch")
     private Branch branch;
 
     public SRM() {
         assessmentTypes = new AssessmentTypes();
-        project = new Project();
+        srmProject = new SrmProject();
     }
 
     public String getUrl() {
@@ -49,12 +49,12 @@ public class SRM {
         this.assessmentTypes = assessmentTypes;
     }
 
-    public Project getProject() {
-        return project;
+    public SrmProject getSrmProject() {
+        return srmProject;
     }
 
-    public void setProject(Project project) {
-        this.project = project;
+    public void setSrmProject(SrmProject srmProject) {
+        this.srmProject = srmProject;
     }
 
     public Branch getBranch() {

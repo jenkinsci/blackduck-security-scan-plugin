@@ -12,7 +12,7 @@ public class Polaris {
     private ApplicationName applicationName;
 
     @JsonProperty("project")
-    private ProjectName projectName;
+    private PolarisProject polarisProject;
 
     @JsonProperty("assessment")
     private AssessmentTypes assessmentTypes;
@@ -37,7 +37,7 @@ public class Polaris {
 
     public Polaris() {
         applicationName = new ApplicationName();
-        projectName = new ProjectName();
+        polarisProject = new PolarisProject();
         assessmentTypes = new AssessmentTypes();
         branch = new Branch();
     }
@@ -58,12 +58,12 @@ public class Polaris {
         this.applicationName = applicationName;
     }
 
-    public ProjectName getProjectName() {
-        return projectName;
+    public PolarisProject getPolarisProject() {
+        return polarisProject;
     }
 
-    public void setProjectName(ProjectName projectName) {
-        this.projectName = projectName;
+    public void setPolarisProject(PolarisProject polarisProject) {
+        this.polarisProject = polarisProject;
     }
 
     public AssessmentTypes getAssessmentTypes() {

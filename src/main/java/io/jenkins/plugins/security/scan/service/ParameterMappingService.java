@@ -119,7 +119,7 @@ public class ParameterMappingService {
                             .orElse(null));
             addParameterIfNotBlank(
                     globalParameters,
-                    ApplicationConstants.SRM_SCA_DETECT_EXECUTION_PATH_KEY,
+                    ApplicationConstants.DETECT_EXECUTION_PATH_KEY,
                     config.getSrmSCAInstallationPath());
             addParameterIfNotBlank(
                     globalParameters,
@@ -424,11 +424,11 @@ public class ParameterMappingService {
                 srmParametersMap, ApplicationConstants.SRM_BRANCH_PARENT_KEY, securityScan.getSrm_branch_parent());
         addDeprecatedParameterIfNotBlank(
                 srmParametersMap,
-                ApplicationConstants.SRM_SCA_DETECT_EXECUTION_PATH_KEY,
+                ApplicationConstants.DETECT_EXECUTION_PATH_KEY,
                 securityScan.getBlackduck_execution_path());
         addParameterIfNotBlank(
                 srmParametersMap,
-                ApplicationConstants.SRM_SCA_DETECT_EXECUTION_PATH_KEY,
+                ApplicationConstants.DETECT_EXECUTION_PATH_KEY,
                 securityScan.getDetect_execution_path());
         addParameterIfNotBlank(
                 srmParametersMap,

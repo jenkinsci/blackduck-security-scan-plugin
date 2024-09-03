@@ -1,6 +1,7 @@
-package io.jenkins.plugins.security.scan.input.blackducksca;
+package io.jenkins.plugins.security.scan.input.detect;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.jenkins.plugins.security.scan.input.blackducksca.*;
 
 public class Detect {
     @JsonProperty("install")

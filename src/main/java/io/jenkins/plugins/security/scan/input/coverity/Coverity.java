@@ -2,6 +2,8 @@ package io.jenkins.plugins.security.scan.input.coverity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jenkins.plugins.security.scan.input.blackducksca.Install;
+import io.jenkins.plugins.security.scan.input.detect.Config;
+import io.jenkins.plugins.security.scan.input.detect.Execution;
 
 public class Coverity {
     @JsonProperty("connect")

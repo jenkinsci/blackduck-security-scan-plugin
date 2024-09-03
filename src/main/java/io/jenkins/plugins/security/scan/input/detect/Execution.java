@@ -1,4 +1,4 @@
-package io.jenkins.plugins.security.scan.input.coverity;
+package io.jenkins.plugins.security.scan.input.detect;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
