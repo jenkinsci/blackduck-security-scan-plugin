@@ -321,9 +321,9 @@ public class CoverityParametersService {
     }
 
     private void setExecutionPath(Map<String, Object> scanParameters, Coverity coverity) {
-        if (scanParameters.containsKey(ApplicationConstants.SRM_SAST_EXECUTION_PATH_KEY)) {
+        if (scanParameters.containsKey(ApplicationConstants.COVERITY_EXECUTION_PATH_KEY)) {
             String installationPath = scanParameters
-                    .get(ApplicationConstants.SRM_SAST_EXECUTION_PATH_KEY)
+                    .get(ApplicationConstants.COVERITY_EXECUTION_PATH_KEY)
                     .toString()
                     .trim();
             if (!installationPath.isBlank()) {

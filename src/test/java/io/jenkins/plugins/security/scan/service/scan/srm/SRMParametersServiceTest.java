@@ -1,27 +1,30 @@
 package io.jenkins.plugins.security.scan.service.scan.srm;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import hudson.EnvVars;
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.input.coverity.Coverity;
+import io.jenkins.plugins.security.scan.input.detect.Detect;
+import io.jenkins.plugins.security.scan.input.scm.github.Github;
+import io.jenkins.plugins.security.scan.input.scm.github.Repository;
 import io.jenkins.plugins.security.scan.input.srm.SRM;
-import io.jenkins.plugins.security.scan.service.scan.blackducksca.BlackDuckSCAParametersService;
+import io.jenkins.plugins.security.scan.service.scan.blackducksca.DetectParametersService;
 import io.jenkins.plugins.security.scan.service.scan.coverity.CoverityParametersService;
-import java.io.PrintStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import io.jenkins.plugins.security.scan.service.scm.SCMRepositoryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.io.PrintStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 public class SRMParametersServiceTest {
 
     private SRMParametersService srmParametersService;
-    private BlackDuckSCAParametersService blackDuckSCAParametersService;
-    private CoverityParametersService coverityParametersService;
     private final TaskListener listenerMock = Mockito.mock(TaskListener.class);
     private final EnvVars envVarsMock = Mockito.mock(EnvVars.class);
     private final String TEST_SRM_SERVER_URL = "https://fake.srm-server.url";
@@ -31,14 +34,6 @@ public class SRMParametersServiceTest {
     private final String TEST_SRM_ASSESSMENT_TYPES = "SCA";
     private final String TEST_SRM_BRANCH_NAME = "test-branch";
     private final String TEST_SRM_BRANCH_PARENT_NAME = "test-parent-branch";
-    private final String TEST_BLACKDUCKSCA_ARGS = "--detect.diagnostic=true";
-    private final String TEST_BLACKDUCKSCA_CONFIG_FILE_PATH = "DIR/CONFIG/application.properties";
-    private final String TEST_COVERITY_CLEAN_COMMAND = "mvn clean";
-    private final String TEST_COVERITY_BUILD_COMMAND = "mvn clean install";
-    private final String TEST_COVERITY_ARGS = "-o capture.build.clean-command=\"mvn clean\" -- mvn clean install";
-    private final String TEST_COVERITY_CONFIG_FILE_PATH = "DIR/CONFIG/coverity.yml";
-    private final String TEST_DETECT_EXECUTION_PATH = "/fake/path/bd";
-    private final String TEST_COVERITY_EXECUTION_PATH = "/fake/path/cov";
 
     @BeforeEach
     void setUp() {
@@ -74,7 +69,7 @@ public class SRMParametersServiceTest {
     }
 
     @Test
-    void prepareScanInputForBridgeForPolaris_SCA_SAST_ArbitraryParamsTest() {
+    void prepareSrmObjectForBridge_arbitraryParamsTest() {
         Map<String, Object> srmParameters = new HashMap<>();
 
         srmParameters.put(ApplicationConstants.SRM_URL_KEY, TEST_SRM_SERVER_URL);
@@ -84,32 +79,82 @@ public class SRMParametersServiceTest {
         srmParameters.put(ApplicationConstants.SRM_ASSESSMENT_TYPES_KEY, TEST_SRM_ASSESSMENT_TYPES);
         srmParameters.put(ApplicationConstants.SRM_BRANCH_NAME_KEY, TEST_SRM_BRANCH_NAME);
         srmParameters.put(ApplicationConstants.SRM_BRANCH_PARENT_KEY, TEST_SRM_BRANCH_PARENT_NAME);
-        srmParameters.put(ApplicationConstants.DETECT_SEARCH_DEPTH_KEY, 2);
-        srmParameters.put(ApplicationConstants.DETECT_CONFIG_PATH_KEY, TEST_BLACKDUCKSCA_CONFIG_FILE_PATH);
-        srmParameters.put(ApplicationConstants.DETECT_ARGS_KEY, TEST_BLACKDUCKSCA_ARGS);
-        srmParameters.put(ApplicationConstants.COVERITY_BUILD_COMMAND_KEY, TEST_COVERITY_BUILD_COMMAND);
-        srmParameters.put(ApplicationConstants.COVERITY_CLEAN_COMMAND_KEY, TEST_COVERITY_CLEAN_COMMAND);
-        srmParameters.put(ApplicationConstants.COVERITY_CONFIG_PATH_KEY, TEST_COVERITY_CONFIG_FILE_PATH);
-        srmParameters.put(ApplicationConstants.COVERITY_ARGS_KEY, TEST_COVERITY_ARGS);
-        srmParameters.put(ApplicationConstants.SRM_SCA_DETECT_EXECUTION_PATH_KEY, TEST_DETECT_EXECUTION_PATH);
-        srmParameters.put(ApplicationConstants.SRM_SAST_EXECUTION_PATH_KEY, TEST_COVERITY_EXECUTION_PATH);
 
-        blackDuckSCAParametersService = new BlackDuckSCAParametersService(listenerMock, envVarsMock);
-        coverityParametersService = new CoverityParametersService(listenerMock, envVarsMock);
+        srmParameters.put(ApplicationConstants.DETECT_SEARCH_DEPTH_KEY, 2);
+        srmParameters.put(ApplicationConstants.DETECT_CONFIG_PATH_KEY, "DIR/CONFIG/application.properties");
+        srmParameters.put(ApplicationConstants.DETECT_ARGS_KEY, "--detect.diagnostic=true");
+        srmParameters.put(ApplicationConstants.DETECT_EXECUTION_PATH_KEY, "/fake/path/bd");
+
+        srmParameters.put(ApplicationConstants.COVERITY_BUILD_COMMAND_KEY, "mvn clean install");
+        srmParameters.put(ApplicationConstants.COVERITY_CLEAN_COMMAND_KEY, "mvn clean");
+        srmParameters.put(ApplicationConstants.COVERITY_CONFIG_PATH_KEY, "DIR/CONFIG/coverity.yml");
+        srmParameters.put(ApplicationConstants.COVERITY_ARGS_KEY, "-o capture.build.clean-command=\"mvn clean\" -- mvn clean install");
+        srmParameters.put(ApplicationConstants.COVERITY_EXECUTION_PATH_KEY, "/fake/path/cov");
+
+        DetectParametersService detectParametersService = new DetectParametersService();
+        CoverityParametersService coverityParametersService = new CoverityParametersService(listenerMock, envVarsMock);
 
         SRM srm = srmParametersService.prepareSrmObjectForBridge(srmParameters);
         Coverity coverity = coverityParametersService.prepareCoverityObjectForBridge(srmParameters);
+        Detect detect = detectParametersService.prepareDetectObject(srmParameters);
 
         assertEquals(srm.getUrl(), TEST_SRM_SERVER_URL);
         assertEquals(srm.getApikey(), TEST_SRM_API_KEY_TOKEN);
-        assertEquals(srm.getProject().getName(), TEST_SRM_PROJECT_NAME);
-        assertEquals(srm.getProject().getId(), TEST_SRM_PROJECT_ID);
+        assertEquals(srm.getSrmProject().getName(), TEST_SRM_PROJECT_NAME);
+        assertEquals(srm.getSrmProject().getId(), TEST_SRM_PROJECT_ID);
         assertEquals(srm.getBranch().getName(), TEST_SRM_BRANCH_NAME);
         assertEquals(srm.getBranch().getParent(), TEST_SRM_BRANCH_PARENT_NAME);
         assertEquals(srm.getAssessmentTypes().getTypes(), List.of(TEST_SRM_ASSESSMENT_TYPES));
-        assertEquals(coverity.getBuild().getCommand(), TEST_COVERITY_BUILD_COMMAND);
-        assertEquals(coverity.getClean().getCommand(), TEST_COVERITY_CLEAN_COMMAND);
-        assertEquals(coverity.getConfig().getPath(), TEST_COVERITY_CONFIG_FILE_PATH);
-        assertEquals(coverity.getArgs(), TEST_COVERITY_ARGS);
+        assertEquals(detect.getSearch().getDepth(), 2);
+        assertEquals(detect.getConfig().getPath(), "DIR/CONFIG/application.properties");
+        assertEquals(detect.getArgs(), "--detect.diagnostic=true");
+        assertEquals(detect.getExecution().getPath(), "/fake/path/bd");
+        assertEquals(coverity.getBuild().getCommand(), "mvn clean install");
+        assertEquals(coverity.getClean().getCommand(), "mvn clean");
+        assertEquals(coverity.getConfig().getPath(), "DIR/CONFIG/coverity.yml");
+        assertEquals(coverity.getArgs(), "-o capture.build.clean-command=\"mvn clean\" -- mvn clean install");
+    }
+
+    @Test
+    void prepareScanInputForBridge_withDefaultValue_withoutProjectIdTest() {
+        Map<String, Object> srmParameters = new HashMap<>();
+
+        srmParameters.put(ApplicationConstants.SRM_URL_KEY, TEST_SRM_SERVER_URL);
+        srmParameters.put(ApplicationConstants.SRM_APIKEY_KEY, TEST_SRM_API_KEY_TOKEN);
+        srmParameters.put(ApplicationConstants.SRM_PROJECT_NAME_KEY, TEST_SRM_PROJECT_NAME);
+        srmParameters.put(ApplicationConstants.SRM_ASSESSMENT_TYPES_KEY, TEST_SRM_ASSESSMENT_TYPES);
+
+        Github github = new Github();
+        github.setRepository(new Repository());
+        github.getRepository().setName("default-repo-name");
+        SCMRepositoryService scmRepositoryService = new SCMRepositoryService(listenerMock, envVarsMock);
+        scmRepositoryService.setRepositoryName(github);
+
+        SRM srm = srmParametersService.prepareSrmObjectForBridge(srmParameters);
+
+        assertEquals(srm.getUrl(), TEST_SRM_SERVER_URL);
+        assertEquals(srm.getApikey(), TEST_SRM_API_KEY_TOKEN);
+        assertEquals(srm.getSrmProject().getName(), "default-repo-name");
+        assertNull(srm.getSrmProject().getId());
+        assertEquals(srm.getAssessmentTypes().getTypes(), List.of(TEST_SRM_ASSESSMENT_TYPES));
+    }
+
+    @Test
+    void prepareScanInputForBridge_withDefaultValue_withProjectIdTest() {
+        Map<String, Object> srmParameters = new HashMap<>();
+
+        srmParameters.put(ApplicationConstants.SRM_URL_KEY, TEST_SRM_SERVER_URL);
+        srmParameters.put(ApplicationConstants.SRM_APIKEY_KEY, TEST_SRM_API_KEY_TOKEN);
+        srmParameters.put(ApplicationConstants.SRM_PROJECT_NAME_KEY, TEST_SRM_PROJECT_NAME);
+        assertEquals(ApplicationConstants.SRM_PROJECT_NAME_KEY, TEST_SRM_PROJECT_ID);
+        srmParameters.put(ApplicationConstants.SRM_ASSESSMENT_TYPES_KEY, TEST_SRM_ASSESSMENT_TYPES);
+
+        SRM srm = srmParametersService.prepareSrmObjectForBridge(srmParameters);
+
+        assertEquals(srm.getUrl(), TEST_SRM_SERVER_URL);
+        assertEquals(srm.getApikey(), TEST_SRM_API_KEY_TOKEN);
+        assertNull(srm.getSrmProject().getName());
+        assertEquals(srm.getSrmProject().getId(), TEST_SRM_PROJECT_ID);
+        assertEquals(srm.getAssessmentTypes().getTypes(), List.of(TEST_SRM_ASSESSMENT_TYPES));
     }
 }

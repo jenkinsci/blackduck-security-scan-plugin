@@ -168,7 +168,7 @@ public class ScanInitializer {
                         && (key.startsWith("project_") || arbitraryParamList.contains(key)))
                 || (securityProduct.equals(SecurityProduct.SRM.name().toLowerCase())
                         && (key.equals(ApplicationConstants.DETECT_EXECUTION_PATH_KEY)
-                                || key.equals(ApplicationConstants.SRM_SAST_EXECUTION_PATH_KEY)
+                                || key.equals(ApplicationConstants.COVERITY_EXECUTION_PATH_KEY)
                                 || arbitraryParamList.contains(key)));
     }
 

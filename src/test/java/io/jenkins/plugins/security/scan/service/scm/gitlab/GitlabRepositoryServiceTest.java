@@ -1,18 +1,20 @@
 package io.jenkins.plugins.security.scan.service.scm.gitlab;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.input.scm.gitlab.Gitlab;
-import java.io.PrintStream;
-import java.util.HashMap;
-import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import java.io.PrintStream;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class GitlabRepositoryServiceTest {
     private TaskListener listenerMock;
@@ -24,7 +26,6 @@ public class GitlabRepositoryServiceTest {
     private final Integer TEST_REPOSITORY_PULL_NUMBER = 7;
     private final String TEST_REPOSITORY_NAME = "fake-repo";
     private final String TEST_REPOSITORY_BRANCH_NAME = "fake-branch";
-    private final String TEST_REPOSITORY_PARENT_BRANCH_NAME = "fake-parent-branch";
     private Map<String, Object> scanParametersMap;
 
     @BeforeEach
@@ -45,8 +46,7 @@ public class GitlabRepositoryServiceTest {
                 TEST_REPOSITORY_NAME,
                 TEST_REPOSITORY_PULL_NUMBER,
                 TEST_REPOSITORY_BRANCH_NAME,
-                TEST_REPOSITORY_URL_CLOUD,
-                true);
+                TEST_REPOSITORY_URL_CLOUD);
 
         assertEquals(
                 gitlabCloud.getUser().getToken(),
@@ -65,8 +65,7 @@ public class GitlabRepositoryServiceTest {
                 TEST_REPOSITORY_NAME,
                 TEST_REPOSITORY_PULL_NUMBER,
                 TEST_REPOSITORY_BRANCH_NAME,
-                TEST_REPOSITORY_URL_ENTERPRISE,
-                true);
+                TEST_REPOSITORY_URL_ENTERPRISE);
 
         assertEquals(
                 gitlabCloud.getUser().getToken(),
@@ -88,8 +87,7 @@ public class GitlabRepositoryServiceTest {
                         TEST_REPOSITORY_NAME,
                         TEST_REPOSITORY_PULL_NUMBER,
                         TEST_REPOSITORY_BRANCH_NAME,
-                        TEST_REPOSITORY_URL_CLOUD,
-                        true));
+                        TEST_REPOSITORY_URL_CLOUD));
     }
 
     @Test

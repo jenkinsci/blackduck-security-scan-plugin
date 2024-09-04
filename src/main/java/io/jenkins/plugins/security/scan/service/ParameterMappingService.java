@@ -123,7 +123,7 @@ public class ParameterMappingService {
                     config.getSrmSCAInstallationPath());
             addParameterIfNotBlank(
                     globalParameters,
-                    ApplicationConstants.SRM_SAST_EXECUTION_PATH_KEY,
+                    ApplicationConstants.COVERITY_EXECUTION_PATH_KEY,
                     config.getSrmSASTInstallationPath());
             addParameterIfNotBlank(
                     globalParameters,
@@ -432,7 +432,7 @@ public class ParameterMappingService {
                 securityScan.getDetect_execution_path());
         addParameterIfNotBlank(
                 srmParametersMap,
-                ApplicationConstants.SRM_SAST_EXECUTION_PATH_KEY,
+                ApplicationConstants.COVERITY_EXECUTION_PATH_KEY,
                 securityScan.getCoverity_execution_path());
 
         if (securityScan instanceof FreestyleScan) {

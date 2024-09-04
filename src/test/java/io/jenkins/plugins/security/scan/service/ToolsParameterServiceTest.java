@@ -1,7 +1,5 @@
 package io.jenkins.plugins.security.scan.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hudson.EnvVars;
@@ -11,16 +9,13 @@ import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.global.BridgeParams;
 import io.jenkins.plugins.security.scan.global.Utility;
-import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
-import io.jenkins.plugins.security.scan.input.BridgeInput;
 import io.jenkins.plugins.security.scan.input.blackducksca.Automation;
 import io.jenkins.plugins.security.scan.input.blackducksca.BlackDuckSCA;
-import io.jenkins.plugins.security.scan.input.blackducksca.Detect;
 import io.jenkins.plugins.security.scan.input.coverity.Connect;
 import io.jenkins.plugins.security.scan.input.coverity.Coverity;
 import io.jenkins.plugins.security.scan.input.polaris.Polaris;
 import io.jenkins.plugins.security.scan.input.project.Project;
-import io.jenkins.plugins.security.scan.input.report.Sarif;
+import io.jenkins.plugins.security.scan.input.project.Source;
 import io.jenkins.plugins.security.scan.input.scm.bitbucket.Bitbucket;
 import io.jenkins.plugins.security.scan.input.scm.github.Github;
 import io.jenkins.plugins.security.scan.input.scm.gitlab.Gitlab;
@@ -28,16 +23,22 @@ import io.jenkins.plugins.security.scan.input.srm.SRM;
 import io.jenkins.plugins.security.scan.service.scm.bitbucket.BitbucketRepositoryService;
 import io.jenkins.plugins.security.scan.service.scm.github.GithubRepositoryService;
 import io.jenkins.plugins.security.scan.service.scm.gitlab.GitlabRepositoryService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ToolsParameterServiceTest {
     private Bitbucket bitBucket;
@@ -72,14 +73,11 @@ public class ToolsParameterServiceTest {
         blackDuckSCA.setToken(TOKEN);
         Map<String, Object> scanParameters = new HashMap<>();
 
-        String inputJsonPath = toolsParameterService.createBridgeInputJson(
+        String inputJsonPath = toolsParameterService.prepareBridgeInputJson(
                 scanParameters,
                 blackDuckSCA,
                 bitBucket,
-                false,
-                null,
-                null,
-                ApplicationConstants.BLACKDUCK_INPUT_JSON_PREFIX,
+                ApplicationConstants.BLACKDUCKSCA_INPUT_JSON_PREFIX,
                 null);
         Path filePath = Paths.get(inputJsonPath);
 
@@ -87,7 +85,7 @@ public class ToolsParameterServiceTest {
                 Files.exists(filePath),
                 String.format(
                         "File %s does not exist at the specified path.",
-                        ApplicationConstants.BLACKDUCK_INPUT_JSON_PREFIX.concat(".json")));
+                        ApplicationConstants.BLACKDUCKSCA_INPUT_JSON_PREFIX.concat(".json")));
         Utility.removeFile(filePath.toString(), workspace, listenerMock);
     }
 
@@ -107,14 +105,11 @@ public class ToolsParameterServiceTest {
             String jsonStringNonPrCommentOrFixPr =
                     "{\"data\":{\"blackducksca\":{\"url\":\"https://fake.blackduck.url\",\"token\":\"MDJDSROSVC56FAKEKEY\"}}}";
 
-            String inputJsonPathForNonFixPr = toolsParameterService.createBridgeInputJson(
+            String inputJsonPathForNonFixPr = toolsParameterService.prepareBridgeInputJson(
                     scanParameters,
                     blackDuckSCA,
                     bitbucketObject,
-                    false,
-                    null,
-                    null,
-                    ApplicationConstants.BLACKDUCK_INPUT_JSON_PREFIX,
+                    ApplicationConstants.BLACKDUCKSCA_INPUT_JSON_PREFIX,
                     null);
             Path filePath = Paths.get(inputJsonPathForNonFixPr);
 
@@ -133,14 +128,11 @@ public class ToolsParameterServiceTest {
         try {
             String jsonStringForPrComment =
                     "{\"data\":{\"blackducksca\":{\"url\":\"https://fake.blackduck.url\",\"token\":\"MDJDSROSVC56FAKEKEY\"},\"bitbucket\":{\"api\":{\"url\":\"\",\"user\":{\"name\":\"fake-user\"},\"token\":\"MDJDSROSVC56FAKEKEY\"},\"project\":{\"repository\":{\"pull\":{\"number\":12},\"name\":\"test\"},\"key\":\"abc\"}}}}";
-            String inputJsonPathForPrComment = toolsParameterService.createBridgeInputJson(
+            String inputJsonPathForPrComment = toolsParameterService.prepareBridgeInputJson(
                     scanParameters,
                     blackDuckSCA,
                     bitbucketObject,
-                    true,
-                    null,
-                    null,
-                    ApplicationConstants.BLACKDUCK_INPUT_JSON_PREFIX,
+                    ApplicationConstants.BLACKDUCKSCA_INPUT_JSON_PREFIX,
                     null);
             Path filePath = Paths.get(inputJsonPathForPrComment);
 
@@ -164,13 +156,10 @@ public class ToolsParameterServiceTest {
         polaris.setAccessToken(TOKEN);
         Map<String, Object> scanParameters = new HashMap<>();
 
-        String inputJsonPath = toolsParameterService.createBridgeInputJson(
+        String inputJsonPath = toolsParameterService.prepareBridgeInputJson(
                 scanParameters,
                 polaris,
                 bitBucket,
-                false,
-                null,
-                null,
                 ApplicationConstants.POLARIS_INPUT_JSON_PREFIX,
                 null);
         Path filePath = Paths.get(inputJsonPath);
@@ -199,13 +188,10 @@ public class ToolsParameterServiceTest {
             String jsonStringNonPrCommentOrFixPr =
                     "{\"data\":{\"polaris\":{\"accesstoken\":\"MDJDSROSVC56FAKEKEY\",\"application\":{\"name\":\"test\"},\"project\":{\"name\":\"test\"},\"assessment\":{},\"serverUrl\":\"https://fake.polaris.url\",\"branch\":{\"name\":\"fake-pr-branch\"}}}}";
 
-            String inputJsonPathForNonFixPr = toolsParameterService.createBridgeInputJson(
+            String inputJsonPathForNonFixPr = toolsParameterService.prepareBridgeInputJson(
                     scanParameters,
                     polaris,
                     bitbucketObject,
-                    false,
-                    null,
-                    null,
                     ApplicationConstants.POLARIS_INPUT_JSON_PREFIX,
                     null);
             Path filePath = Paths.get(inputJsonPathForNonFixPr);
@@ -225,13 +211,10 @@ public class ToolsParameterServiceTest {
         try {
             String jsonStringForPrComment =
                     "{\"data\":{\"polaris\":{\"accesstoken\":\"MDJDSROSVC56FAKEKEY\",\"application\":{\"name\":\"test\"},\"project\":{\"name\":\"test\"},\"assessment\":{},\"serverUrl\":\"https://fake.polaris.url\",\"branch\":{\"name\":\"fake-pr-branch\"}},\"bitbucket\":{\"api\":{\"url\":\"\",\"user\":{\"name\":\"fake-username\"},\"token\":\"MDJDSROSVC56FAKEKEY\"},\"project\":{\"repository\":{\"pull\":{\"number\":12},\"name\":\"test\"},\"key\":\"abc\"}}}}";
-            String inputJsonPathForPrComment = toolsParameterService.createBridgeInputJson(
+            String inputJsonPathForPrComment = toolsParameterService.prepareBridgeInputJson(
                     scanParameters,
                     polaris,
                     bitbucketObject,
-                    true,
-                    null,
-                    null,
                     ApplicationConstants.POLARIS_INPUT_JSON_PREFIX,
                     null);
             Path filePath = Paths.get(inputJsonPathForPrComment);
@@ -257,8 +240,8 @@ public class ToolsParameterServiceTest {
         srm.getAssessmentTypes().setTypes(List.of("SCA"));
         Map<String, Object> scanParameters = new HashMap<>();
 
-        String inputJsonPath = toolsParameterService.createBridgeInputJson(
-                scanParameters, srm, bitBucket, false, null, null, ApplicationConstants.SRM_INPUT_JSON_PREFIX, null);
+        String inputJsonPath = toolsParameterService.prepareBridgeInputJson(
+                scanParameters, srm, bitBucket, ApplicationConstants.SRM_INPUT_JSON_PREFIX, null);
         Path filePath = Paths.get(inputJsonPath);
 
         assertTrue(
@@ -286,13 +269,10 @@ public class ToolsParameterServiceTest {
             String jsonStringNonPrCommentOrFixPr =
                     "{\"data\":{\"srm\":{\"url\":\"https://fake.srm.url\",\"apikey\":\"MDJDSROSVC56FAKEKEY\",\"assessment\":{\"types\":[\"SCA\"]},\"project\":{\"name\":\"test\"}}}}";
 
-            String inputJsonPathForNonFixPr = toolsParameterService.createBridgeInputJson(
+            String inputJsonPathForNonFixPr = toolsParameterService.prepareBridgeInputJson(
                     scanParameters,
                     srm,
                     bitbucketObject,
-                    false,
-                    null,
-                    null,
                     ApplicationConstants.SRM_INPUT_JSON_PREFIX,
                     null);
             Path filePath = Paths.get(inputJsonPathForNonFixPr);
@@ -312,13 +292,10 @@ public class ToolsParameterServiceTest {
         try {
             String jsonStringForPrComment =
                     "{\"data\":{\"srm\":{\"url\":\"https://fake.srm.url\",\"apikey\":\"MDJDSROSVC56FAKEKEY\",\"assessment\":{\"types\":[\"SCA\"]},\"project\":{\"name\":\"test\"}},\"bitbucket\":{\"api\":{\"url\":\"\",\"user\":{\"name\":\"fake-user\"},\"token\":\"MDJDSROSVC56FAKEKEY\"},\"project\":{\"repository\":{\"pull\":{\"number\":12},\"name\":\"test\"},\"key\":\"abc\"}}}}";
-            String inputJsonPathForPrComment = toolsParameterService.createBridgeInputJson(
+            String inputJsonPathForPrComment = toolsParameterService.prepareBridgeInputJson(
                     scanParameters,
                     srm,
                     bitbucketObject,
-                    true,
-                    null,
-                    null,
                     ApplicationConstants.SRM_INPUT_JSON_PREFIX,
                     null);
             Path filePath = Paths.get(inputJsonPathForPrComment);
@@ -337,80 +314,12 @@ public class ToolsParameterServiceTest {
     }
 
     @Test
-    public void setScmObjectTest() {
-        BridgeInput bridgeInput = Mockito.mock(BridgeInput.class);
-        Bitbucket bitbucket = Mockito.mock(Bitbucket.class);
-        Github github = Mockito.mock(Github.class);
-        Gitlab gitlab = Mockito.mock(Gitlab.class);
-
-        toolsParameterService.setScmObject(bridgeInput, bitbucket);
-        Mockito.verify(bridgeInput).setBitbucket(bitbucket);
-
-        toolsParameterService.setScmObject(bridgeInput, github);
-        Mockito.verify(bridgeInput).setGithub(github);
-
-        toolsParameterService.setScmObject(bridgeInput, gitlab);
-        Mockito.verify(bridgeInput).setGitlab(gitlab);
-    }
-
-    @Test
-    public void setProjectObjectTest() {
-        BridgeInput bridgeInput = Mockito.mock(BridgeInput.class);
-        Project project = Mockito.mock(Project.class);
-
-        toolsParameterService.setProjectObject(bridgeInput, project);
-        Mockito.verify(bridgeInput).setProject(project);
-    }
-
-    @Test
-    public void prepareBlackduckSarifObjectTest() {
-        Set<String> securityProducts = new HashSet<>();
-        securityProducts.add(SecurityProduct.BLACKDUCK.name());
-        Map<String, Object> scanParameters = new HashMap<>();
-
-        scanParameters.put(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_CREATE_KEY, true);
-        scanParameters.put(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_FILE_PATH_KEY, "/path/to/sarif/file");
-        scanParameters.put(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_SEVERITIES_KEY, "HIGH,MEDIUM,LOW");
-        scanParameters.put(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_GROUPSCAISSUES_KEY, true);
-
-        Sarif sarifObject = toolsParameterService.prepareSarifObject(securityProducts, scanParameters);
-
-        assertNotNull(sarifObject);
-        assertTrue(sarifObject.getCreate());
-        assertEquals("/path/to/sarif/file", sarifObject.getFile().getPath());
-        assertEquals(Arrays.asList("HIGH", "MEDIUM", "LOW"), sarifObject.getSeverities());
-        assertTrue(sarifObject.getGroupSCAIssues());
-    }
-
-    @Test
-    public void preparePolarisSarifObjectTest() {
-        Set<String> securityProducts = new HashSet<>();
-        securityProducts.add(SecurityProduct.POLARIS.name());
-        Map<String, Object> scanParameters = new HashMap<>();
-
-        scanParameters.put(ApplicationConstants.POLARIS_REPORTS_SARIF_CREATE_KEY, true);
-        scanParameters.put(ApplicationConstants.POLARIS_REPORTS_SARIF_FILE_PATH_KEY, "/path/to/sarif/file");
-        scanParameters.put(ApplicationConstants.POLARIS_REPORTS_SARIF_SEVERITIES_KEY, "HIGH,MEDIUM,LOW");
-        scanParameters.put(ApplicationConstants.POLARIS_REPORTS_SARIF_GROUPSCAISSUES_KEY, true);
-        scanParameters.put(ApplicationConstants.POLARIS_REPORTS_SARIF_ISSUE_TYPES_KEY, "SCA");
-
-        Sarif sarifObject = toolsParameterService.prepareSarifObject(securityProducts, scanParameters);
-
-        assertNotNull(sarifObject);
-        assertTrue(sarifObject.getCreate());
-        assertEquals("/path/to/sarif/file", sarifObject.getFile().getPath());
-        assertEquals(Arrays.asList("HIGH", "MEDIUM", "LOW"), sarifObject.getSeverities());
-        assertEquals(Arrays.asList("SCA"), sarifObject.getIssue().getTypes());
-        assertTrue(sarifObject.getGroupSCAIssues());
-    }
-
-    @Test
     public void writeInputJsonToFileTest() {
         String jsonString =
                 "{\"data\":{\"blackduck\":{\"url\":\"https://fake.blackduck.url\",\"token\":\"MDJDSROSVC56FAKEKEY\"}}}";
 
         String jsonPath = toolsParameterService.writeInputJsonToFile(
-                jsonString, ApplicationConstants.BLACKDUCK_INPUT_JSON_PREFIX);
+                jsonString, ApplicationConstants.BLACKDUCKSCA_INPUT_JSON_PREFIX);
         String fileContent = null;
         try {
             fileContent = new String(Files.readAllBytes(Paths.get(jsonPath)));
@@ -422,7 +331,7 @@ public class ToolsParameterServiceTest {
                 Files.exists(Path.of(jsonPath)),
                 String.format(
                         "%s does not exist at the specified path.",
-                        ApplicationConstants.BLACKDUCK_INPUT_JSON_PREFIX.concat(".json")));
+                        ApplicationConstants.BLACKDUCKSCA_INPUT_JSON_PREFIX.concat(".json")));
         assertEquals(jsonString, fileContent);
 
         Utility.removeFile(jsonPath, workspace, listenerMock);
@@ -437,13 +346,10 @@ public class ToolsParameterServiceTest {
         coverity.getConnect().getUser().setPassword("fakeUserPassword");
         Map<String, Object> scanParameters = new HashMap<>();
 
-        String inputJsonPath = toolsParameterService.createBridgeInputJson(
+        String inputJsonPath = toolsParameterService.prepareBridgeInputJson(
                 scanParameters,
                 coverity,
                 bitBucket,
-                false,
-                null,
-                null,
                 ApplicationConstants.COVERITY_INPUT_JSON_PREFIX,
                 null);
         Path filePath = Paths.get(inputJsonPath);
@@ -480,14 +386,12 @@ public class ToolsParameterServiceTest {
 
         try {
             Github github = githubRepositoryService.createGithubObject(
-                    scanParametersMap, "fake-repo", "fake-owner", 1, "fake-branch", true, CLOUD_API_URI);
-            String inputJsonPath = toolsParameterService.createBridgeInputJson(
+                    scanParametersMap, "fake-repo", "fake-owner",
+                    1, "fake-branch", CLOUD_API_URI);
+            String inputJsonPath = toolsParameterService.prepareBridgeInputJson(
                     scanParametersMap,
                     coverity,
                     github,
-                    true,
-                    null,
-                    null,
                     ApplicationConstants.COVERITY_INPUT_JSON_PREFIX,
                     null);
             Path filePath = Paths.get(inputJsonPath);
@@ -533,16 +437,12 @@ public class ToolsParameterServiceTest {
                     "fake-group/fake-gitlab-repo",
                     12,
                     "fake-gitlab-branch",
-                    "https://gitlab.com/fake-group/fake-gitlab-repo.git",
-                    true);
-            String inputJsonPathForGitlabPrComment = toolsParameterService.createBridgeInputJson(
+                    "https://gitlab.com/fake-group/fake-gitlab-repo.git");
+            String inputJsonPathForGitlabPrComment = toolsParameterService.prepareBridgeInputJson(
                     scanParametersMap,
                     blackDuckSCA,
                     gitlabObject,
-                    true,
-                    null,
-                    null,
-                    ApplicationConstants.BLACKDUCK_INPUT_JSON_PREFIX,
+                    ApplicationConstants.BLACKDUCKSCA_INPUT_JSON_PREFIX,
                     null);
 
             JsonNode expectedJsonNode = objectMapper.readTree(jsonStringForPrComment);
@@ -560,6 +460,75 @@ public class ToolsParameterServiceTest {
     }
 
     @Test
+    public void createDetectInputJsonTest() {
+        Map<String, Object> scanParameters = new HashMap<>();
+        scanParameters.put(ApplicationConstants.DETECT_ARGS_KEY, "args");
+        scanParameters.put(ApplicationConstants.DETECT_SCAN_FULL_KEY, true);
+        scanParameters.put(ApplicationConstants.DETECT_EXECUTION_PATH_KEY, "path/detect");
+
+        String inputJsonPath = toolsParameterService.prepareBridgeInputJson(
+                scanParameters,
+                null,
+                null,
+                ApplicationConstants.BLACKDUCKSCA_INPUT_JSON_PREFIX,
+                null);
+        Path filePath = Paths.get(inputJsonPath);
+
+        assertTrue(
+                Files.exists(filePath),
+                String.format(
+                        "File %s does not exist at the specified path.",
+                        ApplicationConstants.BLACKDUCKSCA_INPUT_JSON_PREFIX.concat(".json")));
+        Utility.removeFile(filePath.toString(), workspace, listenerMock);
+    }
+
+    @Test
+    public void createNetworkAirGapInputJsonTest() {
+        Map<String, Object> scanParameters = new HashMap<>();
+        scanParameters.put(ApplicationConstants.NETWORK_AIRGAP_KEY, true);
+
+        String inputJsonPath = toolsParameterService.prepareBridgeInputJson(
+                scanParameters,
+                null,
+                null,
+                ApplicationConstants.BLACKDUCKSCA_INPUT_JSON_PREFIX,
+                null);
+        Path filePath = Paths.get(inputJsonPath);
+
+        assertTrue(
+                Files.exists(filePath),
+                String.format(
+                        "File %s does not exist at the specified path.",
+                        ApplicationConstants.BLACKDUCKSCA_INPUT_JSON_PREFIX.concat(".json")));
+        Utility.removeFile(filePath.toString(), workspace, listenerMock);
+    }
+
+    @Test
+    public void createProjectInputJsonTest() {
+        Map<String, Object> scanParameters = new HashMap<>();
+        Project project = new Project();
+        project.setDirectory("/tmp/dir");
+        Source source = new Source();
+        source.setPreserveSymLinks(true);
+        project.setSource(source);
+
+        String inputJsonPath = toolsParameterService.prepareBridgeInputJson(
+                scanParameters,
+                null,
+                null,
+                ApplicationConstants.POLARIS_INPUT_JSON_PREFIX,
+                project);
+        Path filePath = Paths.get(inputJsonPath);
+
+        assertTrue(
+                Files.exists(filePath),
+                String.format(
+                        "File %s does not exist at the specified path.",
+                        ApplicationConstants.POLARIS_INPUT_JSON_PREFIX.concat(".json")));
+        Utility.removeFile(filePath.toString(), workspace, listenerMock);
+    }
+
+    @Test
     public void getCommandLineArgsForBlackDuckTest() throws PluginExceptionHandler {
         Map<String, Object> blackDuckParametersMap = new HashMap<>();
         blackDuckParametersMap.put(ApplicationConstants.PRODUCT_KEY, "blackduck");
@@ -568,11 +537,8 @@ public class ToolsParameterServiceTest {
         blackDuckParametersMap.put(ApplicationConstants.BLACKDUCKSCA_PRCOMMENT_ENABLED_KEY, false);
         blackDuckParametersMap.put(ApplicationConstants.INCLUDE_DIAGNOSTICS_KEY, true);
 
-        Map<String, Boolean> installedDependencies = new HashMap<>();
-        installedDependencies.put(ApplicationConstants.BITBUCKET_BRANCH_SOURCE_PLUGIN_NAME, true);
-
         List<String> commandLineArgs =
-                toolsParameterService.getCommandLineArgs(installedDependencies, blackDuckParametersMap, workspace);
+                toolsParameterService.getCommandLineArgs(blackDuckParametersMap, workspace);
 
         if (getOSNameForTest().contains("win")) {
             assertEquals(
@@ -587,14 +553,12 @@ public class ToolsParameterServiceTest {
         }
         assertEquals(commandLineArgs.get(1), BridgeParams.STAGE_OPTION);
         assertEquals(commandLineArgs.get(2), BridgeParams.BLACKDUCKSCA_STAGE);
-        assertNotEquals(commandLineArgs.get(2), BridgeParams.COVERITY_STAGE);
-        assertNotEquals(commandLineArgs.get(2), BridgeParams.POLARIS_STAGE);
         assertEquals(commandLineArgs.get(3), BridgeParams.INPUT_OPTION);
         assertTrue(
                 Files.exists(Path.of(commandLineArgs.get(4))),
                 String.format(
                         "File %s does not exist at the specified path.",
-                        ApplicationConstants.BLACKDUCK_INPUT_JSON_PREFIX.concat(".json")));
+                        ApplicationConstants.BLACKDUCKSCA_INPUT_JSON_PREFIX.concat(".json")));
         assertEquals(commandLineArgs.get(5), BridgeParams.DIAGNOSTICS_OPTION);
 
         Utility.removeFile(commandLineArgs.get(4), workspace, listenerMock);
@@ -609,11 +573,8 @@ public class ToolsParameterServiceTest {
         coverityParameters.put(ApplicationConstants.COVERITY_PASSPHRASE_KEY, "fakeUserPassword");
         coverityParameters.put(ApplicationConstants.INCLUDE_DIAGNOSTICS_KEY, true);
 
-        Map<String, Boolean> installedDependencies = new HashMap<>();
-        installedDependencies.put(ApplicationConstants.BITBUCKET_BRANCH_SOURCE_PLUGIN_NAME, true);
-
         List<String> commandLineArgs =
-                toolsParameterService.getCommandLineArgs(installedDependencies, coverityParameters, workspace);
+                toolsParameterService.getCommandLineArgs(coverityParameters, workspace);
 
         if (getOSNameForTest().contains("win")) {
             assertEquals(
@@ -628,8 +589,6 @@ public class ToolsParameterServiceTest {
         }
         assertEquals(commandLineArgs.get(1), BridgeParams.STAGE_OPTION);
         assertEquals(commandLineArgs.get(2), BridgeParams.COVERITY_STAGE);
-        assertNotEquals(commandLineArgs.get(2), BridgeParams.POLARIS_STAGE);
-        assertNotEquals(commandLineArgs.get(2), BridgeParams.BLACKDUCKSCA_STAGE);
         assertEquals(commandLineArgs.get(3), BridgeParams.INPUT_OPTION);
         assertTrue(
                 Files.exists(Path.of(commandLineArgs.get(4))),
@@ -650,11 +609,8 @@ public class ToolsParameterServiceTest {
         polarisParameters.put(ApplicationConstants.POLARIS_APPLICATION_NAME_KEY, "Fake-application-name");
         polarisParameters.put(ApplicationConstants.POLARIS_PROJECT_NAME_KEY, "fake-project-name");
 
-        Map<String, Boolean> installedDependencies = new HashMap<>();
-        installedDependencies.put(ApplicationConstants.BITBUCKET_BRANCH_SOURCE_PLUGIN_NAME, true);
-
         List<String> commandLineArgs =
-                toolsParameterService.getCommandLineArgs(installedDependencies, polarisParameters, workspace);
+                toolsParameterService.getCommandLineArgs(polarisParameters, workspace);
 
         if (getOSNameForTest().contains("win")) {
             assertEquals(
@@ -669,8 +625,6 @@ public class ToolsParameterServiceTest {
         }
         assertEquals(commandLineArgs.get(1), BridgeParams.STAGE_OPTION);
         assertEquals(commandLineArgs.get(2), BridgeParams.POLARIS_STAGE);
-        assertNotEquals(commandLineArgs.get(2), BridgeParams.COVERITY_STAGE);
-        assertNotEquals(commandLineArgs.get(2), BridgeParams.BLACKDUCKSCA_STAGE);
         assertEquals(commandLineArgs.get(3), BridgeParams.INPUT_OPTION);
         assertTrue(
                 Files.exists(Path.of(commandLineArgs.get(4))),
@@ -691,11 +645,8 @@ public class ToolsParameterServiceTest {
         srmParameters.put(ApplicationConstants.SRM_PROJECT_NAME_KEY, "fake-project-name");
         srmParameters.put(ApplicationConstants.SRM_PROJECT_ID_KEY, "fake-project-id");
 
-        Map<String, Boolean> installedDependencies = new HashMap<>();
-        installedDependencies.put(ApplicationConstants.BITBUCKET_BRANCH_SOURCE_PLUGIN_NAME, true);
-
         List<String> commandLineArgs =
-                toolsParameterService.getCommandLineArgs(installedDependencies, srmParameters, workspace);
+                toolsParameterService.getCommandLineArgs(srmParameters, workspace);
 
         if (getOSNameForTest().contains("win")) {
             assertEquals(
@@ -710,9 +661,6 @@ public class ToolsParameterServiceTest {
         }
         assertEquals(commandLineArgs.get(1), BridgeParams.STAGE_OPTION);
         assertEquals(commandLineArgs.get(2), BridgeParams.SRM_STAGE);
-        assertNotEquals(commandLineArgs.get(2), BridgeParams.COVERITY_STAGE);
-        assertNotEquals(commandLineArgs.get(2), BridgeParams.BLACKDUCKSCA_STAGE);
-        assertNotEquals(commandLineArgs.get(2), BridgeParams.POLARIS_STAGE);
         assertEquals(commandLineArgs.get(3), BridgeParams.INPUT_OPTION);
         assertTrue(
                 Files.exists(Path.of(commandLineArgs.get(4))),
@@ -728,18 +676,18 @@ public class ToolsParameterServiceTest {
         Map<String, Object> scanParameters = new HashMap<>();
 
         scanParameters.put(ApplicationConstants.BLACKDUCKSCA_PRCOMMENT_ENABLED_KEY, true);
-        assertTrue(toolsParameterService.isPrCommentValueSet(scanParameters));
+        assertTrue(ToolsParameterService.isPrCommentValueSet(scanParameters));
 
         scanParameters.clear();
         scanParameters.put(ApplicationConstants.COVERITY_PRCOMMENT_ENABLED_KEY, true);
-        assertTrue(toolsParameterService.isPrCommentValueSet(scanParameters));
+        assertTrue(ToolsParameterService.isPrCommentValueSet(scanParameters));
 
         scanParameters.clear();
         scanParameters.put(ApplicationConstants.POLARIS_PRCOMMENT_ENABLED_KEY, true);
-        assertTrue(toolsParameterService.isPrCommentValueSet(scanParameters));
+        assertTrue(ToolsParameterService.isPrCommentValueSet(scanParameters));
 
         scanParameters.clear();
-        assertFalse(toolsParameterService.isPrCommentValueSet(scanParameters));
+        assertFalse(ToolsParameterService.isPrCommentValueSet(scanParameters));
     }
 
     @Test
@@ -766,58 +714,7 @@ public class ToolsParameterServiceTest {
         }
     }
 
-    @Test
-    public void testHandleDetectInputs_forNoDetectInputs() {
-        BridgeInput bridgeInput = new BridgeInput();
-        Map<String, Object> detectParametersMap = new HashMap<>();
 
-        Detect detect = toolsParameterService.handleDetectInputs(bridgeInput, detectParametersMap);
-
-        assertNull(detect);
-        assertEquals(detect, bridgeInput.getDetect());
-    }
-
-    @Test
-    public void testHandleDetectInputs() {
-        BridgeInput bridgeInput = new BridgeInput();
-        Map<String, Object> detectParametersMap = new HashMap<>();
-
-        detectParametersMap.put(ApplicationConstants.DETECT_SCAN_FULL_KEY, true);
-        detectParametersMap.put(ApplicationConstants.DETECT_INSTALL_DIRECTORY_KEY, "/user/tmp/detect");
-        detectParametersMap.put(ApplicationConstants.DETECT_DOWNLOAD_URL_KEY, "https://fake.detect.url");
-
-        Detect detect = toolsParameterService.handleDetectInputs(bridgeInput, detectParametersMap);
-
-        assertNotNull(detect);
-        assertEquals(detect, bridgeInput.getDetect());
-        assertEquals(detect.getScan().getFull(), true);
-        assertEquals(detect.getInstall().getDirectory(), "/user/tmp/detect");
-        assertEquals(detect.getDownload().getUrl(), "https://fake.detect.url");
-        assertNull(detect.getArgs());
-        assertNull(detect.getConfig());
-        assertNull(detect.getSearch());
-    }
-
-    @Test
-    public void testHandleDetectInputsTest_forArbitaryInputs() {
-        BridgeInput bridgeInput = new BridgeInput();
-        Map<String, Object> detectParametersMap = new HashMap<>();
-
-        detectParametersMap.put(ApplicationConstants.DETECT_ARGS_KEY, "--detect.diagnostic=true");
-        detectParametersMap.put(ApplicationConstants.DETECT_SEARCH_DEPTH_KEY, 2);
-        detectParametersMap.put(ApplicationConstants.DETECT_CONFIG_PATH_KEY, "DIR/CONFIG/application.properties");
-
-        Detect detect = toolsParameterService.handleDetectInputs(bridgeInput, detectParametersMap);
-
-        assertNotNull(detect);
-        assertEquals(detect, bridgeInput.getDetect());
-        assertEquals(detect.getArgs(), "--detect.diagnostic=true");
-        assertEquals(detect.getSearch().getDepth(), 2);
-        assertEquals(detect.getConfig().getPath(), "DIR/CONFIG/application.properties");
-        assertNull(detect.getScan());
-        assertNull(detect.getInstall());
-        assertNull(detect.getDownload());
-    }
 
     @Test
     public void handleDetectInputsTest_forArbitaryInputs() {}

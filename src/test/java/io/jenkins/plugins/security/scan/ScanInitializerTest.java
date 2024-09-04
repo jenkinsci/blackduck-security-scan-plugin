@@ -1,38 +1,35 @@
 package io.jenkins.plugins.security.scan;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
-
 import hudson.EnvVars;
 import hudson.FilePath;
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
 import java.io.File;
 import java.io.PrintStream;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
 public class ScanInitializerTest {
-    private SecurityScanner securityScannerMock;
-    private TaskListener listenerMock;
-    private FilePath workspace;
-    private EnvVars envVarsMock;
     private ScanInitializer scanInitializer;
     private ScanInitializer scanInitializerMock;
 
     @BeforeEach
     void setUp() {
-        securityScannerMock = Mockito.mock(SecurityScanner.class);
-        workspace = new FilePath(new File(System.getProperty("user.home")));
-        listenerMock = Mockito.mock(TaskListener.class);
-        envVarsMock = Mockito.mock(EnvVars.class);
+        SecurityScanner securityScannerMock = Mockito.mock(SecurityScanner.class);
+        FilePath workspace = new FilePath(new File(System.getProperty("user.home")));
+        TaskListener listenerMock = Mockito.mock(TaskListener.class);
+        EnvVars envVarsMock = Mockito.mock(EnvVars.class);
         scanInitializerMock = mock(ScanInitializer.class);
         scanInitializer = new ScanInitializer(securityScannerMock, workspace, envVarsMock, listenerMock);
 

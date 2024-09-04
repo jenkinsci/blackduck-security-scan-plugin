@@ -1,7 +1,5 @@
 package io.jenkins.plugins.security.scan.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import hudson.FilePath;
 import hudson.model.Result;
 import hudson.model.TaskListener;
@@ -14,14 +12,17 @@ import io.jenkins.plugins.security.scan.global.ErrorCode;
 import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.global.enums.BuildStatus;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
 import java.io.File;
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ParameterMappingServiceTest {
     private TaskListener listenerMock;
@@ -377,8 +378,8 @@ public class ParameterMappingServiceTest {
         assertEquals("fake-id", srmParametersMap.get(ApplicationConstants.SRM_PROJECT_ID_KEY));
         assertEquals("test", srmParametersMap.get(ApplicationConstants.SRM_BRANCH_NAME_KEY));
         assertEquals("main", srmParametersMap.get(ApplicationConstants.SRM_BRANCH_PARENT_KEY));
-        assertEquals("/fake/path/bd", srmParametersMap.get(ApplicationConstants.SRM_SCA_DETECT_EXECUTION_PATH_KEY));
-        assertEquals("/fake/path/cov", srmParametersMap.get(ApplicationConstants.SRM_SAST_EXECUTION_PATH_KEY));
+        assertEquals("/fake/path/bd", srmParametersMap.get(ApplicationConstants.DETECT_EXECUTION_PATH_KEY));
+        assertEquals("/fake/path/cov", srmParametersMap.get(ApplicationConstants.COVERITY_EXECUTION_PATH_KEY));
 
         Map<String, Object> emptySrmParametersMap =
                 ParameterMappingService.prepareSrmParametersMap(new BlackDuckScanStep());
@@ -415,8 +416,8 @@ public class ParameterMappingServiceTest {
         assertEquals("fake-id", srmParametersMap.get(ApplicationConstants.SRM_PROJECT_ID_KEY));
         assertEquals("test", srmParametersMap.get(ApplicationConstants.SRM_BRANCH_NAME_KEY));
         assertEquals("main", srmParametersMap.get(ApplicationConstants.SRM_BRANCH_PARENT_KEY));
-        assertEquals("/fake/path/bd", srmParametersMap.get(ApplicationConstants.SRM_SCA_DETECT_EXECUTION_PATH_KEY));
-        assertEquals("/fake/path/cov", srmParametersMap.get(ApplicationConstants.SRM_SAST_EXECUTION_PATH_KEY));
+        assertEquals("/fake/path/bd", srmParametersMap.get(ApplicationConstants.DETECT_EXECUTION_PATH_KEY));
+        assertEquals("/fake/path/cov", srmParametersMap.get(ApplicationConstants.COVERITY_EXECUTION_PATH_KEY));
         assertEquals("mvn clean install", srmParametersMap.get(ApplicationConstants.COVERITY_BUILD_COMMAND_KEY));
         assertEquals("mvn clean install", srmParametersMap.get(ApplicationConstants.COVERITY_CLEAN_COMMAND_KEY));
         assertEquals("fake/path/config.yml", srmParametersMap.get(ApplicationConstants.COVERITY_CONFIG_PATH_KEY));

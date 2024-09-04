@@ -89,6 +89,9 @@ public class ApplicationConstants {
     @Deprecated
     public static final String BLACKDUCK_ARGS_KEY = "blackduck_args";
 
+    @Deprecated
+    public static final String BLACKDUCK_EXECUTION_PATH_KEY = "blackduck_execution_path";
+
     // Black Duck SCA Parameters
     public static final String BLACKDUCKSCA_URL_KEY = "blackducksca_url";
     public static final String BLACKDUCKSCA_TOKEN_KEY = "blackducksca_token";
@@ -107,9 +110,6 @@ public class ApplicationConstants {
     public static final String DETECT_ARGS_KEY = "detect_args";
     public static final String DETECT_EXECUTION_PATH_KEY = "detect_execution_path";
 
-    @Deprecated
-    public static final String SRM_SCA_EXECUTION_PATH_KEY = "blackduck_execution_path";
-
     // Coverity Parameters
     public static final String COVERITY_URL_KEY = "coverity_url";
     public static final String COVERITY_USER_KEY = "coverity_user";
@@ -125,7 +125,7 @@ public class ApplicationConstants {
     public static final String COVERITY_PRCOMMENT_ENABLED_KEY = "coverity_prComment_enabled";
     public static final String COVERITY_VERSION_KEY = "coverity_version";
     public static final String COVERITY_LOCAL_KEY = "coverity_local";
-    public static final String SRM_SAST_EXECUTION_PATH_KEY = "coverity_execution_path";
+    public static final String COVERITY_EXECUTION_PATH_KEY = "coverity_execution_path";
 
     // Polaris Parameters
     public static final String POLARIS_SERVER_URL_KEY = "polaris_server_url";
@@ -185,7 +185,7 @@ public class ApplicationConstants {
     public static final String BRIDGECLI_DOWNLOAD_VERSION = "bridgecli_download_version";
     public static final String BRIDGECLI_INSTALL_DIRECTORY = "bridgecli_install_directory";
 
-    public static final String BLACKDUCK_INPUT_JSON_PREFIX = "blackducksca_input";
+    public static final String BLACKDUCKSCA_INPUT_JSON_PREFIX = "blackducksca_input";
     public static final String COVERITY_INPUT_JSON_PREFIX = "coverity_input";
     public static final String POLARIS_INPUT_JSON_PREFIX = "polaris_input";
     public static final String SRM_INPUT_JSON_PREFIX = "srm_input";

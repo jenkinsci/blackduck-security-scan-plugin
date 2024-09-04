@@ -112,7 +112,7 @@ public class ToolsParameterService {
                     scanParameters,
                     blackDuckSCA,
                     scmObject,
-                    ApplicationConstants.BLACKDUCK_INPUT_JSON_PREFIX,
+                    ApplicationConstants.BLACKDUCKSCA_INPUT_JSON_PREFIX,
                     project));
         }
     }

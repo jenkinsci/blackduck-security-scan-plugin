@@ -1,18 +1,22 @@
 package io.jenkins.plugins.security.scan.service.scan.coverity;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import hudson.EnvVars;
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.input.coverity.Coverity;
 import io.jenkins.plugins.security.scan.input.project.Project;
-import java.io.PrintStream;
-import java.util.HashMap;
-import java.util.Map;
+import io.jenkins.plugins.security.scan.input.scm.github.Github;
+import io.jenkins.plugins.security.scan.input.scm.github.Repository;
+import io.jenkins.plugins.security.scan.service.scm.SCMRepositoryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import java.io.PrintStream;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CoverityParametersServiceTest {
     private CoverityParametersService coverityParametersService;
@@ -21,15 +25,12 @@ public class CoverityParametersServiceTest {
     private final String TEST_COVERITY_URL = "https://fake.coverity.url";
     private final String TEST_COVERITY_USER_NAME = "fake-user";
     private final String TEST_COVERITY_USER_PASSWORD = "fakeUserPassword";
-    private final String TEST_COVERITY_CLEAN_COMMAND = "mvn clean";
-    private final String TEST_COVERITY_BUILD_COMMAND = "mvn clean install";
-    private final String TEST_COVERITY_ARGS = "-o capture.build.clean-command=\"mvn clean\" -- mvn clean install";
-    private final String TEST_COVERITY_CONFIG_FILE_PATH = "DIR/CONFIG/coverity.yml";
 
     @BeforeEach
     void setUp() {
         coverityParametersService = new CoverityParametersService(listenerMock, envVarsMock);
         Mockito.when(listenerMock.getLogger()).thenReturn(Mockito.mock(PrintStream.class));
+
     }
 
     @Test
@@ -58,7 +59,7 @@ public class CoverityParametersServiceTest {
     }
 
     @Test
-    void prepareScanInputForBridgeNonPRContextTest() {
+    void prepareCoverityObjectForBridgeNonPRContextTest() {
         Map<String, Object> coverityParameters = new HashMap<>();
 
         coverityParameters.put(ApplicationConstants.COVERITY_URL_KEY, TEST_COVERITY_URL);
@@ -75,7 +76,7 @@ public class CoverityParametersServiceTest {
         assertEquals(coverity.getConnect().getUrl(), TEST_COVERITY_URL);
         assertEquals(coverity.getConnect().getUser().getName(), TEST_COVERITY_USER_NAME);
         assertEquals(coverity.getConnect().getUser().getPassword(), TEST_COVERITY_USER_PASSWORD);
-        assertEquals(coverity.getConnect().getProject().getName(), "fake-repo");
+        assertEquals(coverity.getConnect().getCoverityProject().getName(), "fake-repo");
         assertEquals(coverity.getConnect().getStream().getName(), "fake-repo-branch");
         assertEquals(coverity.getVersion(), "2023.6.0");
         assertTrue(coverity.isLocal());
@@ -83,7 +84,7 @@ public class CoverityParametersServiceTest {
     }
 
     @Test
-    void prepareScanInputForBridgePRContextTest() {
+    void prepareCoverityObjectForBridgePRContextTest() {
         Map<String, Object> coverityParameters = new HashMap<>();
 
         coverityParameters.put(ApplicationConstants.COVERITY_URL_KEY, TEST_COVERITY_URL);
@@ -102,7 +103,7 @@ public class CoverityParametersServiceTest {
         assertEquals(coverity.getConnect().getUrl(), TEST_COVERITY_URL);
         assertEquals(coverity.getConnect().getUser().getName(), TEST_COVERITY_USER_NAME);
         assertEquals(coverity.getConnect().getUser().getPassword(), TEST_COVERITY_USER_PASSWORD);
-        assertEquals(coverity.getConnect().getProject().getName(), "fake-repo");
+        assertEquals(coverity.getConnect().getCoverityProject().getName(), "fake-repo");
         assertEquals(coverity.getConnect().getStream().getName(), "fake-repo-branch");
         assertEquals(coverity.getVersion(), "2023.6.0");
         assertTrue(coverity.isLocal());
@@ -110,7 +111,60 @@ public class CoverityParametersServiceTest {
     }
 
     @Test
-    void prepareScanInputForBridgeForCoverityAndProjectDirectoryTest() {
+    void prepareCoverityObjectForBridgePRContext_withDefaultValueTest() {
+        Map<String, Object> coverityParameters = new HashMap<>();
+
+        coverityParameters.put(ApplicationConstants.COVERITY_URL_KEY, TEST_COVERITY_URL);
+        coverityParameters.put(ApplicationConstants.COVERITY_USER_KEY, TEST_COVERITY_USER_NAME);
+        coverityParameters.put(ApplicationConstants.COVERITY_PASSPHRASE_KEY, TEST_COVERITY_USER_PASSWORD);
+        coverityParameters.put(ApplicationConstants.COVERITY_PRCOMMENT_ENABLED_KEY, true);
+
+        Mockito.when(envVarsMock.get(ApplicationConstants.ENV_CHANGE_ID_KEY)).thenReturn("1");
+        Mockito.when(envVarsMock.get(ApplicationConstants.ENV_CHANGE_TARGET_KEY)).thenReturn("main");
+
+        Github github = new Github();
+        github.setRepository(new Repository());
+        github.getRepository().setName("default-repo-name");
+        SCMRepositoryService scmRepositoryService = new SCMRepositoryService(listenerMock, envVarsMock);
+        scmRepositoryService.setRepositoryName(github);
+
+        Coverity coverity = coverityParametersService.prepareCoverityObjectForBridge(coverityParameters);
+
+        assertEquals(coverity.getConnect().getUrl(), TEST_COVERITY_URL);
+        assertEquals(coverity.getConnect().getUser().getName(), TEST_COVERITY_USER_NAME);
+        assertEquals(coverity.getConnect().getUser().getPassword(), TEST_COVERITY_USER_PASSWORD);
+        assertEquals(coverity.getConnect().getCoverityProject().getName(), "default-repo-name");
+        assertEquals(coverity.getConnect().getStream().getName(), "default-repo-name-main");
+        assertTrue(coverity.getAutomation().getPrComment());
+    }
+
+    @Test
+    void prepareCoverityObjectForBridgeNonPRContext_withDefaultValueTest() {
+        Map<String, Object> coverityParameters = new HashMap<>();
+
+        coverityParameters.put(ApplicationConstants.COVERITY_URL_KEY, TEST_COVERITY_URL);
+        coverityParameters.put(ApplicationConstants.COVERITY_USER_KEY, TEST_COVERITY_USER_NAME);
+        coverityParameters.put(ApplicationConstants.COVERITY_PASSPHRASE_KEY, TEST_COVERITY_USER_PASSWORD);
+
+        Mockito.when(envVarsMock.get(ApplicationConstants.ENV_BRANCH_NAME_KEY)).thenReturn("feature");
+
+        Github github = new Github();
+        github.setRepository(new Repository());
+        github.getRepository().setName("default-repo-name");
+        SCMRepositoryService scmRepositoryService = new SCMRepositoryService(listenerMock, envVarsMock);
+        scmRepositoryService.setRepositoryName(github);
+
+        Coverity coverity = coverityParametersService.prepareCoverityObjectForBridge(coverityParameters);
+
+        assertEquals(coverity.getConnect().getUrl(), TEST_COVERITY_URL);
+        assertEquals(coverity.getConnect().getUser().getName(), TEST_COVERITY_USER_NAME);
+        assertEquals(coverity.getConnect().getUser().getPassword(), TEST_COVERITY_USER_PASSWORD);
+        assertEquals(coverity.getConnect().getCoverityProject().getName(), "default-repo-name");
+        assertEquals(coverity.getConnect().getStream().getName(), "default-repo-name-feature");
+    }
+
+    @Test
+    void prepareCoverityObjectForBridgeForCoverityAndProjectDirectoryTest() {
         Map<String, Object> coverityParameters = new HashMap<>();
 
         coverityParameters.put(ApplicationConstants.COVERITY_URL_KEY, TEST_COVERITY_URL);
@@ -126,32 +180,31 @@ public class CoverityParametersServiceTest {
         assertEquals(coverity.getConnect().getUrl(), TEST_COVERITY_URL);
         assertEquals(coverity.getConnect().getUser().getName(), TEST_COVERITY_USER_NAME);
         assertEquals(coverity.getConnect().getUser().getPassword(), TEST_COVERITY_USER_PASSWORD);
-        assertEquals(coverity.getConnect().getProject().getName(), "fake-repo");
+        assertEquals(coverity.getConnect().getCoverityProject().getName(), "fake-repo");
         assertEquals(coverity.getConnect().getStream().getName(), "fake-repo-branch");
         assertEquals(project.getDirectory(), "DIR/TEST");
     }
 
     @Test
-    void prepareScanBridgeInputForCoverityArbitraryParamsTest() {
+    void prepareCoverityObjectForBridgeForCoverityArbitraryParamsTest() {
         Map<String, Object> coverityParameters = new HashMap<>();
 
         coverityParameters.put(ApplicationConstants.COVERITY_URL_KEY, TEST_COVERITY_URL);
         coverityParameters.put(ApplicationConstants.COVERITY_USER_KEY, TEST_COVERITY_USER_NAME);
         coverityParameters.put(ApplicationConstants.COVERITY_PASSPHRASE_KEY, TEST_COVERITY_USER_PASSWORD);
-
-        coverityParameters.put(ApplicationConstants.COVERITY_BUILD_COMMAND_KEY, TEST_COVERITY_BUILD_COMMAND);
-        coverityParameters.put(ApplicationConstants.COVERITY_CLEAN_COMMAND_KEY, TEST_COVERITY_CLEAN_COMMAND);
-        coverityParameters.put(ApplicationConstants.COVERITY_CONFIG_PATH_KEY, TEST_COVERITY_CONFIG_FILE_PATH);
-        coverityParameters.put(ApplicationConstants.COVERITY_ARGS_KEY, TEST_COVERITY_ARGS);
+        coverityParameters.put(ApplicationConstants.COVERITY_BUILD_COMMAND_KEY, "mvn clean install");
+        coverityParameters.put(ApplicationConstants.COVERITY_CLEAN_COMMAND_KEY, "mvn clean");
+        coverityParameters.put(ApplicationConstants.COVERITY_CONFIG_PATH_KEY, "DIR/CONFIG/coverity.yml");
+        coverityParameters.put(ApplicationConstants.COVERITY_ARGS_KEY, "-o capture.build.clean-command=\"mvn clean\" -- mvn clean install");
 
         Coverity coverity = coverityParametersService.prepareCoverityObjectForBridge(coverityParameters);
 
         assertEquals(coverity.getConnect().getUrl(), TEST_COVERITY_URL);
         assertEquals(coverity.getConnect().getUser().getName(), TEST_COVERITY_USER_NAME);
         assertEquals(coverity.getConnect().getUser().getPassword(), TEST_COVERITY_USER_PASSWORD);
-        assertEquals(coverity.getBuild().getCommand(), TEST_COVERITY_BUILD_COMMAND);
-        assertEquals(coverity.getClean().getCommand(), TEST_COVERITY_CLEAN_COMMAND);
-        assertEquals(coverity.getConfig().getPath(), TEST_COVERITY_CONFIG_FILE_PATH);
-        assertEquals(coverity.getArgs(), TEST_COVERITY_ARGS);
+        assertEquals(coverity.getBuild().getCommand(), "mvn clean install");
+        assertEquals(coverity.getClean().getCommand(), "mvn clean");
+        assertEquals(coverity.getConfig().getPath(), "DIR/CONFIG/coverity.yml");
+        assertEquals(coverity.getArgs(), "-o capture.build.clean-command=\"mvn clean\" -- mvn clean install");
     }
 }

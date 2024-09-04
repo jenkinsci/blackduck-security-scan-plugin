@@ -1,18 +1,20 @@
 package io.jenkins.plugins.security.scan.service.scm.github;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.input.scm.github.Github;
-import java.io.PrintStream;
-import java.util.HashMap;
-import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import java.io.PrintStream;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class GithubRepositoryServiceTest {
     private TaskListener listenerMock;
@@ -46,7 +48,6 @@ public class GithubRepositoryServiceTest {
                 TEST_REPOSITORY_OWNER,
                 TEST_REPOSITORY_PULL_NUMBER,
                 TEST_REPOSITORY_BRANCH_NAME,
-                true,
                 CLOUD_API_URI);
 
         assertEquals(
@@ -63,7 +64,6 @@ public class GithubRepositoryServiceTest {
                 TEST_REPOSITORY_OWNER,
                 TEST_REPOSITORY_PULL_NUMBER,
                 TEST_REPOSITORY_BRANCH_NAME,
-                true,
                 ENTERPRISE_API_URI);
 
         assertEquals(
@@ -81,7 +81,6 @@ public class GithubRepositoryServiceTest {
                 TEST_REPOSITORY_OWNER,
                 TEST_REPOSITORY_PULL_NUMBER,
                 TEST_REPOSITORY_BRANCH_NAME,
-                true,
                 ENTERPRISE_API_URI_WITH_IP);
 
         assertEquals(githubEnterpriseIp.getHost().getUrl(), "https://10.0.0.97:8181/");
@@ -99,7 +98,6 @@ public class GithubRepositoryServiceTest {
                         TEST_REPOSITORY_OWNER,
                         TEST_REPOSITORY_PULL_NUMBER,
                         TEST_REPOSITORY_BRANCH_NAME,
-                        true,
                         CLOUD_API_URI));
     }
 }
