@@ -13,7 +13,6 @@ import io.jenkins.plugins.security.scan.input.project.Project;
 import io.jenkins.plugins.security.scan.input.report.File;
 import io.jenkins.plugins.security.scan.input.report.Reports;
 import io.jenkins.plugins.security.scan.input.report.Sarif;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -111,7 +110,8 @@ public class BlackDuckSCAParametersService {
         }
     }
 
-    private void setAutomationPrComment(Map<String, Object> blackDuckSCAParameters, Automation automation, BlackDuckSCA blackDuckSCA) {
+    private void setAutomationPrComment(
+            Map<String, Object> blackDuckSCAParameters, Automation automation, BlackDuckSCA blackDuckSCA) {
         if (blackDuckSCAParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_PRCOMMENT_ENABLED_KEY)) {
             String value = blackDuckSCAParameters
                     .get(ApplicationConstants.BLACKDUCKSCA_PRCOMMENT_ENABLED_KEY)
@@ -175,7 +175,8 @@ public class BlackDuckSCAParametersService {
             String[] reports_sarif_severitiesInput =
                     reports_sarif_severities.toUpperCase().split(",");
             List<String> severities = Arrays.stream(reports_sarif_severitiesInput)
-                    .map(String::trim).collect(Collectors.toList());
+                    .map(String::trim)
+                    .collect(Collectors.toList());
             if (!severities.isEmpty()) {
                 sarif.setSeverities(severities);
             }

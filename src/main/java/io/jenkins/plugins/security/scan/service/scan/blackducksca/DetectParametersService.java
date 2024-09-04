@@ -4,7 +4,6 @@ import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.global.Utility;
 import io.jenkins.plugins.security.scan.input.blackducksca.*;
 import io.jenkins.plugins.security.scan.input.detect.*;
-
 import java.util.Map;
 
 public class DetectParametersService {
@@ -108,8 +107,7 @@ public class DetectParametersService {
                     .toString()
                     .trim();
             if (!installationPath.isBlank()) {
-                Execution execution =
-                        new Execution();
+                Execution execution = new Execution();
                 execution.setPath(installationPath);
                 detect.setExecution(execution);
             }

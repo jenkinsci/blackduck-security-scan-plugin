@@ -15,8 +15,7 @@ import io.jenkins.plugins.security.scan.input.report.File;
 import io.jenkins.plugins.security.scan.input.report.Issue;
 import io.jenkins.plugins.security.scan.input.report.Reports;
 import io.jenkins.plugins.security.scan.input.report.Sarif;
-import io.jenkins.plugins.security.scan.service.ToolsParameterService;
-
+import io.jenkins.plugins.security.scan.service.scm.SCMRepositoryService;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -150,6 +149,7 @@ public class PolarisParametersService {
                     .trim());
         }
     }
+
     private void setAssessmentTypes(Map<String, Object> polarisParameters, Polaris polaris) {
         if (polarisParameters.containsKey(ApplicationConstants.POLARIS_ASSESSMENT_TYPES_KEY)) {
             String assessmentTypesValue = polarisParameters
@@ -166,7 +166,6 @@ public class PolarisParametersService {
         }
     }
 
-
     private void setApplicationName(Map<String, Object> polarisParameters, Polaris polaris) {
         if (polarisParameters.containsKey(ApplicationConstants.POLARIS_APPLICATION_NAME_KEY)) {
             polaris.getApplicationName()
@@ -175,7 +174,7 @@ public class PolarisParametersService {
                             .toString()
                             .trim());
         } else {
-            String repoName = ToolsParameterService.getScmRepoName();
+            String repoName = SCMRepositoryService.getRepositoryName();
             polaris.getApplicationName().setName(repoName);
             logger.info("Polaris Application Name: " + repoName);
         }
@@ -189,7 +188,7 @@ public class PolarisParametersService {
                             .toString()
                             .trim());
         } else {
-            String repoName = ToolsParameterService.getScmRepoName();
+            String repoName = SCMRepositoryService.getRepositoryName();
             polaris.getPolarisProject().setName(repoName);
             logger.info("Polaris Project Name: " + repoName);
         }
@@ -381,7 +380,8 @@ public class PolarisParametersService {
             String[] reports_sarif_severitiesInput =
                     reports_sarif_severities.toUpperCase().split(",");
             List<String> severities = Arrays.stream(reports_sarif_severitiesInput)
-                    .map(String::trim).collect(Collectors.toList());
+                    .map(String::trim)
+                    .collect(Collectors.toList());
             if (!severities.isEmpty()) {
                 sarif.setSeverities(severities);
             }
@@ -397,7 +397,8 @@ public class PolarisParametersService {
             String[] reports_sarif_issue_typesInput =
                     reports_sarif_issue_types.toUpperCase().split(",");
             List<String> issueTypes = Arrays.stream(reports_sarif_issue_typesInput)
-                    .map(String::trim).collect(Collectors.toList());
+                    .map(String::trim)
+                    .collect(Collectors.toList());
             if (!issueTypes.isEmpty()) {
                 sarif.setIssue(new Issue());
                 sarif.getIssue().setTypes(issueTypes);

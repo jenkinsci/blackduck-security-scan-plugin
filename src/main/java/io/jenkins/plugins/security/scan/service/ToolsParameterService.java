@@ -30,7 +30,6 @@ import io.jenkins.plugins.security.scan.service.scan.coverity.CoverityParameters
 import io.jenkins.plugins.security.scan.service.scan.polaris.PolarisParametersService;
 import io.jenkins.plugins.security.scan.service.scan.srm.SRMParametersService;
 import io.jenkins.plugins.security.scan.service.scm.SCMRepositoryService;
-
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -40,7 +39,6 @@ public class ToolsParameterService {
     private final FilePath workspace;
     private static final String DATA_KEY = "data";
     private final LoggerWrapper logger;
-    private static String scmRepoName;
 
     public ToolsParameterService(TaskListener listener, EnvVars envVars, FilePath workspace) {
         this.listener = listener;
@@ -49,13 +47,7 @@ public class ToolsParameterService {
         this.logger = new LoggerWrapper(listener);
     }
 
-    public static String getScmRepoName() {
-        return scmRepoName;
-    }
-
-    public List<String> getCommandLineArgs(
-            Map<String, Object> scanParameters,
-            FilePath bridgeInstallationPath)
+    public List<String> getCommandLineArgs(Map<String, Object> scanParameters, FilePath bridgeInstallationPath)
             throws PluginExceptionHandler {
         List<String> commandLineArgs = new ArrayList<>();
 
@@ -100,7 +92,11 @@ public class ToolsParameterService {
         return scanCommands;
     }
 
-    private void setBlackDuckScaCommands(Map<String, Object> scanParameters, Set<String> securityProducts, List<String> scanCommands, Object scmObject) {
+    private void setBlackDuckScaCommands(
+            Map<String, Object> scanParameters,
+            Set<String> securityProducts,
+            List<String> scanCommands,
+            Object scmObject) {
         if (securityProducts.contains(SecurityProduct.BLACKDUCK.name())
                 || securityProducts.contains(SecurityProduct.BLACKDUCKSCA.name())) {
             BlackDuckSCAParametersService blackDuckSCAParametersService =
@@ -121,7 +117,11 @@ public class ToolsParameterService {
         }
     }
 
-    private void setCoverityCommands(Map<String, Object> scanParameters, Set<String> securityProducts, List<String> scanCommands, Object scmObject) {
+    private void setCoverityCommands(
+            Map<String, Object> scanParameters,
+            Set<String> securityProducts,
+            List<String> scanCommands,
+            Object scmObject) {
         if (securityProducts.contains(SecurityProduct.COVERITY.name())) {
             CoverityParametersService coverityParametersService = new CoverityParametersService(listener, envVars);
             Coverity coverity = coverityParametersService.prepareCoverityObjectForBridge(scanParameters);
@@ -131,15 +131,15 @@ public class ToolsParameterService {
             scanCommands.add(BridgeParams.COVERITY_STAGE);
             scanCommands.add(BridgeParams.INPUT_OPTION);
             scanCommands.add(prepareBridgeInputJson(
-                    scanParameters,
-                    coverity,
-                    scmObject,
-                    ApplicationConstants.COVERITY_INPUT_JSON_PREFIX,
-                    project));
+                    scanParameters, coverity, scmObject, ApplicationConstants.COVERITY_INPUT_JSON_PREFIX, project));
         }
     }
 
-    private void setPolarisCommands(Map<String, Object> scanParameters, Set<String> securityProducts, List<String> scanCommands, Object scmObject) {
+    private void setPolarisCommands(
+            Map<String, Object> scanParameters,
+            Set<String> securityProducts,
+            List<String> scanCommands,
+            Object scmObject) {
         if (securityProducts.contains(SecurityProduct.POLARIS.name())) {
             PolarisParametersService polarisParametersService = new PolarisParametersService(listener, envVars);
             Polaris polaris = polarisParametersService.preparePolarisObjectForBridge(scanParameters);
@@ -159,16 +159,15 @@ public class ToolsParameterService {
             scanCommands.add(BridgeParams.POLARIS_STAGE);
             scanCommands.add(BridgeParams.INPUT_OPTION);
             scanCommands.add(prepareBridgeInputJson(
-                    scanParameters,
-                    polaris,
-                    scmObject,
-                    ApplicationConstants.POLARIS_INPUT_JSON_PREFIX,
-                    project));
+                    scanParameters, polaris, scmObject, ApplicationConstants.POLARIS_INPUT_JSON_PREFIX, project));
         }
     }
 
-
-    private void setSrmCommands(Map<String, Object> scanParameters, Set<String> securityProducts, List<String> scanCommands, Object scmObject) {
+    private void setSrmCommands(
+            Map<String, Object> scanParameters,
+            Set<String> securityProducts,
+            List<String> scanCommands,
+            Object scmObject) {
         if (securityProducts.contains(SecurityProduct.SRM.name())) {
             SRMParametersService srmParametersService = new SRMParametersService(listener, envVars);
             SRM srm = srmParametersService.prepareSrmObjectForBridge(scanParameters);
@@ -178,11 +177,7 @@ public class ToolsParameterService {
             scanCommands.add(BridgeParams.SRM_STAGE);
             scanCommands.add(BridgeParams.INPUT_OPTION);
             scanCommands.add(prepareBridgeInputJson(
-                    scanParameters,
-                    srm,
-                    scmObject,
-                    ApplicationConstants.SRM_INPUT_JSON_PREFIX,
-                    project));
+                    scanParameters, srm, scmObject, ApplicationConstants.SRM_INPUT_JSON_PREFIX, project));
         }
     }
 
@@ -247,7 +242,6 @@ public class ToolsParameterService {
             scmObject = scmRepositoryService.fetchSCMRepositoryDetails(
                     Utility.installedBranchSourceDependencies(), scanParameters);
         }
-        ToolsParameterService.scmRepoName = scmRepositoryService.getRepositoryName(scmObject);
         return scmObject;
     }
 
@@ -265,10 +259,7 @@ public class ToolsParameterService {
         }
     }
 
-    private void setScanObject(
-            BridgeInput bridgeInput,
-            Object scanObject,
-            Map<String, Object> scanParameters) {
+    private void setScanObject(BridgeInput bridgeInput, Object scanObject, Map<String, Object> scanParameters) {
         if (scanObject instanceof BlackDuckSCA) {
             BlackDuckSCA blackDuckSCA = (BlackDuckSCA) scanObject;
             bridgeInput.setBlackDuckSCA(blackDuckSCA);

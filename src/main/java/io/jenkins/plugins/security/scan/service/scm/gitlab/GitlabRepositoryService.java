@@ -10,7 +10,6 @@ import io.jenkins.plugins.security.scan.input.scm.common.Pull;
 import io.jenkins.plugins.security.scan.input.scm.gitlab.Api;
 import io.jenkins.plugins.security.scan.input.scm.gitlab.Gitlab;
 import io.jenkins.plugins.security.scan.service.ToolsParameterService;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;

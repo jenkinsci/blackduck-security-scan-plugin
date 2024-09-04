@@ -106,6 +106,7 @@ public class ApplicationConstants {
     public static final String DETECT_CONFIG_PATH_KEY = "detect_config_path";
     public static final String DETECT_ARGS_KEY = "detect_args";
     public static final String DETECT_EXECUTION_PATH_KEY = "detect_execution_path";
+
     @Deprecated
     public static final String SRM_SCA_EXECUTION_PATH_KEY = "blackduck_execution_path";
 

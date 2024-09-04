@@ -8,8 +8,7 @@ import io.jenkins.plugins.security.scan.global.Utility;
 import io.jenkins.plugins.security.scan.input.project.Project;
 import io.jenkins.plugins.security.scan.input.srm.Branch;
 import io.jenkins.plugins.security.scan.input.srm.SRM;
-import io.jenkins.plugins.security.scan.service.ToolsParameterService;
-
+import io.jenkins.plugins.security.scan.service.scm.SCMRepositoryService;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -143,7 +142,7 @@ public class SRMParametersService {
                             .toString()
                             .trim());
         } else if (!srmParameters.containsKey(ApplicationConstants.SRM_PROJECT_ID_KEY)) {
-            String repoName = ToolsParameterService.getScmRepoName();
+            String repoName = SCMRepositoryService.getRepositoryName();
             srm.getSrmProject().setName(repoName);
             logger.info("SRM Project Name: " + repoName);
         }

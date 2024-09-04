@@ -44,7 +44,6 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     private Boolean blackduck_scan_full;
     private Boolean blackduckIntelligentScan;
     private String blackduck_scan_failure_severities;
-    //    private Boolean blackduck_automation_fixpr;
     private Boolean blackduck_prComment_enabled;
     private Boolean blackduck_prComment_enabled_actualValue;
     private String blackduck_download_url;

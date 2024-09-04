@@ -14,7 +14,6 @@ import io.jenkins.plugins.security.scan.input.scm.bitbucket.Repository;
 import io.jenkins.plugins.security.scan.input.scm.bitbucket.User;
 import io.jenkins.plugins.security.scan.input.scm.common.Pull;
 import io.jenkins.plugins.security.scan.service.ToolsParameterService;
-
 import java.util.Map;
 
 public class BitbucketRepositoryService {
