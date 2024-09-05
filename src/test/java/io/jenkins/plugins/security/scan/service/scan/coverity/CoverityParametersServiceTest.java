@@ -1,5 +1,7 @@
 package io.jenkins.plugins.security.scan.service.scan.coverity;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import hudson.EnvVars;
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
@@ -8,15 +10,12 @@ import io.jenkins.plugins.security.scan.input.project.Project;
 import io.jenkins.plugins.security.scan.input.scm.github.Github;
 import io.jenkins.plugins.security.scan.input.scm.github.Repository;
 import io.jenkins.plugins.security.scan.service.scm.SCMRepositoryService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 public class CoverityParametersServiceTest {
     private CoverityParametersService coverityParametersService;
@@ -30,7 +29,6 @@ public class CoverityParametersServiceTest {
     void setUp() {
         coverityParametersService = new CoverityParametersService(listenerMock, envVarsMock);
         Mockito.when(listenerMock.getLogger()).thenReturn(Mockito.mock(PrintStream.class));
-
     }
 
     @Test
@@ -120,7 +118,8 @@ public class CoverityParametersServiceTest {
         coverityParameters.put(ApplicationConstants.COVERITY_PRCOMMENT_ENABLED_KEY, true);
 
         Mockito.when(envVarsMock.get(ApplicationConstants.ENV_CHANGE_ID_KEY)).thenReturn("1");
-        Mockito.when(envVarsMock.get(ApplicationConstants.ENV_CHANGE_TARGET_KEY)).thenReturn("main");
+        Mockito.when(envVarsMock.get(ApplicationConstants.ENV_CHANGE_TARGET_KEY))
+                .thenReturn("main");
 
         Github github = new Github();
         github.setRepository(new Repository());
@@ -195,7 +194,9 @@ public class CoverityParametersServiceTest {
         coverityParameters.put(ApplicationConstants.COVERITY_BUILD_COMMAND_KEY, "mvn clean install");
         coverityParameters.put(ApplicationConstants.COVERITY_CLEAN_COMMAND_KEY, "mvn clean");
         coverityParameters.put(ApplicationConstants.COVERITY_CONFIG_PATH_KEY, "DIR/CONFIG/coverity.yml");
-        coverityParameters.put(ApplicationConstants.COVERITY_ARGS_KEY, "-o capture.build.clean-command=\"mvn clean\" -- mvn clean install");
+        coverityParameters.put(
+                ApplicationConstants.COVERITY_ARGS_KEY,
+                "-o capture.build.clean-command=\"mvn clean\" -- mvn clean install");
 
         Coverity coverity = coverityParametersService.prepareCoverityObjectForBridge(coverityParameters);
 
@@ -215,7 +216,9 @@ public class CoverityParametersServiceTest {
         coverityParameters.put(ApplicationConstants.COVERITY_BUILD_COMMAND_KEY, "mvn clean install");
         coverityParameters.put(ApplicationConstants.COVERITY_CLEAN_COMMAND_KEY, "mvn clean");
         coverityParameters.put(ApplicationConstants.COVERITY_CONFIG_PATH_KEY, "DIR/CONFIG/coverity.yml");
-        coverityParameters.put(ApplicationConstants.COVERITY_ARGS_KEY, "-o capture.build.clean-command=\"mvn clean\" -- mvn clean install");
+        coverityParameters.put(
+                ApplicationConstants.COVERITY_ARGS_KEY,
+                "-o capture.build.clean-command=\"mvn clean\" -- mvn clean install");
         coverityParameters.put(ApplicationConstants.COVERITY_EXECUTION_PATH_KEY, "test/path");
 
         Coverity coverity = coverityParametersService.setArbitaryInputs(coverityParameters, null);

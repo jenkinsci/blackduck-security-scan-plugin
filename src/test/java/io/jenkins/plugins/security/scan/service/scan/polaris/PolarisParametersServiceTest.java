@@ -1,5 +1,7 @@
 package io.jenkins.plugins.security.scan.service.scan.polaris;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import hudson.EnvVars;
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
@@ -11,17 +13,14 @@ import io.jenkins.plugins.security.scan.input.scm.github.Github;
 import io.jenkins.plugins.security.scan.input.scm.github.Repository;
 import io.jenkins.plugins.security.scan.service.scan.coverity.CoverityParametersService;
 import io.jenkins.plugins.security.scan.service.scm.SCMRepositoryService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
 import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 public class PolarisParametersServiceTest {
     private PolarisParametersService polarisParametersService;
@@ -141,8 +140,11 @@ public class PolarisParametersServiceTest {
         assertNull(polaris.getBranch().getParent());
         assertNull(polaris.getPrcomment());
         assertTrue(polaris.getReports().getSarif().getCreate());
-        assertEquals("/path/to/sarif/file", polaris.getReports().getSarif().getFile().getPath());
-        assertEquals(Arrays.asList("HIGH", "MEDIUM", "LOW"), polaris.getReports().getSarif().getSeverities());
+        assertEquals(
+                "/path/to/sarif/file", polaris.getReports().getSarif().getFile().getPath());
+        assertEquals(
+                Arrays.asList("HIGH", "MEDIUM", "LOW"),
+                polaris.getReports().getSarif().getSeverities());
         assertEquals(List.of("SCA"), polaris.getReports().getSarif().getIssue().getTypes());
         assertTrue(polaris.getReports().getSarif().getGroupSCAIssues());
     }
@@ -222,7 +224,8 @@ public class PolarisParametersServiceTest {
         scmRepositoryService.setRepositoryName(github);
 
         Mockito.when(envVarsMock.get(ApplicationConstants.ENV_CHANGE_ID_KEY)).thenReturn("1");
-        Mockito.when(envVarsMock.get(ApplicationConstants.ENV_CHANGE_BRANCH_KEY)).thenReturn("main");
+        Mockito.when(envVarsMock.get(ApplicationConstants.ENV_CHANGE_BRANCH_KEY))
+                .thenReturn("main");
 
         Polaris polaris = polarisParametersService.preparePolarisObjectForBridge(polarisParameters);
 
@@ -281,7 +284,8 @@ public class PolarisParametersServiceTest {
         polarisParameters.put(ApplicationConstants.COVERITY_BUILD_COMMAND_KEY, "mvn clean install");
         polarisParameters.put(ApplicationConstants.COVERITY_CLEAN_COMMAND_KEY, "mvn clean");
         polarisParameters.put(ApplicationConstants.COVERITY_CONFIG_PATH_KEY, "DIR/CONFIG/coverity.yml");
-        polarisParameters.put(ApplicationConstants.COVERITY_ARGS_KEY,
+        polarisParameters.put(
+                ApplicationConstants.COVERITY_ARGS_KEY,
                 "-o capture.build.clean-command=\"mvn clean\" -- mvn clean install");
 
         CoverityParametersService coverityParametersService = new CoverityParametersService(listenerMock, envVarsMock);

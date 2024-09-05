@@ -1,19 +1,18 @@
 package io.jenkins.plugins.security.scan.service.scan;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import hudson.EnvVars;
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 public class ScanParametersServiceTest {
     private ScanParametersService scanParametersService;
@@ -42,7 +41,8 @@ public class ScanParametersServiceTest {
         parameters.put(ApplicationConstants.PRODUCT_KEY, "blackducksca");
         parameters.put(ApplicationConstants.BLACKDUCKSCA_URL_KEY, "https://fake.blackduck.url");
 
-        assertThrows(PluginExceptionHandler.class,
+        assertThrows(
+                PluginExceptionHandler.class,
                 () -> scanParametersService.performScanParameterValidation(parameters, envVarsMock));
     }
 
@@ -67,7 +67,8 @@ public class ScanParametersServiceTest {
         parameters.put(ApplicationConstants.COVERITY_PROJECT_NAME_KEY, "fake-project");
         parameters.put(ApplicationConstants.COVERITY_STREAM_NAME_KEY, "fake-stream");
 
-        assertThrows(PluginExceptionHandler.class,
+        assertThrows(
+                PluginExceptionHandler.class,
                 () -> scanParametersService.performScanParameterValidation(parameters, envVarsMock));
     }
 
@@ -94,7 +95,8 @@ public class ScanParametersServiceTest {
         parameters.put(ApplicationConstants.POLARIS_PROJECT_NAME_KEY, "fake-project");
         parameters.put(ApplicationConstants.POLARIS_BRANCH_NAME_KEY, "fake-branch");
 
-        assertThrows(PluginExceptionHandler.class,
+        assertThrows(
+                PluginExceptionHandler.class,
                 () -> scanParametersService.performScanParameterValidation(parameters, envVarsMock));
     }
 

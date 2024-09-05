@@ -1,18 +1,17 @@
 package io.jenkins.plugins.security.scan.service.scm;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import hudson.EnvVars;
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.input.scm.bitbucket.Bitbucket;
 import io.jenkins.plugins.security.scan.input.scm.github.Github;
 import io.jenkins.plugins.security.scan.input.scm.gitlab.Gitlab;
+import java.io.PrintStream;
+import java.lang.reflect.Field;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
-import java.io.PrintStream;
-import java.lang.reflect.Field;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SCMRepositoryServiceTest {
 
@@ -99,5 +98,4 @@ public class SCMRepositoryServiceTest {
         field.setAccessible(true);
         field.set(null, value);
     }
-
 }

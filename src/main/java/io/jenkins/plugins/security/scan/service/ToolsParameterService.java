@@ -30,7 +30,6 @@ import io.jenkins.plugins.security.scan.service.scan.coverity.CoverityParameters
 import io.jenkins.plugins.security.scan.service.scan.polaris.PolarisParametersService;
 import io.jenkins.plugins.security.scan.service.scan.srm.SRMParametersService;
 import io.jenkins.plugins.security.scan.service.scm.SCMRepositoryService;
-
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 

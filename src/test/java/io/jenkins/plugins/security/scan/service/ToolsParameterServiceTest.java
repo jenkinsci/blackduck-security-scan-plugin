@@ -1,5 +1,7 @@
 package io.jenkins.plugins.security.scan.service;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hudson.EnvVars;
@@ -25,10 +27,6 @@ import io.jenkins.plugins.security.scan.input.srm.SRM;
 import io.jenkins.plugins.security.scan.service.scm.bitbucket.BitbucketRepositoryService;
 import io.jenkins.plugins.security.scan.service.scm.github.GithubRepositoryService;
 import io.jenkins.plugins.security.scan.service.scm.gitlab.GitlabRepositoryService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -39,8 +37,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 public class ToolsParameterServiceTest {
     private Bitbucket bitBucket;
@@ -76,11 +75,7 @@ public class ToolsParameterServiceTest {
         Map<String, Object> scanParameters = new HashMap<>();
 
         String inputJsonPath = toolsParameterService.prepareBridgeInputJson(
-                scanParameters,
-                blackDuckSCA,
-                bitBucket,
-                ApplicationConstants.BLACKDUCKSCA_INPUT_JSON_PREFIX,
-                null);
+                scanParameters, blackDuckSCA, bitBucket, ApplicationConstants.BLACKDUCKSCA_INPUT_JSON_PREFIX, null);
         Path filePath = Paths.get(inputJsonPath);
 
         assertTrue(
@@ -174,11 +169,7 @@ public class ToolsParameterServiceTest {
         Map<String, Object> scanParameters = new HashMap<>();
 
         String inputJsonPath = toolsParameterService.prepareBridgeInputJson(
-                scanParameters,
-                polaris,
-                bitBucket,
-                ApplicationConstants.POLARIS_INPUT_JSON_PREFIX,
-                null);
+                scanParameters, polaris, bitBucket, ApplicationConstants.POLARIS_INPUT_JSON_PREFIX, null);
         Path filePath = Paths.get(inputJsonPath);
 
         assertTrue(
@@ -215,11 +206,7 @@ public class ToolsParameterServiceTest {
                     "{\"data\":{\"polaris\":{\"accesstoken\":\"MDJDSROSVC56FAKEKEY\",\"application\":{\"name\":\"test\"},\"project\":{\"name\":\"test\"},\"assessment\":{\"types\":[\"SCA\",\"SAST\"]},\"serverUrl\":\"https://fake.polaris.url\",\"branch\":{\"name\":\"fake-pr-branch\"}}}}";
 
             String inputJsonPathForNonFixPr = toolsParameterService.prepareBridgeInputJson(
-                    scanParameters,
-                    polaris,
-                    bitbucketObject,
-                    ApplicationConstants.POLARIS_INPUT_JSON_PREFIX,
-                    null);
+                    scanParameters, polaris, bitbucketObject, ApplicationConstants.POLARIS_INPUT_JSON_PREFIX, null);
             Path filePath = Paths.get(inputJsonPathForNonFixPr);
 
             String actualJsonString = new String(Files.readAllBytes(filePath));
@@ -252,7 +239,7 @@ public class ToolsParameterServiceTest {
         polaris.getBranch().setName("fake-pr-branch");
 
         Map<String, Object> scanParameters = new HashMap<>();
-        scanParameters.put(ApplicationConstants. POLARIS_PRCOMMENT_ENABLED_KEY, true);
+        scanParameters.put(ApplicationConstants.POLARIS_PRCOMMENT_ENABLED_KEY, true);
 
         Bitbucket bitbucketObject = BitbucketRepositoryService.createBitbucketObject(
                 "https://bitbucket.org", TOKEN, 12, "test", "abc", "fake-username");
@@ -262,11 +249,7 @@ public class ToolsParameterServiceTest {
                     "{\"data\":{\"polaris\":{\"accesstoken\":\"MDJDSROSVC56FAKEKEY\",\"application\":{\"name\":\"test\"},\"project\":{\"name\":\"test\"},\"assessment\":{\"types\":[\"SCA\",\"SAST\"]},\"serverUrl\":\"https://fake.polaris.url\",\"branch\":{\"name\":\"fake-pr-branch\"}},\"bitbucket\":{\"api\":{\"user\":{\"name\":\"fake-username\"},\"token\":\"MDJDSROSVC56FAKEKEY\"},\"project\":{\"repository\":{\"pull\":{\"number\":12},\"name\":\"test\"},\"key\":\"abc\"}}}}";
 
             String inputJsonPathForNonFixPr = toolsParameterService.prepareBridgeInputJson(
-                    scanParameters,
-                    polaris,
-                    bitbucketObject,
-                    ApplicationConstants.POLARIS_INPUT_JSON_PREFIX,
-                    null);
+                    scanParameters, polaris, bitbucketObject, ApplicationConstants.POLARIS_INPUT_JSON_PREFIX, null);
             Path filePath = Paths.get(inputJsonPathForNonFixPr);
 
             String actualJsonString = new String(Files.readAllBytes(filePath));
@@ -336,11 +319,7 @@ public class ToolsParameterServiceTest {
         Map<String, Object> scanParameters = new HashMap<>();
 
         String inputJsonPath = toolsParameterService.prepareBridgeInputJson(
-                scanParameters,
-                coverity,
-                bitBucket,
-                ApplicationConstants.COVERITY_INPUT_JSON_PREFIX,
-                null);
+                scanParameters, coverity, bitBucket, ApplicationConstants.COVERITY_INPUT_JSON_PREFIX, null);
         Path filePath = Paths.get(inputJsonPath);
 
         assertTrue(
@@ -380,14 +359,9 @@ public class ToolsParameterServiceTest {
 
         try {
             Github github = githubRepositoryService.createGithubObject(
-                    scanParametersMap, "fake-repo", "fake-owner",
-                    1, "fake-branch", CLOUD_API_URI);
+                    scanParametersMap, "fake-repo", "fake-owner", 1, "fake-branch", CLOUD_API_URI);
             String inputJsonPath = toolsParameterService.prepareBridgeInputJson(
-                    scanParametersMap,
-                    coverity,
-                    github,
-                    ApplicationConstants.COVERITY_INPUT_JSON_PREFIX,
-                    null);
+                    scanParametersMap, coverity, github, ApplicationConstants.COVERITY_INPUT_JSON_PREFIX, null);
             Path filePath = Paths.get(inputJsonPath);
 
             assertTrue(
@@ -462,11 +436,7 @@ public class ToolsParameterServiceTest {
         scanParameters.put(ApplicationConstants.DETECT_EXECUTION_PATH_KEY, "path/detect");
 
         String inputJsonPath = toolsParameterService.prepareBridgeInputJson(
-                scanParameters,
-                null,
-                null,
-                ApplicationConstants.BLACKDUCKSCA_INPUT_JSON_PREFIX,
-                null);
+                scanParameters, null, null, ApplicationConstants.BLACKDUCKSCA_INPUT_JSON_PREFIX, null);
         Path filePath = Paths.get(inputJsonPath);
 
         assertTrue(
@@ -483,11 +453,7 @@ public class ToolsParameterServiceTest {
         scanParameters.put(ApplicationConstants.NETWORK_AIRGAP_KEY, true);
 
         String inputJsonPath = toolsParameterService.prepareBridgeInputJson(
-                scanParameters,
-                null,
-                null,
-                ApplicationConstants.BLACKDUCKSCA_INPUT_JSON_PREFIX,
-                null);
+                scanParameters, null, null, ApplicationConstants.BLACKDUCKSCA_INPUT_JSON_PREFIX, null);
         Path filePath = Paths.get(inputJsonPath);
 
         assertTrue(
@@ -508,11 +474,7 @@ public class ToolsParameterServiceTest {
         project.setSource(source);
 
         String inputJsonPath = toolsParameterService.prepareBridgeInputJson(
-                scanParameters,
-                null,
-                null,
-                ApplicationConstants.POLARIS_INPUT_JSON_PREFIX,
-                project);
+                scanParameters, null, null, ApplicationConstants.POLARIS_INPUT_JSON_PREFIX, project);
         Path filePath = Paths.get(inputJsonPath);
 
         assertTrue(
@@ -532,8 +494,7 @@ public class ToolsParameterServiceTest {
         blackDuckParametersMap.put(ApplicationConstants.BLACKDUCKSCA_PRCOMMENT_ENABLED_KEY, false);
         blackDuckParametersMap.put(ApplicationConstants.INCLUDE_DIAGNOSTICS_KEY, true);
 
-        List<String> commandLineArgs =
-                toolsParameterService.getCommandLineArgs(blackDuckParametersMap, workspace);
+        List<String> commandLineArgs = toolsParameterService.getCommandLineArgs(blackDuckParametersMap, workspace);
 
         if (getOSNameForTest().contains("win")) {
             assertEquals(
@@ -568,8 +529,7 @@ public class ToolsParameterServiceTest {
         coverityParameters.put(ApplicationConstants.COVERITY_PASSPHRASE_KEY, "fakeUserPassword");
         coverityParameters.put(ApplicationConstants.INCLUDE_DIAGNOSTICS_KEY, true);
 
-        List<String> commandLineArgs =
-                toolsParameterService.getCommandLineArgs(coverityParameters, workspace);
+        List<String> commandLineArgs = toolsParameterService.getCommandLineArgs(coverityParameters, workspace);
 
         if (getOSNameForTest().contains("win")) {
             assertEquals(
@@ -604,8 +564,7 @@ public class ToolsParameterServiceTest {
         polarisParameters.put(ApplicationConstants.POLARIS_APPLICATION_NAME_KEY, "Fake-application-name");
         polarisParameters.put(ApplicationConstants.POLARIS_PROJECT_NAME_KEY, "fake-project-name");
 
-        List<String> commandLineArgs =
-                toolsParameterService.getCommandLineArgs(polarisParameters, workspace);
+        List<String> commandLineArgs = toolsParameterService.getCommandLineArgs(polarisParameters, workspace);
 
         if (getOSNameForTest().contains("win")) {
             assertEquals(
@@ -640,8 +599,7 @@ public class ToolsParameterServiceTest {
         srmParameters.put(ApplicationConstants.SRM_PROJECT_NAME_KEY, "fake-project-name");
         srmParameters.put(ApplicationConstants.SRM_PROJECT_ID_KEY, "fake-project-id");
 
-        List<String> commandLineArgs =
-                toolsParameterService.getCommandLineArgs(srmParameters, workspace);
+        List<String> commandLineArgs = toolsParameterService.getCommandLineArgs(srmParameters, workspace);
 
         if (getOSNameForTest().contains("win")) {
             assertEquals(
@@ -708,8 +666,6 @@ public class ToolsParameterServiceTest {
             assertFalse(Files.exists(Paths.get(path)));
         }
     }
-
-
 
     @Test
     public void handleDetectInputsTest_forArbitaryInputs() {}

@@ -1,5 +1,7 @@
 package io.jenkins.plugins.security.scan.service;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import hudson.FilePath;
 import hudson.model.Result;
 import hudson.model.TaskListener;
@@ -12,17 +14,14 @@ import io.jenkins.plugins.security.scan.global.ErrorCode;
 import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.global.enums.BuildStatus;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
 import java.io.File;
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 public class ParameterMappingServiceTest {
     private TaskListener listenerMock;

@@ -1,5 +1,7 @@
 package io.jenkins.plugins.security.scan.service.scan.srm;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import hudson.EnvVars;
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
@@ -11,16 +13,13 @@ import io.jenkins.plugins.security.scan.input.srm.SRM;
 import io.jenkins.plugins.security.scan.service.scan.blackducksca.DetectParametersService;
 import io.jenkins.plugins.security.scan.service.scan.coverity.CoverityParametersService;
 import io.jenkins.plugins.security.scan.service.scm.SCMRepositoryService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 public class SRMParametersServiceTest {
 
@@ -88,7 +87,9 @@ public class SRMParametersServiceTest {
         srmParameters.put(ApplicationConstants.COVERITY_BUILD_COMMAND_KEY, "mvn clean install");
         srmParameters.put(ApplicationConstants.COVERITY_CLEAN_COMMAND_KEY, "mvn clean");
         srmParameters.put(ApplicationConstants.COVERITY_CONFIG_PATH_KEY, "DIR/CONFIG/coverity.yml");
-        srmParameters.put(ApplicationConstants.COVERITY_ARGS_KEY, "-o capture.build.clean-command=\"mvn clean\" -- mvn clean install");
+        srmParameters.put(
+                ApplicationConstants.COVERITY_ARGS_KEY,
+                "-o capture.build.clean-command=\"mvn clean\" -- mvn clean install");
         srmParameters.put(ApplicationConstants.COVERITY_EXECUTION_PATH_KEY, "/fake/path/cov");
 
         DetectParametersService detectParametersService = new DetectParametersService();

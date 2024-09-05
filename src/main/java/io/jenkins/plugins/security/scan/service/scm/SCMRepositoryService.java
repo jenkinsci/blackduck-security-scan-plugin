@@ -13,12 +13,11 @@ import io.jenkins.plugins.security.scan.input.scm.gitlab.Gitlab;
 import io.jenkins.plugins.security.scan.service.scm.bitbucket.BitbucketRepositoryService;
 import io.jenkins.plugins.security.scan.service.scm.github.GithubRepositoryService;
 import io.jenkins.plugins.security.scan.service.scm.gitlab.GitlabRepositoryService;
+import java.util.Map;
 import jenkins.model.Jenkins;
 import jenkins.scm.api.SCMSource;
 import jenkins.scm.api.SCMSourceOwner;
 import org.jenkinsci.plugins.github_branch_source.GitHubSCMSource;
-
-import java.util.Map;
 
 public class SCMRepositoryService {
     private final TaskListener listener;

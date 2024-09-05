@@ -1,20 +1,19 @@
 package io.jenkins.plugins.security.scan.service.scm.github;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.input.scm.github.Github;
+import java.io.PrintStream;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
-import java.io.PrintStream;
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class GithubRepositoryServiceTest {
     private TaskListener listenerMock;

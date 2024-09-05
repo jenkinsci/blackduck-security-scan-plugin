@@ -1,14 +1,13 @@
 package io.jenkins.plugins.security.scan.service.scan.blackducksca;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.input.detect.Detect;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class DetectParametersServiceTest {
     private DetectParametersService detectParametersService;
@@ -64,5 +63,4 @@ public class DetectParametersServiceTest {
         assertNull(detect.getInstall());
         assertNull(detect.getDownload());
     }
-
 }

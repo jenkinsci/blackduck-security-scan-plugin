@@ -1,22 +1,21 @@
 package io.jenkins.plugins.security.scan.service.scan.blackducksca;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import hudson.EnvVars;
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.input.blackducksca.BlackDuckSCA;
 import io.jenkins.plugins.security.scan.input.project.Project;
 import io.jenkins.plugins.security.scan.input.report.Sarif;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
 import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 public class BlackDuckSCAParametersServiceTest {
     private BlackDuckSCAParametersService blackDuckSCAParametersService;
@@ -34,7 +33,7 @@ public class BlackDuckSCAParametersServiceTest {
 
     @Test
     void prepareBlackDuckSCAObjectForBridge_inNonPRContextTest() {
-        Map<String, Object>  blackDuckScaParametersMap = new HashMap<>();
+        Map<String, Object> blackDuckScaParametersMap = new HashMap<>();
 
         blackDuckScaParametersMap.put(ApplicationConstants.BLACKDUCKSCA_URL_KEY, TEST_BLACKDUCKSCA_URL);
         blackDuckScaParametersMap.put(ApplicationConstants.BLACKDUCKSCA_TOKEN_KEY, TEST_BLACKDUCKSCA_TOKEN);
@@ -56,7 +55,7 @@ public class BlackDuckSCAParametersServiceTest {
 
     @Test
     void prepareBlackDuckSCAObjectForBridge_inNonPRContext_withSarifParametersTest() {
-        Map<String, Object>  blackDuckScaParametersMap = new HashMap<>();
+        Map<String, Object> blackDuckScaParametersMap = new HashMap<>();
 
         blackDuckScaParametersMap.put(ApplicationConstants.BLACKDUCKSCA_URL_KEY, TEST_BLACKDUCKSCA_URL);
         blackDuckScaParametersMap.put(ApplicationConstants.BLACKDUCKSCA_TOKEN_KEY, TEST_BLACKDUCKSCA_TOKEN);
@@ -65,8 +64,10 @@ public class BlackDuckSCAParametersServiceTest {
                 ApplicationConstants.BLACKDUCKSCA_SCAN_FAILURE_SEVERITIES_KEY, "BLOCKER, CRITICAL, MAJOR, MINOR");
         blackDuckScaParametersMap.put(ApplicationConstants.PROJECT_DIRECTORY_KEY, TEST_PROJECT_DIRECTORY);
         blackDuckScaParametersMap.put(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_CREATE_KEY, true);
-        blackDuckScaParametersMap.put(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_FILE_PATH_KEY, "/path/to/sarif/file");
-        blackDuckScaParametersMap.put(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_SEVERITIES_KEY, "HIGH,MEDIUM,LOW");
+        blackDuckScaParametersMap.put(
+                ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_FILE_PATH_KEY, "/path/to/sarif/file");
+        blackDuckScaParametersMap.put(
+                ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_SEVERITIES_KEY, "HIGH,MEDIUM,LOW");
         blackDuckScaParametersMap.put(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_GROUPSCAISSUES_KEY, true);
 
         BlackDuckSCA blackDuckSCA =
@@ -79,8 +80,12 @@ public class BlackDuckSCAParametersServiceTest {
                 List.of("BLOCKER", "CRITICAL", "MAJOR", "MINOR"),
                 blackDuckSCA.getScan().getFailure().getSeverities());
         assertTrue(blackDuckSCA.getReports().getSarif().getCreate());
-        assertEquals("/path/to/sarif/file", blackDuckSCA.getReports().getSarif().getFile().getPath());
-        assertEquals(Arrays.asList("HIGH", "MEDIUM", "LOW"), blackDuckSCA.getReports().getSarif().getSeverities());
+        assertEquals(
+                "/path/to/sarif/file",
+                blackDuckSCA.getReports().getSarif().getFile().getPath());
+        assertEquals(
+                Arrays.asList("HIGH", "MEDIUM", "LOW"),
+                blackDuckSCA.getReports().getSarif().getSeverities());
         assertTrue(blackDuckSCA.getReports().getSarif().getGroupSCAIssues());
     }
 
