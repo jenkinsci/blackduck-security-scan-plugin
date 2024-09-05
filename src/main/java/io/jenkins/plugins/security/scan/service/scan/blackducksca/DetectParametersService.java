@@ -9,108 +9,140 @@ import java.util.Map;
 public class DetectParametersService {
 
     public Detect prepareDetectObject(Map<String, Object> detectParameters) {
-        Detect detect = new Detect();
+        Detect detect = null;
 
-        setScanFull(detectParameters, detect);
-        setInstallDirectory(detectParameters, detect);
-        setDownloadUrl(detectParameters, detect);
-        setSearchDepth(detectParameters, detect);
-        setConfigPath(detectParameters, detect);
-        setBlackDuckArgs(detectParameters, detect);
-        setExecutionPath(detectParameters, detect);
+        detect = setScanFull(detectParameters, detect);
+        detect = setInstallDirectory(detectParameters, detect);
+        detect = setDownloadUrl(detectParameters, detect);
+        detect = setSearchDepth(detectParameters, detect);
+        detect = setConfigPath(detectParameters, detect);
+        detect = setBlackDuckArgs(detectParameters, detect);
+        detect = setExecutionPath(detectParameters, detect);
 
         return detect;
     }
 
-    private void setScanFull(Map<String, Object> scanParameters, Detect detect) {
+    private Detect setScanFull(Map<String, Object> scanParameters, Detect detect) {
         if (scanParameters.containsKey(ApplicationConstants.DETECT_SCAN_FULL_KEY)) {
             String value = scanParameters
                     .get(ApplicationConstants.DETECT_SCAN_FULL_KEY)
                     .toString()
                     .trim();
             if (Utility.isBoolean(value)) {
+                if (detect == null) {
+                    detect = new Detect();
+                }
                 Scan scan = new Scan();
                 scan.setFull(Boolean.parseBoolean(value));
                 detect.setScan(scan);
             }
         }
+        return detect;
     }
 
-    private void setInstallDirectory(Map<String, Object> scanParameters, Detect detect) {
+    private Detect setInstallDirectory(Map<String, Object> scanParameters, Detect detect) {
         if (scanParameters.containsKey(ApplicationConstants.DETECT_INSTALL_DIRECTORY_KEY)) {
             String value = scanParameters
                     .get(ApplicationConstants.DETECT_INSTALL_DIRECTORY_KEY)
                     .toString()
                     .trim();
-            Install install = new Install();
-            install.setDirectory(value);
-            detect.setInstall(install);
+            if (!value.isBlank()) {
+                if (detect == null) {
+                    detect = new Detect();
+                }
+                Install install = new Install();
+                install.setDirectory(value);
+                detect.setInstall(install);
+            }
         }
+        return detect;
     }
 
-    private void setDownloadUrl(Map<String, Object> scanParameters, Detect detect) {
+    private Detect setDownloadUrl(Map<String, Object> scanParameters, Detect detect) {
         if (scanParameters.containsKey(ApplicationConstants.DETECT_DOWNLOAD_URL_KEY)) {
             String value = scanParameters
                     .get(ApplicationConstants.DETECT_DOWNLOAD_URL_KEY)
                     .toString()
                     .trim();
-            Download download = new Download();
-            download.setUrl(value);
-            detect.setDownload(download);
+            if (!value.isBlank()) {
+                if (detect == null) {
+                    detect = new Detect();
+                }
+                Download download = new Download();
+                download.setUrl(value);
+                detect.setDownload(download);
+            }
         }
+        return detect;
     }
 
-    private void setSearchDepth(Map<String, Object> scanParameters, Detect detect) {
+    private Detect setSearchDepth(Map<String, Object> scanParameters, Detect detect) {
         if (scanParameters.containsKey(ApplicationConstants.DETECT_SEARCH_DEPTH_KEY)) {
             String searchDepth = scanParameters
                     .get(ApplicationConstants.DETECT_SEARCH_DEPTH_KEY)
                     .toString()
                     .trim();
             if (!searchDepth.isBlank()) {
+                if (detect == null) {
+                    detect = new Detect();
+                }
                 Search search = new Search();
                 search.setDepth(Integer.parseInt(searchDepth));
                 detect.setSearch(search);
             }
         }
+        return detect;
     }
 
-    private void setConfigPath(Map<String, Object> scanParameters, Detect detect) {
+    private Detect setConfigPath(Map<String, Object> scanParameters, Detect detect) {
         if (scanParameters.containsKey(ApplicationConstants.DETECT_CONFIG_PATH_KEY)) {
             String configPath = scanParameters
                     .get(ApplicationConstants.DETECT_CONFIG_PATH_KEY)
                     .toString()
                     .trim();
             if (!configPath.isBlank()) {
+                if (detect == null) {
+                    detect = new Detect();
+                }
                 Config config = new Config();
                 config.setPath(configPath);
                 detect.setConfig(config);
             }
         }
+        return detect;
     }
 
-    private void setBlackDuckArgs(Map<String, Object> scanParameters, Detect detect) {
+    private Detect setBlackDuckArgs(Map<String, Object> scanParameters, Detect detect) {
         if (scanParameters.containsKey(ApplicationConstants.DETECT_ARGS_KEY)) {
             String detectArgs = scanParameters
                     .get(ApplicationConstants.DETECT_ARGS_KEY)
                     .toString()
                     .trim();
             if (!detectArgs.isBlank()) {
+                if (detect == null) {
+                    detect = new Detect();
+                }
                 detect.setArgs(detectArgs);
             }
         }
+        return detect;
     }
 
-    private void setExecutionPath(Map<String, Object> scanParameters, Detect detect) {
+    private Detect setExecutionPath(Map<String, Object> scanParameters, Detect detect) {
         if (scanParameters.containsKey(ApplicationConstants.DETECT_EXECUTION_PATH_KEY)) {
             String installationPath = scanParameters
                     .get(ApplicationConstants.DETECT_EXECUTION_PATH_KEY)
                     .toString()
                     .trim();
             if (!installationPath.isBlank()) {
+                if (detect == null) {
+                    detect = new Detect();
+                }
                 Execution execution = new Execution();
                 execution.setPath(installationPath);
                 detect.setExecution(execution);
             }
         }
+        return detect;
     }
 }

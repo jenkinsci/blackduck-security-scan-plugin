@@ -30,6 +30,7 @@ import io.jenkins.plugins.security.scan.service.scan.coverity.CoverityParameters
 import io.jenkins.plugins.security.scan.service.scan.polaris.PolarisParametersService;
 import io.jenkins.plugins.security.scan.service.scan.srm.SRMParametersService;
 import io.jenkins.plugins.security.scan.service.scm.SCMRepositoryService;
+
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -209,7 +210,7 @@ public class ToolsParameterService {
         inputJsonMap.put(DATA_KEY, bridgeInput);
 
         ObjectMapper mapper = new ObjectMapper();
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
 
         try {
             return mapper.writeValueAsString(inputJsonMap);
@@ -222,7 +223,9 @@ public class ToolsParameterService {
     private static void setDetectObject(Map<String, Object> scanParameters, BridgeInput bridgeInput) {
         DetectParametersService detectParametersService = new DetectParametersService();
         Detect detect = detectParametersService.prepareDetectObject(scanParameters);
-        bridgeInput.setDetect(detect);
+        if (detect != null) {
+            bridgeInput.setDetect(detect);
+        }
     }
 
     private static void setNetworkAirGapObject(BridgeInput bridgeInput, Map<String, Object> scanParameters) {
@@ -285,9 +288,10 @@ public class ToolsParameterService {
 
     private void setSastArbitaryInputs(BridgeInput bridgeInput, Map<String, Object> scanParameters) {
         CoverityParametersService coverityParametersService = new CoverityParametersService(listener, envVars);
-        Coverity coverity = new Coverity();
-        coverityParametersService.setArbitaryInputs(scanParameters, coverity);
-        bridgeInput.setCoverity(coverity);
+        Coverity coverity = coverityParametersService.setArbitaryInputs(scanParameters, null);
+        if (coverity != null) {
+            bridgeInput.setCoverity(coverity);
+        }
     }
 
     public String writeInputJsonToFile(String inputJson, String jsonPrefix) {

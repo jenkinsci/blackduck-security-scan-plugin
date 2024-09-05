@@ -24,9 +24,7 @@ public class DetectParametersServiceTest {
 
         Detect detect = detectParametersService.prepareDetectObject(detectParametersMap);
 
-        assertNull(detect.getScan());
-        assertNull(detect.getInstall());
-        assertNull(detect.getArgs());
+        assertNull(detect);
     }
 
     @Test

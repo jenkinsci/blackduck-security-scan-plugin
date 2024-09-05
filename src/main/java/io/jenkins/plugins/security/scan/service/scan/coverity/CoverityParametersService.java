@@ -202,12 +202,14 @@ public class CoverityParametersService {
         }
     }
 
-    public void setArbitaryInputs(Map<String, Object> coverityParameters, Coverity coverity) {
-        setBuildCommand(coverityParameters, coverity);
-        setCleanCommand(coverityParameters, coverity);
-        setConfigCommand(coverityParameters, coverity);
-        setArgs(coverityParameters, coverity);
-        setExecutionPath(coverityParameters, coverity);
+    public Coverity setArbitaryInputs(Map<String, Object> coverityParameters, Coverity coverity) {
+        coverity = setBuildCommand(coverityParameters, coverity);
+        coverity = setCleanCommand(coverityParameters, coverity);
+        coverity = setConfigCommand(coverityParameters, coverity);
+        coverity = setArgs(coverityParameters, coverity);
+        coverity = setExecutionPath(coverityParameters, coverity);
+
+        return coverity;
     }
 
     private void setCoverityLocal(Map<String, Object> coverityParameters, Coverity coverity) {
@@ -269,58 +271,74 @@ public class CoverityParametersService {
         }
     }
 
-    private void setBuildCommand(Map<String, Object> coverityParameters, Coverity coverity) {
+    private Coverity setBuildCommand(Map<String, Object> coverityParameters, Coverity coverity) {
         if (coverityParameters.containsKey(ApplicationConstants.COVERITY_BUILD_COMMAND_KEY)) {
             String value = coverityParameters
                     .get(ApplicationConstants.COVERITY_BUILD_COMMAND_KEY)
                     .toString()
                     .trim();
             if (!value.isBlank()) {
+                if (coverity == null) {
+                    coverity = new Coverity();
+                }
                 Build build = new Build();
                 build.setCommand(value);
                 coverity.setBuild(build);
             }
         }
+        return coverity;
     }
 
-    private void setCleanCommand(Map<String, Object> coverityParameters, Coverity coverity) {
+    private Coverity setCleanCommand(Map<String, Object> coverityParameters, Coverity coverity) {
         if (coverityParameters.containsKey(ApplicationConstants.COVERITY_CLEAN_COMMAND_KEY)) {
             String value = coverityParameters
                     .get(ApplicationConstants.COVERITY_CLEAN_COMMAND_KEY)
                     .toString()
                     .trim();
             if (!value.isBlank()) {
+                if (coverity == null) {
+                    coverity = new Coverity();
+                }
                 Clean clean = new Clean();
                 clean.setCommand(value);
                 coverity.setClean(clean);
             }
         }
+        return coverity;
     }
 
-    private void setConfigCommand(Map<String, Object> coverityParameters, Coverity coverity) {
+    private Coverity setConfigCommand(Map<String, Object> coverityParameters, Coverity coverity) {
         if (coverityParameters.containsKey(ApplicationConstants.COVERITY_CONFIG_PATH_KEY)) {
             String value = coverityParameters
                     .get(ApplicationConstants.COVERITY_CONFIG_PATH_KEY)
                     .toString()
                     .trim();
             if (!value.isBlank()) {
+                if (coverity == null) {
+                    coverity = new Coverity();
+                }
                 Config config = new Config();
                 config.setPath(value);
                 coverity.setConfig(config);
             }
         }
+        return coverity;
     }
 
-    private void setArgs(Map<String, Object> coverityParameters, Coverity coverity) {
+    private Coverity setArgs(Map<String, Object> coverityParameters, Coverity coverity) {
         if (coverityParameters.containsKey(ApplicationConstants.COVERITY_ARGS_KEY)) {
+            if (coverity == null) {
+                coverity = new Coverity();
+            }
             coverity.setArgs(coverityParameters
                     .get(ApplicationConstants.COVERITY_ARGS_KEY)
                     .toString()
                     .trim());
         }
+        return coverity;
     }
 
-    private void setExecutionPath(Map<String, Object> scanParameters, Coverity coverity) {
+    private Coverity setExecutionPath(Map<String, Object> scanParameters, Coverity coverity) {
         if (scanParameters.containsKey(ApplicationConstants.COVERITY_EXECUTION_PATH_KEY)) {
             String installationPath = scanParameters
                     .get(ApplicationConstants.COVERITY_EXECUTION_PATH_KEY)
@@ -332,6 +350,7 @@ public class CoverityParametersService {
                 coverity.setExecution(execution);
             }
         }
+        return coverity;
     }
 
     public Project prepareProjectObjectForBridge(Map<String, Object> coverityParameters) {

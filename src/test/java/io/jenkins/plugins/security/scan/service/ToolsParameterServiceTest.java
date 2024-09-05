@@ -13,7 +13,9 @@ import io.jenkins.plugins.security.scan.input.blackducksca.Automation;
 import io.jenkins.plugins.security.scan.input.blackducksca.BlackDuckSCA;
 import io.jenkins.plugins.security.scan.input.coverity.Connect;
 import io.jenkins.plugins.security.scan.input.coverity.Coverity;
-import io.jenkins.plugins.security.scan.input.polaris.Polaris;
+import io.jenkins.plugins.security.scan.input.coverity.CoverityProject;
+import io.jenkins.plugins.security.scan.input.coverity.Stream;
+import io.jenkins.plugins.security.scan.input.polaris.*;
 import io.jenkins.plugins.security.scan.input.project.Project;
 import io.jenkins.plugins.security.scan.input.project.Source;
 import io.jenkins.plugins.security.scan.input.scm.bitbucket.Bitbucket;
@@ -90,7 +92,7 @@ public class ToolsParameterServiceTest {
     }
 
     @Test
-    void bitbucket_blackDuckInputJsonTest() {
+    void bitbucket_blackDuckInputJson_withoutPrCommentTest() {
         ObjectMapper objectMapper = new ObjectMapper();
 
         BlackDuckSCA blackDuckSCA = new BlackDuckSCA();
@@ -124,28 +126,43 @@ public class ToolsParameterServiceTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    void bitbucket_blackDuckInputJson_withPrCommentTest() {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        BlackDuckSCA blackDuckSCA = new BlackDuckSCA();
+        blackDuckSCA.setUrl("https://fake.blackduck.url");
+        blackDuckSCA.setToken(TOKEN);
+        Map<String, Object> scanParameters = new HashMap<>();
+        scanParameters.put(ApplicationConstants.BLACKDUCKSCA_PRCOMMENT_ENABLED_KEY, true);
+
+        Bitbucket bitbucketObject = BitbucketRepositoryService.createBitbucketObject(
+                "https://bitbucket.org", TOKEN, 12, "test", "abc", "fake-user");
 
         try {
-            String jsonStringForPrComment =
-                    "{\"data\":{\"blackducksca\":{\"url\":\"https://fake.blackduck.url\",\"token\":\"MDJDSROSVC56FAKEKEY\"},\"bitbucket\":{\"api\":{\"url\":\"\",\"user\":{\"name\":\"fake-user\"},\"token\":\"MDJDSROSVC56FAKEKEY\"},\"project\":{\"repository\":{\"pull\":{\"number\":12},\"name\":\"test\"},\"key\":\"abc\"}}}}";
-            String inputJsonPathForPrComment = toolsParameterService.prepareBridgeInputJson(
+            String jsonStringNonPrCommentOrFixPr =
+                    "{\"data\":{\"blackducksca\":{\"url\":\"https://fake.blackduck.url\",\"token\":\"MDJDSROSVC56FAKEKEY\"},\"bitbucket\":{\"api\":{\"user\":{\"name\":\"fake-user\"},\"token\":\"MDJDSROSVC56FAKEKEY\"},\"project\":{\"repository\":{\"pull\":{\"number\":12},\"name\":\"test\"},\"key\":\"abc\"}}}}";
+
+            String inputJsonPathForNonFixPr = toolsParameterService.prepareBridgeInputJson(
                     scanParameters,
                     blackDuckSCA,
                     bitbucketObject,
                     ApplicationConstants.BLACKDUCKSCA_INPUT_JSON_PREFIX,
                     null);
-            Path filePath = Paths.get(inputJsonPathForPrComment);
+            Path filePath = Paths.get(inputJsonPathForNonFixPr);
 
-            JsonNode expectedJsonNode = objectMapper.readTree(jsonStringForPrComment);
+            String actualJsonString = new String(Files.readAllBytes(filePath));
 
-            String actualJsonString = new String(Files.readAllBytes(Paths.get(inputJsonPathForPrComment)));
+            JsonNode expectedJsonNode = objectMapper.readTree(jsonStringNonPrCommentOrFixPr);
             JsonNode actualJsonNode = objectMapper.readTree(actualJsonString);
 
             assertEquals(expectedJsonNode, actualJsonNode);
             Utility.removeFile(filePath.toString(), workspace, listenerMock);
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
@@ -173,12 +190,21 @@ public class ToolsParameterServiceTest {
     }
 
     @Test
-    void bitbucket_polarisInputJsonTest() {
+    void bitbucket_polarisInputJson_withoutPrCommentTest() {
         ObjectMapper objectMapper = new ObjectMapper();
 
         Polaris polaris = new Polaris();
         polaris.setServerUrl("https://fake.polaris.url");
         polaris.setAccessToken(TOKEN);
+        polaris.setApplicationName(new ApplicationName());
+        polaris.getApplicationName().setName("test");
+        polaris.setPolarisProject(new PolarisProject());
+        polaris.getPolarisProject().setName("test");
+        polaris.setAssessmentTypes(new AssessmentTypes());
+        polaris.getAssessmentTypes().setTypes(List.of("SCA", "SAST"));
+        polaris.setBranch(new Branch());
+        polaris.getBranch().setName("fake-pr-branch");
+
         Map<String, Object> scanParameters = new HashMap<>();
 
         Bitbucket bitbucketObject = BitbucketRepositoryService.createBitbucketObject(
@@ -186,7 +212,7 @@ public class ToolsParameterServiceTest {
 
         try {
             String jsonStringNonPrCommentOrFixPr =
-                    "{\"data\":{\"polaris\":{\"accesstoken\":\"MDJDSROSVC56FAKEKEY\",\"application\":{\"name\":\"test\"},\"project\":{\"name\":\"test\"},\"assessment\":{},\"serverUrl\":\"https://fake.polaris.url\",\"branch\":{\"name\":\"fake-pr-branch\"}}}}";
+                    "{\"data\":{\"polaris\":{\"accesstoken\":\"MDJDSROSVC56FAKEKEY\",\"application\":{\"name\":\"test\"},\"project\":{\"name\":\"test\"},\"assessment\":{\"types\":[\"SCA\",\"SAST\"]},\"serverUrl\":\"https://fake.polaris.url\",\"branch\":{\"name\":\"fake-pr-branch\"}}}}";
 
             String inputJsonPathForNonFixPr = toolsParameterService.prepareBridgeInputJson(
                     scanParameters,
@@ -207,28 +233,52 @@ public class ToolsParameterServiceTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    void bitbucket_polarisInputJson_withPrCommentTest() {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        Polaris polaris = new Polaris();
+        polaris.setServerUrl("https://fake.polaris.url");
+        polaris.setAccessToken(TOKEN);
+        polaris.setApplicationName(new ApplicationName());
+        polaris.getApplicationName().setName("test");
+        polaris.setPolarisProject(new PolarisProject());
+        polaris.getPolarisProject().setName("test");
+        polaris.setAssessmentTypes(new AssessmentTypes());
+        polaris.getAssessmentTypes().setTypes(List.of("SCA", "SAST"));
+        polaris.setBranch(new Branch());
+        polaris.getBranch().setName("fake-pr-branch");
+
+        Map<String, Object> scanParameters = new HashMap<>();
+        scanParameters.put(ApplicationConstants. POLARIS_PRCOMMENT_ENABLED_KEY, true);
+
+        Bitbucket bitbucketObject = BitbucketRepositoryService.createBitbucketObject(
+                "https://bitbucket.org", TOKEN, 12, "test", "abc", "fake-username");
 
         try {
-            String jsonStringForPrComment =
-                    "{\"data\":{\"polaris\":{\"accesstoken\":\"MDJDSROSVC56FAKEKEY\",\"application\":{\"name\":\"test\"},\"project\":{\"name\":\"test\"},\"assessment\":{},\"serverUrl\":\"https://fake.polaris.url\",\"branch\":{\"name\":\"fake-pr-branch\"}},\"bitbucket\":{\"api\":{\"url\":\"\",\"user\":{\"name\":\"fake-username\"},\"token\":\"MDJDSROSVC56FAKEKEY\"},\"project\":{\"repository\":{\"pull\":{\"number\":12},\"name\":\"test\"},\"key\":\"abc\"}}}}";
-            String inputJsonPathForPrComment = toolsParameterService.prepareBridgeInputJson(
+            String jsonStringNonPrCommentOrFixPr =
+                    "{\"data\":{\"polaris\":{\"accesstoken\":\"MDJDSROSVC56FAKEKEY\",\"application\":{\"name\":\"test\"},\"project\":{\"name\":\"test\"},\"assessment\":{\"types\":[\"SCA\",\"SAST\"]},\"serverUrl\":\"https://fake.polaris.url\",\"branch\":{\"name\":\"fake-pr-branch\"}},\"bitbucket\":{\"api\":{\"user\":{\"name\":\"fake-username\"},\"token\":\"MDJDSROSVC56FAKEKEY\"},\"project\":{\"repository\":{\"pull\":{\"number\":12},\"name\":\"test\"},\"key\":\"abc\"}}}}";
+
+            String inputJsonPathForNonFixPr = toolsParameterService.prepareBridgeInputJson(
                     scanParameters,
                     polaris,
                     bitbucketObject,
                     ApplicationConstants.POLARIS_INPUT_JSON_PREFIX,
                     null);
-            Path filePath = Paths.get(inputJsonPathForPrComment);
+            Path filePath = Paths.get(inputJsonPathForNonFixPr);
 
-            JsonNode expectedJsonNode = objectMapper.readTree(jsonStringForPrComment);
+            String actualJsonString = new String(Files.readAllBytes(filePath));
 
-            String actualJsonString = new String(Files.readAllBytes(Paths.get(inputJsonPathForPrComment)));
+            JsonNode expectedJsonNode = objectMapper.readTree(jsonStringNonPrCommentOrFixPr);
             JsonNode actualJsonNode = objectMapper.readTree(actualJsonString);
 
             assertEquals(expectedJsonNode, actualJsonNode);
             Utility.removeFile(filePath.toString(), workspace, listenerMock);
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
@@ -250,67 +300,6 @@ public class ToolsParameterServiceTest {
                         "File %s does not exist at the specified path.",
                         ApplicationConstants.SRM_INPUT_JSON_PREFIX.concat(".json")));
         Utility.removeFile(filePath.toString(), workspace, listenerMock);
-    }
-
-    @Test
-    void bitbucket_SrmInputJsonTest() {
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        SRM srm = new SRM();
-        srm.setUrl("https://fake.srm.url");
-        srm.setApikey(TOKEN);
-        srm.getAssessmentTypes().setTypes(List.of("SCA"));
-        Map<String, Object> scanParameters = new HashMap<>();
-
-        Bitbucket bitbucketObject = BitbucketRepositoryService.createBitbucketObject(
-                "https://bitbucket.org", TOKEN, 12, "test", "abc", "fake-user");
-
-        try {
-            String jsonStringNonPrCommentOrFixPr =
-                    "{\"data\":{\"srm\":{\"url\":\"https://fake.srm.url\",\"apikey\":\"MDJDSROSVC56FAKEKEY\",\"assessment\":{\"types\":[\"SCA\"]},\"project\":{\"name\":\"test\"}}}}";
-
-            String inputJsonPathForNonFixPr = toolsParameterService.prepareBridgeInputJson(
-                    scanParameters,
-                    srm,
-                    bitbucketObject,
-                    ApplicationConstants.SRM_INPUT_JSON_PREFIX,
-                    null);
-            Path filePath = Paths.get(inputJsonPathForNonFixPr);
-
-            String actualJsonString = new String(Files.readAllBytes(filePath));
-
-            JsonNode expectedJsonNode = objectMapper.readTree(jsonStringNonPrCommentOrFixPr);
-            JsonNode actualJsonNode = objectMapper.readTree(actualJsonString);
-
-            assertEquals(expectedJsonNode, actualJsonNode);
-            Utility.removeFile(filePath.toString(), workspace, listenerMock);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            String jsonStringForPrComment =
-                    "{\"data\":{\"srm\":{\"url\":\"https://fake.srm.url\",\"apikey\":\"MDJDSROSVC56FAKEKEY\",\"assessment\":{\"types\":[\"SCA\"]},\"project\":{\"name\":\"test\"}},\"bitbucket\":{\"api\":{\"url\":\"\",\"user\":{\"name\":\"fake-user\"},\"token\":\"MDJDSROSVC56FAKEKEY\"},\"project\":{\"repository\":{\"pull\":{\"number\":12},\"name\":\"test\"},\"key\":\"abc\"}}}}";
-            String inputJsonPathForPrComment = toolsParameterService.prepareBridgeInputJson(
-                    scanParameters,
-                    srm,
-                    bitbucketObject,
-                    ApplicationConstants.SRM_INPUT_JSON_PREFIX,
-                    null);
-            Path filePath = Paths.get(inputJsonPathForPrComment);
-
-            JsonNode expectedJsonNode = objectMapper.readTree(jsonStringForPrComment);
-
-            String actualJsonString = new String(Files.readAllBytes(Paths.get(inputJsonPathForPrComment)));
-            JsonNode actualJsonNode = objectMapper.readTree(actualJsonString);
-
-            assertEquals(expectedJsonNode, actualJsonNode);
-            Utility.removeFile(filePath.toString(), workspace, listenerMock);
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Test
@@ -369,6 +358,7 @@ public class ToolsParameterServiceTest {
 
         Map<String, Object> scanParametersMap = new HashMap<>();
         scanParametersMap.put(ApplicationConstants.GITHUB_TOKEN_KEY, TOKEN);
+        scanParametersMap.put(ApplicationConstants.COVERITY_PRCOMMENT_ENABLED_KEY, true);
 
         String jsonStringForPrComment = "{\"data\":{\"coverity\":{\"connect\":{\"url\":\"https://fake.coverity.url\","
                 + "\"user\":{\"name\":\"fake-user\",\"password\":\"fakeUserPassword\"},"
@@ -383,6 +373,10 @@ public class ToolsParameterServiceTest {
         coverity.getConnect().setUrl("https://fake.coverity.url");
         coverity.getConnect().getUser().setName("fake-user");
         coverity.getConnect().getUser().setPassword("fakeUserPassword");
+        coverity.getConnect().setCoverityProject(new CoverityProject());
+        coverity.getConnect().getCoverityProject().setName("fake-repo");
+        coverity.getConnect().setStream(new Stream());
+        coverity.getConnect().getStream().setName("fake-repo-fake-main");
 
         try {
             Github github = githubRepositoryService.createGithubObject(
@@ -421,6 +415,7 @@ public class ToolsParameterServiceTest {
 
         Map<String, Object> scanParametersMap = new HashMap<>();
         scanParametersMap.put(ApplicationConstants.GITLAB_TOKEN_KEY, TOKEN);
+        scanParametersMap.put(ApplicationConstants.BLACKDUCKSCA_PRCOMMENT_ENABLED_KEY, true);
 
         BlackDuckSCA blackDuckSCA = new BlackDuckSCA();
         blackDuckSCA.setUrl("https://fake.blackduck.url");

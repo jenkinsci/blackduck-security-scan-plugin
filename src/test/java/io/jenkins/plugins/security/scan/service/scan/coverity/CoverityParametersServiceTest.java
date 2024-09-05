@@ -207,4 +207,33 @@ public class CoverityParametersServiceTest {
         assertEquals(coverity.getConfig().getPath(), "DIR/CONFIG/coverity.yml");
         assertEquals(coverity.getArgs(), "-o capture.build.clean-command=\"mvn clean\" -- mvn clean install");
     }
+
+    @Test
+    void setArbitaryInputsTest() {
+        Map<String, Object> coverityParameters = new HashMap<>();
+
+        coverityParameters.put(ApplicationConstants.COVERITY_BUILD_COMMAND_KEY, "mvn clean install");
+        coverityParameters.put(ApplicationConstants.COVERITY_CLEAN_COMMAND_KEY, "mvn clean");
+        coverityParameters.put(ApplicationConstants.COVERITY_CONFIG_PATH_KEY, "DIR/CONFIG/coverity.yml");
+        coverityParameters.put(ApplicationConstants.COVERITY_ARGS_KEY, "-o capture.build.clean-command=\"mvn clean\" -- mvn clean install");
+        coverityParameters.put(ApplicationConstants.COVERITY_EXECUTION_PATH_KEY, "test/path");
+
+        Coverity coverity = coverityParametersService.setArbitaryInputs(coverityParameters, null);
+
+        assertNotNull(coverity);
+        assertEquals(coverity.getBuild().getCommand(), "mvn clean install");
+        assertEquals(coverity.getClean().getCommand(), "mvn clean");
+        assertEquals(coverity.getConfig().getPath(), "DIR/CONFIG/coverity.yml");
+        assertEquals(coverity.getArgs(), "-o capture.build.clean-command=\"mvn clean\" -- mvn clean install");
+        assertEquals(coverity.getExecution().getPath(), "test/path");
+    }
+
+    @Test
+    void setArbitaryInputs_forEmptyParametersTest() {
+        Map<String, Object> coverityParameters = new HashMap<>();
+
+        Coverity coverity = coverityParametersService.setArbitaryInputs(coverityParameters, null);
+
+        assertNull(coverity);
+    }
 }
