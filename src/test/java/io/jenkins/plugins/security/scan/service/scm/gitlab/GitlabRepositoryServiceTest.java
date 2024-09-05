@@ -78,7 +78,8 @@ public class GitlabRepositoryServiceTest {
 
     @Test
     void createGitlabObjectPluginExceptionTest() {
-        scanParametersMap.put(ApplicationConstants.PRODUCT_KEY, "blackduck");
+        scanParametersMap.put(ApplicationConstants.PRODUCT_KEY, "blackducksca");
+        scanParametersMap.put(ApplicationConstants.BLACKDUCKSCA_PRCOMMENT_ENABLED_KEY, Boolean.TRUE);
 
         assertThrows(
                 PluginExceptionHandler.class,

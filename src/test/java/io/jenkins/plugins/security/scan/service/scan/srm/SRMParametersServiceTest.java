@@ -121,7 +121,6 @@ public class SRMParametersServiceTest {
 
         srmParameters.put(ApplicationConstants.SRM_URL_KEY, TEST_SRM_SERVER_URL);
         srmParameters.put(ApplicationConstants.SRM_APIKEY_KEY, TEST_SRM_API_KEY_TOKEN);
-        srmParameters.put(ApplicationConstants.SRM_PROJECT_NAME_KEY, TEST_SRM_PROJECT_NAME);
         srmParameters.put(ApplicationConstants.SRM_ASSESSMENT_TYPES_KEY, TEST_SRM_ASSESSMENT_TYPES);
 
         Github github = new Github();
@@ -145,8 +144,7 @@ public class SRMParametersServiceTest {
 
         srmParameters.put(ApplicationConstants.SRM_URL_KEY, TEST_SRM_SERVER_URL);
         srmParameters.put(ApplicationConstants.SRM_APIKEY_KEY, TEST_SRM_API_KEY_TOKEN);
-        srmParameters.put(ApplicationConstants.SRM_PROJECT_NAME_KEY, TEST_SRM_PROJECT_NAME);
-        assertEquals(ApplicationConstants.SRM_PROJECT_NAME_KEY, TEST_SRM_PROJECT_ID);
+        srmParameters.put(ApplicationConstants.SRM_PROJECT_ID_KEY, TEST_SRM_PROJECT_ID);
         srmParameters.put(ApplicationConstants.SRM_ASSESSMENT_TYPES_KEY, TEST_SRM_ASSESSMENT_TYPES);
 
         SRM srm = srmParametersService.prepareSrmObjectForBridge(srmParameters);

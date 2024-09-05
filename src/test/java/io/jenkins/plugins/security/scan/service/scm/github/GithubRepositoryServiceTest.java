@@ -88,7 +88,8 @@ public class GithubRepositoryServiceTest {
 
     @Test
     void createGithubObjectPluginExceptionTest() throws PluginExceptionHandler {
-        scanParametersMap.put(ApplicationConstants.PRODUCT_KEY, "blackduck");
+        scanParametersMap.put(ApplicationConstants.PRODUCT_KEY, "blackducksca");
+        scanParametersMap.put(ApplicationConstants.BLACKDUCKSCA_PRCOMMENT_ENABLED_KEY, true);
 
         assertThrows(
                 PluginExceptionHandler.class,

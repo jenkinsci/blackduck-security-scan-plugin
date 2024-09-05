@@ -90,6 +90,7 @@ public class BitbucketRepositoryServiceTest {
         assertNotNull(result);
 
         scanParameters.clear();
+        scanParameters.put(ApplicationConstants.BLACKDUCKSCA_PRCOMMENT_ENABLED_KEY, true);
         scanParameters.put(ApplicationConstants.BITBUCKET_TOKEN_KEY, "");
         assertThrows(
                 PluginExceptionHandler.class,

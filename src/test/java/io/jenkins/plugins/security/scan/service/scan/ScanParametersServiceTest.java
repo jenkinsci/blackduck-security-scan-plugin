@@ -78,6 +78,7 @@ public class ScanParametersServiceTest {
         parameters.put(ApplicationConstants.POLARIS_SERVER_URL_KEY, "https://fake.polaris.url");
         parameters.put(ApplicationConstants.POLARIS_ACCESS_TOKEN_KEY, "fake-token");
         parameters.put(ApplicationConstants.POLARIS_APPLICATION_NAME_KEY, "fake-application");
+        parameters.put(ApplicationConstants.POLARIS_ASSESSMENT_TYPES_KEY, "SCA,SAST");
         parameters.put(ApplicationConstants.POLARIS_PROJECT_NAME_KEY, "fake-project");
         parameters.put(ApplicationConstants.POLARIS_BRANCH_NAME_KEY, "fake-branch");
 
