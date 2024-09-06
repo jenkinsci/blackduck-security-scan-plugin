@@ -7,9 +7,7 @@ import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.input.coverity.Coverity;
 import io.jenkins.plugins.security.scan.input.project.Project;
-import io.jenkins.plugins.security.scan.input.scm.github.Github;
-import io.jenkins.plugins.security.scan.input.scm.github.Repository;
-import io.jenkins.plugins.security.scan.service.scm.SCMRepositoryService;
+import io.jenkins.plugins.security.scan.service.scm.RepositoryDetailsHolder;
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -121,11 +119,7 @@ public class CoverityParametersServiceTest {
         Mockito.when(envVarsMock.get(ApplicationConstants.ENV_CHANGE_TARGET_KEY))
                 .thenReturn("main");
 
-        Github github = new Github();
-        github.setRepository(new Repository());
-        github.getRepository().setName("default-repo-name");
-        SCMRepositoryService scmRepositoryService = new SCMRepositoryService(listenerMock, envVarsMock);
-        scmRepositoryService.setRepositoryName(github);
+        RepositoryDetailsHolder.setRepositoryName("default-repo-name");
 
         Coverity coverity = coverityParametersService.prepareCoverityObjectForBridge(coverityParameters);
 
@@ -147,11 +141,7 @@ public class CoverityParametersServiceTest {
 
         Mockito.when(envVarsMock.get(ApplicationConstants.ENV_BRANCH_NAME_KEY)).thenReturn("feature");
 
-        Github github = new Github();
-        github.setRepository(new Repository());
-        github.getRepository().setName("default-repo-name");
-        SCMRepositoryService scmRepositoryService = new SCMRepositoryService(listenerMock, envVarsMock);
-        scmRepositoryService.setRepositoryName(github);
+        RepositoryDetailsHolder.setRepositoryName("default-repo-name");
 
         Coverity coverity = coverityParametersService.prepareCoverityObjectForBridge(coverityParameters);
 

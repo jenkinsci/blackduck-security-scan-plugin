@@ -7,12 +7,10 @@ import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.input.coverity.Coverity;
 import io.jenkins.plugins.security.scan.input.detect.Detect;
-import io.jenkins.plugins.security.scan.input.scm.github.Github;
-import io.jenkins.plugins.security.scan.input.scm.github.Repository;
 import io.jenkins.plugins.security.scan.input.srm.SRM;
 import io.jenkins.plugins.security.scan.service.scan.blackducksca.DetectParametersService;
 import io.jenkins.plugins.security.scan.service.scan.coverity.CoverityParametersService;
-import io.jenkins.plugins.security.scan.service.scm.SCMRepositoryService;
+import io.jenkins.plugins.security.scan.service.scm.RepositoryDetailsHolder;
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.List;
@@ -124,11 +122,7 @@ public class SRMParametersServiceTest {
         srmParameters.put(ApplicationConstants.SRM_APIKEY_KEY, TEST_SRM_API_KEY_TOKEN);
         srmParameters.put(ApplicationConstants.SRM_ASSESSMENT_TYPES_KEY, TEST_SRM_ASSESSMENT_TYPES);
 
-        Github github = new Github();
-        github.setRepository(new Repository());
-        github.getRepository().setName("default-repo-name");
-        SCMRepositoryService scmRepositoryService = new SCMRepositoryService(listenerMock, envVarsMock);
-        scmRepositoryService.setRepositoryName(github);
+        RepositoryDetailsHolder.setRepositoryName("default-repo-name");
 
         SRM srm = srmParametersService.prepareSrmObjectForBridge(srmParameters);
 
@@ -147,6 +141,8 @@ public class SRMParametersServiceTest {
         srmParameters.put(ApplicationConstants.SRM_APIKEY_KEY, TEST_SRM_API_KEY_TOKEN);
         srmParameters.put(ApplicationConstants.SRM_PROJECT_ID_KEY, TEST_SRM_PROJECT_ID);
         srmParameters.put(ApplicationConstants.SRM_ASSESSMENT_TYPES_KEY, TEST_SRM_ASSESSMENT_TYPES);
+
+        RepositoryDetailsHolder.setRepositoryName("default-repo-name");
 
         SRM srm = srmParametersService.prepareSrmObjectForBridge(srmParameters);
 

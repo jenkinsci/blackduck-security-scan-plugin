@@ -9,10 +9,8 @@ import io.jenkins.plugins.security.scan.input.coverity.Coverity;
 import io.jenkins.plugins.security.scan.input.polaris.Polaris;
 import io.jenkins.plugins.security.scan.input.project.Project;
 import io.jenkins.plugins.security.scan.input.report.Sarif;
-import io.jenkins.plugins.security.scan.input.scm.github.Github;
-import io.jenkins.plugins.security.scan.input.scm.github.Repository;
 import io.jenkins.plugins.security.scan.service.scan.coverity.CoverityParametersService;
-import io.jenkins.plugins.security.scan.service.scm.SCMRepositoryService;
+import io.jenkins.plugins.security.scan.service.scm.RepositoryDetailsHolder;
 import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -190,11 +188,7 @@ public class PolarisParametersServiceTest {
         polarisParameters.put(ApplicationConstants.POLARIS_ACCESS_TOKEN_KEY, TEST_POLARIS_ACCESS_TOKEN);
         polarisParameters.put(ApplicationConstants.POLARIS_ASSESSMENT_TYPES_KEY, "SCA,SAST");
 
-        Github github = new Github();
-        github.setRepository(new Repository());
-        github.getRepository().setName("default-repo-name");
-        SCMRepositoryService scmRepositoryService = new SCMRepositoryService(listenerMock, envVarsMock);
-        scmRepositoryService.setRepositoryName(github);
+        RepositoryDetailsHolder.setRepositoryName("default-repo-name");
 
         Mockito.when(envVarsMock.get(ApplicationConstants.ENV_BRANCH_NAME_KEY)).thenReturn("feature");
 
@@ -217,11 +211,7 @@ public class PolarisParametersServiceTest {
         polarisParameters.put(ApplicationConstants.POLARIS_ASSESSMENT_TYPES_KEY, "SCA,SAST");
         polarisParameters.put(ApplicationConstants.POLARIS_PRCOMMENT_ENABLED_KEY, true);
 
-        Github github = new Github();
-        github.setRepository(new Repository());
-        github.getRepository().setName("default-repo-name");
-        SCMRepositoryService scmRepositoryService = new SCMRepositoryService(listenerMock, envVarsMock);
-        scmRepositoryService.setRepositoryName(github);
+        RepositoryDetailsHolder.setRepositoryName("default-repo-name");
 
         Mockito.when(envVarsMock.get(ApplicationConstants.ENV_CHANGE_ID_KEY)).thenReturn("1");
         Mockito.when(envVarsMock.get(ApplicationConstants.ENV_CHANGE_BRANCH_KEY))

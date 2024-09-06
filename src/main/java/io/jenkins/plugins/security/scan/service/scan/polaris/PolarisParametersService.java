@@ -15,7 +15,7 @@ import io.jenkins.plugins.security.scan.input.report.File;
 import io.jenkins.plugins.security.scan.input.report.Issue;
 import io.jenkins.plugins.security.scan.input.report.Reports;
 import io.jenkins.plugins.security.scan.input.report.Sarif;
-import io.jenkins.plugins.security.scan.service.scm.SCMRepositoryService;
+import io.jenkins.plugins.security.scan.service.scm.RepositoryDetailsHolder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -174,7 +174,7 @@ public class PolarisParametersService {
                             .toString()
                             .trim());
         } else {
-            String repoName = SCMRepositoryService.getRepositoryName();
+            String repoName = RepositoryDetailsHolder.getRepositoryName();
             polaris.getApplicationName().setName(repoName);
             logger.info("Polaris Application Name: " + repoName);
         }
@@ -188,7 +188,7 @@ public class PolarisParametersService {
                             .toString()
                             .trim());
         } else {
-            String repoName = SCMRepositoryService.getRepositoryName();
+            String repoName = RepositoryDetailsHolder.getRepositoryName();
             polaris.getPolarisProject().setName(repoName);
             logger.info("Polaris Project Name: " + repoName);
         }

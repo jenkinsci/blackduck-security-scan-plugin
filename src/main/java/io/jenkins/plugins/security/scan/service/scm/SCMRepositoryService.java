@@ -23,7 +23,6 @@ public class SCMRepositoryService {
     private final TaskListener listener;
     private final EnvVars envVars;
     private final LoggerWrapper logger;
-    private static String repositoryName;
 
     public SCMRepositoryService(TaskListener listener, EnvVars envVars) {
         this.listener = listener;
@@ -112,10 +111,10 @@ public class SCMRepositoryService {
             repositoryName = extractLastPart(fullName);
         }
 
-        SCMRepositoryService.repositoryName = repositoryName;
+        RepositoryDetailsHolder.setRepositoryName(repositoryName);
     }
 
-    private String extractLastPart(String fullRepoName) {
+    private static String extractLastPart(String fullRepoName) {
         if (fullRepoName != null && !fullRepoName.isEmpty()) {
             int lastSlashIndex = fullRepoName.lastIndexOf('/');
             if (lastSlashIndex != -1 && lastSlashIndex < fullRepoName.length() - 1) {
@@ -124,9 +123,5 @@ public class SCMRepositoryService {
         }
 
         return fullRepoName;
-    }
-
-    public static String getRepositoryName() {
-        return repositoryName;
     }
 }

@@ -10,7 +10,7 @@ import io.jenkins.plugins.security.scan.input.coverity.*;
 import io.jenkins.plugins.security.scan.input.detect.Config;
 import io.jenkins.plugins.security.scan.input.detect.Execution;
 import io.jenkins.plugins.security.scan.input.project.Project;
-import io.jenkins.plugins.security.scan.service.scm.SCMRepositoryService;
+import io.jenkins.plugins.security.scan.service.scm.RepositoryDetailsHolder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -131,7 +131,7 @@ public class CoverityParametersService {
                             .toString()
                             .trim());
         } else {
-            String repositoryName = SCMRepositoryService.getRepositoryName();
+            String repositoryName = RepositoryDetailsHolder.getRepositoryName();
             coverity.getConnect().getCoverityProject().setName(repositoryName);
             logger.info("Coverity Project Name: " + repositoryName);
         }
@@ -146,7 +146,7 @@ public class CoverityParametersService {
                             .toString()
                             .trim());
         } else {
-            String repositoryName = SCMRepositoryService.getRepositoryName();
+            String repositoryName = RepositoryDetailsHolder.getRepositoryName();
             String branchName = envVars.get(ApplicationConstants.ENV_BRANCH_NAME_KEY);
             String targetBranchName = envVars.get(ApplicationConstants.ENV_CHANGE_TARGET_KEY);
             boolean isPullRequest = envVars.get(ApplicationConstants.ENV_CHANGE_ID_KEY) != null;
