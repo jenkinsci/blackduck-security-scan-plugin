@@ -141,6 +141,8 @@ public class ScanInitializer {
 
             logger.println(LogMessages.DASHES);
         }
+
+        logWarningForDeprecatedParameters();
     }
 
     private void logParameters(Map<String, Object> scanParameters, String securityProduct) {
@@ -154,8 +156,6 @@ public class ScanInitializer {
                 }
                 logger.info(LogMessages.LOG_DASH + key + " = " + value.toString());
             }
-
-            logWarningForDeprecatedParameters();
         }
     }
 
@@ -203,6 +203,7 @@ public class ScanInitializer {
             logger.warn(ParameterMappingService.getDeprecatedParameters()
                     + " is/are deprecated and will be removed in future. " + "Check documentation for new parameters: "
                     + ApplicationConstants.SYNOPSYS_SECURITY_SCAN_PLUGIN_DOCS_URL);
+            ParameterMappingService.getDeprecatedParameters().clear();
         }
     }
 }

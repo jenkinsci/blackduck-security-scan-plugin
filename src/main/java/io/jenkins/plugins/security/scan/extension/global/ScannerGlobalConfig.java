@@ -65,6 +65,12 @@ public class ScannerGlobalConfig extends GlobalConfiguration implements Serializ
     }
 
     @DataBoundSetter
+    public void setBlackDuckSCACredentialsId(String blackDuckSCACredentialsId) {
+        this.blackDuckSCACredentialsId = blackDuckSCACredentialsId;
+        save();
+    }
+
+    @DataBoundSetter
     public void setDetectInstallationPath(String detectInstallationPath) {
         this.detectInstallationPath = detectInstallationPath;
         save();
@@ -133,12 +139,6 @@ public class ScannerGlobalConfig extends GlobalConfiguration implements Serializ
     @DataBoundSetter
     public void setPolarisServerUrl(String polarisServerUrl) {
         this.polarisServerUrl = polarisServerUrl;
-        save();
-    }
-
-    @DataBoundSetter
-    public void setBlackDuckCredentialsId(String blackDuckCredentialsId) {
-        this.blackDuckSCACredentialsId = blackDuckCredentialsId;
         save();
     }
 

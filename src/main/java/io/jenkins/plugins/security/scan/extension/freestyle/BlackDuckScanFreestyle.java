@@ -20,6 +20,8 @@ import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 
 public class BlackDuckScanFreestyle extends Builder implements SecurityScan, FreestyleScan, SimpleBuildStep {
+    private final Boolean NULL = null;
+
     private String product;
     private String blackducksca_url;
     private transient String blackducksca_token;
@@ -172,6 +174,22 @@ public class BlackDuckScanFreestyle extends Builder implements SecurityScan, Fre
         return blackducksca_reports_sarif_groupSCAIssues_temporary;
     }
 
+    public Integer getDetect_search_depth() {
+        return detect_search_depth;
+    }
+
+    public String getDetect_config_path() {
+        return detect_config_path;
+    }
+
+    public String getDetect_args() {
+        return detect_args;
+    }
+
+    public String getDetect_execution_path() {
+        return detect_execution_path;
+    }
+
     public String getBlackduck_url() {
         return null;
     }
@@ -185,11 +203,11 @@ public class BlackDuckScanFreestyle extends Builder implements SecurityScan, Fre
     }
 
     public Boolean isBlackduck_scan_full() {
-        return detect_scan_full;
+        return NULL;
     }
 
     public Boolean isBlackduckIntelligentScan() {
-        return detectIntelligentScan;
+        return NULL;
     }
 
     public String getBlackduck_scan_failure_severities() {
@@ -217,7 +235,7 @@ public class BlackDuckScanFreestyle extends Builder implements SecurityScan, Fre
     }
 
     public Boolean isBlackduck_reports_sarif_create() {
-        return blackducksca_reports_sarif_create;
+        return NULL;
     }
 
     public String getBlackduck_reports_sarif_file_path() {
@@ -225,7 +243,7 @@ public class BlackDuckScanFreestyle extends Builder implements SecurityScan, Fre
     }
 
     public Boolean isBlackduck_reports_sarif_groupSCAIssues() {
-        return blackducksca_reports_sarif_groupSCAIssues;
+        return NULL;
     }
 
     public String getBlackduck_reports_sarif_severities() {
@@ -233,23 +251,7 @@ public class BlackDuckScanFreestyle extends Builder implements SecurityScan, Fre
     }
 
     public Boolean isBlackduck_reports_sarif_groupSCAIssues_temporary() {
-        return blackducksca_reports_sarif_groupSCAIssues_temporary;
-    }
-
-    public Integer getDetect_search_depth() {
-        return detect_search_depth;
-    }
-
-    public String getDetect_config_path() {
-        return detect_config_path;
-    }
-
-    public String getDetect_args() {
-        return detect_args;
-    }
-
-    public String getDetect_execution_path() {
-        return detect_execution_path;
+        return NULL;
     }
 
     public String getCoverity_url() {
