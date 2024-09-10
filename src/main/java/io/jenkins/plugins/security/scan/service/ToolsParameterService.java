@@ -219,7 +219,7 @@ public class ToolsParameterService {
         return null;
     }
 
-    private static void setDetectObject(Map<String, Object> scanParameters, BridgeInput bridgeInput) {
+    private void setDetectObject(Map<String, Object> scanParameters, BridgeInput bridgeInput) {
         DetectParametersService detectParametersService = new DetectParametersService();
         Detect detect = detectParametersService.prepareDetectObject(scanParameters);
         if (detect != null) {
@@ -227,7 +227,7 @@ public class ToolsParameterService {
         }
     }
 
-    private static void setNetworkAirGapObject(BridgeInput bridgeInput, Map<String, Object> scanParameters) {
+    private void setNetworkAirGapObject(BridgeInput bridgeInput, Map<String, Object> scanParameters) {
         if (scanParameters.containsKey(ApplicationConstants.NETWORK_AIRGAP_KEY)) {
             Boolean isNetworkAirGap = (Boolean) scanParameters.get(ApplicationConstants.NETWORK_AIRGAP_KEY);
             NetworkAirGap networkAirGap = new NetworkAirGap();

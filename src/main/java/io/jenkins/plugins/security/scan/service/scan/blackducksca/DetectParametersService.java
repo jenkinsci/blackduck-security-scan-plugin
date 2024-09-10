@@ -2,6 +2,7 @@ package io.jenkins.plugins.security.scan.service.scan.blackducksca;
 
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.global.Utility;
+import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import io.jenkins.plugins.security.scan.input.blackducksca.*;
 import io.jenkins.plugins.security.scan.input.detect.*;
 import java.util.Map;
@@ -24,17 +25,25 @@ public class DetectParametersService {
 
     private Detect setScanFull(Map<String, Object> scanParameters, Detect detect) {
         if (scanParameters.containsKey(ApplicationConstants.DETECT_SCAN_FULL_KEY)) {
-            String value = scanParameters
-                    .get(ApplicationConstants.DETECT_SCAN_FULL_KEY)
+            String product = scanParameters
+                    .get(ApplicationConstants.PRODUCT_KEY)
                     .toString()
-                    .trim();
-            if (Utility.isBoolean(value)) {
-                if (detect == null) {
-                    detect = new Detect();
+                    .trim()
+                    .toUpperCase();
+            if ((product.contains(SecurityProduct.BLACKDUCK.name())
+                    || product.contains(SecurityProduct.BLACKDUCKSCA.name()))) {
+                String value = scanParameters
+                        .get(ApplicationConstants.DETECT_SCAN_FULL_KEY)
+                        .toString()
+                        .trim();
+                if (Utility.isBoolean(value)) {
+                    if (detect == null) {
+                        detect = new Detect();
+                    }
+                    Scan scan = new Scan();
+                    scan.setFull(Boolean.parseBoolean(value));
+                    detect.setScan(scan);
                 }
-                Scan scan = new Scan();
-                scan.setFull(Boolean.parseBoolean(value));
-                detect.setScan(scan);
             }
         }
         return detect;
