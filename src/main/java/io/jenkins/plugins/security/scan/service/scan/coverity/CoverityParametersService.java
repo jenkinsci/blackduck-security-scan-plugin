@@ -345,6 +345,9 @@ public class CoverityParametersService {
                     .toString()
                     .trim();
             if (!installationPath.isBlank()) {
+                if (coverity == null) {
+                    coverity = new Coverity();
+                }
                 Execution execution = new Execution();
                 execution.setPath(installationPath);
                 coverity.setExecution(execution);
