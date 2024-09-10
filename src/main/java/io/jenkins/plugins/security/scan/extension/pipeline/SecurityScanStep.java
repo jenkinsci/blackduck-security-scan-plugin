@@ -38,6 +38,25 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
 
     private String product;
 
+    private String blackducksca_url;
+    private transient String blackducksca_token;
+    private String blackducksca_scan_failure_severities;
+    private Boolean blackducksca_prComment_enabled;
+    private Boolean blackducksca_prComment_enabled_actualValue;
+    private Boolean blackducksca_reports_sarif_create;
+    private String blackducksca_reports_sarif_file_path;
+    private Boolean blackducksca_reports_sarif_groupSCAIssues;
+    private String blackducksca_reports_sarif_severities;
+    private Boolean blackducksca_reports_sarif_groupSCAIssues_temporary;
+    private String detect_install_directory;
+    private Boolean detect_scan_full;
+    private Boolean detectIntelligentScan;
+    private String detect_download_url;
+    private Integer detect_search_depth;
+    private String detect_config_path;
+    private String detect_args;
+    private String detect_execution_path;
+
     private String blackduck_url;
     private transient String blackduck_token;
     private String blackduck_install_directory;
@@ -116,6 +135,9 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     private transient String github_token;
     private transient String gitlab_token;
 
+    private String bridgecli_download_url;
+    private String bridgecli_download_version;
+    private String bridgecli_install_directory;
     private String synopsys_bridge_download_url;
     private String synopsys_bridge_download_version;
     private String synopsys_bridge_install_directory;
@@ -137,75 +159,75 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     }
 
     public String getBlackducksca_url() {
-        return null;
+        return blackducksca_url;
     }
 
     public String getBlackducksca_token() {
-        return null;
+        return blackducksca_token;
     }
 
     public String getDetect_install_directory() {
-        return blackduck_install_directory;
+        return detect_install_directory;
     }
 
     public Boolean isDetect_scan_full() {
-        return blackduck_scan_full;
+        return detect_scan_full;
     }
 
     public Boolean isDetectIntelligentScan() {
-        return blackduckIntelligentScan;
+        return detectIntelligentScan;
     }
 
     public String getBlackducksca_scan_failure_severities() {
-        return null;
-    }
-
-    public String getDetect_download_url() {
-        return null;
+        return blackducksca_scan_failure_severities;
     }
 
     public Boolean isBlackducksca_prComment_enabled() {
-        return blackduck_prComment_enabled;
+        return blackducksca_prComment_enabled;
     }
 
     public Boolean isBlackducksca_prComment_enabled_actualValue() {
-        return blackduck_prComment_enabled_actualValue;
+        return blackducksca_prComment_enabled_actualValue;
+    }
+
+    public String getDetect_download_url() {
+        return detect_download_url;
     }
 
     public Integer getDetect_search_depth() {
-        return null;
+        return detect_search_depth;
     }
 
     public String getDetect_config_path() {
-        return null;
+        return detect_config_path;
     }
 
     public String getDetect_args() {
-        return null;
+        return detect_args;
     }
 
     public String getDetect_execution_path() {
-        return null;
+        return detect_execution_path;
     }
 
     public Boolean isBlackducksca_reports_sarif_create() {
-        return blackduck_reports_sarif_create;
+        return blackducksca_reports_sarif_create;
     }
 
     public String getBlackducksca_reports_sarif_file_path() {
-        return null;
+        return blackducksca_reports_sarif_file_path;
     }
 
     public Boolean isBlackducksca_reports_sarif_groupSCAIssues() {
-        return blackduck_reports_sarif_groupSCAIssues;
+        return blackducksca_reports_sarif_groupSCAIssues;
     }
 
     public String getBlackducksca_reports_sarif_severities() {
-        return null;
+        return blackducksca_reports_sarif_severities;
     }
 
     public Boolean isBlackducksca_reports_sarif_groupSCAIssues_temporary() {
-        return blackduck_reports_sarif_groupSCAIssues_temporary;
+        return blackducksca_reports_sarif_groupSCAIssues_temporary;
     }
 
     public String getBlackduck_url() {
@@ -258,6 +280,26 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
 
     public String getBlackduck_execution_path() {
         return blackduck_execution_path;
+    }
+
+    public Boolean isBlackduck_reports_sarif_create() {
+        return blackduck_reports_sarif_create;
+    }
+
+    public String getBlackduck_reports_sarif_file_path() {
+        return blackduck_reports_sarif_file_path;
+    }
+
+    public Boolean isBlackduck_reports_sarif_groupSCAIssues() {
+        return blackduck_reports_sarif_groupSCAIssues;
+    }
+
+    public String getBlackduck_reports_sarif_severities() {
+        return blackduck_reports_sarif_severities;
+    }
+
+    public Boolean isBlackduck_reports_sarif_groupSCAIssues_temporary() {
+        return blackduck_reports_sarif_groupSCAIssues_temporary;
     }
 
     public String getCoverity_url() {
@@ -401,15 +443,15 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     }
 
     public String getBridgecli_download_url() {
-        return null;
+        return bridgecli_download_url;
     }
 
     public String getBridgecli_download_version() {
-        return null;
+        return bridgecli_download_version;
     }
 
     public String getBridgecli_install_directory() {
-        return null;
+        return bridgecli_install_directory;
     }
 
     public Boolean isInclude_diagnostics() {
@@ -426,26 +468,6 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
 
     public String getMark_build_status() {
         return mark_build_status;
-    }
-
-    public Boolean isBlackduck_reports_sarif_create() {
-        return blackduck_reports_sarif_create;
-    }
-
-    public String getBlackduck_reports_sarif_file_path() {
-        return blackduck_reports_sarif_file_path;
-    }
-
-    public Boolean isBlackduck_reports_sarif_groupSCAIssues() {
-        return blackduck_reports_sarif_groupSCAIssues;
-    }
-
-    public String getBlackduck_reports_sarif_severities() {
-        return blackduck_reports_sarif_severities;
-    }
-
-    public Boolean isBlackduck_reports_sarif_groupSCAIssues_temporary() {
-        return blackduck_reports_sarif_groupSCAIssues_temporary;
     }
 
     public Boolean isPolaris_reports_sarif_create() {
@@ -558,6 +580,90 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     }
 
     @DataBoundSetter
+    public void setBlackducksca_url(String blackducksca_url) {
+        this.blackducksca_url = blackducksca_url;
+    }
+
+    @DataBoundSetter
+    public void setBlackducksca_token(String blackducksca_token) {
+        this.blackducksca_token = blackducksca_token;
+    }
+
+    @DataBoundSetter
+    public void setDetect_install_directory(String blackducksca_install_directory) {
+        this.detect_install_directory = blackducksca_install_directory;
+    }
+
+    @DataBoundSetter
+    public void setDetect_scan_full(Boolean detect_scan_full) {
+        if (detect_scan_full) {
+            this.detectIntelligentScan = true;
+        }
+        if (!detect_scan_full) {
+            this.detectIntelligentScan = false;
+        }
+        this.detect_scan_full = detect_scan_full ? true : null;
+    }
+
+    @DataBoundSetter
+    public void setBlackducksca_scan_failure_severities(String blackducksca_scan_failure_severities) {
+        this.blackducksca_scan_failure_severities = Util.fixEmptyAndTrim(blackducksca_scan_failure_severities);
+    }
+
+    @DataBoundSetter
+    public void setBlackducksca_prComment_enabled(Boolean blackducksca_prComment_enabled) {
+        this.blackducksca_prComment_enabled = blackducksca_prComment_enabled ? true : null;
+        this.blackducksca_prComment_enabled_actualValue = blackducksca_prComment_enabled ? true : false;
+    }
+
+    @DataBoundSetter
+    public void setDetect_download_url(String detect_download_url) {
+        this.detect_download_url = Util.fixEmptyAndTrim(detect_download_url);
+    }
+
+    @DataBoundSetter
+    public void setDetect_search_depth(Integer detect_search_depth) {
+        this.detect_search_depth = detect_search_depth;
+    }
+
+    @DataBoundSetter
+    public void setDetect_config_path(String detect_config_path) {
+        this.detect_config_path = Util.fixEmptyAndTrim(detect_config_path);
+    }
+
+    @DataBoundSetter
+    public void setDetect_args(String detect_args) {
+        this.detect_args = Util.fixEmptyAndTrim(detect_args);
+    }
+
+    @DataBoundSetter
+    public void setDetect_execution_path(String detect_execution_path) {
+        this.detect_execution_path = Util.fixEmptyAndTrim(detect_execution_path);
+    }
+
+    @DataBoundSetter
+    public void setBlackducksca_reports_sarif_create(Boolean blackducksca_reports_sarif_create) {
+        this.blackducksca_reports_sarif_create = blackducksca_reports_sarif_create ? true : null;
+    }
+
+    @DataBoundSetter
+    public void setBlackducksca_reports_sarif_file_path(String blackducksca_reports_sarif_file_path) {
+        this.blackducksca_reports_sarif_file_path = Util.fixEmptyAndTrim(blackducksca_reports_sarif_file_path);
+    }
+
+    @DataBoundSetter
+    public void setBlackducksca_reports_sarif_groupSCAIssues(Boolean blackducksca_reports_sarif_groupSCAIssues) {
+        this.blackducksca_reports_sarif_groupSCAIssues = blackducksca_reports_sarif_groupSCAIssues ? true : null;
+        this.blackducksca_reports_sarif_groupSCAIssues_temporary =
+                blackducksca_reports_sarif_groupSCAIssues ? true : false;
+    }
+
+    @DataBoundSetter
+    public void setBlackducksca_reports_sarif_severities(String blackducksca_reports_sarif_severities) {
+        this.blackducksca_reports_sarif_severities = Util.fixEmptyAndTrim(blackducksca_reports_sarif_severities);
+    }
+
+    @DataBoundSetter
     public void setBlackduck_url(String blackduck_url) {
         this.blackduck_url = blackduck_url;
     }
@@ -617,6 +723,27 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     @DataBoundSetter
     public void setBlackduck_execution_path(String blackduck_execution_path) {
         this.blackduck_execution_path = Util.fixEmptyAndTrim(blackduck_execution_path);
+    }
+
+    @DataBoundSetter
+    public void setBlackduck_reports_sarif_create(Boolean blackduck_reports_sarif_create) {
+        this.blackduck_reports_sarif_create = blackduck_reports_sarif_create ? true : null;
+    }
+
+    @DataBoundSetter
+    public void setBlackduck_reports_sarif_file_path(String blackduck_reports_sarif_file_path) {
+        this.blackduck_reports_sarif_file_path = Util.fixEmptyAndTrim(blackduck_reports_sarif_file_path);
+    }
+
+    @DataBoundSetter
+    public void setBlackduck_reports_sarif_groupSCAIssues(Boolean blackduck_reports_sarif_groupSCAIssues) {
+        this.blackduck_reports_sarif_groupSCAIssues = blackduck_reports_sarif_groupSCAIssues ? true : null;
+        this.blackduck_reports_sarif_groupSCAIssues_temporary = blackduck_reports_sarif_groupSCAIssues ? true : false;
+    }
+
+    @DataBoundSetter
+    public void setBlackduck_reports_sarif_severities(String blackduck_reports_sarif_severities) {
+        this.blackduck_reports_sarif_severities = Util.fixEmptyAndTrim(blackduck_reports_sarif_severities);
     }
 
     @DataBoundSetter
@@ -837,6 +964,21 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     }
 
     @DataBoundSetter
+    public void setBridgecli_download_url(String bridgecli_download_url) {
+        this.bridgecli_download_url = bridgecli_download_url;
+    }
+
+    @DataBoundSetter
+    public void setBridgecli_download_version(String bridgecli_download_version) {
+        this.bridgecli_download_version = bridgecli_download_version;
+    }
+
+    @DataBoundSetter
+    public void setBridgecli_install_directory(String bridgecli_install_directory) {
+        this.bridgecli_install_directory = bridgecli_install_directory;
+    }
+
+    @DataBoundSetter
     public void setInclude_diagnostics(Boolean include_diagnostics) {
         this.include_diagnostics = include_diagnostics ? true : null;
     }
@@ -854,27 +996,6 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     @DataBoundSetter
     public void setMark_build_status(String mark_build_status) {
         this.mark_build_status = Util.fixEmptyAndTrim(mark_build_status);
-    }
-
-    @DataBoundSetter
-    public void setBlackduck_reports_sarif_create(Boolean blackduck_reports_sarif_create) {
-        this.blackduck_reports_sarif_create = blackduck_reports_sarif_create ? true : null;
-    }
-
-    @DataBoundSetter
-    public void setBlackduck_reports_sarif_file_path(String blackduck_reports_sarif_file_path) {
-        this.blackduck_reports_sarif_file_path = Util.fixEmptyAndTrim(blackduck_reports_sarif_file_path);
-    }
-
-    @DataBoundSetter
-    public void setBlackduck_reports_sarif_groupSCAIssues(Boolean blackduck_reports_sarif_groupSCAIssues) {
-        this.blackduck_reports_sarif_groupSCAIssues = blackduck_reports_sarif_groupSCAIssues ? true : null;
-        this.blackduck_reports_sarif_groupSCAIssues_temporary = blackduck_reports_sarif_groupSCAIssues ? true : false;
-    }
-
-    @DataBoundSetter
-    public void setBlackduck_reports_sarif_severities(String blackduck_reports_sarif_severities) {
-        this.blackduck_reports_sarif_severities = Util.fixEmptyAndTrim(blackduck_reports_sarif_severities);
     }
 
     @DataBoundSetter
