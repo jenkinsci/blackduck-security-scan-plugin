@@ -30,6 +30,7 @@ public class DetectParametersServiceTest {
     public void testPrepareDetectObject() {
         Map<String, Object> detectParametersMap = new HashMap<>();
 
+        detectParametersMap.put(ApplicationConstants.PRODUCT_KEY, "blackducksca");
         detectParametersMap.put(ApplicationConstants.DETECT_SCAN_FULL_KEY, true);
         detectParametersMap.put(ApplicationConstants.DETECT_INSTALL_DIRECTORY_KEY, "/user/tmp/detect");
         detectParametersMap.put(ApplicationConstants.DETECT_DOWNLOAD_URL_KEY, "https://fake.detect.url");
