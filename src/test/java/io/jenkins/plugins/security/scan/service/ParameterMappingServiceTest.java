@@ -88,7 +88,7 @@ public class ParameterMappingServiceTest {
     }
 
     @Test
-    public void prepareBlackDuckParametersMapTestForMultibranchTest() {
+    public void prepareBlackDuckSCAParametersMapTestForMultibranchTest() {
         blackDuckScanStep.setBlackducksca_url("https://fake.blackduck-url");
         blackDuckScanStep.setBlackducksca_token("fake-token");
         blackDuckScanStep.setDetect_install_directory("/fake/path");
@@ -103,7 +103,7 @@ public class ParameterMappingServiceTest {
         blackDuckScanStep.setDetect_args("--o");
 
         Map<String, Object> blackDuckParametersMap =
-                ParameterMappingService.prepareBlackDuckParametersMap(blackDuckScanStep);
+                ParameterMappingService.prepareBlackDuckSCAParametersMap(blackDuckScanStep);
 
         assertEquals(12, blackDuckParametersMap.size());
         assertEquals(
@@ -125,13 +125,13 @@ public class ParameterMappingServiceTest {
                 blackDuckParametersMap.get(ApplicationConstants.DETECT_CONFIG_PATH_KEY));
         assertEquals("--o", blackDuckParametersMap.get(ApplicationConstants.DETECT_ARGS_KEY));
         Map<String, Object> emptyBlackDuckParametersMap =
-                ParameterMappingService.prepareBlackDuckParametersMap(new BlackDuckScanStep());
+                ParameterMappingService.prepareBlackDuckSCAParametersMap(new BlackDuckScanStep());
 
         assertEquals(0, emptyBlackDuckParametersMap.size());
     }
 
     @Test
-    public void prepareBlackDuckParametersMapTestsMapForFreestyleTest() {
+    public void prepareBlackDuckSCAParametersMapTestsMapForFreestyleTest() {
         securityScanFreestyle.setBlackducksca_url("https://fake.blackduck-url");
         securityScanFreestyle.setBlackducksca_token("fake-token");
         securityScanFreestyle.setDetect_install_directory("/fake/path");
@@ -145,7 +145,7 @@ public class ParameterMappingServiceTest {
         securityScanFreestyle.setDetect_args("--o");
 
         Map<String, Object> blackDuckParametersMap =
-                ParameterMappingService.prepareBlackDuckParametersMap(securityScanFreestyle);
+                ParameterMappingService.prepareBlackDuckSCAParametersMap(securityScanFreestyle);
 
         assertEquals(11, blackDuckParametersMap.size());
         assertEquals(
@@ -166,7 +166,7 @@ public class ParameterMappingServiceTest {
                 blackDuckParametersMap.get(ApplicationConstants.DETECT_CONFIG_PATH_KEY));
         assertEquals("--o", blackDuckParametersMap.get(ApplicationConstants.DETECT_ARGS_KEY));
         Map<String, Object> emptyBlackDuckParametersMap =
-                ParameterMappingService.prepareBlackDuckParametersMap(new BlackDuckScanStep());
+                ParameterMappingService.prepareBlackDuckSCAParametersMap(new BlackDuckScanStep());
 
         assertEquals(0, emptyBlackDuckParametersMap.size());
     }

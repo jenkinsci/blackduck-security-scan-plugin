@@ -80,6 +80,7 @@ public class ApplicationConstants {
     @Deprecated
     public static final String BLACKDUCK_REPORTS_SARIF_SEVERITIES_KEY = "blackduck_reports_sarif_severities";
 
+    @Deprecated
     public static final String BLACKDUCK_WAITFORSCAN_KEY = "blackduck_waitForScan";
 
     @Deprecated
@@ -111,6 +112,7 @@ public class ApplicationConstants {
     public static final String DETECT_CONFIG_PATH_KEY = "detect_config_path";
     public static final String DETECT_ARGS_KEY = "detect_args";
     public static final String DETECT_EXECUTION_PATH_KEY = "detect_execution_path";
+    public static final String BLACKDUCKSCA_WAITFORSCAN_KEY = "blackducksca_waitForScan";
 
     // Coverity Parameters
     public static final String COVERITY_URL_KEY = "coverity_url";

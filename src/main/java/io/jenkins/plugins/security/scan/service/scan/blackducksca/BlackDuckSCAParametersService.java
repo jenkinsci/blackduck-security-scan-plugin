@@ -140,9 +140,9 @@ public class BlackDuckSCAParametersService {
     }
 
     private void setWaitForScan(Map<String, Object> blackDuckSCAParameters, BlackDuckSCA blackDuckSCA) {
-        if (blackDuckSCAParameters.containsKey(ApplicationConstants.BLACKDUCK_WAITFORSCAN_KEY)) {
+        if (blackDuckSCAParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_WAITFORSCAN_KEY)) {
             String value = blackDuckSCAParameters
-                    .get(ApplicationConstants.BLACKDUCK_WAITFORSCAN_KEY)
+                    .get(ApplicationConstants.BLACKDUCKSCA_WAITFORSCAN_KEY)
                     .toString()
                     .trim();
             if (value.equals("true") || value.equals("false")) {

@@ -39,7 +39,7 @@ public class ParameterMappingService {
 
             parametersMap.putAll(prepareCoverityParametersMap(securityScan));
             parametersMap.putAll(preparePolarisParametersMap(securityScan));
-            parametersMap.putAll(prepareBlackDuckParametersMap(securityScan));
+            parametersMap.putAll(prepareBlackDuckSCAParametersMap(securityScan));
             parametersMap.putAll(prepareSrmParametersMap(securityScan));
             parametersMap.putAll(prepareSarifReportParametersMap(securityScan));
 
@@ -212,7 +212,7 @@ public class ParameterMappingService {
         }
     }
 
-    public static Map<String, Object> prepareBlackDuckParametersMap(SecurityScan securityScan) {
+    public static Map<String, Object> prepareBlackDuckSCAParametersMap(SecurityScan securityScan) {
         Map<String, Object> blackDuckParameters = new HashMap<>();
 
         addDeprecatedParameterIfNotBlank(
@@ -274,10 +274,14 @@ public class ParameterMappingService {
         addParameterIfNotBlank(
                 blackDuckParameters, ApplicationConstants.PROJECT_DIRECTORY_KEY, securityScan.getProject_directory());
 
+        addDeprecatedParameterIfNotBlank(
+                blackDuckParameters,
+                ApplicationConstants.BLACKDUCKSCA_WAITFORSCAN_KEY,
+                securityScan.isBlackduck_waitForScan_actualValue());
         addParameterIfNotBlank(
                 blackDuckParameters,
-                ApplicationConstants.BLACKDUCK_WAITFORSCAN_KEY,
-                securityScan.isBlackduck_waitForScan_actualValue());
+                ApplicationConstants.BLACKDUCKSCA_WAITFORSCAN_KEY,
+                securityScan.isBlackducksca_waitForScan_actualValue());
 
         prepareBlackDuckToolConfigurationParametersMap(blackDuckParameters, securityScan);
 
@@ -447,6 +451,8 @@ public class ParameterMappingService {
                 srmParametersMap,
                 ApplicationConstants.COVERITY_EXECUTION_PATH_KEY,
                 securityScan.getCoverity_execution_path());
+        addParameterIfNotBlank(
+                srmParametersMap, ApplicationConstants.PROJECT_DIRECTORY_KEY, securityScan.getProject_directory());
         addParameterIfNotBlank(
                 srmParametersMap,
                 ApplicationConstants.SRM_WAITFORSCAN_KEY,

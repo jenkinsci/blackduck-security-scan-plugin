@@ -71,7 +71,7 @@ public class BlackDuckSCAParametersServiceTest {
         blackDuckScaParametersMap.put(
                 ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_SEVERITIES_KEY, "HIGH,MEDIUM,LOW");
         blackDuckScaParametersMap.put(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_GROUPSCAISSUES_KEY, true);
-        blackDuckScaParametersMap.put(ApplicationConstants.BLACKDUCK_WAITFORSCAN_KEY, true);
+        blackDuckScaParametersMap.put(ApplicationConstants.BLACKDUCKSCA_WAITFORSCAN_KEY, true);
 
         BlackDuckSCA blackDuckSCA =
                 blackDuckSCAParametersService.prepareBlackDuckSCAObjectForBridge(blackDuckScaParametersMap);
