@@ -271,6 +271,7 @@ public class CoverityParametersService {
             }
         }
     }
+
     private void setWaitForScan(Map<String, Object> coverityParameters, Coverity coverity) {
         if (coverityParameters.containsKey(ApplicationConstants.COVERITY_WAITFORSCAN_KEY)) {
             String value = coverityParameters
@@ -282,7 +283,6 @@ public class CoverityParametersService {
             }
         }
     }
-
 
     private Coverity setBuildCommand(Map<String, Object> coverityParameters, Coverity coverity) {
         if (coverityParameters.containsKey(ApplicationConstants.COVERITY_BUILD_COMMAND_KEY)) {

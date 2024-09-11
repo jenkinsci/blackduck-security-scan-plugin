@@ -81,6 +81,7 @@ public class ApplicationConstants {
     public static final String BLACKDUCK_REPORTS_SARIF_SEVERITIES_KEY = "blackduck_reports_sarif_severities";
 
     public static final String BLACKDUCK_WAITFORSCAN_KEY = "blackduck_waitForScan";
+
     @Deprecated
     public static final String BLACKDUCK_SEARCH_DEPTH_KEY = "blackduck_search_depth";
 

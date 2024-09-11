@@ -35,6 +35,10 @@ public interface SecurityScan {
 
     public Boolean isBlackducksca_reports_sarif_groupSCAIssues_temporary();
 
+    public Boolean isBlackducksca_waitForScan();
+
+    public Boolean isBlackducksca_waitForScan_actualValue();
+
     @Deprecated
     public String getBlackduck_url();
 
@@ -82,6 +86,12 @@ public interface SecurityScan {
 
     @Deprecated
     public Boolean isBlackduck_reports_sarif_groupSCAIssues_temporary();
+
+    @Deprecated
+    public Boolean isBlackduck_waitForScan();
+
+    @Deprecated
+    public Boolean isBlackduck_waitForScan_actualValue();
 
     public String getCoverity_url();
 
@@ -207,10 +217,6 @@ public interface SecurityScan {
     public Boolean isInclude_diagnostics();
 
     public Boolean isNetwork_airgap();
-
-    public Boolean isBlackduck_waitForScan();
-
-    public Boolean isBlackduck_waitForScan_actualValue();
 
     public String getMark_build_status();
 }

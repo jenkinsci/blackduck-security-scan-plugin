@@ -48,6 +48,8 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     private Boolean blackducksca_reports_sarif_groupSCAIssues;
     private String blackducksca_reports_sarif_severities;
     private Boolean blackducksca_reports_sarif_groupSCAIssues_temporary;
+    private Boolean blackducksca_waitForScan;
+    private Boolean blackducksca_waitForScan_actualValue;
     private String detect_install_directory;
     private Boolean detect_scan_full;
     private Boolean detectIntelligentScan;
@@ -236,6 +238,14 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
 
     public Boolean isBlackducksca_reports_sarif_groupSCAIssues_temporary() {
         return blackducksca_reports_sarif_groupSCAIssues_temporary;
+    }
+
+    public Boolean isBlackducksca_waitForScan() {
+        return blackducksca_waitForScan;
+    }
+
+    public Boolean isBlackducksca_waitForScan_actualValue() {
+        return blackducksca_waitForScan_actualValue;
     }
 
     public String getBlackduck_url() {
@@ -701,6 +711,12 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     @DataBoundSetter
     public void setBlackducksca_reports_sarif_severities(String blackducksca_reports_sarif_severities) {
         this.blackducksca_reports_sarif_severities = Util.fixEmptyAndTrim(blackducksca_reports_sarif_severities);
+    }
+
+    @DataBoundSetter
+    public void setBlackducksca_waitForScan(Boolean blackducksca_waitForScan) {
+        this.blackducksca_waitForScan = blackducksca_waitForScan ? true : null;
+        this.blackducksca_waitForScan_actualValue = blackducksca_waitForScan ? true : false;
     }
 
     @DataBoundSetter

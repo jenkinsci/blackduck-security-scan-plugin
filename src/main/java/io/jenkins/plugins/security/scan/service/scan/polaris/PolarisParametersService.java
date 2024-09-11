@@ -302,6 +302,7 @@ public class PolarisParametersService {
             }
         }
     }
+
     private void setWaitForScan(Map<String, Object> polarisParameters, Polaris polaris) {
         if (polarisParameters.containsKey(ApplicationConstants.POLARIS_WAITFORSCAN_KEY)) {
             String value = polarisParameters
@@ -313,7 +314,6 @@ public class PolarisParametersService {
             }
         }
     }
-
 
     public Project prepareProjectObjectForBridge(Map<String, Object> polarisParameters) {
         Project project = null;

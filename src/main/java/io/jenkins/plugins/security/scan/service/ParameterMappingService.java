@@ -274,7 +274,10 @@ public class ParameterMappingService {
         addParameterIfNotBlank(
                 blackDuckParameters, ApplicationConstants.PROJECT_DIRECTORY_KEY, securityScan.getProject_directory());
 
-        addParameterIfNotBlank(blackDuckParameters, ApplicationConstants.BLACKDUCK_WAITFORSCAN_KEY, securityScan.isBlackduck_waitForScan_actualValue());
+        addParameterIfNotBlank(
+                blackDuckParameters,
+                ApplicationConstants.BLACKDUCK_WAITFORSCAN_KEY,
+                securityScan.isBlackduck_waitForScan_actualValue());
 
         prepareBlackDuckToolConfigurationParametersMap(blackDuckParameters, securityScan);
 
@@ -314,7 +317,10 @@ public class ParameterMappingService {
                 coverityParameters, ApplicationConstants.COVERITY_LOCAL_KEY, securityScan.isCoverity_local());
         addParameterIfNotBlank(
                 coverityParameters, ApplicationConstants.PROJECT_DIRECTORY_KEY, securityScan.getProject_directory());
-        addParameterIfNotBlank(coverityParameters, ApplicationConstants.COVERITY_WAITFORSCAN_KEY, securityScan.isCoverity_waitForScan_actualValue());
+        addParameterIfNotBlank(
+                coverityParameters,
+                ApplicationConstants.COVERITY_WAITFORSCAN_KEY,
+                securityScan.isCoverity_waitForScan_actualValue());
 
         if (securityScan instanceof PrCommentScan) {
             PrCommentScan prCommentScan = (PrCommentScan) securityScan;
@@ -384,8 +390,10 @@ public class ParameterMappingService {
                 polarisParametersMap,
                 ApplicationConstants.PROJECT_SOURCE_EXCLUDES_KEY,
                 securityScan.getProject_source_excludes());
-        addParameterIfNotBlank(polarisParametersMap, ApplicationConstants.POLARIS_WAITFORSCAN_KEY, securityScan.isPolaris_waitForScan_actualValue());
-
+        addParameterIfNotBlank(
+                polarisParametersMap,
+                ApplicationConstants.POLARIS_WAITFORSCAN_KEY,
+                securityScan.isPolaris_waitForScan_actualValue());
 
         if (securityScan.isProject_source_preserveSymLinks_actualValue() != null) {
             polarisParametersMap.put(
@@ -439,8 +447,10 @@ public class ParameterMappingService {
                 srmParametersMap,
                 ApplicationConstants.COVERITY_EXECUTION_PATH_KEY,
                 securityScan.getCoverity_execution_path());
-        addParameterIfNotBlank(srmParametersMap, ApplicationConstants.SRM_WAITFORSCAN_KEY, securityScan.isSrm_waitForScan_actualValue());
-
+        addParameterIfNotBlank(
+                srmParametersMap,
+                ApplicationConstants.SRM_WAITFORSCAN_KEY,
+                securityScan.isSrm_waitForScan_actualValue());
 
         if (securityScan instanceof FreestyleScan) {
             FreestyleScan freestyleScan = (FreestyleScan) securityScan;

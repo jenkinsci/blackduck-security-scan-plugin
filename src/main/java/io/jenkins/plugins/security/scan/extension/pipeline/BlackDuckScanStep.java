@@ -47,6 +47,8 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
     private Boolean blackducksca_reports_sarif_groupSCAIssues;
     private String blackducksca_reports_sarif_severities;
     private Boolean blackducksca_reports_sarif_groupSCAIssues_temporary;
+    private Boolean blackducksca_waitForScan;
+    private Boolean blackducksca_waitForScan_actualValue;
     private String detect_install_directory;
     private Boolean detect_scan_full;
     private Boolean detectIntelligentScan;
@@ -236,6 +238,14 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
 
     public Boolean isBlackducksca_reports_sarif_groupSCAIssues_temporary() {
         return blackducksca_reports_sarif_groupSCAIssues_temporary;
+    }
+
+    public Boolean isBlackducksca_waitForScan() {
+        return blackducksca_waitForScan;
+    }
+
+    public Boolean isBlackducksca_waitForScan_actualValue() {
+        return blackducksca_waitForScan_actualValue;
     }
 
     public String getBlackduck_url() {
@@ -477,6 +487,7 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
     public Boolean isProject_source_preserveSymLinks_actualValue() {
         return project_source_preserveSymLinks_actualValue;
     }
+
     public Boolean isPolaris_waitForScan() {
         return polaris_waitForScan;
     }
@@ -703,6 +714,12 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
     }
 
     @DataBoundSetter
+    public void setBlackducksca_waitForScan(Boolean blackducksca_waitForScan) {
+        this.blackducksca_waitForScan = blackducksca_waitForScan ? true : null;
+        this.blackducksca_waitForScan_actualValue = blackducksca_waitForScan ? true : false;
+    }
+
+    @DataBoundSetter
     public void setBlackduck_url(String blackduck_url) {
         this.blackduck_url = blackduck_url;
     }
@@ -787,7 +804,8 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
 
     @DataBoundSetter
     public void setBlackduck_waitForScan(Boolean blackduck_waitForScan) {
-        this.blackduck_waitForScan = this.blackduck_waitForScan_actualValue = blackduck_waitForScan;
+        this.blackduck_waitForScan = blackduck_waitForScan ? true : null;
+        this.blackduck_waitForScan_actualValue = blackduck_waitForScan ? true : false;
     }
 
     @DataBoundSetter

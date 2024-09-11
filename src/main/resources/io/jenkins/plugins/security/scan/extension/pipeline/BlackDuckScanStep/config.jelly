@@ -18,6 +18,9 @@
             <f:entry field="detect_scan_full" title="Detect Full Scan (Optional)">
                 <f:checkbox/>
             </f:entry>
+            <f:entry field="blackducksca_waitForScan" title="Black Duck SCA Wait For Scan Completion (Optional)">
+                <f:checkbox/>
+            </f:entry>
             <f:entry field="blackducksca_prComment_enabled" title="Add Comments to Pull Requests (Optional)">
                 <f:checkbox/>
             </f:entry>

@@ -19,7 +19,7 @@
             <f:entry field="detect_scan_full" title="Detect Full Scan (Optional)">
                 <f:checkbox checked="${instance.isDetect_scan_full() == true}"/>
             </f:entry>
-            <f:entry field="blackduck_waitForScan" title="Black Duck Wait For Scan Completion (Optional)">
+            <f:entry field="blackducksca_waitForScan" title="Black Duck SCA Wait For Scan Completion (Optional)">
                 <f:checkbox checked="${instance.isBlackducksca_waitForScan() == null || instance.isBlackducksca_waitForScan() == true}"/>
             </f:entry>
             <f:entry field="blackduck_project_directory" title="Project Directory (Optional)">

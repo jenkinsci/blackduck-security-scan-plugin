@@ -138,7 +138,7 @@ public class ParameterMappingServiceTest {
         securityScanFreestyle.setDetect_scan_full(true);
         securityScanFreestyle.setDetect_download_url("https://fake.blackduck-download-url");
         securityScanFreestyle.setBlackducksca_scan_failure_severities("MAJOR");
-        securityScanFreestyle.setBlackduck_waitForScan(true);
+        securityScanFreestyle.setBlackducksca_waitForScan(true);
         securityScanFreestyle.setProject_directory("test/directory");
         securityScanFreestyle.setDetect_search_depth(2);
         securityScanFreestyle.setDetect_config_path("fake/directory/application.properties");

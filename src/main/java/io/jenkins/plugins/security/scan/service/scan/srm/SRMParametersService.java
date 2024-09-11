@@ -194,6 +194,7 @@ public class SRMParametersService {
             }
         }
     }
+
     private void setWaitForScan(Map<String, Object> srmParameters, SRM srm) {
         if (srmParameters.containsKey(ApplicationConstants.SRM_WAITFORSCAN_KEY)) {
             String value = srmParameters
@@ -205,7 +206,6 @@ public class SRMParametersService {
             }
         }
     }
-
 
     public Project prepareProjectObjectForBridge(Map<String, Object> srmParameters) {
         Project project = null;
