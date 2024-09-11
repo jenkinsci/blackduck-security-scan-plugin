@@ -97,7 +97,7 @@ public class ParameterMappingServiceTest {
         blackDuckScanStep.setDetect_download_url("https://fake.blackduck-download-url");
         blackDuckScanStep.setBlackducksca_scan_failure_severities("MAJOR");
         blackDuckScanStep.setProject_directory("test/directory");
-        blackDuckScanStep.setBlackduck_waitForScan(true);
+        blackDuckScanStep.setBlackducksca_waitForScan(true);
         blackDuckScanStep.setDetect_search_depth(2);
         blackDuckScanStep.setDetect_config_path("fake/directory/application.properties");
         blackDuckScanStep.setDetect_args("--o");
@@ -118,7 +118,7 @@ public class ParameterMappingServiceTest {
         assertEquals(
                 "MAJOR", blackDuckParametersMap.get(ApplicationConstants.BLACKDUCKSCA_SCAN_FAILURE_SEVERITIES_KEY));
         assertEquals("test/directory", blackDuckParametersMap.get(ApplicationConstants.PROJECT_DIRECTORY_KEY));
-        assertTrue((Boolean) blackDuckParametersMap.get(ApplicationConstants.BLACKDUCK_WAITFORSCAN_KEY));
+        assertTrue((Boolean) blackDuckParametersMap.get(ApplicationConstants.BLACKDUCKSCA_WAITFORSCAN_KEY));
         assertEquals(2, blackDuckParametersMap.get(ApplicationConstants.DETECT_SEARCH_DEPTH_KEY));
         assertEquals(
                 "fake/directory/application.properties",
@@ -159,7 +159,7 @@ public class ParameterMappingServiceTest {
         assertEquals(
                 "MAJOR", blackDuckParametersMap.get(ApplicationConstants.BLACKDUCKSCA_SCAN_FAILURE_SEVERITIES_KEY));
         assertEquals("test/directory", blackDuckParametersMap.get(ApplicationConstants.PROJECT_DIRECTORY_KEY));
-        assertTrue((Boolean) blackDuckParametersMap.get(ApplicationConstants.BLACKDUCK_WAITFORSCAN_KEY));
+        assertTrue((Boolean) blackDuckParametersMap.get(ApplicationConstants.BLACKDUCKSCA_WAITFORSCAN_KEY));
         assertEquals(2, blackDuckParametersMap.get(ApplicationConstants.DETECT_SEARCH_DEPTH_KEY));
         assertEquals(
                 "fake/directory/application.properties",
