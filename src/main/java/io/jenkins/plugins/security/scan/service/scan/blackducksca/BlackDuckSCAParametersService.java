@@ -64,6 +64,7 @@ public class BlackDuckSCAParametersService {
         setScanFailureSeverities(blackDuckSCAParameters, blackDuckSCA);
         setAutomationPrComment(blackDuckSCAParameters, automation, blackDuckSCA);
         setSarif(blackDuckSCAParameters, blackDuckSCA);
+        setWaitForScan(blackDuckSCAParameters, blackDuckSCA);
 
         return blackDuckSCA;
     }
@@ -135,6 +136,18 @@ public class BlackDuckSCAParametersService {
             Sarif sarif = prepareSarifObject(blackDuckSCAParameters);
             blackDuckSCA.setReports(new Reports());
             blackDuckSCA.getReports().setSarif(sarif);
+        }
+    }
+
+    private void setWaitForScan(Map<String, Object> blackDuckSCAParameters, BlackDuckSCA blackDuckSCA) {
+        if (blackDuckSCAParameters.containsKey(ApplicationConstants.BLACKDUCK_WAITFORSCAN_KEY)) {
+            String value = blackDuckSCAParameters
+                    .get(ApplicationConstants.BLACKDUCK_WAITFORSCAN_KEY)
+                    .toString()
+                    .trim();
+            if (value.equals("true") || value.equals("false")) {
+                blackDuckSCA.setWaitForScan(Boolean.parseBoolean(value));
+            }
         }
     }
 

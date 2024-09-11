@@ -41,6 +41,7 @@ public class BlackDuckSCAParametersServiceTest {
         blackDuckScaParametersMap.put(
                 ApplicationConstants.BLACKDUCKSCA_SCAN_FAILURE_SEVERITIES_KEY, "BLOCKER, CRITICAL, MAJOR, MINOR");
         blackDuckScaParametersMap.put(ApplicationConstants.PROJECT_DIRECTORY_KEY, TEST_PROJECT_DIRECTORY);
+        blackDuckScaParametersMap.put(ApplicationConstants.BLACKDUCK_WAITFORSCAN_KEY, true);
 
         BlackDuckSCA blackDuckSCA =
                 blackDuckSCAParametersService.prepareBlackDuckSCAObjectForBridge(blackDuckScaParametersMap);
@@ -51,6 +52,7 @@ public class BlackDuckSCAParametersServiceTest {
         assertEquals(
                 List.of("BLOCKER", "CRITICAL", "MAJOR", "MINOR"),
                 blackDuckSCA.getScan().getFailure().getSeverities());
+        assertEquals(blackDuckSCA.isWaitForScan(), true);
     }
 
     @Test
@@ -69,6 +71,7 @@ public class BlackDuckSCAParametersServiceTest {
         blackDuckScaParametersMap.put(
                 ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_SEVERITIES_KEY, "HIGH,MEDIUM,LOW");
         blackDuckScaParametersMap.put(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_GROUPSCAISSUES_KEY, true);
+        blackDuckScaParametersMap.put(ApplicationConstants.BLACKDUCK_WAITFORSCAN_KEY, true);
 
         BlackDuckSCA blackDuckSCA =
                 blackDuckSCAParametersService.prepareBlackDuckSCAObjectForBridge(blackDuckScaParametersMap);
@@ -87,6 +90,7 @@ public class BlackDuckSCAParametersServiceTest {
                 Arrays.asList("HIGH", "MEDIUM", "LOW"),
                 blackDuckSCA.getReports().getSarif().getSeverities());
         assertTrue(blackDuckSCA.getReports().getSarif().getGroupSCAIssues());
+        assertEquals(blackDuckSCA.isWaitForScan(), true);
     }
 
     @Test

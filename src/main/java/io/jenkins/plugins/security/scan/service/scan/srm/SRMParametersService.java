@@ -112,6 +112,7 @@ public class SRMParametersService {
         setProjectId(srmParameters, srm);
         setBranchName(srmParameters, branch, srm);
         setBranchParent(srmParameters, branch, srm);
+        setWaitForScan(srmParameters, srm);
 
         return srm;
     }
@@ -193,6 +194,18 @@ public class SRMParametersService {
             }
         }
     }
+    private void setWaitForScan(Map<String, Object> srmParameters, SRM srm) {
+        if (srmParameters.containsKey(ApplicationConstants.SRM_WAITFORSCAN_KEY)) {
+            String value = srmParameters
+                    .get(ApplicationConstants.SRM_WAITFORSCAN_KEY)
+                    .toString()
+                    .trim();
+            if (value.equals("true") || value.equals("false")) {
+                srm.setWaitForScan(Boolean.parseBoolean(value));
+            }
+        }
+    }
+
 
     public Project prepareProjectObjectForBridge(Map<String, Object> srmParameters) {
         Project project = null;

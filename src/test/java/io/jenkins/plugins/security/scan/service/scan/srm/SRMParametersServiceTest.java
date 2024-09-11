@@ -61,6 +61,7 @@ public class SRMParametersServiceTest {
         srmParameters.put(ApplicationConstants.SRM_ASSESSMENT_TYPES_KEY, TEST_SRM_ASSESSMENT_TYPES);
         srmParameters.put(ApplicationConstants.SRM_BRANCH_NAME_KEY, TEST_SRM_BRANCH_NAME);
         srmParameters.put(ApplicationConstants.SRM_BRANCH_PARENT_KEY, TEST_SRM_BRANCH_PARENT_NAME);
+        srmParameters.put(ApplicationConstants.SRM_WAITFORSCAN_KEY, true);
 
         assertTrue(srmParametersService.hasAllMandatorySrmParams(srmParameters));
     }

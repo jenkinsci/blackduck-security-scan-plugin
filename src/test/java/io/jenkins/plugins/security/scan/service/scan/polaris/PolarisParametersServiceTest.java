@@ -70,6 +70,7 @@ public class PolarisParametersServiceTest {
         polarisParameters.put(ApplicationConstants.PROJECT_SOURCE_EXCLUDES_KEY, "TEST1, TEST2");
         polarisParameters.put(
                 ApplicationConstants.PROJECT_SOURCE_PRESERVE_SYM_LINKS_KEY, TEST_PROJECT_SOURCE_PRESERVE_SYM_LINKS);
+        polarisParameters.put(ApplicationConstants.POLARIS_WAITFORSCAN_KEY, true);
 
         assertTrue(polarisParametersService.hasAllMandatoryCoverityParams(polarisParameters));
     }
@@ -89,6 +90,7 @@ public class PolarisParametersServiceTest {
         polarisParameters.put(ApplicationConstants.POLARIS_PRCOMMENT_ENABLED_KEY, true);
         polarisParameters.put(ApplicationConstants.POLARIS_PRCOMMENT_SEVERITIES_KEY, "HIGH");
         polarisParameters.put(ApplicationConstants.POLARIS_TEST_SCA_TYPE_KEY, "SCA-PACKAGE");
+        polarisParameters.put(ApplicationConstants.POLARIS_WAITFORSCAN_KEY, true);
 
         Polaris polaris = polarisParametersService.preparePolarisObjectForBridge(polarisParameters);
 
@@ -102,6 +104,7 @@ public class PolarisParametersServiceTest {
         assertEquals(polaris.getTest().getSca().getType(), "SCA-PACKAGE");
         assertNull(polaris.getBranch().getParent());
         assertNull(polaris.getPrcomment());
+        assertEquals(polaris.isWaitForScan(), true);
     }
 
     @Test
@@ -162,6 +165,7 @@ public class PolarisParametersServiceTest {
         polarisParameters.put(ApplicationConstants.POLARIS_PRCOMMENT_ENABLED_KEY, true);
         polarisParameters.put(ApplicationConstants.POLARIS_PRCOMMENT_SEVERITIES_KEY, "HIGH");
         polarisParameters.put(ApplicationConstants.POLARIS_TEST_SCA_TYPE_KEY, "SCA-SIGNATURE");
+        polarisParameters.put(ApplicationConstants.POLARIS_WAITFORSCAN_KEY, true);
 
         Mockito.when(envVarsMock.get(ApplicationConstants.ENV_CHANGE_ID_KEY)).thenReturn("1");
 
@@ -178,6 +182,7 @@ public class PolarisParametersServiceTest {
         assertEquals(polaris.getPrcomment().getEnabled(), true);
         assertEquals(polaris.getPrcomment().getSeverities(), List.of("HIGH"));
         assertEquals(polaris.getTest().getSca().getType(), "SCA-SIGNATURE");
+        assertEquals(polaris.isWaitForScan(), true);
     }
 
     @Test

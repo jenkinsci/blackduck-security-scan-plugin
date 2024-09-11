@@ -80,6 +80,7 @@ public class ApplicationConstants {
     @Deprecated
     public static final String BLACKDUCK_REPORTS_SARIF_SEVERITIES_KEY = "blackduck_reports_sarif_severities";
 
+    public static final String BLACKDUCK_WAITFORSCAN_KEY = "blackduck_waitForScan";
     @Deprecated
     public static final String BLACKDUCK_SEARCH_DEPTH_KEY = "blackduck_search_depth";
 
@@ -126,6 +127,7 @@ public class ApplicationConstants {
     public static final String COVERITY_VERSION_KEY = "coverity_version";
     public static final String COVERITY_LOCAL_KEY = "coverity_local";
     public static final String COVERITY_EXECUTION_PATH_KEY = "coverity_execution_path";
+    public static final String COVERITY_WAITFORSCAN_KEY = "coverity_waitForScan";
 
     // Polaris Parameters
     public static final String POLARIS_SERVER_URL_KEY = "polaris_server_url";
@@ -145,6 +147,7 @@ public class ApplicationConstants {
     public static final String POLARIS_REPORTS_SARIF_ISSUE_TYPES_KEY = "polaris_reports_sarif_issue_types";
     public static final String POLARIS_ASSESSMENT_MODE_KEY = "polaris_assessment_mode";
     public static final String POLARIS_TEST_SCA_TYPE_KEY = "polaris_test_sca_type";
+    public static final String POLARIS_WAITFORSCAN_KEY = "polaris_waitForScan";
 
     // SRM Parameters
     public static final String SRM_URL_KEY = "srm_url";
@@ -154,6 +157,9 @@ public class ApplicationConstants {
     public static final String SRM_PROJECT_ID_KEY = "srm_project_id";
     public static final String SRM_BRANCH_NAME_KEY = "srm_branch_name";
     public static final String SRM_BRANCH_PARENT_KEY = "srm_branch_parent";
+    public static final String SRM_WAITFORSCAN_KEY = "srm_waitForScan";
+    public static final String SRM_SCA_EXECUTION_PATH_KEY = "blackduck_execution_path";
+    public static final String SRM_SAST_EXECUTION_PATH_KEY = "coverity_execution_path";
 
     // Source Upload Parameters
     public static final String PROJECT_DIRECTORY_KEY = "project_directory";
@@ -197,7 +203,7 @@ public class ApplicationConstants {
     // Test Connection APIs
     public static final String BLACKDUCKSCA_AUTH_API = "api/tokens/authenticate";
     public static final String POLARIS_PORTFOLIO_API = "api/portfolio/portfolios";
-    public static final String COVERITY_VIEWS_API = "api/v2/views";
+    public static final String COVERITY_LOCALES_API = "api/v2/locales";
     public static final String SRM_SYSTEM_INFO_API = "srm/api/system-info";
     public static final String AUTHORIZATION_HEADER_NAME = "Authorization";
 

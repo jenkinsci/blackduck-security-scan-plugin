@@ -126,6 +126,7 @@ public class PolarisParametersService {
         setTestScaType(polarisParameters, polaris);
         setPolarisPrCommentInputs(polarisParameters, prcomment, polaris);
         setAssessmentMode(polarisParameters, polaris);
+        setWaitForScan(polarisParameters, polaris);
 
         setSarif(polarisParameters, polaris);
 
@@ -301,6 +302,18 @@ public class PolarisParametersService {
             }
         }
     }
+    private void setWaitForScan(Map<String, Object> polarisParameters, Polaris polaris) {
+        if (polarisParameters.containsKey(ApplicationConstants.POLARIS_WAITFORSCAN_KEY)) {
+            String value = polarisParameters
+                    .get(ApplicationConstants.POLARIS_WAITFORSCAN_KEY)
+                    .toString()
+                    .trim();
+            if (value.equals("true") || value.equals("false")) {
+                polaris.setWaitForScan(Boolean.parseBoolean(value));
+            }
+        }
+    }
+
 
     public Project prepareProjectObjectForBridge(Map<String, Object> polarisParameters) {
         Project project = null;

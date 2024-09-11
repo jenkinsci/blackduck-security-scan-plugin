@@ -36,6 +36,9 @@ public class Coverity {
     @JsonProperty("execution")
     private Execution execution;
 
+    @JsonProperty("waitForScan")
+    private Boolean waitForScan;
+
     public Connect getConnect() {
         return connect;
     }
@@ -114,5 +117,13 @@ public class Coverity {
 
     public void setExecution(Execution execution) {
         this.execution = execution;
+    }
+
+    public Boolean isWaitForScan() {
+        return waitForScan;
+    }
+
+    public void setWaitForScan(Boolean waitForScan) {
+        this.waitForScan = waitForScan;
     }
 }

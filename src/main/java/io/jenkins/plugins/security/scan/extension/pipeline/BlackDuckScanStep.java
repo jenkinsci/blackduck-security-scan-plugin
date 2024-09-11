@@ -75,6 +75,8 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
     private String blackduck_config_path;
     private String blackduck_args;
     private String blackduck_execution_path;
+    private Boolean blackduck_waitForScan;
+    private Boolean blackduck_waitForScan_actualValue;
 
     private String coverity_url;
     private String coverity_user;
@@ -92,6 +94,8 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
     private String coverity_config_path;
     private String coverity_args;
     private String coverity_execution_path;
+    private Boolean coverity_waitForScan;
+    private Boolean coverity_waitForScan_actualValue;
 
     private String polaris_server_url;
     private transient String polaris_access_token;
@@ -121,6 +125,8 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
     private String blackducksca_project_directory;
     private String polaris_project_directory;
     private String srm_project_directory;
+    private Boolean polaris_waitForScan;
+    private Boolean polaris_waitForScan_actualValue;
 
     private String srm_url;
     private transient String srm_apikey;
@@ -129,6 +135,8 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
     private String srm_project_id;
     private String srm_branch_name;
     private String srm_branch_parent;
+    private Boolean srm_waitForScan;
+    private Boolean srm_waitForScan_actualValue;
 
     private String bitbucket_username;
     private transient String bitbucket_token;
@@ -302,6 +310,14 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
         return blackduck_reports_sarif_groupSCAIssues_temporary;
     }
 
+    public Boolean isBlackduck_waitForScan() {
+        return blackduck_waitForScan;
+    }
+
+    public Boolean isBlackduck_waitForScan_actualValue() {
+        return blackduck_waitForScan_actualValue;
+    }
+
     public String getCoverity_url() {
         return coverity_url;
     }
@@ -364,6 +380,14 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
 
     public String getCoverity_execution_path() {
         return coverity_execution_path;
+    }
+
+    public Boolean isCoverity_waitForScan() {
+        return coverity_waitForScan;
+    }
+
+    public Boolean isCoverity_waitForScan_actualValue() {
+        return coverity_waitForScan_actualValue;
     }
 
     public String getPolaris_server_url() {
@@ -452,6 +476,13 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
 
     public Boolean isProject_source_preserveSymLinks_actualValue() {
         return project_source_preserveSymLinks_actualValue;
+    }
+    public Boolean isPolaris_waitForScan() {
+        return polaris_waitForScan;
+    }
+
+    public Boolean isPolaris_waitForScan_actualValue() {
+        return polaris_waitForScan_actualValue;
     }
 
     public String getProject_source_excludes() {
@@ -544,6 +575,14 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
 
     public String getSrm_branch_parent() {
         return srm_branch_parent;
+    }
+
+    public Boolean isSrm_waitForScan() {
+        return srm_waitForScan;
+    }
+
+    public Boolean isSrm_waitForScan_actualValue() {
+        return srm_waitForScan_actualValue;
     }
 
     // Returning the null value because if we return any other value, blackduck_project_directory field will be visible
@@ -747,6 +786,11 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
     }
 
     @DataBoundSetter
+    public void setBlackduck_waitForScan(Boolean blackduck_waitForScan) {
+        this.blackduck_waitForScan = this.blackduck_waitForScan_actualValue = blackduck_waitForScan;
+    }
+
+    @DataBoundSetter
     public void setCoverity_url(String coverity_url) {
         this.coverity_url = coverity_url;
     }
@@ -820,6 +864,11 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
     @DataBoundSetter
     public void setCoverity_execution_path(String coverity_execution_path) {
         this.coverity_execution_path = Util.fixEmptyAndTrim(coverity_execution_path);
+    }
+
+    @DataBoundSetter
+    public void setCoverity_waitForScan(Boolean coverity_waitForScan) {
+        this.coverity_waitForScan = this.coverity_waitForScan_actualValue = coverity_waitForScan;
     }
 
     @DataBoundSetter
@@ -926,6 +975,11 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
     }
 
     @DataBoundSetter
+    public void setPolaris_waitForScan(Boolean polaris_waitForScan) {
+        this.polaris_waitForScan = this.polaris_waitForScan_actualValue = polaris_waitForScan;
+    }
+
+    @DataBoundSetter
     public void setSrm_url(String srm_url) {
         this.srm_url = srm_url;
     }
@@ -958,6 +1012,11 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
     @DataBoundSetter
     public void setSrm_branch_parent(String srm_branch_parent) {
         this.srm_branch_parent = Util.fixEmptyAndTrim(srm_branch_parent);
+    }
+
+    @DataBoundSetter
+    public void setSrm_waitForScan(Boolean srm_waitForScan) {
+        this.srm_waitForScan = this.srm_waitForScan_actualValue = srm_waitForScan;
     }
 
     @DataBoundSetter

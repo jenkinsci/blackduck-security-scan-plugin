@@ -20,6 +20,9 @@ public class BlackDuckSCA {
     @JsonProperty("reports")
     private Reports reports;
 
+    @JsonProperty("waitForScan")
+    private Boolean waitForScan;
+
     public String getUrl() {
         return url;
     }
@@ -58,5 +61,13 @@ public class BlackDuckSCA {
 
     public void setReports(Reports reports) {
         this.reports = reports;
+    }
+
+    public Boolean isWaitForScan() {
+        return waitForScan;
+    }
+
+    public void setWaitForScan(Boolean waitForScan) {
+        this.waitForScan = waitForScan;
     }
 }

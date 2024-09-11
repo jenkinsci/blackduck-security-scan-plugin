@@ -31,6 +31,8 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     private Boolean blackducksca_reports_sarif_groupSCAIssues;
     private String blackducksca_reports_sarif_severities;
     private Boolean blackducksca_reports_sarif_groupSCAIssues_temporary;
+    private Boolean blackduck_waitForScan;
+    private Boolean blackduck_waitForScan_actualValue;
     private String detect_install_directory;
     private Boolean detect_scan_full;
     private Boolean detectIntelligentScan;
@@ -54,6 +56,8 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     private String coverity_config_path;
     private String coverity_args;
     private String coverity_execution_path;
+    private Boolean coverity_waitForScan;
+    private Boolean coverity_waitForScan_actualValue;
 
     private String polaris_server_url;
     private transient String polaris_access_token;
@@ -87,6 +91,8 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     private String polaris_sast_clean_command;
     private String polaris_sast_config_path;
     private String polaris_sast_args;
+    private Boolean polaris_waitForScan;
+    private Boolean polaris_waitForScan_actualValue;
 
     private String srm_url;
     private transient String srm_apikey;
@@ -103,6 +109,8 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     private String srm_sast_clean_command;
     private String srm_sast_config_path;
     private String srm_sast_args;
+    private Boolean srm_waitForScan;
+    private Boolean srm_waitForScan_actualValue;
 
     private String bitbucket_username;
     private transient String bitbucket_token;
@@ -254,6 +262,14 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
         return NULL;
     }
 
+    public Boolean isBlackduck_waitForScan() {
+        return blackduck_waitForScan;
+    }
+
+    public Boolean isBlackduck_waitForScan_actualValue() {
+        return blackduck_waitForScan_actualValue;
+    }
+
     public String getCoverity_url() {
         return coverity_url;
     }
@@ -308,6 +324,13 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
 
     public String getCoverity_execution_path() {
         return coverity_execution_path;
+    }
+    public Boolean isCoverity_waitForScan() {
+        return coverity_waitForScan;
+    }
+
+    public Boolean isCoverity_waitForScan_actualValue() {
+        return coverity_waitForScan_actualValue;
     }
 
     public String getPolaris_server_url() {
@@ -424,6 +447,14 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
 
     public String getProject_directory() {
         return project_directory;
+    }
+
+    public Boolean isPolaris_waitForScan() {
+        return polaris_waitForScan;
+    }
+
+    public Boolean isPolaris_waitForScan_actualValue() {
+        return polaris_waitForScan_actualValue;
     }
 
     public String getBlackducksca_project_directory() {
@@ -550,6 +581,14 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
         return srm_sast_args;
     }
 
+    public Boolean isSrm_waitForScan() {
+        return srm_waitForScan;
+    }
+
+    public Boolean isSrm_waitForScan_actualValue() {
+        return srm_waitForScan_actualValue;
+    }
+
     @DataBoundSetter
     public void setProduct(String product) {
         this.product = product;
@@ -610,6 +649,11 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     @DataBoundSetter
     public void setBlackducksca_reports_sarif_severities(String blackducksca_reports_sarif_severities) {
         this.blackducksca_reports_sarif_severities = Util.fixEmptyAndTrim(blackducksca_reports_sarif_severities);
+    }
+
+    @DataBoundSetter
+    public void setBlackduck_waitForScan(Boolean blackduck_waitForScan) {
+        this.blackduck_waitForScan = this.blackduck_waitForScan_actualValue = blackduck_waitForScan;
     }
 
     @DataBoundSetter
@@ -700,6 +744,11 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     @DataBoundSetter
     public void setCoverity_execution_path(String coverity_execution_path) {
         this.coverity_execution_path = Util.fixEmptyAndTrim(coverity_execution_path);
+    }
+
+    @DataBoundSetter
+    public void setCoverity_waitForScan(Boolean coverity_waitForScan) {
+        this.coverity_waitForScan = this.coverity_waitForScan_actualValue = coverity_waitForScan;
     }
 
     @DataBoundSetter
@@ -822,6 +871,11 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     public void setPolaris_sast_args(String polaris_sast_args) {
         this.polaris_sast_args = Util.fixEmptyAndTrim(polaris_sast_args);
     }
+    @DataBoundSetter
+    public void setPolaris_waitForScan(Boolean polaris_waitForScan) {
+        this.polaris_waitForScan = this.polaris_waitForScan_actualValue = polaris_waitForScan;
+    }
+
 
     @DataBoundSetter
     public void setProject_source_archive(String project_source_archive) {
@@ -983,6 +1037,12 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     public void setSrm_sast_args(String srm_sast_args) {
         this.srm_sast_args = srm_sast_args;
     }
+
+    @DataBoundSetter
+    public void setSrm_waitForScan(Boolean srm_waitForScan) {
+        this.srm_waitForScan = this.srm_waitForScan_actualValue = srm_waitForScan;
+    }
+
 
     private Map<String, Object> getParametersMap(FilePath workspace, TaskListener listener)
             throws PluginExceptionHandler {

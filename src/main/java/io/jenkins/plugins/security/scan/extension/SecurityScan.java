@@ -109,6 +109,10 @@ public interface SecurityScan {
 
     public Boolean isCoverity_local();
 
+    public Boolean isCoverity_waitForScan();
+
+    public Boolean isCoverity_waitForScan_actualValue();
+
     public String getCoverity_execution_path();
 
     public String getPolaris_server_url();
@@ -145,6 +149,10 @@ public interface SecurityScan {
 
     public Boolean isPolaris_reports_sarif_groupSCAIssues_temporary();
 
+    public Boolean isPolaris_waitForScan();
+
+    public Boolean isPolaris_waitForScan_actualValue();
+
     public String getPolaris_assessment_mode();
 
     public String getProject_source_archive();
@@ -171,6 +179,10 @@ public interface SecurityScan {
 
     public String getSrm_branch_parent();
 
+    public Boolean isSrm_waitForScan();
+
+    public Boolean isSrm_waitForScan_actualValue();
+
     public String getBitbucket_token();
 
     public String getGithub_token();
@@ -195,6 +207,10 @@ public interface SecurityScan {
     public Boolean isInclude_diagnostics();
 
     public Boolean isNetwork_airgap();
+
+    public Boolean isBlackduck_waitForScan();
+
+    public Boolean isBlackduck_waitForScan_actualValue();
 
     public String getMark_build_status();
 }

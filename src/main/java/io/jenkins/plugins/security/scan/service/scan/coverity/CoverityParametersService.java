@@ -116,6 +116,7 @@ public class CoverityParametersService {
         setCoverityPrComment(coverityParameters, coverity);
         setVersion(coverityParameters, coverity);
         setCoverityLocal(coverityParameters, coverity);
+        setWaitForScan(coverityParameters, coverity);
 
         setArbitaryInputs(coverityParameters, coverity);
 
@@ -270,6 +271,18 @@ public class CoverityParametersService {
             }
         }
     }
+    private void setWaitForScan(Map<String, Object> coverityParameters, Coverity coverity) {
+        if (coverityParameters.containsKey(ApplicationConstants.COVERITY_WAITFORSCAN_KEY)) {
+            String value = coverityParameters
+                    .get(ApplicationConstants.COVERITY_WAITFORSCAN_KEY)
+                    .toString()
+                    .trim();
+            if (value.equals("true") || value.equals("false")) {
+                coverity.setWaitForScan(Boolean.parseBoolean(value));
+            }
+        }
+    }
+
 
     private Coverity setBuildCommand(Map<String, Object> coverityParameters, Coverity coverity) {
         if (coverityParameters.containsKey(ApplicationConstants.COVERITY_BUILD_COMMAND_KEY)) {
