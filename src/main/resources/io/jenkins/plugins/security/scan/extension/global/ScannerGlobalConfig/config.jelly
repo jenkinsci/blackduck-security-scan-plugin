@@ -8,17 +8,17 @@
         <!-- Tab Container -->
         <div class="tab-container">
             <!-- Black Duck Tab -->
-            <div class="scan-tab" onclick="showScanType('BLACKDUCKSCASection')">Black Duck SCA</div>
+            <div class="scan-tab" onclick="showProductType('BLACKDUCKSCASection')">Black Duck SCA</div>
             <!-- Coverity Tab -->
-            <div class="scan-tab" onclick="showScanType('COVERITYSection')">Coverity</div>
+            <div class="scan-tab" onclick="showProductType('COVERITYSection')">Coverity</div>
             <!-- Polaris Tab -->
-            <div class="scan-tab" onclick="showScanType('POLARISSection')">Polaris</div>
+            <div class="scan-tab" onclick="showProductType('POLARISSection')">Polaris</div>
             <!-- SRM Tab -->
-            <div class="scan-tab" onclick="showScanType('SRMSection')">Software Risk Manager (SRM)</div>
+            <div class="scan-tab" onclick="showProductType('SRMSection')">Software Risk Manager (SRM)</div>
         </div>
 
         <!-- Black Duck Configuration -->
-        <div class="scan-type-section" id="BLACKDUCKSCASection" style="display: block;"> <!-- Set display to block -->
+        <div class="product-type-section" id="BLACKDUCKSCASection" style="display: block;"> <!-- Set display to block -->
             <f:entry field="blackDuckSCAUrl" title="Black Duck SCA URL">
                 <f:textbox name="blackDuckSCAUrl" />
             </f:entry>
@@ -33,13 +33,13 @@
                     <f:validateButton method="testBlackDuckSCAConnection" title="Test Connection" progress="Testing..." with="blackDuckSCAUrl,blackDuckSCACredentialsId"/>
                 </div>
                 <f:entry>
-                    <button type="button" class="jenkins-button ml-7" onclick="clearTabFieldsAndTestConnectionMessages('BLACKDUCKSCASection')">Clear</button>
+                    <button type="button" class="jenkins-button ml-7" onclick="clearAllTabFieldsAndTestConnectionMessages('BLACKDUCKSCASection')">Clear</button>
                 </f:entry>
             </div>
         </div>
 
         <!-- Coverity Configuration -->
-        <div class="scan-type-section" id="COVERITYSection" style="display: none;">
+        <div class="product-type-section" id="COVERITYSection" style="display: none;">
             <f:entry field="coverityConnectUrl" title="Coverity URL">
                 <f:textbox name="coverityConnectUrl" />
             </f:entry>
@@ -54,13 +54,13 @@
                     <f:validateButton method="testCoverityConnection" title="Test Connection" progress="Testing..." with="coverityConnectUrl,coverityCredentialsId"/>
                 </div>
                 <f:entry>
-                    <button type="button" class="jenkins-button ml-7" onclick="clearTabFieldsAndTestConnectionMessages('COVERITYSection')">Clear</button>
+                    <button type="button" class="jenkins-button ml-7" onclick="clearAllTabFieldsAndTestConnectionMessages('COVERITYSection')">Clear</button>
                 </f:entry>
             </div>
         </div>
 
         <!-- Polaris Configuration -->
-        <div class="scan-type-section" id="POLARISSection" style="display: none;">
+        <div class="product-type-section" id="POLARISSection" style="display: none;">
             <f:entry field="polarisServerUrl" title="Polaris Server URL">
                 <f:textbox name="polarisServerUrl" />
             </f:entry>
@@ -72,13 +72,13 @@
                     <f:validateButton method="testPolarisConnection" title="Test Connection" progress="Testing..." with="polarisServerUrl,polarisCredentialsId"/>
                 </div>
                 <f:entry>
-                    <button type="button" class="jenkins-button ml-7" onclick="clearTabFieldsAndTestConnectionMessages('POLARISSection')">Clear</button>
+                    <button type="button" class="jenkins-button ml-7" onclick="clearAllTabFieldsAndTestConnectionMessages('POLARISSection')">Clear</button>
                 </f:entry>
             </div>
         </div>
 
         <!-- SRM Configuration -->
-        <div class="scan-type-section" id="SRMSection" style="display: block;"> <!-- Set display to block -->
+        <div class="product-type-section" id="SRMSection" style="display: block;"> <!-- Set display to block -->
             <f:entry field="srmUrl" title="SRM Server URL">
                 <f:textbox name="srmUrl" />
             </f:entry>
@@ -96,7 +96,7 @@
                     <f:validateButton method="testSrmConnection" title="Test Connection" progress="Testing..." with="srmUrl,srmCredentialsId"/>
                 </div>
                 <f:entry>
-                    <button type="button" class="jenkins-button ml-7" onclick="clearTabFieldsAndTestConnectionMessages('SRMSection')">Clear</button>
+                    <button type="button" class="jenkins-button ml-7" onclick="clearAllTabFieldsAndTestConnectionMessages('SRMSection')">Clear</button>
                 </f:entry>
             </div>
         </div>
@@ -120,11 +120,11 @@
             <!-- Tab Container for Bridge CLI Download URLs -->
             <div class="tab-container">
                 <!-- Mac Tab -->
-                <div class="os-tab" onclick="showOsType('MACSection')">Mac</div>
+                <div class="os-tab" onclick="showOSType('MACSection')">Mac</div>
                 <!-- Linux Tab -->
-                <div class="os-tab" onclick="showOsType('LINUXSection')">Linux </div>
+                <div class="os-tab" onclick="showOSType('LINUXSection')">Linux </div>
                 <!-- Windows Tab -->
-                <div class="os-tab" onclick="showOsType('WINDOWSSection')">Windows</div>
+                <div class="os-tab" onclick="showOSType('WINDOWSSection')">Windows</div>
             </div>
 
             <!-- Mac Download URL Configuration -->
@@ -176,7 +176,7 @@
         background-color: #f1f1f1;
         }
 
-        .scan-type-section, .os-type-section {
+        .product-type-section, .os-type-section {
         border: 2px dashed var(--input-border);
         border-radius: 10px;
         padding: 10px 10px 0px 10px;
@@ -228,9 +228,9 @@
     </style>
 
     <script type="text/javascript">
-        function showScanType(sectionId) {
+        function showProductType(sectionId) {
             // Hide all sections
-            var sections = document.querySelectorAll('.scan-type-section');
+            var sections = document.querySelectorAll('.product-type-section');
             sections.forEach(function (section) {
                 section.style.display = 'none';
             });
@@ -253,7 +253,7 @@
             }
         }
 
-        function showOsType(sectionId) {
+        function showOSType(sectionId) {
             // Hide all sections
             var sections = document.querySelectorAll('.os-type-section');
             sections.forEach(function (section) {
@@ -279,9 +279,9 @@
         }
 
         // Function to show the specified tab and box
-        function selectScanType(sectionId) {
+        function selectProductType(sectionId) {
             // Hide all sections
-            var sections = document.querySelectorAll('.scan-type-section');
+            var sections = document.querySelectorAll('.product-type-section');
             sections.forEach(function (section) {
                 section.style.display = 'none';
             });
@@ -330,7 +330,7 @@
         }
 
         // Function to clear all input fields except those with a specific class
-        function clearTabFieldsAndTestConnectionMessages(sectionId) {
+        function clearAllTabFieldsAndTestConnectionMessages(sectionId) {
             // Clear tab fields
             var tabSection = document.getElementById(sectionId);
             if (tabSection) {
@@ -352,7 +352,7 @@
         }
 
         // Function to check for existing values and display related boxes on page load
-        function checkExistingValues() {
+        function checkExistingFieldValues() {
             var blackDuckSCAUrl = document.querySelector("input[name='blackDuckSCAUrl']").value;
             var coverityConnectUrl = document.querySelector("input[name='coverityConnectUrl']").value;
             var polarisServerUrl = document.querySelector("input[name='polarisServerUrl']").value;
@@ -365,16 +365,16 @@
             // Check the values of blackDuckSCAUrl, coverityConnectUrl, and polarisServerUrl
             // and select the appropriate scan type based on their values
             if (blackDuckSCAUrl) {
-                selectScanType("BLACKDUCKSCA"); // Show Black Duck SCA box if there is a value
+                selectProductType("BLACKDUCKSCA"); // Show Black Duck SCA box if there is a value
             } else if (coverityConnectUrl) {
-                selectScanType("COVERITY"); // Show Coverity box if there is a value
+                selectProductType("COVERITY"); // Show Coverity box if there is a value
             } else if (polarisServerUrl) {
-                selectScanType("POLARIS"); // Show Polaris box if there is a value
+                selectProductType("POLARIS"); // Show Polaris box if there is a value
             }  else if (srmUrl) {
-                selectScanType("SRM"); // Show Polaris box if there is a value
+                selectProductType("SRM"); // Show Polaris box if there is a value
             }  else {
                 // If none of the URLs have a value, default to Black Duck SCA
-                selectScanType("BLACKDUCKSCA");
+                selectProductType("BLACKDUCKSCA");
             }
 
             // Check the values of bridgeDownloadUrlForMac, bridgeDownloadUrlForLinux, and bridgeDownloadUrlForWindows
@@ -391,8 +391,8 @@
             }
         }
 
-        // Add an event listener to call the checkExistingValues function on page load
-        window.addEventListener("load", checkExistingValues);
+        // Add an event listener to call the checkExistingFieldValues function on page load
+        window.addEventListener("load", checkExistingFieldValues);
 
     </script>
 </j:jelly>
