@@ -6,19 +6,19 @@
         <div class="tab-info">Black Duck Security Product Configuration </div>
 
         <!-- Tab Container -->
-        <div class="tab-container">
+        <div class="tab-container-box">
             <!-- Black Duck Tab -->
-            <div class="scan-tab" onclick="showProductType('BLACKDUCKSCASection')">Black Duck SCA</div>
+            <div class="scan-tab-box" onclick="showProductType('blackducksca-section')">Black Duck SCA</div>
             <!-- Coverity Tab -->
-            <div class="scan-tab" onclick="showProductType('COVERITYSection')">Coverity</div>
+            <div class="scan-tab-box" onclick="showProductType('coverity-section')">Coverity</div>
             <!-- Polaris Tab -->
-            <div class="scan-tab" onclick="showProductType('POLARISSection')">Polaris</div>
+            <div class="scan-tab-box" onclick="showProductType('polaris-section')">Polaris</div>
             <!-- SRM Tab -->
-            <div class="scan-tab" onclick="showProductType('SRMSection')">Software Risk Manager (SRM)</div>
+            <div class="scan-tab-box" onclick="showProductType('srm-section')">Software Risk Manager (SRM)</div>
         </div>
 
         <!-- Black Duck Configuration -->
-        <div class="product-type-section" id="BLACKDUCKSCASection" style="display: block;"> <!-- Set display to block -->
+        <div class="product-type-section" id="blackducksca-section" style="display: block;"> <!-- Set display to block -->
             <f:entry field="blackDuckSCAUrl" title="Black Duck SCA URL">
                 <f:textbox name="blackDuckSCAUrl" />
             </f:entry>
@@ -33,13 +33,13 @@
                     <f:validateButton method="testBlackDuckSCAConnection" title="Test Connection" progress="Testing..." with="blackDuckSCAUrl,blackDuckSCACredentialsId"/>
                 </div>
                 <f:entry>
-                    <button type="button" class="jenkins-button ml-7" onclick="clearAllTabFieldsAndTestConnectionMessages('BLACKDUCKSCASection')">Clear</button>
+                    <button type="button" class="jenkins-button ml-7" onclick="clearAllTabFieldsAndTestConnectionMessages('blackducksca-section')">Clear</button>
                 </f:entry>
             </div>
         </div>
 
         <!-- Coverity Configuration -->
-        <div class="product-type-section" id="COVERITYSection" style="display: none;">
+        <div class="product-type-section" id="coverity-section" style="display: none;">
             <f:entry field="coverityConnectUrl" title="Coverity URL">
                 <f:textbox name="coverityConnectUrl" />
             </f:entry>
@@ -54,13 +54,13 @@
                     <f:validateButton method="testCoverityConnection" title="Test Connection" progress="Testing..." with="coverityConnectUrl,coverityCredentialsId"/>
                 </div>
                 <f:entry>
-                    <button type="button" class="jenkins-button ml-7" onclick="clearAllTabFieldsAndTestConnectionMessages('COVERITYSection')">Clear</button>
+                    <button type="button" class="jenkins-button ml-7" onclick="clearAllTabFieldsAndTestConnectionMessages('coverity-section')">Clear</button>
                 </f:entry>
             </div>
         </div>
 
         <!-- Polaris Configuration -->
-        <div class="product-type-section" id="POLARISSection" style="display: none;">
+        <div class="product-type-section" id="polaris-section" style="display: none;">
             <f:entry field="polarisServerUrl" title="Polaris Server URL">
                 <f:textbox name="polarisServerUrl" />
             </f:entry>
@@ -72,13 +72,13 @@
                     <f:validateButton method="testPolarisConnection" title="Test Connection" progress="Testing..." with="polarisServerUrl,polarisCredentialsId"/>
                 </div>
                 <f:entry>
-                    <button type="button" class="jenkins-button ml-7" onclick="clearAllTabFieldsAndTestConnectionMessages('POLARISSection')">Clear</button>
+                    <button type="button" class="jenkins-button ml-7" onclick="clearAllTabFieldsAndTestConnectionMessages('polaris-section')">Clear</button>
                 </f:entry>
             </div>
         </div>
 
         <!-- SRM Configuration -->
-        <div class="product-type-section" id="SRMSection" style="display: block;"> <!-- Set display to block -->
+        <div class="product-type-section" id="srm-section" style="display: block;"> <!-- Set display to block -->
             <f:entry field="srmUrl" title="SRM Server URL">
                 <f:textbox name="srmUrl" />
             </f:entry>
@@ -96,7 +96,7 @@
                     <f:validateButton method="testSrmConnection" title="Test Connection" progress="Testing..." with="srmUrl,srmCredentialsId"/>
                 </div>
                 <f:entry>
-                    <button type="button" class="jenkins-button ml-7" onclick="clearAllTabFieldsAndTestConnectionMessages('SRMSection')">Clear</button>
+                    <button type="button" class="jenkins-button ml-7" onclick="clearAllTabFieldsAndTestConnectionMessages('srm-section')">Clear</button>
                 </f:entry>
             </div>
         </div>
@@ -118,31 +118,31 @@
             <div class="tab-info-os">Configure Bridge CLI download URL for different platforms</div>
 
             <!-- Tab Container for Bridge CLI Download URLs -->
-            <div class="tab-container">
+            <div class="tab-container-box">
                 <!-- Mac Tab -->
-                <div class="os-tab" onclick="showOSType('MACSection')">Mac</div>
+                <div class="os-tab-box" onclick="showOSType('mac-section')">Mac</div>
                 <!-- Linux Tab -->
-                <div class="os-tab" onclick="showOSType('LINUXSection')">Linux </div>
+                <div class="os-tab-box" onclick="showOSType('linux-section')">Linux </div>
                 <!-- Windows Tab -->
-                <div class="os-tab" onclick="showOSType('WINDOWSSection')">Windows</div>
+                <div class="os-tab-box" onclick="showOSType('windows-section')">Windows</div>
             </div>
 
             <!-- Mac Download URL Configuration -->
-            <div class="os-type-section" id="MACSection" style="display: none;">
+            <div class="os-section" id="mac-section" style="display: block;">
                 <f:entry field="bridgeDownloadUrlForMac" title="Bridge CLI Download URL (Optional)">
                     <f:textbox name="bridgeDownloadUrlForMac" />
                 </f:entry>
             </div>
 
             <!-- Windows Download URL Configuration -->
-            <div class="os-type-section" id="WINDOWSSection" style="display: none;">
+            <div class="os-section" id="windows-section" style="display: none;">
                 <f:entry field="bridgeDownloadUrlForWindows" title="Bridge CLI Download URL (Optional)">
                     <f:textbox name="bridgeDownloadUrlForWindows" />
                 </f:entry>
             </div>
 
             <!-- Linux Download URL Configuration -->
-            <div class="os-type-section" id="LINUXSection" style="display: none;">
+            <div class="os-section" id="linux-section" style="display: none;">
                 <f:entry field="bridgeDownloadUrlForLinux" title="Bridge CLI Download URL (Optional)">
                     <f:textbox name="bridgeDownloadUrlForLinux" />
                 </f:entry>
@@ -159,12 +159,12 @@
     </f:section>
 
     <style>
-        .tab-container {
+        .tab-container-box {
         display: flex;
         margin-bottom: 10px;
         }
 
-        .scan-tab, .os-tab {
+        .scan-tab-box, .os-tab-box {
         cursor: pointer;
         padding: 10px;
         border: 1px solid #ccc;
@@ -176,7 +176,7 @@
         background-color: #f1f1f1;
         }
 
-        .product-type-section, .os-type-section {
+        .product-type-section, .os-section {
         border: 2px dashed var(--input-border);
         border-radius: 10px;
         padding: 10px 10px 0px 10px;
@@ -242,12 +242,12 @@
             }
 
             // Highlight the selected tab
-            var tabs = document.querySelectorAll('.scan-tab');
+            var tabs = document.querySelectorAll('.scan-tab-box');
             tabs.forEach(function (tab) {
                 tab.style.backgroundColor = '';
             });
 
-            var selectedTab = document.querySelector('.tab-container [onclick*="' + sectionId + '"]');
+            var selectedTab = document.querySelector('.tab-container-box [onclick*="' + sectionId + '"]');
             if (selectedTab) {
                 selectedTab.style.backgroundColor = '#f1f1f1';
             }
@@ -255,7 +255,7 @@
 
         function showOSType(sectionId) {
             // Hide all sections
-            var sections = document.querySelectorAll('.os-type-section');
+            var sections = document.querySelectorAll('.os-section');
             sections.forEach(function (section) {
                 section.style.display = 'none';
             });
@@ -267,12 +267,12 @@
             }
 
             // Highlight the selected tab
-            var tabs = document.querySelectorAll('.os-tab');
+            var tabs = document.querySelectorAll('.os-tab-box');
             tabs.forEach(function (tab) {
                 tab.style.backgroundColor = '';
             });
 
-            var selectedTab = document.querySelector('.tab-container [onclick*="' + sectionId + '"]');
+            var selectedTab = document.querySelector('.tab-container-box [onclick*="' + sectionId + '"]');
             if (selectedTab) {
                 selectedTab.style.backgroundColor = '#f1f1f1';
             }
@@ -287,7 +287,7 @@
             });
 
             // Show the selected section
-            var scanTypeSection = document.getElementById(sectionId + 'Section');
+            var scanTypeSection = document.getElementById(sectionId + '-section');
             if (scanTypeSection) {
                 scanTypeSection.style.display = "block";
             }
@@ -298,7 +298,7 @@
                 tab.style.backgroundColor = '';
             });
 
-            var selectedTab = document.querySelector('.tab-container [onclick*="' + sectionId + '"]');
+            var selectedTab = document.querySelector('.tab-container-box [onclick*="' + sectionId + '"]');
             if (selectedTab) {
                 selectedTab.style.backgroundColor = '#f1f1f1';
             }
@@ -306,15 +306,15 @@
 
         function selectOSType(sectionId) {
             // Hide all sections
-            var sections = document.querySelectorAll('.os-type-section');
+            var sections = document.querySelectorAll('.os-section');
             sections.forEach(function (section) {
                 section.style.display = 'none';
             });
 
             // Show the selected section
-            var scanTypeSection = document.getElementById(sectionId + 'Section');
-            if (scanTypeSection) {
-                scanTypeSection.style.display = "block";
+            var osTypeSection = document.getElementById(sectionId + '-section');
+            if (osTypeSection) {
+                osTypeSection.style.display = "block";
             }
 
             // Highlight the selected tab
@@ -323,7 +323,7 @@
                 tab.style.backgroundColor = '';
             });
 
-            var selectedTab = document.querySelector('.tab-container [onclick*="' + sectionId + '"]');
+            var selectedTab = document.querySelector('.tab-container-box [onclick*="' + sectionId + '"]');
             if (selectedTab) {
                 selectedTab.style.backgroundColor = '#f1f1f1';
             }
@@ -353,41 +353,41 @@
 
         // Function to check for existing values and display related boxes on page load
         function checkExistingFieldValues() {
-            var blackDuckSCAUrl = document.querySelector("input[name='blackDuckSCAUrl']").value;
-            var coverityConnectUrl = document.querySelector("input[name='coverityConnectUrl']").value;
-            var polarisServerUrl = document.querySelector("input[name='polarisServerUrl']").value;
-            var srmUrl = document.querySelector("input[name='srmUrl']").value;
+            let blackDuckSCAUrl = document.querySelector("input[name='blackDuckSCAUrl']").value;
+            let coverityConnectUrl = document.querySelector("input[name='coverityConnectUrl']").value;
+            let polarisServerUrl = document.querySelector("input[name='polarisServerUrl']").value;
+            let srmUrl = document.querySelector("input[name='srmUrl']").value;
 
-            var bridgeDownloadUrlForWindows = document.querySelector("input[name='bridgeDownloadUrlForWindows']").value;
-            var bridgeDownloadUrlForLinux = document.querySelector("input[name='bridgeDownloadUrlForLinux']").value;
-            var bridgeDownloadUrlForMac = document.querySelector("input[name='bridgeDownloadUrlForMac']").value;
+            let bridgeCliDownloadUrlForWindows = document.querySelector("input[name='bridgeDownloadUrlForWindows']").value;
+            let bridgeCliDownloadUrlForLinux = document.querySelector("input[name='bridgeDownloadUrlForLinux']").value;
+            let bridgeCliDownloadUrlForMac = document.querySelector("input[name='bridgeDownloadUrlForMac']").value;
 
             // Check the values of blackDuckSCAUrl, coverityConnectUrl, and polarisServerUrl
             // and select the appropriate scan type based on their values
             if (blackDuckSCAUrl) {
-                selectProductType("BLACKDUCKSCA"); // Show Black Duck SCA box if there is a value
+                selectProductType("blackducksca"); // Show Black Duck SCA box if there is a value
             } else if (coverityConnectUrl) {
-                selectProductType("COVERITY"); // Show Coverity box if there is a value
+                selectProductType("coverity"); // Show Coverity box if there is a value
             } else if (polarisServerUrl) {
-                selectProductType("POLARIS"); // Show Polaris box if there is a value
+                selectProductType("polaris"); // Show Polaris box if there is a value
             }  else if (srmUrl) {
-                selectProductType("SRM"); // Show Polaris box if there is a value
+                selectProductType("srm"); // Show Polaris box if there is a value
             }  else {
                 // If none of the URLs have a value, default to Black Duck SCA
-                selectProductType("BLACKDUCKSCA");
+                selectProductType("blackducksca");
             }
 
             // Check the values of bridgeDownloadUrlForMac, bridgeDownloadUrlForLinux, and bridgeDownloadUrlForWindows
             // and select the appropriate OS type based on their values
-            if (bridgeDownloadUrlForMac) {
-                selectOSType("MAC");
-            } else if (bridgeDownloadUrlForLinux) {
-                selectOSType("LINUX");
-            } else if (bridgeDownloadUrlForWindows) {
-                selectOSType("WINDOWS");
+            if (bridgeCliDownloadUrlForMac) {
+                selectOSType("mac");
+            } else if (bridgeCliDownloadUrlForLinux) {
+                selectOSType("linux");
+            } else if (bridgeCliDownloadUrlForWindows) {
+                selectOSType("windows");
             } else {
                 // If none of the URLs have a value, default to MAC
-                selectOSType("MAC");
+                selectOSType("mac");
             }
         }
 
