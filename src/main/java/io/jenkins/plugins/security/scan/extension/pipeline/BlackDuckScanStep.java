@@ -886,7 +886,8 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
 
     @DataBoundSetter
     public void setCoverity_waitForScan(Boolean coverity_waitForScan) {
-        this.coverity_waitForScan = this.coverity_waitForScan_actualValue = coverity_waitForScan;
+        this.coverity_waitForScan = coverity_waitForScan ? true : null;
+        this.coverity_waitForScan_actualValue = coverity_waitForScan ? true : false;
     }
 
     @DataBoundSetter
@@ -994,7 +995,8 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
 
     @DataBoundSetter
     public void setPolaris_waitForScan(Boolean polaris_waitForScan) {
-        this.polaris_waitForScan = this.polaris_waitForScan_actualValue = polaris_waitForScan;
+        this.polaris_waitForScan = polaris_waitForScan ? true : null;
+        this.polaris_waitForScan_actualValue = polaris_waitForScan ? true : false;
     }
 
     @DataBoundSetter
@@ -1034,7 +1036,8 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
 
     @DataBoundSetter
     public void setSrm_waitForScan(Boolean srm_waitForScan) {
-        this.srm_waitForScan = this.srm_waitForScan_actualValue = srm_waitForScan;
+        this.srm_waitForScan = srm_waitForScan ? true : null;
+        this.srm_waitForScan_actualValue = srm_waitForScan ? true : false;
     }
 
     @DataBoundSetter
