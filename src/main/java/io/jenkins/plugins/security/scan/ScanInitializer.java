@@ -129,7 +129,7 @@ public class ScanInitializer {
                     .name()
                     .toLowerCase()
                     .concat(" product is deprecated and will be removed in future. Please use "
-                            .concat(SecurityProduct.BLACKDUCKSCA.name())
+                            .concat(SecurityProduct.BLACKDUCKSCA.name().toLowerCase())
                             .concat(" and its corresponding parameters instead.")));
         }
 

@@ -1089,7 +1089,11 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
         } finally {
             String exitMessage = ExceptionMessages.getErrorMessage(exitCode, undefinedErrorMessage);
             if (exitMessage != null) {
-                logger.info(exitMessage);
+                if (exitCode == 0) {
+                    logger.info(exitMessage);
+                } else {
+                    logger.error(exitMessage);
+                }
             }
 
             handleExitCode(run, logger, exitCode, exitMessage, unknownException);

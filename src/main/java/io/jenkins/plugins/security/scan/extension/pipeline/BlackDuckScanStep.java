@@ -1245,7 +1245,11 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
             } finally {
                 String exitMessage = ExceptionMessages.getErrorMessage(exitCode, undefinedErrorMessage);
                 if (exitMessage != null) {
-                    logger.info(exitMessage);
+                    if (exitCode == 0) {
+                        logger.info(exitMessage);
+                    } else {
+                        logger.error(exitMessage);
+                    }
                 }
 
                 handleExitCode(exitCode, exitMessage, unknownException, logger);

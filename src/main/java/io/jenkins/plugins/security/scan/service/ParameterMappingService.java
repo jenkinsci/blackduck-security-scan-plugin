@@ -179,10 +179,11 @@ public class ParameterMappingService {
         }
     }
 
-    public static void addDeprecatedParameterIfNotBlank(Map<String, Object> parameters, String key, String value) {
+    public static void addDeprecatedParameterIfNotBlank(
+            Map<String, Object> parameters, String newKey, String value, String deprecatedKey) {
         if (!Utility.isStringNullOrBlank(value)) {
-            parameters.put(key, value);
-            addDeprecatedParameter(key);
+            parameters.put(newKey, value);
+            addDeprecatedParameter(deprecatedKey);
         }
     }
 
@@ -192,10 +193,11 @@ public class ParameterMappingService {
         }
     }
 
-    public static void addDeprecatedParameterIfNotBlank(Map<String, Object> parameters, String key, Integer value) {
+    public static void addDeprecatedParameterIfNotBlank(
+            Map<String, Object> parameters, String newKey, Integer value, String deprecatedKey) {
         if (value != null) {
-            parameters.put(key, value);
-            addDeprecatedParameter(key);
+            parameters.put(newKey, value);
+            addDeprecatedParameter(deprecatedKey);
         }
     }
 
@@ -205,10 +207,11 @@ public class ParameterMappingService {
         }
     }
 
-    public static void addDeprecatedParameterIfNotBlank(Map<String, Object> parameters, String key, Boolean value) {
+    public static void addDeprecatedParameterIfNotBlank(
+            Map<String, Object> parameters, String newKey, Boolean value, String deprecatedKey) {
         if (value != null) {
-            parameters.put(key, value);
-            addDeprecatedParameter(key);
+            parameters.put(newKey, value);
+            addDeprecatedParameter(deprecatedKey);
         }
     }
 
@@ -216,19 +219,26 @@ public class ParameterMappingService {
         Map<String, Object> blackDuckParameters = new HashMap<>();
 
         addDeprecatedParameterIfNotBlank(
-                blackDuckParameters, ApplicationConstants.BLACKDUCKSCA_URL_KEY, securityScan.getBlackduck_url());
+                blackDuckParameters,
+                ApplicationConstants.BLACKDUCKSCA_URL_KEY,
+                securityScan.getBlackduck_url(),
+                ApplicationConstants.BLACKDUCK_URL_KEY);
         addParameterIfNotBlank(
                 blackDuckParameters, ApplicationConstants.BLACKDUCKSCA_URL_KEY, securityScan.getBlackducksca_url());
 
         addDeprecatedParameterIfNotBlank(
-                blackDuckParameters, ApplicationConstants.BLACKDUCKSCA_TOKEN_KEY, securityScan.getBlackduck_token());
+                blackDuckParameters,
+                ApplicationConstants.BLACKDUCKSCA_TOKEN_KEY,
+                securityScan.getBlackduck_token(),
+                ApplicationConstants.BLACKDUCK_TOKEN_KEY);
         addParameterIfNotBlank(
                 blackDuckParameters, ApplicationConstants.BLACKDUCKSCA_TOKEN_KEY, securityScan.getBlackducksca_token());
 
         addDeprecatedParameterIfNotBlank(
                 blackDuckParameters,
                 ApplicationConstants.DETECT_INSTALL_DIRECTORY_KEY,
-                securityScan.getBlackduck_install_directory());
+                securityScan.getBlackduck_install_directory(),
+                ApplicationConstants.BLACKDUCK_INSTALL_DIRECTORY_KEY);
         addParameterIfNotBlank(
                 blackDuckParameters,
                 ApplicationConstants.DETECT_INSTALL_DIRECTORY_KEY,
@@ -237,7 +247,8 @@ public class ParameterMappingService {
         addDeprecatedParameterIfNotBlank(
                 blackDuckParameters,
                 ApplicationConstants.BLACKDUCKSCA_SCAN_FAILURE_SEVERITIES_KEY,
-                securityScan.getBlackduck_scan_failure_severities());
+                securityScan.getBlackduck_scan_failure_severities(),
+                ApplicationConstants.BLACKDUCK_SCAN_FAILURE_SEVERITIES_KEY);
         addParameterIfNotBlank(
                 blackDuckParameters,
                 ApplicationConstants.BLACKDUCKSCA_SCAN_FAILURE_SEVERITIES_KEY,
@@ -246,7 +257,8 @@ public class ParameterMappingService {
         addDeprecatedParameterIfNotBlank(
                 blackDuckParameters,
                 ApplicationConstants.DETECT_SCAN_FULL_KEY,
-                securityScan.isBlackduckIntelligentScan());
+                securityScan.isBlackduckIntelligentScan(),
+                ApplicationConstants.BLACKDUCK_SCAN_FULL_KEY);
         addParameterIfNotBlank(
                 blackDuckParameters, ApplicationConstants.DETECT_SCAN_FULL_KEY, securityScan.isDetectIntelligentScan());
 
@@ -255,7 +267,8 @@ public class ParameterMappingService {
             addDeprecatedParameterIfNotBlank(
                     blackDuckParameters,
                     ApplicationConstants.BLACKDUCKSCA_PRCOMMENT_ENABLED_KEY,
-                    prCommentScan.isBlackduck_prComment_enabled_actualValue());
+                    prCommentScan.isBlackduck_prComment_enabled_actualValue(),
+                    ApplicationConstants.BLACKDUCK_PRCOMMENT_ENABLED_KEY);
             addParameterIfNotBlank(
                     blackDuckParameters,
                     ApplicationConstants.BLACKDUCKSCA_PRCOMMENT_ENABLED_KEY,
@@ -265,7 +278,8 @@ public class ParameterMappingService {
         addDeprecatedParameterIfNotBlank(
                 blackDuckParameters,
                 ApplicationConstants.DETECT_DOWNLOAD_URL_KEY,
-                securityScan.getBlackduck_download_url());
+                securityScan.getBlackduck_download_url(),
+                ApplicationConstants.BLACKDUCK_DOWNLOAD_URL_KEY);
         addParameterIfNotBlank(
                 blackDuckParameters,
                 ApplicationConstants.DETECT_DOWNLOAD_URL_KEY,
@@ -277,7 +291,8 @@ public class ParameterMappingService {
         addDeprecatedParameterIfNotBlank(
                 blackDuckParameters,
                 ApplicationConstants.BLACKDUCKSCA_WAITFORSCAN_KEY,
-                securityScan.isBlackduck_waitForScan_actualValue());
+                securityScan.isBlackduck_waitForScan_actualValue(),
+                ApplicationConstants.BLACKDUCK_WAITFORSCAN_KEY);
         addParameterIfNotBlank(
                 blackDuckParameters,
                 ApplicationConstants.BLACKDUCKSCA_WAITFORSCAN_KEY,
@@ -442,7 +457,8 @@ public class ParameterMappingService {
         addDeprecatedParameterIfNotBlank(
                 srmParametersMap,
                 ApplicationConstants.DETECT_EXECUTION_PATH_KEY,
-                securityScan.getBlackduck_execution_path());
+                securityScan.getBlackduck_execution_path(),
+                ApplicationConstants.BLACKDUCK_EXECUTION_PATH_KEY);
         addParameterIfNotBlank(
                 srmParametersMap,
                 ApplicationConstants.DETECT_EXECUTION_PATH_KEY,
@@ -489,7 +505,8 @@ public class ParameterMappingService {
         addDeprecatedParameterIfNotBlank(
                 blackDuckParameters,
                 ApplicationConstants.DETECT_SEARCH_DEPTH_KEY,
-                securityScan.getBlackduck_search_depth());
+                securityScan.getBlackduck_search_depth(),
+                ApplicationConstants.BLACKDUCK_SEARCH_DEPTH_KEY);
         addParameterIfNotBlank(
                 blackDuckParameters,
                 ApplicationConstants.DETECT_SEARCH_DEPTH_KEY,
@@ -498,12 +515,16 @@ public class ParameterMappingService {
         addDeprecatedParameterIfNotBlank(
                 blackDuckParameters,
                 ApplicationConstants.DETECT_CONFIG_PATH_KEY,
-                securityScan.getBlackduck_config_path());
+                securityScan.getBlackduck_config_path(),
+                ApplicationConstants.BLACKDUCK_CONFIG_PATH_KEY);
         addParameterIfNotBlank(
                 blackDuckParameters, ApplicationConstants.DETECT_CONFIG_PATH_KEY, securityScan.getDetect_config_path());
 
         addDeprecatedParameterIfNotBlank(
-                blackDuckParameters, ApplicationConstants.DETECT_ARGS_KEY, securityScan.getBlackduck_args());
+                blackDuckParameters,
+                ApplicationConstants.DETECT_ARGS_KEY,
+                securityScan.getBlackduck_args(),
+                ApplicationConstants.BLACKDUCK_ARGS_KEY);
         addParameterIfNotBlank(
                 blackDuckParameters, ApplicationConstants.DETECT_ARGS_KEY, securityScan.getDetect_args());
     }
@@ -567,7 +588,8 @@ public class ParameterMappingService {
         addDeprecatedParameterIfNotBlank(
                 bridgeParameters,
                 ApplicationConstants.BRIDGECLI_DOWNLOAD_URL,
-                securityScan.getSynopsys_bridge_download_url());
+                securityScan.getSynopsys_bridge_download_url(),
+                ApplicationConstants.SYNOPSYS_BRIDGE_DOWNLOAD_URL);
         addParameterIfNotBlank(
                 bridgeParameters,
                 ApplicationConstants.BRIDGECLI_DOWNLOAD_URL,
@@ -575,7 +597,8 @@ public class ParameterMappingService {
         addDeprecatedParameterIfNotBlank(
                 bridgeParameters,
                 ApplicationConstants.BRIDGECLI_DOWNLOAD_VERSION,
-                securityScan.getSynopsys_bridge_download_version());
+                securityScan.getSynopsys_bridge_download_version(),
+                ApplicationConstants.SYNOPSYS_BRIDGE_DOWNLOAD_VERSION);
         addParameterIfNotBlank(
                 bridgeParameters,
                 ApplicationConstants.BRIDGECLI_DOWNLOAD_VERSION,
@@ -583,7 +606,8 @@ public class ParameterMappingService {
         addDeprecatedParameterIfNotBlank(
                 bridgeParameters,
                 ApplicationConstants.BRIDGECLI_INSTALL_DIRECTORY,
-                securityScan.getSynopsys_bridge_install_directory());
+                securityScan.getSynopsys_bridge_install_directory(),
+                ApplicationConstants.SYNOPSYS_BRIDGE_INSTALL_DIRECTORY);
         addParameterIfNotBlank(
                 bridgeParameters,
                 ApplicationConstants.BRIDGECLI_INSTALL_DIRECTORY,
@@ -605,7 +629,8 @@ public class ParameterMappingService {
         addDeprecatedParameterIfNotBlank(
                 sarifParameters,
                 ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_CREATE_KEY,
-                securityScan.isBlackduck_reports_sarif_create());
+                securityScan.isBlackduck_reports_sarif_create(),
+                ApplicationConstants.BLACKDUCK_REPORTS_SARIF_CREATE_KEY);
         addParameterIfNotBlank(
                 sarifParameters,
                 ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_CREATE_KEY,
@@ -613,7 +638,8 @@ public class ParameterMappingService {
         addDeprecatedParameterIfNotBlank(
                 sarifParameters,
                 ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_FILE_PATH_KEY,
-                securityScan.getBlackduck_reports_sarif_file_path());
+                securityScan.getBlackduck_reports_sarif_file_path(),
+                ApplicationConstants.BLACKDUCK_REPORTS_SARIF_FILE_PATH_KEY);
         addParameterIfNotBlank(
                 sarifParameters,
                 ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_FILE_PATH_KEY,
@@ -621,7 +647,8 @@ public class ParameterMappingService {
         addDeprecatedParameterIfNotBlank(
                 sarifParameters,
                 ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_GROUPSCAISSUES_KEY,
-                securityScan.isBlackduck_reports_sarif_groupSCAIssues_temporary());
+                securityScan.isBlackduck_reports_sarif_groupSCAIssues_temporary(),
+                ApplicationConstants.BLACKDUCK_REPORTS_SARIF_GROUPSCAISSUES_KEY);
         addParameterIfNotBlank(
                 sarifParameters,
                 ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_GROUPSCAISSUES_KEY,
@@ -629,7 +656,8 @@ public class ParameterMappingService {
         addDeprecatedParameterIfNotBlank(
                 sarifParameters,
                 ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_SEVERITIES_KEY,
-                securityScan.getBlackduck_reports_sarif_severities());
+                securityScan.getBlackduck_reports_sarif_severities(),
+                ApplicationConstants.BLACKDUCK_REPORTS_SARIF_SEVERITIES_KEY);
         addParameterIfNotBlank(
                 sarifParameters,
                 ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_SEVERITIES_KEY,
