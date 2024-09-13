@@ -21,8 +21,8 @@ public class ExceptionMessages {
         exitCodeToMessage.put(ErrorCode.INVALID_BLACKDUCKSCA_PARAMETERS, "Invalid Black Duck SCA parameters");
         exitCodeToMessage.put(ErrorCode.INVALID_COVERITY_PARAMETERS, "Invalid Coverity parameters");
         exitCodeToMessage.put(ErrorCode.INVALID_POLARIS_PARAMETERS, "Invalid Polaris parameters");
-        exitCodeToMessage.put(
-                ErrorCode.INVALID_BRIDGE_DOWNLOAD_PARAMETERS, "Bridge CLI download parameters are not valid");
+        exitCodeToMessage.put(ErrorCode.INVALID_SRM_PARAMETERS, "Invalid SRM parameters");
+        exitCodeToMessage.put(ErrorCode.INVALID_BRIDGE_DOWNLOAD_PARAMETERS, "Bridge download parameters are not valid");
         exitCodeToMessage.put(ErrorCode.BRIDGE_CLI_DOWNLOAD_FAILED, "Bridge CLI download failed");
         exitCodeToMessage.put(
                 ErrorCode.BRIDGE_CLI_DOWNLOAD_FAILED_AND_WONT_RETRY,
