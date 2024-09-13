@@ -97,24 +97,20 @@ public class SecurityScanner {
                         + (isPullRequest ? " (PR/MR Number: " + changeId + ")" : ""));
 
                 boolean waitForScan = true;
-                if (scanParams.containsKey(ApplicationConstants.BLACKDUCKSCA_WAITFORSCAN_KEY)
-                        && ((String) scanParams.get(ApplicationConstants.PRODUCT_KEY))
-                                .equalsIgnoreCase(SecurityProduct.BLACKDUCK.name())) {
+                ScanParametersService scanParametersService = new ScanParametersService(listener);
+                Set<String> scanType = scanParametersService.getSecurityProducts(scanParams);
+                boolean isBlackDuckScan = scanType.contains(SecurityProduct.BLACKDUCK.name())
+                        || scanType.contains(SecurityProduct.BLACKDUCKSCA.name());
+                boolean isPolarisDuckScan = scanType.contains(SecurityProduct.POLARIS.name());
+
+                if (scanParams.containsKey(ApplicationConstants.BLACKDUCKSCA_WAITFORSCAN_KEY) && isBlackDuckScan) {
                     waitForScan = (Boolean) scanParams.get(ApplicationConstants.BLACKDUCKSCA_WAITFORSCAN_KEY);
-                } else if (scanParams.containsKey(ApplicationConstants.POLARIS_WAITFORSCAN_KEY)
-                        && ((String) scanParams.get(ApplicationConstants.PRODUCT_KEY))
-                                .equalsIgnoreCase(SecurityProduct.POLARIS.name())) {
+                } else if (scanParams.containsKey(ApplicationConstants.POLARIS_WAITFORSCAN_KEY) && isPolarisDuckScan) {
                     waitForScan = (Boolean) scanParams.get(ApplicationConstants.POLARIS_WAITFORSCAN_KEY);
                 }
 
                 // Sarif upload is not applicable when blackduck_waitForScan or polaris_waitForScan param is false
                 if (!isPullRequest && waitForScan) {
-                    ScanParametersService scanParametersService = new ScanParametersService(listener, envVars);
-                    Set<String> scanType = scanParametersService.getSecurityProducts(scanParams);
-                    boolean isBlackDuckScan = scanType.contains(SecurityProduct.BLACKDUCK.name())
-                            || scanType.contains(SecurityProduct.BLACKDUCKSCA.name());
-                    boolean isPolarisDuckScan = scanType.contains(SecurityProduct.POLARIS.name());
-
                     String defaultSarifReportFilePath =
                             Utility.getDefaultSarifReportFilePath(isBlackDuckScan, isPolarisDuckScan);
                     String customSarifReportFilePath =
