@@ -14,6 +14,7 @@ import io.jenkins.plugins.security.scan.global.*;
 import io.jenkins.plugins.security.scan.global.enums.BuildStatus;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import java.util.*;
+import java.util.stream.Collectors;
 import jenkins.model.GlobalConfiguration;
 
 public class ParameterMappingService {
@@ -718,7 +719,10 @@ public class ParameterMappingService {
 
         if (!isValid) {
             logger.error("Invalid Security Product");
-            logger.info("Supported values for security products: " + Arrays.toString(SecurityProduct.values()));
+            logger.info("Supported values for security products: "
+                    + Arrays.stream(SecurityProduct.values())
+                            .filter(p -> p != SecurityProduct.BLACKDUCK)
+                            .collect(Collectors.toList()));
         }
 
         return isValid;
