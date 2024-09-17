@@ -48,7 +48,7 @@ public class BridgeInstallTest {
 
             cleanupBridgeInstallationPath(bridgeInstallationPath);
         } catch (IOException | InterruptedException | PluginExceptionHandler e) {
-            System.out.println("Exception occurred during testing for installSynopsysBridge method. " + e.getMessage());
+            System.out.println("Exception occurred during testing for installBridgeCLI method. " + e.getMessage());
         }
     }
 
