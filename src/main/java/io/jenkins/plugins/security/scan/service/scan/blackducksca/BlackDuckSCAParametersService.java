@@ -51,9 +51,9 @@ public class BlackDuckSCAParametersService {
             logger.info("Black Duck SCA parameters are validated successfully");
             return true;
         } else {
-            logger.error(Utility.generateMessage(
+            logger.error(
                     ApplicationConstants.REQUIRED_PARAMETERS_FOR_SPECIFIC_SCAN_TYPE_IS_MISSING,
-                    List.of(missingMandatoryParams.toString(), SecurityProduct.BLACKDUCKSCA.name())));
+                    missingMandatoryParams.toString(), SecurityProduct.BLACKDUCKSCA.name());
             return false;
         }
     }

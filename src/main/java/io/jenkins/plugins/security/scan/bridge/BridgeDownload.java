@@ -11,7 +11,6 @@ import io.jenkins.plugins.security.scan.global.Utility;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
 
 public class BridgeDownload {
     private final LoggerWrapper logger;
@@ -30,8 +29,8 @@ public class BridgeDownload {
         FilePath bridgeInstallationFilePath = new FilePath(workspace.getChannel(), bridgeInstallationPath);
 
         if (!checkIfBridgeUrlExists(bridgeDownloadUrl)) {
-            logger.warn(Utility.generateMessage(
-                    ApplicationConstants.INVALID_BRIDGE_CLI_DOWNLOAD_URL, List.of(bridgeDownloadUrl)));
+            logger.warn(
+                    ApplicationConstants.INVALID_BRIDGE_CLI_DOWNLOAD_URL, bridgeDownloadUrl);
         }
 
         int retryCount = 1;
@@ -56,9 +55,9 @@ public class BridgeDownload {
         }
 
         if (!downloadSuccess) {
-            logger.error(Utility.generateMessage(
+            logger.error(
                     ApplicationConstants.BRIDGE_DOWNLOAD_FAILED_AFTER_X_ATTEMPTS,
-                    List.of(String.valueOf(ApplicationConstants.BRIDGE_DOWNLOAD_MAX_RETRIES))));
+                    ApplicationConstants.BRIDGE_DOWNLOAD_MAX_RETRIES);
         }
 
         if (bridgeZipFilePath == null) {
@@ -85,23 +84,22 @@ public class BridgeDownload {
         int statusCode = getHttpStatusCode(bridgeDownloadUrl);
 
         if (terminateRetry(statusCode)) {
-            logger.error(Utility.generateMessage(
+            logger.error(
                     ApplicationConstants.BRIDGE_CLI_DOWNLOAD_FAILED_WITH_STATUS_CODE,
-                    List.of(String.valueOf(statusCode))));
+                    statusCode);
             throw new PluginExceptionHandler(ErrorCode.BRIDGE_CLI_DOWNLOAD_FAILED_AND_WONT_RETRY);
         }
 
         try {
             Thread.sleep(ApplicationConstants.INTERVAL_BETWEEN_CONSECUTIVE_RETRY_ATTEMPTS);
         } catch (InterruptedException ie) {
-            logger.warn(Utility.generateMessage(
+            logger.warn(
                     ApplicationConstants.EXCEPTION_OCCURRED_IN_BETWEEN_CONSECUTIVE_RETRY_ATTEMPTS,
-                    List.of(ie.getMessage())));
+                    ie.getMessage());
             Thread.currentThread().interrupt();
         }
-        logger.warn(Utility.generateMessage(
-                ApplicationConstants.BRIDGE_CLI_DOWNLOAD_FAILED_AND_ATTEMPT_TO_DOWNLOAD_AGAIN,
-                List.of(String.valueOf(retryCount))));
+        logger.warn(
+                ApplicationConstants.BRIDGE_CLI_DOWNLOAD_FAILED_AND_ATTEMPT_TO_DOWNLOAD_AGAIN, retryCount);
     }
 
     public int getHttpStatusCode(String url) {
@@ -115,8 +113,8 @@ public class BridgeDownload {
                 connection.disconnect();
             }
         } catch (IOException e) {
-            logger.error(Utility.generateMessage(
-                    ApplicationConstants.EXCEPTION_WHILE_CHECKING_THE_HTTP_STATUS_CODE, List.of(e.getMessage())));
+            logger.error(
+                    ApplicationConstants.EXCEPTION_WHILE_CHECKING_THE_HTTP_STATUS_CODE, e.getMessage());
         }
 
         return statusCode;
@@ -140,8 +138,8 @@ public class BridgeDownload {
                 return (connection.getResponseCode() == HttpURLConnection.HTTP_OK);
             }
         } catch (Exception e) {
-            logger.error(Utility.generateMessage(
-                    ApplicationConstants.EXCEPTION_WHILE_CHECKING_BRIDGE_URL_EXISTS_OR_NOT, List.of(e.getMessage())));
+            logger.error(
+                    ApplicationConstants.EXCEPTION_WHILE_CHECKING_BRIDGE_URL_EXISTS_OR_NOT, e.getMessage());
         }
         return false;
     }

@@ -735,13 +735,12 @@ public class ParameterMappingService {
                     result = Utility.getMappedResultForBuildStatus(buildStatus);
                 }
             } catch (IllegalArgumentException e) {
-                logger.warn(Utility.generateMessage(
+                logger.warn(
                         ApplicationConstants
                                 .UNSUPPORTED_VALUE_FOR_MARK_BUILD_STATUS_AND_SUPPORTED_VALUES_FOR_BUILD_STATUS,
-                        List.of(
                                 ApplicationConstants.MARK_BUILD_STATUS,
                                 markBuildIfIssuesArePresent,
-                                Arrays.asList(BuildStatus.values()).toString())));
+                                Arrays.asList(BuildStatus.values()));
             }
         }
 

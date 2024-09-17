@@ -53,8 +53,8 @@ public class BridgeDownloadParametersService {
             new URL(url);
             return true;
         } catch (MalformedURLException me) {
-            logger.error(Utility.generateMessage(
-                    ApplicationConstants.INVALID_BRIDGE_DOWNLOAD_URL, List.of(me.getMessage())));
+            logger.error(
+                    ApplicationConstants.INVALID_BRIDGE_DOWNLOAD_URL, me.getMessage());
             return false;
         }
     }
@@ -66,7 +66,7 @@ public class BridgeDownloadParametersService {
             return true;
         } else {
             logger.error(
-                    Utility.generateMessage(ApplicationConstants.INVALID_BRIDGE_DOWNLOAD_VERSION, List.of(version)));
+                    ApplicationConstants.INVALID_BRIDGE_DOWNLOAD_VERSION, version);
             return false;
         }
     }
@@ -83,26 +83,26 @@ public class BridgeDownloadParametersService {
                 if (isWritable) {
                     return true;
                 } else {
-                    logger.error(Utility.generateMessage(
+                    logger.error(
                             ApplicationConstants.BRIDGE_INSTALLATION_PARENT_PATH_IS_NOT_WRITABLE,
-                            List.of(parentPath.toURI().toString())));
+                            parentPath.toURI());
                     return false;
                 }
             } else {
                 if (parentPath == null || !parentPath.exists()) {
-                    logger.error(Utility.generateMessage(
+                    logger.error(
                             ApplicationConstants.BRIDGE_INSTALLATION_PARENT_PATH_DOES_NOT_EXIST,
-                            List.of(path.toURI().toString())));
+                            path.toURI().toString());
                 } else if (!parentPath.isDirectory()) {
-                    logger.error(Utility.generateMessage(
+                    logger.error(
                             ApplicationConstants.BRIDGE_INSTALLATION_PARENT_PATH_IS_NOT_A_DIRECTORY,
-                            List.of(parentPath.toURI().toString())));
+                            parentPath.toURI().toString());
                 }
                 return false;
             }
         } catch (IOException | InterruptedException e) {
-            logger.error(Utility.generateMessage(
-                    ApplicationConstants.VALIDATING_THE_INSTALLATION_PATH_EXCEPTION, List.of(e.getMessage())));
+            logger.error(
+                    ApplicationConstants.VALIDATING_THE_INSTALLATION_PATH_EXCEPTION, e.getMessage());
             Thread.currentThread().interrupt();
             return false;
         }

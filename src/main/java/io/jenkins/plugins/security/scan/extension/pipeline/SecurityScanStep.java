@@ -1242,9 +1242,9 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
             logger.println(
                     "**************************** START EXECUTION OF SYNOPSYS SECURITY SCAN ****************************");
 
-            logger.warn(Utility.generateMessage(
+            logger.warn(
                     ApplicationConstants.RECOMMENDING_TO_USE_BLACKDUCK_SCAN_STEP,
-                    List.of(ApplicationConstants.PIPELINE_STEP_BLACKDUCK)));
+                    ApplicationConstants.PIPELINE_STEP_BLACKDUCK);
 
             try {
                 verifyRequiredPlugins(logger, envVars);

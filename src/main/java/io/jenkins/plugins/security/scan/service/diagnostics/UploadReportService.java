@@ -43,16 +43,16 @@ public class UploadReportService {
                             "Archiving " + reportType.name() + " jenkins artifact from: " + reportsPath.getRemote());
                     artifactArchiver.perform(run, path, envVars, launcher, listener);
                 } else {
-                    logger.error(Utility.generateMessage(
+                    logger.error(
                             ApplicationConstants.ARCHIVING_REPORTS_FAILED_AS_REPORT_PATH_NOT_FOUND,
-                            List.of(reportType.name(), reportType.name(), path.getRemote())));
+                            reportType.name(), reportType.name(), path.getRemote());
                     return;
                 }
             }
         } catch (Exception e) {
-            logger.error(Utility.generateMessage(
+            logger.error(
                     ApplicationConstants.ARCHIVING_REPORTS_IN_JENKINS_ARTIFACT,
-                    List.of(reportType.name(), e.getMessage())));
+                    reportType.name(), e.getMessage());
             Thread.currentThread().interrupt();
             return;
         }

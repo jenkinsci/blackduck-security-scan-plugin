@@ -71,9 +71,8 @@ public class ScanInitializer {
             boolean isNetworkAirgap, BridgeDownloadParameters bridgeDownloadParams, boolean isBridgeInstalled)
             throws PluginExceptionHandler {
         if (isNetworkAirgap && !bridgeDownloadParams.getBridgeDownloadUrl().contains(".zip") && !isBridgeInstalled) {
-            logger.error(Utility.generateMessage(
-                    ApplicationConstants.BRIDGE_CLI_COULD_NOT_BE_FOUND_IN_INSTALLATION_PATH,
-                    List.of(bridgeDownloadParams.getBridgeInstallationPath())));
+            logger.error(
+                    ApplicationConstants.BRIDGE_CLI_COULD_NOT_BE_FOUND_IN_INSTALLATION_PATH, bridgeDownloadParams.getBridgeInstallationPath());
             throw new PluginExceptionHandler(ErrorCode.BRIDGE_CLI_NOT_FOUND_IN_PROVIDED_PATH);
         }
 
@@ -123,12 +122,11 @@ public class ScanInitializer {
 
         // Warning message for blackduck stage
         if (securityProducts.contains(SecurityProduct.BLACKDUCK.name())) {
-            logger.warn(Utility.generateMessage(
+            logger.warn(
                     ApplicationConstants
                             .DEPRECATED_PRODUCT_WILL_BE_REMOVED_IN_FUTURE_AND_RECOMMENDING_TO_USE_NEW_PRODUCT_AND_ITS_PARAMETERS,
-                    List.of(
                             SecurityProduct.BLACKDUCK.name().toLowerCase(),
-                            SecurityProduct.BLACKDUCKSCA.name().toLowerCase())));
+                            SecurityProduct.BLACKDUCKSCA.name().toLowerCase());
         }
 
         for (String product : securityProducts) {
@@ -198,12 +196,11 @@ public class ScanInitializer {
 
     private void logWarningForDeprecatedParameters() {
         if (!ParameterMappingService.getDeprecatedParameters().isEmpty()) {
-            logger.warn(Utility.generateMessage(
+            logger.warn(
                     ApplicationConstants
                             .DEPRECATED_PARAMETERS_WILL_BE_REMOVED_IN_FUTURE_AND_CHECK_DOCUMENTATION_FOR_NEW_PARAMETERS,
-                    List.of(
                             ParameterMappingService.getDeprecatedParameters().toString(),
-                            ApplicationConstants.SYNOPSYS_SECURITY_SCAN_PLUGIN_DOCS_URL)));
+                            ApplicationConstants.SYNOPSYS_SECURITY_SCAN_PLUGIN_DOCS_URL);
             ParameterMappingService.getDeprecatedParameters().clear();
         }
     }

@@ -37,9 +37,9 @@ public class CoverityParametersService {
             logger.info("Coverity parameters are validated successfully");
             return true;
         } else {
-            logger.error(Utility.generateMessage(
+            logger.error(
                     ApplicationConstants.REQUIRED_PARAMETERS_FOR_SPECIFIC_SCAN_TYPE_IS_MISSING,
-                    List.of(missingMandatoryParams.toString(), SecurityProduct.COVERITY.getProductLabel())));
+                    missingMandatoryParams.toString(), SecurityProduct.COVERITY.getProductLabel());
             return false;
         }
     }
@@ -82,9 +82,9 @@ public class CoverityParametersService {
                 jobTypeName = "Pipeline";
             }
 
-            logger.error(Utility.generateMessage(
+            logger.error(
                     ApplicationConstants.REQUIRED_PARAMETERS_FOR_SPECIFIC_JOB_TYPE_IS_MISSING,
-                    List.of(missingMandatoryParams.toString(), jobTypeName)));
+                    missingMandatoryParams, jobTypeName);
         }
     }
 

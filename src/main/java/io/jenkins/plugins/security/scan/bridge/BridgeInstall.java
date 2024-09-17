@@ -26,8 +26,8 @@ public class BridgeInstall {
                 logger.info("Bridge CLI installed successfully in: %s", bridgeInstallationPath.getRemote());
             }
         } catch (IOException | InterruptedException e) {
-            logger.error(Utility.generateMessage(
-                    ApplicationConstants.UNZIPPING_BRIDGE_CLI_ZIP_FILE, List.of(e.getMessage())));
+            logger.error(
+                    ApplicationConstants.UNZIPPING_BRIDGE_CLI_ZIP_FILE, e.getMessage());
             Thread.currentThread().interrupt();
             throw new PluginExceptionHandler(ErrorCode.BRIDGE_CLI_UNZIPPING_FAILED);
         }
@@ -38,8 +38,8 @@ public class BridgeInstall {
                 bridgeZipPath.delete();
             }
         } catch (IOException | InterruptedException e) {
-            logger.warn(Utility.generateMessage(
-                    ApplicationConstants.EXCEPTION_WHILE_DELETING_BRIDGE_CLI_ZIP_FILE, List.of(e.getMessage())));
+            logger.warn(
+                    ApplicationConstants.EXCEPTION_WHILE_DELETING_BRIDGE_CLI_ZIP_FILE, e.getMessage());
             Thread.currentThread().interrupt();
         }
     }
@@ -61,8 +61,8 @@ public class BridgeInstall {
         try {
             defaultInstallationPath = workspace.act(new HomeDirectoryTask(separator));
         } catch (IOException | InterruptedException e) {
-            logger.error(Utility.generateMessage(
-                    ApplicationConstants.FAILED_TO_FETCH_PLUGINS_DEFAULT_INSTALLATION_PATH, List.of(e.getMessage())));
+            logger.error(
+                    ApplicationConstants.FAILED_TO_FETCH_PLUGINS_DEFAULT_INSTALLATION_PATH, e.getMessage());
             Thread.currentThread().interrupt();
         }
 
@@ -77,9 +77,9 @@ public class BridgeInstall {
                 logger.info("Created bridge installation directory at: " + directory.getRemote());
             }
         } catch (IOException | InterruptedException e) {
-            logger.error(Utility.generateMessage(
+            logger.error(
                     ApplicationConstants.FAILED_TO_CREATE_DEFAULT_INSTALLATION_DIRECTORY,
-                    List.of(directory.getRemote())));
+                    directory.getRemote());
             Thread.currentThread().interrupt();
         }
     }

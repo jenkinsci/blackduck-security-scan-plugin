@@ -67,8 +67,8 @@ public class SecurityScanner {
                     .quiet(true)
                     .join();
         } catch (Exception e) {
-            logger.error(Utility.generateMessage(
-                    ApplicationConstants.EXCEPTION_WHILE_INVOKING_BRIDGE_CLI, List.of(e.getMessage())));
+            logger.error(
+                    ApplicationConstants.EXCEPTION_WHILE_INVOKING_BRIDGE_CLI, e.getMessage());
             Thread.currentThread().interrupt();
         } finally {
             logger.println(

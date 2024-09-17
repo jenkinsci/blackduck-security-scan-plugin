@@ -214,8 +214,8 @@ public class ToolsParameterService {
         try {
             return mapper.writeValueAsString(inputJsonMap);
         } catch (Exception e) {
-            logger.error(Utility.generateMessage(
-                    ApplicationConstants.CREATING_INPUT_JSON_FILE_EXCEPTION, List.of(e.getMessage())));
+            logger.error(
+                    ApplicationConstants.CREATING_INPUT_JSON_FILE_EXCEPTION, e.getMessage());
         }
         return null;
     }
@@ -307,8 +307,8 @@ public class ToolsParameterService {
                 logger.error(ApplicationConstants.FAILED_TO_CREATE_JSON_FILE_IN_WORKSPACE_PARENT_PATH);
             }
         } catch (Exception e) {
-            logger.error(Utility.generateMessage(
-                    ApplicationConstants.WRITING_INTO_JSON_FILE_EXCEPTION, List.of(e.getMessage())));
+            logger.error(
+                    ApplicationConstants.WRITING_INTO_JSON_FILE_EXCEPTION, e.getMessage());
             Thread.currentThread().interrupt();
         }
 

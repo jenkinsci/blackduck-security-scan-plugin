@@ -37,9 +37,9 @@ public class SRMParametersService {
             logger.info("SRM parameters are validated successfully");
             return true;
         } else {
-            logger.error(Utility.generateMessage(
+            logger.error(
                     ApplicationConstants.REQUIRED_PARAMETERS_FOR_SPECIFIC_SCAN_TYPE_IS_MISSING,
-                    List.of(missingMandatoryParams.toString(), SecurityProduct.SRM.name())));
+                    missingMandatoryParams.toString(), SecurityProduct.SRM.name());
             return false;
         }
     }
@@ -78,9 +78,9 @@ public class SRMParametersService {
                             .isEmpty();
 
             if (!isProjectNameValid && !isProjectIdValid) {
-                logger.error(Utility.generateMessage(
+                logger.error(
                         ApplicationConstants.REQUIRED_SRM_PROJECT_NAME_OR_ID,
-                        List.of(ApplicationConstants.SRM_PROJECT_NAME_KEY, ApplicationConstants.SRM_PROJECT_ID_KEY)));
+                        ApplicationConstants.SRM_PROJECT_NAME_KEY, ApplicationConstants.SRM_PROJECT_ID_KEY);
                 missingMandatoryParams.add(ApplicationConstants.SRM_PROJECT_ID_KEY);
             }
         }
@@ -101,9 +101,9 @@ public class SRMParametersService {
                 jobTypeName = "Pipeline";
             }
 
-            logger.error(Utility.generateMessage(
+            logger.error(
                     ApplicationConstants.REQUIRED_PARAMETERS_FOR_SPECIFIC_JOB_TYPE_IS_MISSING,
-                    List.of(missingMandatoryParams.toString(), jobTypeName)));
+                    missingMandatoryParams, jobTypeName);
         }
     }
 

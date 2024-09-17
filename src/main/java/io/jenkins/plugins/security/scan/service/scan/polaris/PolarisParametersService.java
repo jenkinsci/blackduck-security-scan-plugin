@@ -44,9 +44,9 @@ public class PolarisParametersService {
             logger.info("Polaris parameters are validated successfully");
             return true;
         } else {
-            logger.error(Utility.generateMessage(
+            logger.error(
                     ApplicationConstants.REQUIRED_PARAMETERS_FOR_SPECIFIC_SCAN_TYPE_IS_MISSING,
-                    List.of(missingMandatoryParams.toString(), SecurityProduct.POLARIS.getProductLabel())));
+                    missingMandatoryParams.toString(), SecurityProduct.POLARIS.getProductLabel());
             return false;
         }
     }
@@ -89,9 +89,9 @@ public class PolarisParametersService {
                 jobTypeName = "Pipeline";
             }
 
-            logger.error(Utility.generateMessage(
+            logger.error(
                     ApplicationConstants.REQUIRED_PARAMETERS_FOR_SPECIFIC_JOB_TYPE_IS_MISSING,
-                    List.of(missingMandatoryParams.toString(), jobTypeName)));
+                    missingMandatoryParams, jobTypeName);
         }
     }
 

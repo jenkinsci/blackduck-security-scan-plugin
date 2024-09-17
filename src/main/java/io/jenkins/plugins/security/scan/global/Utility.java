@@ -34,9 +34,9 @@ public class Utility {
             try {
                 os = workspace.act(new OsNameTask());
             } catch (IOException | InterruptedException e) {
-                logger.error(Utility.generateMessage(
+                logger.error(
                         ApplicationConstants.FETCHING_OS_INFORMATION_FOR_THE_AGENT_NODE_EXCEPTION,
-                        List.of(e.getMessage())));
+                        e.getMessage());
                 Thread.currentThread().interrupt();
             }
         } else {
@@ -54,9 +54,9 @@ public class Utility {
             try {
                 arch = workspace.act(new OsArchTask());
             } catch (IOException | InterruptedException e) {
-                logger.error(Utility.generateMessage(
+                logger.error(
                         ApplicationConstants.FETCHING_OS_ARCHITECTURE_INFORMATION_FOR_THE_AGENT_NODE_EXCEPTION,
-                        List.of(e.getMessage())));
+                        e.getMessage());
                 Thread.currentThread().interrupt();
             }
         } else {
@@ -77,7 +77,7 @@ public class Utility {
             }
         } catch (IOException | InterruptedException e) {
             logger.error(
-                    Utility.generateMessage(ApplicationConstants.DELETING_FILE_EXCEPTION, List.of(e.getMessage())));
+                    ApplicationConstants.DELETING_FILE_EXCEPTION, e.getMessage());
             Thread.currentThread().interrupt();
         }
     }
@@ -101,8 +101,8 @@ public class Utility {
                 return connection;
             }
         } catch (IOException e) {
-            logger.error(Utility.generateMessage(
-                    ApplicationConstants.HTTP_URL_CONNECTION_EXCEPTION, List.of(e.getMessage())));
+            logger.error(
+                    ApplicationConstants.HTTP_URL_CONNECTION_EXCEPTION, e.getMessage());
         }
 
         return null;
@@ -268,12 +268,5 @@ public class Utility {
 
     public static boolean isBoolean(String value) {
         return value.equals("true") || value.equals("false");
-    }
-
-    public static String generateMessage(String message, List<String> values) {
-        for (int i = 0; i < values.size(); i++) {
-            message = message.replace("value" + (i + 1), values.get(i));
-        }
-        return message;
     }
 }

@@ -35,8 +35,8 @@ public class GitlabRepositoryService {
         boolean isPrCommentSet = ToolsParameterService.isPrCommentValueSet(scanParameters);
 
         if (isPrCommentSet && Utility.isStringNullOrBlank(gitlabToken)) {
-            logger.error(Utility.generateMessage(
-                    ApplicationConstants.PRCOMMENT_SET_TRUE_BUT_NO_SCM_TOKEN_FOUND, List.of("GitLab")));
+            logger.error(
+                    ApplicationConstants.PRCOMMENT_SET_TRUE_BUT_NO_SCM_TOKEN_FOUND, "GitLab");
             throw new PluginExceptionHandler(ErrorCode.NO_GITLAB_TOKEN_FOUND);
         }
 
