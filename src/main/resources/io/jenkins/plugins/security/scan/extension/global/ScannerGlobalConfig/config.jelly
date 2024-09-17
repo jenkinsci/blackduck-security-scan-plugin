@@ -278,57 +278,6 @@
             }
         }
 
-        // Function to show the specified tab and box
-        function selectProductType(sectionId) {
-            // Hide all sections
-            var sections = document.querySelectorAll('.product-type-section');
-            sections.forEach(function (section) {
-                section.style.display = 'none';
-            });
-
-            // Show the selected section
-            var scanTypeSection = document.getElementById(sectionId + '-section');
-            if (scanTypeSection) {
-                scanTypeSection.style.display = "block";
-            }
-
-            // Highlight the selected tab
-            var tabs = document.querySelectorAll('.tab');
-            tabs.forEach(function (tab) {
-                tab.style.backgroundColor = '';
-            });
-
-            var selectedTab = document.querySelector('.tab-container-box [onclick*="' + sectionId + '"]');
-            if (selectedTab) {
-                selectedTab.style.backgroundColor = '#f1f1f1';
-            }
-        }
-
-        function selectOSType(sectionId) {
-            // Hide all sections
-            var sections = document.querySelectorAll('.os-section');
-            sections.forEach(function (section) {
-                section.style.display = 'none';
-            });
-
-            // Show the selected section
-            var osTypeSection = document.getElementById(sectionId + '-section');
-            if (osTypeSection) {
-                osTypeSection.style.display = "block";
-            }
-
-            // Highlight the selected tab
-            var tabs = document.querySelectorAll('.tab');
-            tabs.forEach(function (tab) {
-                tab.style.backgroundColor = '';
-            });
-
-            var selectedTab = document.querySelector('.tab-container-box [onclick*="' + sectionId + '"]');
-            if (selectedTab) {
-                selectedTab.style.backgroundColor = '#f1f1f1';
-            }
-        }
-
         // Function to clear all input fields except those with a specific class
         function clearAllTabFieldsAndTestConnectionMessages(sectionId) {
             // Clear tab fields
@@ -365,29 +314,30 @@
             // Check the values of blackDuckSCAUrl, coverityConnectUrl, and polarisServerUrl
             // and select the appropriate scan type based on their values
             if (blackDuckSCAUrl) {
-                selectProductType("blackducksca"); // Show Black Duck SCA box if there is a value
+                showProductType("blackducksca-section"); // Show Black Duck SCA box if there is a value
             } else if (coverityConnectUrl) {
-                selectProductType("coverity"); // Show Coverity box if there is a value
+                showProductType("coverity-section"); // Show Coverity box if there is a value
             } else if (polarisServerUrl) {
-                selectProductType("polaris"); // Show Polaris box if there is a value
+                showProductType("polaris-section"); // Show Polaris box if there is a value
             }  else if (srmUrl) {
-                selectProductType("srm"); // Show Polaris box if there is a value
+                showProductType("srm-section"); // Show Polaris box if there is a value
             }  else {
                 // If none of the URLs have a value, default to Black Duck SCA
-                selectProductType("blackducksca");
+                showProductType("blackducksca-section");
             }
 
             // Check the values of bridgeDownloadUrlForMac, bridgeDownloadUrlForLinux, and bridgeDownloadUrlForWindows
             // and select the appropriate OS type based on their values
             if (bridgeCliDownloadUrlForMac) {
-                selectOSType("mac");
+                showOSType("mac-section");
             } else if (bridgeCliDownloadUrlForLinux) {
-                selectOSType("linux");
+                showOSType("linux-section");
             } else if (bridgeCliDownloadUrlForWindows) {
-                selectOSType("windows");
+                showOSType("windows-section");
             } else {
+                console.log("here" )
                 // If none of the URLs have a value, default to MAC
-                selectOSType("mac");
+                showOSType("mac-section");
             }
         }
 
