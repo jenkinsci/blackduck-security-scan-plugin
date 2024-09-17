@@ -5,6 +5,7 @@ import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.global.Utility;
+import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import io.jenkins.plugins.security.scan.input.blackducksca.Automation;
 import io.jenkins.plugins.security.scan.input.blackducksca.BlackDuckSCA;
 import io.jenkins.plugins.security.scan.input.blackducksca.Failure;
@@ -50,7 +51,9 @@ public class BlackDuckSCAParametersService {
             logger.info("Black Duck SCA parameters are validated successfully");
             return true;
         } else {
-            logger.error(missingMandatoryParams + " - required parameters for Black Duck SCA is missing");
+            logger.error(Utility.generateMessage(
+                    ApplicationConstants.REQUIRED_PARAMETERS_FOR_SPECIFIC_SCAN_TYPE_IS_MISSING,
+                    List.of(missingMandatoryParams.toString(), SecurityProduct.BLACKDUCKSCA.name())));
             return false;
         }
     }

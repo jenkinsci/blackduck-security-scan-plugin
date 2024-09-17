@@ -12,6 +12,7 @@ import io.jenkins.plugins.security.scan.input.scm.gitlab.Gitlab;
 import io.jenkins.plugins.security.scan.service.ToolsParameterService;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 import java.util.Map;
 
 public class GitlabRepositoryService {
@@ -34,7 +35,8 @@ public class GitlabRepositoryService {
         boolean isPrCommentSet = ToolsParameterService.isPrCommentValueSet(scanParameters);
 
         if (isPrCommentSet && Utility.isStringNullOrBlank(gitlabToken)) {
-            logger.error("PrComment is set true but no GitLab token found!");
+            logger.error(Utility.generateMessage(
+                    ApplicationConstants.PRCOMMENT_SET_TRUE_BUT_NO_SCM_TOKEN_FOUND, List.of("GitLab")));
             throw new PluginExceptionHandler(ErrorCode.NO_GITLAB_TOKEN_FOUND);
         }
 

@@ -6,10 +6,7 @@ import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.bridge.BridgeDownloadManager;
 import io.jenkins.plugins.security.scan.bridge.BridgeDownloadParameters;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
-import io.jenkins.plugins.security.scan.global.ApplicationConstants;
-import io.jenkins.plugins.security.scan.global.ErrorCode;
-import io.jenkins.plugins.security.scan.global.LogMessages;
-import io.jenkins.plugins.security.scan.global.LoggerWrapper;
+import io.jenkins.plugins.security.scan.global.*;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import io.jenkins.plugins.security.scan.service.ParameterMappingService;
 import io.jenkins.plugins.security.scan.service.bridge.BridgeDownloadParametersService;
@@ -74,7 +71,9 @@ public class ScanInitializer {
             boolean isNetworkAirgap, BridgeDownloadParameters bridgeDownloadParams, boolean isBridgeInstalled)
             throws PluginExceptionHandler {
         if (isNetworkAirgap && !bridgeDownloadParams.getBridgeDownloadUrl().contains(".zip") && !isBridgeInstalled) {
-            logger.error("Bridge CLI could not be found in " + bridgeDownloadParams.getBridgeInstallationPath());
+            logger.error(Utility.generateMessage(
+                    ApplicationConstants.BRIDGE_CLI_COULD_NOT_BE_FOUND_IN_INSTALLATION_PATH,
+                    List.of(bridgeDownloadParams.getBridgeInstallationPath())));
             throw new PluginExceptionHandler(ErrorCode.BRIDGE_CLI_NOT_FOUND_IN_PROVIDED_PATH);
         }
 
@@ -92,8 +91,7 @@ public class ScanInitializer {
         if (isBridgeDownloadRequired
                 && bridgeDownloadParams.getBridgeDownloadUrl().contains(".zip")) {
             if (isNetworkAirgap) {
-                logger.warn(
-                        "Bridge-CLI will be downloaded from the provided custom URL. Make sure the network is reachable");
+                logger.warn(ApplicationConstants.BRIDGE_CLI_WILL_BE_DOWNLOADED_FROM_THE_PROVIDED_CUSTOM_URL);
             }
             bridgeDownloadManager.initiateBridgeDownloadAndUnzip(bridgeDownloadParams);
         } else {
@@ -125,12 +123,12 @@ public class ScanInitializer {
 
         // Warning message for blackduck stage
         if (securityProducts.contains(SecurityProduct.BLACKDUCK.name())) {
-            logger.warn(SecurityProduct.BLACKDUCK
-                    .name()
-                    .toLowerCase()
-                    .concat(" product is deprecated and will be removed in future. Please use "
-                            .concat(SecurityProduct.BLACKDUCKSCA.name().toLowerCase())
-                            .concat(" and its corresponding parameters instead.")));
+            logger.warn(Utility.generateMessage(
+                    ApplicationConstants
+                            .DEPRECATED_PRODUCT_WILL_BE_REMOVED_IN_FUTURE_AND_RECOMMENDING_TO_USE_NEW_PRODUCT_AND_ITS_PARAMETERS,
+                    List.of(
+                            SecurityProduct.BLACKDUCK.name().toLowerCase(),
+                            SecurityProduct.BLACKDUCKSCA.name().toLowerCase())));
         }
 
         for (String product : securityProducts) {
@@ -200,9 +198,12 @@ public class ScanInitializer {
 
     private void logWarningForDeprecatedParameters() {
         if (!ParameterMappingService.getDeprecatedParameters().isEmpty()) {
-            logger.warn(ParameterMappingService.getDeprecatedParameters()
-                    + " is/are deprecated and will be removed in future. " + "Check documentation for new parameters: "
-                    + ApplicationConstants.SYNOPSYS_SECURITY_SCAN_PLUGIN_DOCS_URL);
+            logger.warn(Utility.generateMessage(
+                    ApplicationConstants
+                            .DEPRECATED_PARAMETERS_WILL_BE_REMOVED_IN_FUTURE_AND_CHECK_DOCUMENTATION_FOR_NEW_PARAMETERS,
+                    List.of(
+                            ParameterMappingService.getDeprecatedParameters().toString(),
+                            ApplicationConstants.SYNOPSYS_SECURITY_SCAN_PLUGIN_DOCS_URL)));
             ParameterMappingService.getDeprecatedParameters().clear();
         }
     }

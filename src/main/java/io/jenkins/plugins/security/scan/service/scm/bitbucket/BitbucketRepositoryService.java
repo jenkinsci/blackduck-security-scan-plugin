@@ -14,6 +14,7 @@ import io.jenkins.plugins.security.scan.input.scm.bitbucket.Repository;
 import io.jenkins.plugins.security.scan.input.scm.bitbucket.User;
 import io.jenkins.plugins.security.scan.input.scm.common.Pull;
 import io.jenkins.plugins.security.scan.service.ToolsParameterService;
+import java.util.List;
 import java.util.Map;
 
 public class BitbucketRepositoryService {
@@ -38,7 +39,8 @@ public class BitbucketRepositoryService {
         boolean isPrCommentSet = ToolsParameterService.isPrCommentValueSet(scanParameters);
 
         if (isPrCommentSet && Utility.isStringNullOrBlank(bitbucketToken)) {
-            logger.error("PrComment is set true but no Bitbucket token found!");
+            logger.error(Utility.generateMessage(
+                    ApplicationConstants.PRCOMMENT_SET_TRUE_BUT_NO_SCM_TOKEN_FOUND, List.of("Bitbucket")));
             throw new PluginExceptionHandler(ErrorCode.NO_BITBUCKET_TOKEN_FOUND);
         }
 
@@ -49,8 +51,9 @@ public class BitbucketRepositoryService {
         try {
             bitbucketRepository = bitbucketApiFromSCMSource.getRepository();
         } catch (Exception e) {
-            logger.error(
-                    "An exception occurred while getting the BitbucketRepository from BitbucketApi: " + e.getMessage());
+            logger.error(Utility.generateMessage(
+                    ApplicationConstants.EXCEPTION_WHILE_GETTING_THE_BITBUCKET_REPOSITORY_FROM_BITBUCKET_API,
+                    List.of(e.getMessage())));
             Thread.currentThread().interrupt();
         }
 

@@ -1311,8 +1311,7 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
 
             if (jobType.equalsIgnoreCase(ApplicationConstants.MULTIBRANCH_JOB_TYPE_NAME)) {
                 if (installedBranchSourceDependencies.isEmpty()) {
-                    logger.error("Necessary 'Branch Source Plugin' is not installed in Jenkins instance. "
-                            + "Please install necessary 'Branch Source Plugin' in your Jenkins instance");
+                    logger.error(ApplicationConstants.NECESSARY_BRANCH_SOURCE_PLUGIN_IS_NOT_INSTALLED);
                     throw new PluginExceptionHandler(ErrorCode.REQUIRED_BRANCH_SOURCE_PLUGIN_NOT_INSTALLED);
                 }
                 SCMSource scmSource = scmRepositoryService.findSCMSource();
@@ -1325,8 +1324,7 @@ public class BlackDuckScanStep extends Step implements SecurityScan, PrCommentSc
                         || (installedBranchSourceDependencies.getOrDefault(
                                         ApplicationConstants.GITLAB_BRANCH_SOURCE_PLUGIN_NAME, false)
                                 && scmSource instanceof GitLabSCMSource))) {
-                    logger.error("Necessary 'Branch Source Plugin' is not installed in Jenkins instance. "
-                            + "Please install necessary 'Branch Source Plugin' in your Jenkins instance");
+                    logger.error(ApplicationConstants.NECESSARY_BRANCH_SOURCE_PLUGIN_IS_NOT_INSTALLED);
                     throw new PluginExceptionHandler(ErrorCode.REQUIRED_BRANCH_SOURCE_PLUGIN_NOT_INSTALLED);
                 }
             }

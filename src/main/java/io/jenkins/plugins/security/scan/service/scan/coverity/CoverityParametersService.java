@@ -5,6 +5,7 @@ import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.global.Utility;
+import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import io.jenkins.plugins.security.scan.input.blackducksca.Install;
 import io.jenkins.plugins.security.scan.input.coverity.*;
 import io.jenkins.plugins.security.scan.input.detect.Config;
@@ -36,7 +37,9 @@ public class CoverityParametersService {
             logger.info("Coverity parameters are validated successfully");
             return true;
         } else {
-            logger.error(missingMandatoryParams + " - required parameters for Coverity is missing");
+            logger.error(Utility.generateMessage(
+                    ApplicationConstants.REQUIRED_PARAMETERS_FOR_SPECIFIC_SCAN_TYPE_IS_MISSING,
+                    List.of(missingMandatoryParams.toString(), SecurityProduct.COVERITY.getProductLabel())));
             return false;
         }
     }
@@ -79,7 +82,9 @@ public class CoverityParametersService {
                 jobTypeName = "Pipeline";
             }
 
-            logger.error(missingMandatoryParams + " - required parameters for " + jobTypeName + " job type is missing");
+            logger.error(Utility.generateMessage(
+                    ApplicationConstants.REQUIRED_PARAMETERS_FOR_SPECIFIC_JOB_TYPE_IS_MISSING,
+                    List.of(missingMandatoryParams.toString(), jobTypeName)));
         }
     }
 

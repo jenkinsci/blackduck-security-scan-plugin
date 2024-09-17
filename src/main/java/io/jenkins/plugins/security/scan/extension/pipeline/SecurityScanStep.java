@@ -1242,9 +1242,9 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
             logger.println(
                     "**************************** START EXECUTION OF SYNOPSYS SECURITY SCAN ****************************");
 
-            logger.warn("This step is deprecated and will be removed in the future. Please use "
-                    .concat(ApplicationConstants.PIPELINE_STEP_BLACKDUCK)
-                    .concat(" instead."));
+            logger.warn(Utility.generateMessage(
+                    ApplicationConstants.RECOMMENDING_TO_USE_BLACKDUCK_SCAN_STEP,
+                    List.of(ApplicationConstants.PIPELINE_STEP_BLACKDUCK)));
 
             try {
                 verifyRequiredPlugins(logger, envVars);
@@ -1327,8 +1327,7 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
 
             if (jobType.equalsIgnoreCase(ApplicationConstants.MULTIBRANCH_JOB_TYPE_NAME)) {
                 if (installedBranchSourceDependencies.isEmpty()) {
-                    logger.error("Necessary 'Branch Source Plugin' is not installed in Jenkins instance. "
-                            + "Please install necessary 'Branch Source Plugin' in your Jenkins instance");
+                    logger.error(ApplicationConstants.NECESSARY_BRANCH_SOURCE_PLUGIN_IS_NOT_INSTALLED);
                     throw new PluginExceptionHandler(ErrorCode.REQUIRED_BRANCH_SOURCE_PLUGIN_NOT_INSTALLED);
                 }
                 SCMSource scmSource = scmRepositoryService.findSCMSource();
@@ -1341,8 +1340,7 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
                         || (installedBranchSourceDependencies.getOrDefault(
                                         ApplicationConstants.GITLAB_BRANCH_SOURCE_PLUGIN_NAME, false)
                                 && scmSource instanceof GitLabSCMSource))) {
-                    logger.error("Necessary 'Branch Source Plugin' is not installed in Jenkins instance. "
-                            + "Please install necessary 'Branch Source Plugin' in your Jenkins instance");
+                    logger.error(ApplicationConstants.NECESSARY_BRANCH_SOURCE_PLUGIN_IS_NOT_INSTALLED);
                     throw new PluginExceptionHandler(ErrorCode.REQUIRED_BRANCH_SOURCE_PLUGIN_NOT_INSTALLED);
                 }
             }
