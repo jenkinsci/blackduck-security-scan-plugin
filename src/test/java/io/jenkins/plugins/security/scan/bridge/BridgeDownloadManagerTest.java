@@ -96,14 +96,12 @@ public class BridgeDownloadManagerTest {
     public void extractVersionFromUrlTest() {
         BridgeDownloadManager bridgeDownloadManager = new BridgeDownloadManager(workspace, listenerMock, envVarsMock);
 
-        String urlWithVersion =
-                "https://myown.artifactory.com/bridge-cli/0.3.59/bridge-cli-0.3.59-linux64.zip";
+        String urlWithVersion = "https://myown.artifactory.com/bridge-cli/0.3.59/bridge-cli-0.3.59-linux64.zip";
         String expectedVersionWithVersion = "0.3.59";
 
         assertEquals(expectedVersionWithVersion, bridgeDownloadManager.extractVersionFromUrl(urlWithVersion));
 
-        String urlWithoutVersion =
-                "https://myown.artifactory.com/bridge-cli/latest/bridge-cli-latest-linux64.zip";
+        String urlWithoutVersion = "https://myown.artifactory.com/bridge-cli/latest/bridge-cli-latest-linux64.zip";
         String expectedVersionWithLatest = "NA";
 
         assertEquals(expectedVersionWithLatest, bridgeDownloadManager.extractVersionFromUrl(urlWithoutVersion));
