@@ -28,7 +28,7 @@ public class BlackDuckSCAParametersService {
         this.envVars = envVars;
     }
 
-    public boolean isValidBlackDuckParameters(Map<String, Object> blackDuckSCAParameters) {
+    public boolean isValidBlackDuckSCAParameters(Map<String, Object> blackDuckSCAParameters) {
         if (blackDuckSCAParameters == null || blackDuckSCAParameters.isEmpty()) {
             return false;
         }
