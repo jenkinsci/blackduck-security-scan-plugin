@@ -3,16 +3,10 @@ package io.jenkins.plugins.security.scan.global;
 import java.util.List;
 
 public class ApplicationConstants {
-    @Deprecated
-    public static final String DISPLAY_NAME = "Synopsys Security Scan (Deprecated)";
-
-    @Deprecated
-    public static final String PIPELINE_NAME = "synopsys_scan";
-
     public static final String DISPLAY_NAME_BLACKDUCK = "Black Duck Security Scan";
     public static final String PIPELINE_STEP_BLACKDUCK = "blackduck_scan";
     public static final String BRIDGE_ARTIFACTORY_URL =
-            "https://sig-repo.synopsys.com/artifactory/bds-integrations-release/com/synopsys/integration/synopsys-bridge";
+            "https://repo.blackduck.com/artifactory/bds-integrations-release/com/blackduck/integration/bridge-cli";
     public static final String BRIDGE_CLI_LATEST_VERSION = "latest";
     public static final String BRIDGE_ZIP_FILE_FORMAT = "bridge-cli.zip";
     public static final String PLATFORM_LINUX = "linux64";
@@ -161,8 +155,6 @@ public class ApplicationConstants {
     public static final String SRM_BRANCH_NAME_KEY = "srm_branch_name";
     public static final String SRM_BRANCH_PARENT_KEY = "srm_branch_parent";
     public static final String SRM_WAITFORSCAN_KEY = "srm_waitForScan";
-    public static final String SRM_SCA_EXECUTION_PATH_KEY = "blackduck_execution_path";
-    public static final String SRM_SAST_EXECUTION_PATH_KEY = "coverity_execution_path";
 
     // Source Upload Parameters
     public static final String PROJECT_DIRECTORY_KEY = "project_directory";
@@ -320,7 +312,7 @@ public class ApplicationConstants {
     public static final String POLARIS_PRCOMMENT_INFO_FOR_NON_PR_SCANS =
             "Polaris PR Comment is ignored for non pull request scan";
 
-    public static final String SYNOPSYS_SECURITY_SCAN_PLUGIN_DOCS_URL =
+    public static final String BLACKDUCK_SECURITY_SCAN_PLUGIN_DOCS_URL =
             "https://sig-product-docs.synopsys.com/bundle/bridge/page/documentation/c_using-synopsys-jenkins-plugin.html";
 
     public static final List<String> ARBITRARY_PARAM_KEYS = List.of(

@@ -143,7 +143,7 @@ public class BridgeDownloadParameterServiceTest {
         Map<String, Object> scanParams = new HashMap<>();
         scanParams.put(ApplicationConstants.NETWORK_AIRGAP_KEY, true);
         scanParams.put(ApplicationConstants.BRIDGECLI_INSTALL_DIRECTORY, "/path/to/bridge");
-        scanParams.put(ApplicationConstants.BRIDGECLI_DOWNLOAD_URL, "https://bridge.fake.url.com/synopsys-bridge.zip");
+        scanParams.put(ApplicationConstants.BRIDGECLI_DOWNLOAD_URL, "https://bridge.fake.url.com/bridge-cli.zip");
 
         BridgeDownloadParameters bridgeDownloadParameters = new BridgeDownloadParameters(workspace, listenerMock);
 

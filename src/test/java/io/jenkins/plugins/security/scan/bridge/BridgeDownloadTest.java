@@ -52,7 +52,7 @@ public class BridgeDownloadTest {
     @Test
     public void getHttpStatusCodeTest() {
         String bridgeDownloadUrl =
-                String.join("/", ApplicationConstants.BRIDGE_ARTIFACTORY_URL, "latest", "synopsys-bridge-linux64.zip");
+                String.join("/", ApplicationConstants.BRIDGE_ARTIFACTORY_URL, "latest", "bridge-cli-linux64.zip");
         String invalidDownloadUrl = "https://invalid.bridge-download.url";
 
         BridgeDownload bridgeDownload = new BridgeDownload(workspace, listenerMock, envVarsMock);
@@ -79,7 +79,7 @@ public class BridgeDownloadTest {
     @Test
     public void checkIfBridgeUrlExistsTest() {
         String bridgeDownloadUrl =
-                String.join("/", ApplicationConstants.BRIDGE_ARTIFACTORY_URL, "latest", "synopsys-bridge-linux64.zip");
+                String.join("/", ApplicationConstants.BRIDGE_ARTIFACTORY_URL, "latest", "bridge-cli-linux64.zip");
         String invalidUrl = "https://invalid.bridge-download.url";
 
         BridgeDownload bridgeDownload = new BridgeDownload(workspace, listenerMock, envVarsMock);

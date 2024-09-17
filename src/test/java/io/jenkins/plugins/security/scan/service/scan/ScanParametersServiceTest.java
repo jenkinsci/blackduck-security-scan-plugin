@@ -157,7 +157,7 @@ public class ScanParametersServiceTest {
     }
 
     @Test
-    public void getSynopsysSecurityProducts_singleProductTest() {
+    public void getSecurityProducts_singleProductTest() {
         Map<String, Object> scanParametersWithSinglePlatform = new HashMap<>();
         scanParametersWithSinglePlatform.put(ApplicationConstants.PRODUCT_KEY, "blackducksca");
 
@@ -167,7 +167,7 @@ public class ScanParametersServiceTest {
     }
 
     @Test
-    public void getSynopsysSecurityProducts_multipleProductTest() {
+    public void getSecurityProducts_multipleProductTest() {
         Map<String, Object> scanParametersWithMultiplePlatforms = new HashMap<>();
         scanParametersWithMultiplePlatforms.put(ApplicationConstants.PRODUCT_KEY, "blackducksca, polaris");
 

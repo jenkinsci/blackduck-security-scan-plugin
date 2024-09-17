@@ -201,7 +201,7 @@ public class ScanInitializer {
                     ApplicationConstants
                             .DEPRECATED_PARAMETERS_WILL_BE_REMOVED_IN_FUTURE_AND_CHECK_DOCUMENTATION_FOR_NEW_PARAMETERS,
                     ParameterMappingService.getDeprecatedParameters().toString(),
-                    ApplicationConstants.SYNOPSYS_SECURITY_SCAN_PLUGIN_DOCS_URL);
+                    ApplicationConstants.BLACKDUCK_SECURITY_SCAN_PLUGIN_DOCS_URL);
             ParameterMappingService.getDeprecatedParameters().clear();
         }
     }

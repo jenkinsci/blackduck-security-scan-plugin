@@ -67,14 +67,14 @@ public class BridgeDownloadManagerTest {
         BridgeDownloadManager bridgeDownloadManager = new BridgeDownloadManager(workspace, listenerMock, envVarsMock);
 
         String downloadUrlWithoutTrailingSlash =
-                "https://myown.artifactory.com/release/synopsys-bridge/0.3.59/synopsys-bridge-0.3.59-linux64.zip";
-        String directoryUrl = "https://myown.artifactory.com/release/synopsys-bridge/0.3.59";
+                "https://myown.artifactory.com/release/bridge-cli/0.3.59/bridge-cli-0.3.59-linux64.zip";
+        String directoryUrl = "https://myown.artifactory.com/release/bridge-cli/0.3.59";
 
         assertEquals(directoryUrl, bridgeDownloadManager.getDirectoryUrl(downloadUrlWithoutTrailingSlash));
 
         String downloadUrlWithTrailingSlash =
-                "https://myown.artifactory.com/release/synopsys-bridge/latest/synopsys-bridge-linux64.zip/";
-        String expectedDirectoryUrl = "https://myown.artifactory.com/release/synopsys-bridge/latest";
+                "https://myown.artifactory.com/release/bridge-cli/latest/bridge-cli-linux64.zip/";
+        String expectedDirectoryUrl = "https://myown.artifactory.com/release/bridge-cli/latest";
 
         assertEquals(expectedDirectoryUrl, bridgeDownloadManager.getDirectoryUrl(downloadUrlWithTrailingSlash));
     }
@@ -84,9 +84,9 @@ public class BridgeDownloadManagerTest {
         BridgeDownloadManager bridgeDownloadManager = new BridgeDownloadManager(workspace, listenerMock, envVarsMock);
 
         String directoryUrlWithoutVersionFile =
-                "https://sig-repo.synopsys.com/artifactory/bds-integrations-release/com/synopsys/integration/synopsys-bridge/0.3.1/";
+                "https://repo.blackduck.com/artifactory/bds-integrations-release/com/blackduck/integration/bridge-cli/0.3.1/";
         String directoryUrlWithVersionFile =
-                "https://sig-repo.synopsys.com/artifactory/bds-integrations-release/com/synopsys/integration/synopsys-bridge/latest/";
+                "https://repo.blackduck.com/artifactory/bds-integrations-release/com/blackduck/integration/bridge-cli/latest/";
 
         assertFalse(bridgeDownloadManager.isVersionFileAvailableInArtifactory(directoryUrlWithoutVersionFile));
         assertTrue(bridgeDownloadManager.isVersionFileAvailableInArtifactory(directoryUrlWithVersionFile));
@@ -96,14 +96,12 @@ public class BridgeDownloadManagerTest {
     public void extractVersionFromUrlTest() {
         BridgeDownloadManager bridgeDownloadManager = new BridgeDownloadManager(workspace, listenerMock, envVarsMock);
 
-        String urlWithVersion =
-                "https://myown.artifactory.com/synopsys-bridge/0.3.59/synopsys-bridge-0.3.59-linux64.zip";
+        String urlWithVersion = "https://myown.artifactory.com/bridge-cli/0.3.59/bridge-cli-0.3.59-linux64.zip";
         String expectedVersionWithVersion = "0.3.59";
 
         assertEquals(expectedVersionWithVersion, bridgeDownloadManager.extractVersionFromUrl(urlWithVersion));
 
-        String urlWithoutVersion =
-                "https://myown.artifactory.com/synopsys-bridge/latest/synopsys-bridge-latest-linux64.zip";
+        String urlWithoutVersion = "https://myown.artifactory.com/bridge-cli/latest/bridge-cli-latest-linux64.zip";
         String expectedVersionWithLatest = "NA";
 
         assertEquals(expectedVersionWithLatest, bridgeDownloadManager.extractVersionFromUrl(urlWithoutVersion));
@@ -114,7 +112,7 @@ public class BridgeDownloadManagerTest {
         BridgeDownloadManager bridgeDownloadManager = new BridgeDownloadManager(workspace, listenerMock, envVarsMock);
 
         String directoryUrl =
-                "https://sig-repo.synopsys.com/artifactory/bds-integrations-release/com/synopsys/integration/synopsys-bridge/latest";
+                "https://repo.blackduck.com/artifactory/bds-integrations-release/com/blackduck/integration/bridge-cli/latest";
         String tempVersionFilePath = bridgeDownloadManager.downloadVersionFileFromArtifactory(directoryUrl);
         FilePath tempVersionFile = new FilePath(new File(tempVersionFilePath));
 
@@ -132,13 +130,13 @@ public class BridgeDownloadManagerTest {
         BridgeDownloadManager bridgeDownloadManager = new BridgeDownloadManager(workspace, listenerMock, envVarsMock);
 
         String urlWithVersion =
-                "https://sig-repo.synopsys.com/artifactory/bds-integrations-release/com/synopsys/integration/synopsys-bridge/0.3.1/synopsys-bridge-0.3.1-linux64.zip ";
+                "https://repo.blackduck.com/artifactory/bds-integrations-release/com/blackduck/integration/bridge-cli/0.3.1/bridge-cli-0.3.1-linux64.zip ";
         String resultWithVersion = bridgeDownloadManager.getLatestBridgeVersionFromArtifactory(urlWithVersion);
 
         assertEquals("0.3.1", resultWithVersion);
 
         String urlWithoutVersion =
-                "https://sig-repo.synopsys.com/artifactory/bds-integrations-release/com/synopsys/integration/synopsys-bridge/latest/synopsys-bridge-linux64.zip";
+                "https://repo.blackduck.com/artifactory/bds-integrations-release/com/blackduck/integration/bridge-cli/latest/bridge-cli-linux64.zip";
         BridgeDownloadManager mockedBridgeDownloadManager = Mockito.mock(BridgeDownloadManager.class);
         String expectedVersion = "0.3.59";
         Mockito.when(mockedBridgeDownloadManager.getLatestBridgeVersionFromArtifactory(urlWithoutVersion))
