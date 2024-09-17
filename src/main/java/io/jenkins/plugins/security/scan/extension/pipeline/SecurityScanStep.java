@@ -32,7 +32,6 @@ import org.jenkinsci.plugins.workflow.steps.*;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 
-@Deprecated
 public class SecurityScanStep extends Step implements SecurityScan, PrCommentScan, ReturnStatusScan, Serializable {
     private static final long serialVersionUID = 6294070801130995534L;
 
@@ -59,6 +58,7 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     private String detect_args;
     private String detect_execution_path;
 
+    // Deprecated blackduck parameters
     private String blackduck_url;
     private transient String blackduck_token;
     private String blackduck_install_directory;
@@ -73,12 +73,12 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     private Boolean blackduck_reports_sarif_groupSCAIssues;
     private String blackduck_reports_sarif_severities;
     private Boolean blackduck_reports_sarif_groupSCAIssues_temporary;
-    private Boolean blackduck_waitForScan;
-    private Boolean blackduck_waitForScan_actualValue;
     private Integer blackduck_search_depth;
     private String blackduck_config_path;
     private String blackduck_args;
     private String blackduck_execution_path;
+    private Boolean blackduck_waitForScan;
+    private Boolean blackduck_waitForScan_actualValue;
 
     private String coverity_url;
     private String coverity_user;
@@ -91,13 +91,13 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     private Boolean coverity_prComment_enabled_actualValue;
     private String coverity_version;
     private Boolean coverity_local;
-    private Boolean coverity_waitForScan;
-    private Boolean coverity_waitForScan_actualValue;
     private String coverity_build_command;
     private String coverity_clean_command;
     private String coverity_config_path;
     private String coverity_args;
     private String coverity_execution_path;
+    private Boolean coverity_waitForScan;
+    private Boolean coverity_waitForScan_actualValue;
 
     private String polaris_server_url;
     private transient String polaris_access_token;
@@ -118,17 +118,17 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     private Boolean polaris_reports_sarif_groupSCAIssues_temporary;
     private String polaris_assessment_mode;
     private String polaris_test_sca_type;
-    private Boolean polaris_waitForScan;
-    private Boolean polaris_waitForScan_actualValue;
     private String project_source_archive;
     private String project_source_excludes;
     private Boolean project_source_preserveSymLinks;
     private Boolean project_source_preserveSymLinks_actualValue;
     private String project_directory;
     private String coverity_project_directory;
-    private String blackduck_project_directory;
+    private String blackducksca_project_directory;
     private String polaris_project_directory;
     private String srm_project_directory;
+    private Boolean polaris_waitForScan;
+    private Boolean polaris_waitForScan_actualValue;
 
     private String srm_url;
     private transient String srm_apikey;
@@ -154,7 +154,7 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     private Boolean include_diagnostics;
     private Boolean network_airgap;
     /*
-    By default the plugin will always return a status code even if there is error.
+    By default, the plugin will always return a status code even if there is error.
      */
     private Boolean return_status = true;
     private String mark_build_status;
@@ -280,14 +280,6 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
         return blackduck_prComment_enabled_actualValue;
     }
 
-    public Boolean isBlackduck_waitForScan() {
-        return blackduck_waitForScan;
-    }
-
-    public Boolean isBlackduck_waitForScan_actualValue() {
-        return blackduck_waitForScan_actualValue;
-    }
-
     public String getBlackduck_download_url() {
         return blackduck_download_url;
     }
@@ -326,6 +318,14 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
 
     public Boolean isBlackduck_reports_sarif_groupSCAIssues_temporary() {
         return blackduck_reports_sarif_groupSCAIssues_temporary;
+    }
+
+    public Boolean isBlackduck_waitForScan() {
+        return blackduck_waitForScan;
+    }
+
+    public Boolean isBlackduck_waitForScan_actualValue() {
+        return blackduck_waitForScan_actualValue;
     }
 
     public String getCoverity_url() {
@@ -372,14 +372,6 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
         return coverity_local;
     }
 
-    public Boolean isCoverity_waitForScan() {
-        return coverity_waitForScan;
-    }
-
-    public Boolean isCoverity_waitForScan_actualValue() {
-        return coverity_waitForScan_actualValue;
-    }
-
     public String getCoverity_build_command() {
         return coverity_build_command;
     }
@@ -398,6 +390,14 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
 
     public String getCoverity_execution_path() {
         return coverity_execution_path;
+    }
+
+    public Boolean isCoverity_waitForScan() {
+        return coverity_waitForScan;
+    }
+
+    public Boolean isCoverity_waitForScan_actualValue() {
+        return coverity_waitForScan_actualValue;
     }
 
     public String getPolaris_server_url() {
@@ -448,70 +448,6 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
         return polaris_test_sca_type;
     }
 
-    public Boolean isPolaris_waitForScan() {
-        return polaris_waitForScan;
-    }
-
-    public Boolean isPolaris_waitForScan_actualValue() {
-        return polaris_waitForScan_actualValue;
-    }
-
-    public String getBitbucket_username() {
-        return bitbucket_username;
-    }
-
-    public String getBitbucket_token() {
-        return bitbucket_token;
-    }
-
-    public String getGithub_token() {
-        return github_token;
-    }
-
-    public String getGitlab_token() {
-        return gitlab_token;
-    }
-
-    public String getSynopsys_bridge_download_url() {
-        return synopsys_bridge_download_url;
-    }
-
-    public String getSynopsys_bridge_download_version() {
-        return synopsys_bridge_download_version;
-    }
-
-    public String getSynopsys_bridge_install_directory() {
-        return synopsys_bridge_install_directory;
-    }
-
-    public String getBridgecli_download_url() {
-        return bridgecli_download_url;
-    }
-
-    public String getBridgecli_download_version() {
-        return bridgecli_download_version;
-    }
-
-    public String getBridgecli_install_directory() {
-        return bridgecli_install_directory;
-    }
-
-    public Boolean isInclude_diagnostics() {
-        return include_diagnostics;
-    }
-
-    public Boolean isNetwork_airgap() {
-        return network_airgap;
-    }
-
-    public Boolean isReturn_status() {
-        return return_status;
-    }
-
-    public String getMark_build_status() {
-        return mark_build_status;
-    }
-
     public Boolean isPolaris_reports_sarif_create() {
         return polaris_reports_sarif_create;
     }
@@ -552,8 +488,72 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
         return project_source_preserveSymLinks_actualValue;
     }
 
+    public Boolean isPolaris_waitForScan() {
+        return polaris_waitForScan;
+    }
+
+    public Boolean isPolaris_waitForScan_actualValue() {
+        return polaris_waitForScan_actualValue;
+    }
+
     public String getProject_source_excludes() {
         return project_source_excludes;
+    }
+
+    public String getBitbucket_username() {
+        return bitbucket_username;
+    }
+
+    public String getBitbucket_token() {
+        return bitbucket_token;
+    }
+
+    public String getGithub_token() {
+        return github_token;
+    }
+
+    public String getGitlab_token() {
+        return gitlab_token;
+    }
+
+    public String getBridgecli_download_url() {
+        return bridgecli_download_url;
+    }
+
+    public String getBridgecli_download_version() {
+        return bridgecli_download_version;
+    }
+
+    public String getBridgecli_install_directory() {
+        return bridgecli_install_directory;
+    }
+
+    public String getSynopsys_bridge_download_url() {
+        return synopsys_bridge_download_url;
+    }
+
+    public String getSynopsys_bridge_download_version() {
+        return synopsys_bridge_download_version;
+    }
+
+    public String getSynopsys_bridge_install_directory() {
+        return synopsys_bridge_install_directory;
+    }
+
+    public Boolean isInclude_diagnostics() {
+        return include_diagnostics;
+    }
+
+    public Boolean isNetwork_airgap() {
+        return network_airgap;
+    }
+
+    public Boolean isReturn_status() {
+        return return_status;
+    }
+
+    public String getMark_build_status() {
+        return mark_build_status;
     }
 
     public String getProject_directory() {
@@ -599,7 +599,7 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     // Returning the null value because if we return any other value, blackduck_project_directory field will be visible
     // in the pipeline syntax script
     @Nullable
-    public String getBlackduck_project_directory() {
+    public String getBlackducksca_project_directory() {
         return null;
     }
 
@@ -762,12 +762,6 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     }
 
     @DataBoundSetter
-    public void setBlackduck_waitForScan(Boolean blackduck_waitForScan) {
-        this.blackduck_waitForScan = blackduck_waitForScan ? true : null;
-        this.blackduck_waitForScan_actualValue = blackduck_waitForScan ? true : false;
-    }
-
-    @DataBoundSetter
     public void setBlackduck_search_depth(Integer blackduck_search_depth) {
         this.blackduck_search_depth = blackduck_search_depth;
     }
@@ -806,6 +800,12 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     @DataBoundSetter
     public void setBlackduck_reports_sarif_severities(String blackduck_reports_sarif_severities) {
         this.blackduck_reports_sarif_severities = Util.fixEmptyAndTrim(blackduck_reports_sarif_severities);
+    }
+
+    @DataBoundSetter
+    public void setBlackduck_waitForScan(Boolean blackduck_waitForScan) {
+        this.blackduck_waitForScan = blackduck_waitForScan ? true : null;
+        this.blackduck_waitForScan_actualValue = blackduck_waitForScan ? true : false;
     }
 
     @DataBoundSetter
@@ -860,12 +860,6 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     }
 
     @DataBoundSetter
-    public void setCoverity_waitForScan(Boolean coverity_waitForScan) {
-        this.coverity_waitForScan = coverity_waitForScan ? true : null;
-        this.coverity_waitForScan_actualValue = coverity_waitForScan ? true : false;
-    }
-
-    @DataBoundSetter
     public void setCoverity_build_command(String coverity_build_command) {
         this.coverity_build_command = Util.fixEmptyAndTrim(coverity_build_command);
     }
@@ -888,6 +882,12 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     @DataBoundSetter
     public void setCoverity_execution_path(String coverity_execution_path) {
         this.coverity_execution_path = Util.fixEmptyAndTrim(coverity_execution_path);
+    }
+
+    @DataBoundSetter
+    public void setCoverity_waitForScan(Boolean coverity_waitForScan) {
+        this.coverity_waitForScan = coverity_waitForScan ? true : null;
+        this.coverity_waitForScan_actualValue = coverity_waitForScan ? true : false;
     }
 
     @DataBoundSetter
@@ -947,129 +947,8 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     }
 
     @DataBoundSetter
-    public void setPolaris_waitForScan(Boolean polaris_waitForScan) {
-        this.polaris_waitForScan = polaris_waitForScan ? true : null;
-        this.polaris_waitForScan_actualValue = polaris_waitForScan ? true : false;
-    }
-
-    @DataBoundSetter
-    public void setBitbucket_username(String bitbucket_username) {
-        this.bitbucket_username = bitbucket_username;
-    }
-
-    @DataBoundSetter
     public void setPolaris_assessment_mode(String polaris_assessment_mode) {
         this.polaris_assessment_mode = Util.fixEmptyAndTrim(polaris_assessment_mode);
-    }
-
-    @DataBoundSetter
-    public void setProject_source_archive(String project_source_archive) {
-        this.project_source_archive = Util.fixEmptyAndTrim(project_source_archive);
-    }
-
-    @DataBoundSetter
-    public void setProject_source_preserveSymLinks(Boolean project_source_preserveSymLinks) {
-        this.project_source_preserveSymLinks = project_source_preserveSymLinks ? true : null;
-        this.project_source_preserveSymLinks_actualValue = project_source_preserveSymLinks;
-    }
-
-    @DataBoundSetter
-    public void setProject_source_excludes(String project_source_excludes) {
-        this.project_source_excludes = Util.fixEmptyAndTrim(project_source_excludes);
-    }
-
-    @DataBoundSetter
-    public void setProject_directory(String project_directory) {
-        this.project_directory = Util.fixEmptyAndTrim(project_directory);
-    }
-
-    @DataBoundSetter
-    public void setCoverity_project_directory(String coverity_project_directory) {
-        if (getProduct().contentEquals(SecurityProduct.COVERITY.name().toLowerCase()))
-            this.project_directory = Util.fixEmptyAndTrim(coverity_project_directory);
-    }
-
-    @DataBoundSetter
-    public void setBlackduck_project_directory(String blackduck_project_directory) {
-        if (getProduct().contentEquals(SecurityProduct.BLACKDUCK.name().toLowerCase()))
-            this.project_directory = Util.fixEmptyAndTrim(blackduck_project_directory);
-    }
-
-    @DataBoundSetter
-    public void setPolaris_project_directory(String polaris_project_directory) {
-        if (getProduct().contentEquals(SecurityProduct.POLARIS.name().toLowerCase()))
-            this.project_directory = Util.fixEmptyAndTrim(polaris_project_directory);
-    }
-
-    @DataBoundSetter
-    public void setSrm_project_directory(String srm_project_directory) {
-        if (getProduct().contentEquals(SecurityProduct.SRM.name().toLowerCase()))
-            this.project_directory = Util.fixEmptyAndTrim(srm_project_directory);
-    }
-
-    @DataBoundSetter
-    public void setBitbucket_token(String bitbucket_token) {
-        this.bitbucket_token = bitbucket_token;
-    }
-
-    @DataBoundSetter
-    public void setGithub_token(String github_token) {
-        this.github_token = github_token;
-    }
-
-    @DataBoundSetter
-    public void setGitlab_token(String gitlab_token) {
-        this.gitlab_token = gitlab_token;
-    }
-
-    @DataBoundSetter
-    public void setSynopsys_bridge_download_url(String synopsys_bridge_download_url) {
-        this.synopsys_bridge_download_url = synopsys_bridge_download_url;
-    }
-
-    @DataBoundSetter
-    public void setSynopsys_bridge_download_version(String synopsys_bridge_download_version) {
-        this.synopsys_bridge_download_version = synopsys_bridge_download_version;
-    }
-
-    @DataBoundSetter
-    public void setSynopsys_bridge_install_directory(String synopsys_bridge_install_directory) {
-        this.synopsys_bridge_install_directory = synopsys_bridge_install_directory;
-    }
-
-    @DataBoundSetter
-    public void setBridgecli_download_url(String bridgecli_download_url) {
-        this.bridgecli_download_url = bridgecli_download_url;
-    }
-
-    @DataBoundSetter
-    public void setBridgecli_download_version(String bridgecli_download_version) {
-        this.bridgecli_download_version = bridgecli_download_version;
-    }
-
-    @DataBoundSetter
-    public void setBridgecli_install_directory(String bridgecli_install_directory) {
-        this.bridgecli_install_directory = bridgecli_install_directory;
-    }
-
-    @DataBoundSetter
-    public void setInclude_diagnostics(Boolean include_diagnostics) {
-        this.include_diagnostics = include_diagnostics ? true : null;
-    }
-
-    @DataBoundSetter
-    public void setNetwork_airgap(Boolean network_airgap) {
-        this.network_airgap = network_airgap ? true : null;
-    }
-
-    @DataBoundSetter
-    public void setReturn_status(Boolean return_status) {
-        this.return_status = return_status;
-    }
-
-    @DataBoundSetter
-    public void setMark_build_status(String mark_build_status) {
-        this.mark_build_status = Util.fixEmptyAndTrim(mark_build_status);
     }
 
     @DataBoundSetter
@@ -1096,6 +975,28 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     @DataBoundSetter
     public void setPolaris_reports_sarif_issue_types(String polaris_reports_sarif_issue_types) {
         this.polaris_reports_sarif_issue_types = Util.fixEmptyAndTrim(polaris_reports_sarif_issue_types);
+    }
+
+    @DataBoundSetter
+    public void setProject_source_archive(String project_source_archive) {
+        this.project_source_archive = Util.fixEmptyAndTrim(project_source_archive);
+    }
+
+    @DataBoundSetter
+    public void setProject_source_preserveSymLinks(Boolean project_source_preserveSymLinks) {
+        this.project_source_preserveSymLinks = project_source_preserveSymLinks ? true : null;
+        this.project_source_preserveSymLinks_actualValue = project_source_preserveSymLinks;
+    }
+
+    @DataBoundSetter
+    public void setProject_source_excludes(String project_source_excludes) {
+        this.project_source_excludes = Util.fixEmptyAndTrim(project_source_excludes);
+    }
+
+    @DataBoundSetter
+    public void setPolaris_waitForScan(Boolean polaris_waitForScan) {
+        this.polaris_waitForScan = polaris_waitForScan ? true : null;
+        this.polaris_waitForScan_actualValue = polaris_waitForScan ? true : false;
     }
 
     @DataBoundSetter
@@ -1139,6 +1040,105 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
         this.srm_waitForScan_actualValue = srm_waitForScan ? true : false;
     }
 
+    @DataBoundSetter
+    public void setInclude_diagnostics(Boolean include_diagnostics) {
+        this.include_diagnostics = include_diagnostics ? true : null;
+    }
+
+    @DataBoundSetter
+    public void setProject_directory(String project_directory) {
+        this.project_directory = Util.fixEmptyAndTrim(project_directory);
+    }
+
+    @DataBoundSetter
+    public void setCoverity_project_directory(String coverity_project_directory) {
+        if (getProduct().contentEquals(SecurityProduct.COVERITY.name().toLowerCase()))
+            this.project_directory = Util.fixEmptyAndTrim(coverity_project_directory);
+    }
+
+    @DataBoundSetter
+    public void setBlackducksca_project_directory(String blackducksca_project_directory) {
+        if (getProduct().contentEquals(SecurityProduct.BLACKDUCKSCA.name().toLowerCase()))
+            this.project_directory = Util.fixEmptyAndTrim(blackducksca_project_directory);
+    }
+
+    @DataBoundSetter
+    public void setPolaris_project_directory(String polaris_project_directory) {
+        if (getProduct().contentEquals(SecurityProduct.POLARIS.name().toLowerCase()))
+            this.project_directory = Util.fixEmptyAndTrim(polaris_project_directory);
+    }
+
+    @DataBoundSetter
+    public void setSrm_project_directory(String srm_project_directory) {
+        if (getProduct().contentEquals(SecurityProduct.SRM.name().toLowerCase()))
+            this.project_directory = Util.fixEmptyAndTrim(srm_project_directory);
+    }
+
+    @DataBoundSetter
+    public void setBitbucket_username(String bitbucket_username) {
+        this.bitbucket_username = bitbucket_username;
+    }
+
+    @DataBoundSetter
+    public void setBitbucket_token(String bitbucket_token) {
+        this.bitbucket_token = bitbucket_token;
+    }
+
+    @DataBoundSetter
+    public void setGithub_token(String github_token) {
+        this.github_token = github_token;
+    }
+
+    @DataBoundSetter
+    public void setGitlab_token(String gitlab_token) {
+        this.gitlab_token = gitlab_token;
+    }
+
+    @DataBoundSetter
+    public void setBridgecli_download_url(String bridgecli_download_url) {
+        this.bridgecli_download_url = bridgecli_download_url;
+    }
+
+    @DataBoundSetter
+    public void setBridgecli_download_version(String bridgecli_download_version) {
+        this.bridgecli_download_version = bridgecli_download_version;
+    }
+
+    @DataBoundSetter
+    public void setBridgecli_install_directory(String bridgecli_install_directory) {
+        this.bridgecli_install_directory = bridgecli_install_directory;
+    }
+
+    @DataBoundSetter
+    public void setSynopsys_bridge_download_url(String synopsys_bridge_download_url) {
+        this.synopsys_bridge_download_url = synopsys_bridge_download_url;
+    }
+
+    @DataBoundSetter
+    public void setSynopsys_bridge_download_version(String synopsys_bridge_download_version) {
+        this.synopsys_bridge_download_version = synopsys_bridge_download_version;
+    }
+
+    @DataBoundSetter
+    public void setSynopsys_bridge_install_directory(String synopsys_bridge_install_directory) {
+        this.synopsys_bridge_install_directory = synopsys_bridge_install_directory;
+    }
+
+    @DataBoundSetter
+    public void setNetwork_airgap(Boolean network_airgap) {
+        this.network_airgap = network_airgap ? true : null;
+    }
+
+    @DataBoundSetter
+    public void setReturn_status(Boolean return_status) {
+        this.return_status = return_status;
+    }
+
+    @DataBoundSetter
+    public void setMark_build_status(String mark_build_status) {
+        this.mark_build_status = Util.fixEmptyAndTrim(mark_build_status);
+    }
+
     private Map<String, Object> getParametersMap(FilePath workspace, TaskListener listener)
             throws PluginExceptionHandler {
         return ParameterMappingService.preparePipelineParametersMap(
@@ -1150,7 +1150,6 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
         return new Execution(context);
     }
 
-    @Deprecated
     @Extension(optional = true)
     public static final class DescriptorImpl extends StepDescriptor {
         @Override
@@ -1161,31 +1160,20 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
 
         @Override
         public String getFunctionName() {
-            return ApplicationConstants.PIPELINE_NAME;
+            return ApplicationConstants.PIPELINE_STEP_BLACKDUCK;
         }
 
         @Nonnull
         @Override
         public String getDisplayName() {
-            return ApplicationConstants.DISPLAY_NAME;
+            return ApplicationConstants.DISPLAY_NAME_BLACKDUCK;
         }
 
         @SuppressWarnings({"lgtm[jenkins/no-permission-check]", "lgtm[jenkins/csrf]"})
         public ListBoxModel doFillProductItems() {
             ListBoxModel items = new ListBoxModel();
             items.add(new Option(ApplicationConstants.DEFAULT_DROPDOWN_OPTION_NAME, ""));
-            items.add(
-                    SecurityProduct.BLACKDUCK.getProductLabel(),
-                    SecurityProduct.BLACKDUCK.name().toLowerCase());
-            items.add(
-                    SecurityProduct.COVERITY.getProductLabel(),
-                    SecurityProduct.COVERITY.name().toLowerCase());
-            items.add(
-                    SecurityProduct.POLARIS.getProductLabel(),
-                    SecurityProduct.POLARIS.name().toLowerCase());
-            items.add(
-                    SecurityProduct.SRM.getProductLabel(),
-                    SecurityProduct.SRM.name().toLowerCase());
+            items.addAll(ParameterMappingService.getSecurityProductItems());
             return items;
         }
 
@@ -1240,11 +1228,7 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
             Exception unknownException = new Exception();
 
             logger.println(
-                    "**************************** START EXECUTION OF SYNOPSYS SECURITY SCAN ****************************");
-
-            logger.warn("This step is deprecated and will be removed in the future. Please use "
-                    .concat(ApplicationConstants.PIPELINE_STEP_BLACKDUCK)
-                    .concat(" instead."));
+                    "**************************** START EXECUTION OF BLACK DUCK SECURITY SCAN ****************************");
 
             try {
                 verifyRequiredPlugins(logger, envVars);
@@ -1286,7 +1270,7 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
 
             if (exitCode == ErrorCode.SCAN_SUCCESSFUL) {
                 logger.println(
-                        "**************************** END EXECUTION OF SYNOPSYS SECURITY SCAN ****************************");
+                        "**************************** END EXECUTION OF BLACK DUCK SECURITY SCAN ****************************");
             } else {
                 Result result = ParameterMappingService.getBuildResultIfIssuesAreFound(
                         exitCode, getMark_build_status(), logger);
@@ -1306,7 +1290,7 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
             run.setResult(result); // Setting the build result
 
             logger.println(
-                    "**************************** END EXECUTION OF SYNOPSYS SECURITY SCAN ****************************");
+                    "**************************** END EXECUTION OF BLACK DUCK SECURITY SCAN ****************************");
 
             if (Objects.equals(isReturn_status(), true)) {
                 return;
