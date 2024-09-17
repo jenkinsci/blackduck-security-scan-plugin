@@ -39,7 +39,8 @@ public class CoverityParametersService {
         } else {
             logger.error(
                     ApplicationConstants.REQUIRED_PARAMETERS_FOR_SPECIFIC_SCAN_TYPE_IS_MISSING,
-                    missingMandatoryParams.toString(), SecurityProduct.COVERITY.getProductLabel());
+                    missingMandatoryParams.toString(),
+                    SecurityProduct.COVERITY.getProductLabel());
             return false;
         }
     }
@@ -84,7 +85,8 @@ public class CoverityParametersService {
 
             logger.error(
                     ApplicationConstants.REQUIRED_PARAMETERS_FOR_SPECIFIC_JOB_TYPE_IS_MISSING,
-                    missingMandatoryParams, jobTypeName);
+                    missingMandatoryParams,
+                    jobTypeName);
         }
     }
 

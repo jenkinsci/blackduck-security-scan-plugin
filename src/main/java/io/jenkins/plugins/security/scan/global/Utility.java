@@ -10,7 +10,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.*;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import jenkins.model.Jenkins;
 
@@ -34,9 +33,7 @@ public class Utility {
             try {
                 os = workspace.act(new OsNameTask());
             } catch (IOException | InterruptedException e) {
-                logger.error(
-                        ApplicationConstants.FETCHING_OS_INFORMATION_FOR_THE_AGENT_NODE_EXCEPTION,
-                        e.getMessage());
+                logger.error(ApplicationConstants.FETCHING_OS_INFORMATION_FOR_THE_AGENT_NODE_EXCEPTION, e.getMessage());
                 Thread.currentThread().interrupt();
             }
         } else {
@@ -76,8 +73,7 @@ public class Utility {
                 file.delete();
             }
         } catch (IOException | InterruptedException e) {
-            logger.error(
-                    ApplicationConstants.DELETING_FILE_EXCEPTION, e.getMessage());
+            logger.error(ApplicationConstants.DELETING_FILE_EXCEPTION, e.getMessage());
             Thread.currentThread().interrupt();
         }
     }
@@ -101,8 +97,7 @@ public class Utility {
                 return connection;
             }
         } catch (IOException e) {
-            logger.error(
-                    ApplicationConstants.HTTP_URL_CONNECTION_EXCEPTION, e.getMessage());
+            logger.error(ApplicationConstants.HTTP_URL_CONNECTION_EXCEPTION, e.getMessage());
         }
 
         return null;

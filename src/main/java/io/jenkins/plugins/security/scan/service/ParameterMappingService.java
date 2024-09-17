@@ -738,9 +738,9 @@ public class ParameterMappingService {
                 logger.warn(
                         ApplicationConstants
                                 .UNSUPPORTED_VALUE_FOR_MARK_BUILD_STATUS_AND_SUPPORTED_VALUES_FOR_BUILD_STATUS,
-                                ApplicationConstants.MARK_BUILD_STATUS,
-                                markBuildIfIssuesArePresent,
-                                Arrays.asList(BuildStatus.values()));
+                        ApplicationConstants.MARK_BUILD_STATUS,
+                        markBuildIfIssuesArePresent,
+                        Arrays.asList(BuildStatus.values()));
             }
         }
 

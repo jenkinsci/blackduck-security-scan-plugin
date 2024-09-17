@@ -46,7 +46,8 @@ public class PolarisParametersService {
         } else {
             logger.error(
                     ApplicationConstants.REQUIRED_PARAMETERS_FOR_SPECIFIC_SCAN_TYPE_IS_MISSING,
-                    missingMandatoryParams.toString(), SecurityProduct.POLARIS.getProductLabel());
+                    missingMandatoryParams.toString(),
+                    SecurityProduct.POLARIS.getProductLabel());
             return false;
         }
     }
@@ -91,7 +92,8 @@ public class PolarisParametersService {
 
             logger.error(
                     ApplicationConstants.REQUIRED_PARAMETERS_FOR_SPECIFIC_JOB_TYPE_IS_MISSING,
-                    missingMandatoryParams, jobTypeName);
+                    missingMandatoryParams,
+                    jobTypeName);
         }
     }
 

@@ -194,8 +194,7 @@ public class ApplicationConstants {
             "PrComment is set true but no %s token found!";
     public static final String UNZIPPING_BRIDGE_CLI_ZIP_FILE =
             "An exception occurred while unzipping Bridge CLI zip file: %s";
-    public static final String BRIDGE_DOWNLOAD_FAILED_AFTER_X_ATTEMPTS =
-            "Bridge CLI download failed after %s attempts";
+    public static final String BRIDGE_DOWNLOAD_FAILED_AFTER_X_ATTEMPTS = "Bridge CLI download failed after %s attempts";
     public static final String ARCHIVING_REPORTS_IN_JENKINS_ARTIFACT =
             "An exception occurred while archiving %s in jenkins artifact: %s";
     public static final String ARCHIVING_REPORTS_FAILED_AS_REPORT_PATH_NOT_FOUND =

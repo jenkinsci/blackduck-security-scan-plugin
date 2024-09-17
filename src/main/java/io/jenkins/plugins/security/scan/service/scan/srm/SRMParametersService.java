@@ -39,7 +39,8 @@ public class SRMParametersService {
         } else {
             logger.error(
                     ApplicationConstants.REQUIRED_PARAMETERS_FOR_SPECIFIC_SCAN_TYPE_IS_MISSING,
-                    missingMandatoryParams.toString(), SecurityProduct.SRM.name());
+                    missingMandatoryParams.toString(),
+                    SecurityProduct.SRM.name());
             return false;
         }
     }
@@ -80,7 +81,8 @@ public class SRMParametersService {
             if (!isProjectNameValid && !isProjectIdValid) {
                 logger.error(
                         ApplicationConstants.REQUIRED_SRM_PROJECT_NAME_OR_ID,
-                        ApplicationConstants.SRM_PROJECT_NAME_KEY, ApplicationConstants.SRM_PROJECT_ID_KEY);
+                        ApplicationConstants.SRM_PROJECT_NAME_KEY,
+                        ApplicationConstants.SRM_PROJECT_ID_KEY);
                 missingMandatoryParams.add(ApplicationConstants.SRM_PROJECT_ID_KEY);
             }
         }
@@ -103,7 +105,8 @@ public class SRMParametersService {
 
             logger.error(
                     ApplicationConstants.REQUIRED_PARAMETERS_FOR_SPECIFIC_JOB_TYPE_IS_MISSING,
-                    missingMandatoryParams, jobTypeName);
+                    missingMandatoryParams,
+                    jobTypeName);
         }
     }
 

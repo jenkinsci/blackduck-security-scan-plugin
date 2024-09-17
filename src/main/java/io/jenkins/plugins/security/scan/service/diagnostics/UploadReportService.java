@@ -8,9 +8,7 @@ import hudson.model.TaskListener;
 import hudson.tasks.ArtifactArchiver;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.global.LoggerWrapper;
-import io.jenkins.plugins.security.scan.global.Utility;
 import io.jenkins.plugins.security.scan.global.enums.ReportType;
-import java.util.List;
 
 public class UploadReportService {
     private final Run<?, ?> run;
@@ -45,14 +43,14 @@ public class UploadReportService {
                 } else {
                     logger.error(
                             ApplicationConstants.ARCHIVING_REPORTS_FAILED_AS_REPORT_PATH_NOT_FOUND,
-                            reportType.name(), reportType.name(), path.getRemote());
+                            reportType.name(),
+                            reportType.name(),
+                            path.getRemote());
                     return;
                 }
             }
         } catch (Exception e) {
-            logger.error(
-                    ApplicationConstants.ARCHIVING_REPORTS_IN_JENKINS_ARTIFACT,
-                    reportType.name(), e.getMessage());
+            logger.error(ApplicationConstants.ARCHIVING_REPORTS_IN_JENKINS_ARTIFACT, reportType.name(), e.getMessage());
             Thread.currentThread().interrupt();
             return;
         }

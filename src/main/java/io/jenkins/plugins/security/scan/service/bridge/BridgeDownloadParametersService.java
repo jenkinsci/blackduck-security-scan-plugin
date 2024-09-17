@@ -12,7 +12,6 @@ import io.jenkins.plugins.security.scan.global.Utility;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -53,8 +52,7 @@ public class BridgeDownloadParametersService {
             new URL(url);
             return true;
         } catch (MalformedURLException me) {
-            logger.error(
-                    ApplicationConstants.INVALID_BRIDGE_DOWNLOAD_URL, me.getMessage());
+            logger.error(ApplicationConstants.INVALID_BRIDGE_DOWNLOAD_URL, me.getMessage());
             return false;
         }
     }
@@ -65,8 +63,7 @@ public class BridgeDownloadParametersService {
         if (matcher.matches() || version.equals(ApplicationConstants.BRIDGE_CLI_LATEST_VERSION)) {
             return true;
         } else {
-            logger.error(
-                    ApplicationConstants.INVALID_BRIDGE_DOWNLOAD_VERSION, version);
+            logger.error(ApplicationConstants.INVALID_BRIDGE_DOWNLOAD_VERSION, version);
             return false;
         }
     }
@@ -84,8 +81,7 @@ public class BridgeDownloadParametersService {
                     return true;
                 } else {
                     logger.error(
-                            ApplicationConstants.BRIDGE_INSTALLATION_PARENT_PATH_IS_NOT_WRITABLE,
-                            parentPath.toURI());
+                            ApplicationConstants.BRIDGE_INSTALLATION_PARENT_PATH_IS_NOT_WRITABLE, parentPath.toURI());
                     return false;
                 }
             } else {
@@ -101,8 +97,7 @@ public class BridgeDownloadParametersService {
                 return false;
             }
         } catch (IOException | InterruptedException e) {
-            logger.error(
-                    ApplicationConstants.VALIDATING_THE_INSTALLATION_PATH_EXCEPTION, e.getMessage());
+            logger.error(ApplicationConstants.VALIDATING_THE_INSTALLATION_PATH_EXCEPTION, e.getMessage());
             Thread.currentThread().interrupt();
             return false;
         }

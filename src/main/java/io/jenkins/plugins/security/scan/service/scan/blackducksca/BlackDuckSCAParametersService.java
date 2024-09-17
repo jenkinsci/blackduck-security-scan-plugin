@@ -53,7 +53,8 @@ public class BlackDuckSCAParametersService {
         } else {
             logger.error(
                     ApplicationConstants.REQUIRED_PARAMETERS_FOR_SPECIFIC_SCAN_TYPE_IS_MISSING,
-                    missingMandatoryParams.toString(), SecurityProduct.BLACKDUCKSCA.name());
+                    missingMandatoryParams.toString(),
+                    SecurityProduct.BLACKDUCKSCA.name());
             return false;
         }
     }

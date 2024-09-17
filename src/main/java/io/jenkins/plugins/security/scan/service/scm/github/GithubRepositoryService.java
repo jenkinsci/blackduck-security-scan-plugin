@@ -10,7 +10,6 @@ import io.jenkins.plugins.security.scan.input.scm.common.Pull;
 import io.jenkins.plugins.security.scan.input.scm.github.Github;
 import io.jenkins.plugins.security.scan.input.scm.github.Host;
 import io.jenkins.plugins.security.scan.service.ToolsParameterService;
-import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 
@@ -36,8 +35,7 @@ public class GithubRepositoryService {
         boolean isPrCommentSet = ToolsParameterService.isPrCommentValueSet(scanParameters);
 
         if (isPrCommentSet && Utility.isStringNullOrBlank(githubToken)) {
-            logger.error(
-                    ApplicationConstants.PRCOMMENT_SET_TRUE_BUT_NO_SCM_TOKEN_FOUND, "GitHub");
+            logger.error(ApplicationConstants.PRCOMMENT_SET_TRUE_BUT_NO_SCM_TOKEN_FOUND, "GitHub");
             throw new PluginExceptionHandler(ErrorCode.NO_GITHUB_TOKEN_FOUND);
         }
 
