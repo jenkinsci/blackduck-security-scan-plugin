@@ -122,7 +122,7 @@ public class BlackDuckSCAParametersServiceTest {
         blackDuckScaParametersMap.put(ApplicationConstants.BLACKDUCKSCA_URL_KEY, TEST_BLACKDUCKSCA_URL);
         blackDuckScaParametersMap.put(ApplicationConstants.BLACKDUCKSCA_TOKEN_KEY, TEST_BLACKDUCKSCA_TOKEN);
 
-        assertTrue(blackDuckSCAParametersService.isValidBlackDuckParameters(blackDuckScaParametersMap));
+        assertTrue(blackDuckSCAParametersService.hasAllMandatoryBlackduckSCAParams(blackDuckScaParametersMap));
     }
 
     @Test
@@ -130,18 +130,18 @@ public class BlackDuckSCAParametersServiceTest {
         Map<String, Object> blackDuckScaParametersMap = new HashMap<>();
         blackDuckScaParametersMap.put(ApplicationConstants.BLACKDUCKSCA_URL_KEY, TEST_BLACKDUCKSCA_URL);
 
-        assertFalse(blackDuckSCAParametersService.isValidBlackDuckParameters(blackDuckScaParametersMap));
+        assertFalse(blackDuckSCAParametersService.hasAllMandatoryBlackduckSCAParams(blackDuckScaParametersMap));
     }
 
     @Test
     void validateBlackDuckParametersForNullAndEmptyTest() {
-        assertFalse(blackDuckSCAParametersService.isValidBlackDuckParameters(null));
+        assertFalse(blackDuckSCAParametersService.hasAllMandatoryBlackduckSCAParams(null));
 
         Map<String, Object> blackDuckScaParametersMap = new HashMap<>();
         blackDuckScaParametersMap.put(ApplicationConstants.BLACKDUCKSCA_URL_KEY, "");
         blackDuckScaParametersMap.put(ApplicationConstants.BLACKDUCKSCA_TOKEN_KEY, TEST_BLACKDUCKSCA_TOKEN);
 
-        assertFalse(blackDuckSCAParametersService.isValidBlackDuckParameters(blackDuckScaParametersMap));
+        assertFalse(blackDuckSCAParametersService.hasAllMandatoryBlackduckSCAParams(blackDuckScaParametersMap));
     }
 
     @Test

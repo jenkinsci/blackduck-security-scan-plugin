@@ -30,7 +30,7 @@ public class ScanParametersService {
                 || securityProducts.contains(SecurityProduct.BLACKDUCKSCA.name())) {
             BlackDuckSCAParametersService blackDuckSCAParametersService =
                     new BlackDuckSCAParametersService(listener, envVars);
-            if (!blackDuckSCAParametersService.isValidBlackDuckParameters(scanParameters)) {
+            if (!blackDuckSCAParametersService.hasAllMandatoryBlackduckSCAParams(scanParameters)) {
                 throw new PluginExceptionHandler(ErrorCode.INVALID_BLACKDUCKSCA_PARAMETERS);
             }
         }
