@@ -72,13 +72,13 @@ public class ScanInitializer {
             throws PluginExceptionHandler {
         if (isNetworkAirgap && !bridgeDownloadParams.getBridgeDownloadUrl().contains(".zip") && !isBridgeInstalled) {
             logger.error(
-                    ApplicationConstants.BRIDGE_CLI_COULD_NOT_BE_FOUND_IN_INSTALLATION_PATH,
+                    ApplicationConstants.BRIDGE_CLI_EXECUTABLE_FILE_NOT_FOUND,
                     bridgeDownloadParams.getBridgeInstallationPath());
             throw new PluginExceptionHandler(ErrorCode.BRIDGE_CLI_NOT_FOUND_IN_PROVIDED_PATH);
         }
 
         if (isNetworkAirgap) {
-            logger.info("Network Air Gap mode is enabled");
+            logger.info("Network air gap is enabled, skipping Bridge CLI download.");
         }
     }
 

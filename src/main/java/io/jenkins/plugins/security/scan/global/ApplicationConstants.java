@@ -179,9 +179,9 @@ public class ApplicationConstants {
     public static final String REQUIRED_PARAMETERS_FOR_SPECIFIC_SCAN_TYPE_IS_MISSING =
             "%s - required parameters for %s is missing";
     public static final String REQUIRED_SRM_PROJECT_NAME_OR_ID = "One of %s or %s must be present.";
-    public static final String INVALID_BRIDGE_DOWNLOAD_URL = "The provided Bridge download URL is not valid: %s";
-    public static final String INVALID_BRIDGE_DOWNLOAD_VERSION =
-            "The provided Bridge download version is not valid: %s";
+    public static final String INVALID_BRIDGE_CLI_URL = "Provided Bridge CLI URL is not valid: %s";
+    public static final String BRIDGE_CLI_VERSION_NOT_FOUND =
+            "Provided Bridge CLI version not found in artifactory: %s";
     public static final String PRCOMMENT_SET_TRUE_BUT_NO_SCM_TOKEN_FOUND =
             "PrComment is set true but no %s token found!";
     public static final String UNZIPPING_BRIDGE_CLI_ZIP_FILE =
@@ -231,8 +231,8 @@ public class ApplicationConstants {
             "An exception occurred while extracting bridge-version from the 'versions.txt': %s";
     public static final String BRIDGE_CLI_DOWNLOAD_FAILED_WITH_STATUS_CODE =
             "Bridge CLI download failed with status code: %s and plugin won't retry to download";
-    public static final String BRIDGE_CLI_COULD_NOT_BE_FOUND_IN_INSTALLATION_PATH =
-            "Bridge CLI could not be found in %s";
+    public static final String BRIDGE_CLI_EXECUTABLE_FILE_NOT_FOUND =
+            "Bridge CLI executable file could not be found at %s";
     public static final String EXCEPTION_WHILE_INVOKING_BRIDGE_CLI =
             "An exception occurred while invoking bridge-cli from the plugin: %s";
     public static final String INTERRUPTED_WHILE_WAITING_TO_RETRY_BRIDGE_CLI_DOWNLOAD =
@@ -254,9 +254,7 @@ public class ApplicationConstants {
             "Bridge CLI download failed and attempt#%s to download again.";
     public static final String EXCEPTION_WHILE_DELETING_BRIDGE_CLI_ZIP_FILE =
             "An exception occurred while deleting Bridge CLI zip file: %s";
-    public static final String BRIDGE_DOWNLOAD_URL_IS_EMPTY = "The provided Bridge download URL is empty";
-    public static final String RECOMMENDING_TO_USE_BLACKDUCK_SCAN_STEP =
-            "This step is deprecated and will be removed in the future. Please use %s instead.";
+    public static final String EMPTY_BRIDGE_CLI_URL = "Provided Bridge CLI URL cannot be empty";
     public static final String UNSUPPORTED_VALUE_FOR_MARK_BUILD_STATUS_AND_SUPPORTED_VALUES_FOR_BUILD_STATUS =
             "Unsupported value for %s: %s. Supported values are: %s";
     public static final String

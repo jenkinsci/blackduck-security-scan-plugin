@@ -44,7 +44,7 @@ public class BridgeDownloadParametersService {
 
     public boolean isValidUrl(String url) {
         if (url.isEmpty()) {
-            logger.warn(ApplicationConstants.BRIDGE_DOWNLOAD_URL_IS_EMPTY);
+            logger.warn(ApplicationConstants.EMPTY_BRIDGE_CLI_URL);
             return false;
         }
 
@@ -52,7 +52,7 @@ public class BridgeDownloadParametersService {
             new URL(url);
             return true;
         } catch (MalformedURLException me) {
-            logger.error(ApplicationConstants.INVALID_BRIDGE_DOWNLOAD_URL, me.getMessage());
+            logger.error(ApplicationConstants.INVALID_BRIDGE_CLI_URL, me.getMessage());
             return false;
         }
     }
@@ -63,7 +63,7 @@ public class BridgeDownloadParametersService {
         if (matcher.matches() || version.equals(ApplicationConstants.BRIDGE_CLI_LATEST_VERSION)) {
             return true;
         } else {
-            logger.error(ApplicationConstants.INVALID_BRIDGE_DOWNLOAD_VERSION, version);
+            logger.error(ApplicationConstants.BRIDGE_CLI_VERSION_NOT_FOUND, version);
             return false;
         }
     }
