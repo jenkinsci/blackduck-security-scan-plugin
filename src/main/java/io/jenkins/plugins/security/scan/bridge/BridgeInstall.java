@@ -3,10 +3,7 @@ package io.jenkins.plugins.security.scan.bridge;
 import hudson.FilePath;
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
-import io.jenkins.plugins.security.scan.global.ErrorCode;
-import io.jenkins.plugins.security.scan.global.HomeDirectoryTask;
-import io.jenkins.plugins.security.scan.global.LoggerWrapper;
-import io.jenkins.plugins.security.scan.global.Utility;
+import io.jenkins.plugins.security.scan.global.*;
 import java.io.IOException;
 import jenkins.model.Jenkins;
 
@@ -28,7 +25,7 @@ public class BridgeInstall {
                 logger.info("Bridge CLI installed successfully in: %s", bridgeInstallationPath.getRemote());
             }
         } catch (IOException | InterruptedException e) {
-            logger.error("An exception occurred while unzipping Bridge CLI zip file: " + e.getMessage());
+            logger.error(ApplicationConstants.UNZIPPING_BRIDGE_CLI_ZIP_FILE, e.getMessage());
             Thread.currentThread().interrupt();
             throw new PluginExceptionHandler(ErrorCode.BRIDGE_CLI_UNZIPPING_FAILED);
         }
@@ -39,7 +36,7 @@ public class BridgeInstall {
                 bridgeZipPath.delete();
             }
         } catch (IOException | InterruptedException e) {
-            logger.warn("An exception occurred while deleting Bridge CLI zip file: " + e.getMessage());
+            logger.warn(ApplicationConstants.EXCEPTION_WHILE_DELETING_BRIDGE_CLI_ZIP_FILE, e.getMessage());
             Thread.currentThread().interrupt();
         }
     }
@@ -61,7 +58,7 @@ public class BridgeInstall {
         try {
             defaultInstallationPath = workspace.act(new HomeDirectoryTask(separator));
         } catch (IOException | InterruptedException e) {
-            logger.error("Failed to fetch plugin's default installation path: %s", e.getMessage());
+            logger.error(ApplicationConstants.FAILED_TO_FETCH_PLUGINS_DEFAULT_INSTALLATION_PATH, e.getMessage());
             Thread.currentThread().interrupt();
         }
 
@@ -76,7 +73,7 @@ public class BridgeInstall {
                 logger.info("Created bridge installation directory at: " + directory.getRemote());
             }
         } catch (IOException | InterruptedException e) {
-            logger.error("Failed to create default installation directory: " + directory.getRemote());
+            logger.error(ApplicationConstants.FAILED_TO_CREATE_DEFAULT_INSTALLATION_DIRECTORY, directory.getRemote());
             Thread.currentThread().interrupt();
         }
     }

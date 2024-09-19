@@ -35,7 +35,7 @@ public class GithubRepositoryService {
         boolean isPrCommentSet = ToolsParameterService.isPrCommentValueSet(scanParameters);
 
         if (isPrCommentSet && Utility.isStringNullOrBlank(githubToken)) {
-            logger.error("PrComment is set true but no GitHub token found!");
+            logger.error(ApplicationConstants.PRCOMMENT_SET_TRUE_BUT_NO_SCM_TOKEN_FOUND, "GitHub");
             throw new PluginExceptionHandler(ErrorCode.NO_GITHUB_TOKEN_FOUND);
         }
 

@@ -80,7 +80,7 @@ public class BridgeDownloadManager {
                         && versionFile.exists();
             }
         } catch (IOException | InterruptedException e) {
-            logger.error("An exception occurred while checking if the bridge is installed: " + e.getMessage());
+            logger.error(ApplicationConstants.EXCEPTION_WHILE_CHECKING_IF_THE_BRIDGE_IS_INSTALLED, e.getMessage());
             Thread.currentThread().interrupt();
         }
         return false;
@@ -100,7 +100,7 @@ public class BridgeDownloadManager {
             }
         } catch (IOException | InterruptedException e) {
             logger.error(
-                    "An exception occurred while extracting bridge-version from the 'versions.txt': " + e.getMessage());
+                    ApplicationConstants.EXCEPTION_WHILE_EXTRACTING_BRIDGE_VERSION_FROM_VERSIONS_TXT, e.getMessage());
             Thread.currentThread().interrupt();
         }
         return null;
@@ -141,7 +141,7 @@ public class BridgeDownloadManager {
                 tempVersionFilePath = tempFilePath.getRemote();
             }
         } catch (IOException | InterruptedException e) {
-            logger.error("An exception occurred while downloading 'versions.txt': " + e.getMessage());
+            logger.error(ApplicationConstants.EXCEPTION_WHILE_DOWNLOADING_VERSIONS_TXT, e.getMessage());
             Thread.currentThread().interrupt();
         }
         return tempVersionFilePath;
@@ -157,8 +157,9 @@ public class BridgeDownloadManager {
                 return (connection.getResponseCode() >= 200 && connection.getResponseCode() < 300);
             }
         } catch (IOException e) {
-            logger.error("An exception occurred while checking if 'versions.txt' is available or not in the URL: "
-                    + e.getMessage());
+            logger.error(
+                    ApplicationConstants.EXCEPTION_WHILE_CHECKING_VERSIONS_TXT_IS_AVAILABLE_OR_NOT_IN_THE_URL,
+                    e.getMessage());
         }
         return false;
     }
@@ -176,7 +177,7 @@ public class BridgeDownloadManager {
             String directoryPath = path.substring(0, path.lastIndexOf('/'));
             directoryUrl = uri.getScheme().concat("://").concat(uri.getHost()).concat(directoryPath);
         } catch (URISyntaxException e) {
-            logger.error("An exception occurred while getting directoryUrl from downloadUrl: " + e.getMessage());
+            logger.error(ApplicationConstants.EXCEPTION_WHILE_GETTING_DIRECTORY_URL_FROM_DOWNLOAD_URL, e.getMessage());
         }
         return directoryUrl;
     }

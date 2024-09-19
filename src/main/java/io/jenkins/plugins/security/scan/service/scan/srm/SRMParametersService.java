@@ -5,6 +5,7 @@ import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.global.Utility;
+import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import io.jenkins.plugins.security.scan.input.project.Project;
 import io.jenkins.plugins.security.scan.input.srm.Branch;
 import io.jenkins.plugins.security.scan.input.srm.SRM;
@@ -36,7 +37,10 @@ public class SRMParametersService {
             logger.info("SRM parameters are validated successfully");
             return true;
         } else {
-            logger.error(missingMandatoryParams + " - required parameters for SRM is missing");
+            logger.error(
+                    ApplicationConstants.REQUIRED_PARAMETERS_FOR_SPECIFIC_SCAN_TYPE_IS_MISSING,
+                    missingMandatoryParams.toString(),
+                    SecurityProduct.SRM.name());
             return false;
         }
     }
@@ -75,8 +79,10 @@ public class SRMParametersService {
                             .isEmpty();
 
             if (!isProjectNameValid && !isProjectIdValid) {
-                logger.error("One of " + ApplicationConstants.SRM_PROJECT_NAME_KEY + " or "
-                        + ApplicationConstants.SRM_PROJECT_ID_KEY + " must be present.");
+                logger.error(
+                        ApplicationConstants.REQUIRED_SRM_PROJECT_NAME_OR_ID,
+                        ApplicationConstants.SRM_PROJECT_NAME_KEY,
+                        ApplicationConstants.SRM_PROJECT_ID_KEY);
                 missingMandatoryParams.add(ApplicationConstants.SRM_PROJECT_ID_KEY);
             }
         }
@@ -97,7 +103,10 @@ public class SRMParametersService {
                 jobTypeName = "Pipeline";
             }
 
-            logger.error(missingMandatoryParams + " - required parameters for " + jobTypeName + " job type is missing");
+            logger.error(
+                    ApplicationConstants.REQUIRED_PARAMETERS_FOR_SPECIFIC_JOB_TYPE_IS_MISSING,
+                    missingMandatoryParams,
+                    jobTypeName);
         }
     }
 

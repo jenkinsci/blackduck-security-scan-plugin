@@ -38,7 +38,7 @@ public class BitbucketRepositoryService {
         boolean isPrCommentSet = ToolsParameterService.isPrCommentValueSet(scanParameters);
 
         if (isPrCommentSet && Utility.isStringNullOrBlank(bitbucketToken)) {
-            logger.error("PrComment is set true but no Bitbucket token found!");
+            logger.error(ApplicationConstants.PRCOMMENT_SET_TRUE_BUT_NO_SCM_TOKEN_FOUND, "Bitbucket");
             throw new PluginExceptionHandler(ErrorCode.NO_BITBUCKET_TOKEN_FOUND);
         }
 
@@ -50,7 +50,8 @@ public class BitbucketRepositoryService {
             bitbucketRepository = bitbucketApiFromSCMSource.getRepository();
         } catch (Exception e) {
             logger.error(
-                    "An exception occurred while getting the BitbucketRepository from BitbucketApi: " + e.getMessage());
+                    ApplicationConstants.EXCEPTION_WHILE_GETTING_THE_BITBUCKET_REPOSITORY_FROM_BITBUCKET_API,
+                    e.getMessage());
             Thread.currentThread().interrupt();
         }
 

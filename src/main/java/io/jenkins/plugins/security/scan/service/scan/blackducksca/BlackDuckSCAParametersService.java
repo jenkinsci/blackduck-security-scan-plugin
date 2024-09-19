@@ -5,6 +5,7 @@ import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.global.Utility;
+import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import io.jenkins.plugins.security.scan.input.blackducksca.Automation;
 import io.jenkins.plugins.security.scan.input.blackducksca.BlackDuckSCA;
 import io.jenkins.plugins.security.scan.input.blackducksca.Failure;
@@ -28,11 +29,26 @@ public class BlackDuckSCAParametersService {
         this.envVars = envVars;
     }
 
-    public boolean isValidBlackDuckSCAParameters(Map<String, Object> blackDuckSCAParameters) {
+    public boolean hasAllMandatoryBlackduckSCAParams(Map<String, Object> blackDuckSCAParameters) {
         if (blackDuckSCAParameters == null || blackDuckSCAParameters.isEmpty()) {
             return false;
         }
 
+        List<String> missingMandatoryParams = getBlackDuckSCAMissingMandatoryParams(blackDuckSCAParameters);
+
+        if (missingMandatoryParams.isEmpty()) {
+            logger.info("Black Duck SCA parameters are validated successfully");
+            return true;
+        } else {
+            logger.error(
+                    ApplicationConstants.REQUIRED_PARAMETERS_FOR_SPECIFIC_SCAN_TYPE_IS_MISSING,
+                    missingMandatoryParams.toString(),
+                    SecurityProduct.BLACKDUCKSCA.getProductLabel());
+            return false;
+        }
+    }
+
+    private List<String> getBlackDuckSCAMissingMandatoryParams(Map<String, Object> blackDuckSCAParameters) {
         List<String> missingMandatoryParams = new ArrayList<>();
 
         Arrays.asList(ApplicationConstants.BLACKDUCKSCA_URL_KEY, ApplicationConstants.BLACKDUCKSCA_TOKEN_KEY)
@@ -46,12 +62,28 @@ public class BlackDuckSCAParametersService {
                     }
                 });
 
-        if (missingMandatoryParams.isEmpty()) {
-            logger.info("Black Duck SCA parameters are validated successfully");
-            return true;
-        } else {
-            logger.error(missingMandatoryParams + " - required parameters for Black Duck SCA is missing");
-            return false;
+        String jobType = Utility.jenkinsJobType(envVars);
+
+        showErrorMessageForJobType(missingMandatoryParams, jobType);
+
+        return missingMandatoryParams;
+    }
+
+    private void showErrorMessageForJobType(List<String> missingMandatoryParams, String jobType) {
+        if (!missingMandatoryParams.isEmpty()) {
+            String jobTypeName;
+            if (jobType.equalsIgnoreCase(ApplicationConstants.FREESTYLE_JOB_TYPE_NAME)) {
+                jobTypeName = "FreeStyle";
+            } else if (jobType.equalsIgnoreCase(ApplicationConstants.MULTIBRANCH_JOB_TYPE_NAME)) {
+                jobTypeName = "Multibranch Pipeline";
+            } else {
+                jobTypeName = "Pipeline";
+            }
+
+            logger.error(
+                    ApplicationConstants.REQUIRED_PARAMETERS_FOR_SPECIFIC_JOB_TYPE_IS_MISSING,
+                    missingMandatoryParams,
+                    jobTypeName);
         }
     }
 

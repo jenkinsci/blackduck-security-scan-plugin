@@ -172,6 +172,98 @@ public class ApplicationConstants {
     public static final String GITLAB_TOKEN_KEY = "gitlab_token";
     public static final String MARK_BUILD_STATUS = "mark_build_status";
 
+    // Error Log Related Constants
+    public static final String INVALID_SECURITY_PRODUCT = "Invalid Security Product";
+    public static final String REQUIRED_PARAMETERS_FOR_SPECIFIC_JOB_TYPE_IS_MISSING =
+            "%s - required parameters for %s job type is missing";
+    public static final String REQUIRED_PARAMETERS_FOR_SPECIFIC_SCAN_TYPE_IS_MISSING =
+            "%s - required parameters for %s is missing";
+    public static final String REQUIRED_SRM_PROJECT_NAME_OR_ID = "One of %s or %s must be present.";
+    public static final String INVALID_BRIDGE_CLI_URL = "Provided Bridge CLI URL is not valid: %s";
+    public static final String BRIDGE_CLI_VERSION_NOT_FOUND =
+            "Provided Bridge CLI version not found in artifactory: %s";
+    public static final String PRCOMMENT_SET_TRUE_BUT_NO_SCM_TOKEN_FOUND =
+            "PrComment is set true but no %s token found!";
+    public static final String UNZIPPING_BRIDGE_CLI_ZIP_FILE =
+            "An exception occurred while unzipping Bridge CLI zip file: %s";
+    public static final String BRIDGE_DOWNLOAD_FAILED_AFTER_X_ATTEMPTS = "Bridge CLI download failed after %s attempts";
+    public static final String ARCHIVING_REPORTS_IN_JENKINS_ARTIFACT =
+            "An exception occurred while archiving %s in jenkins artifact: %s";
+    public static final String ARCHIVING_REPORTS_FAILED_AS_REPORT_PATH_NOT_FOUND =
+            "Archiving %s failed as %s path not found at: %s";
+    public static final String VALIDATING_THE_INSTALLATION_PATH_EXCEPTION =
+            "An exception occurred while validating the installation path: %s";
+    public static final String BRIDGE_INSTALLATION_PARENT_PATH_IS_NOT_A_DIRECTORY =
+            "The bridge installation parent path: %s is not a directory";
+    public static final String BRIDGE_INSTALLATION_PARENT_PATH_DOES_NOT_EXIST =
+            "The bridge installation parent path: %s doesn't exist";
+    public static final String BRIDGE_INSTALLATION_PARENT_PATH_IS_NOT_WRITABLE =
+            "The bridge installation parent path: %s is not writable";
+    public static final String BRIDGE_DOWNLOAD_PARAMETERS_ARE_NOT_VALID = "Bridge download parameters are not valid";
+    public static final String FAILED_TO_CREATE_JSON_FILE_IN_WORKSPACE_PARENT_PATH =
+            "Failed to create json file in workspace parent path";
+    public static final String WRITING_INTO_JSON_FILE_EXCEPTION =
+            "An exception occurred while writing into json file: %s";
+    public static final String CREATING_INPUT_JSON_FILE_EXCEPTION =
+            "An exception occurred while creating input.json file: %s";
+    public static final String HTTP_URL_CONNECTION_EXCEPTION =
+            "An exception occurred while getting HttpURLConnection: %s";
+    public static final String DELETING_FILE_EXCEPTION = "An exception occurred while deleting file: %s";
+    public static final String FETCHING_OS_ARCHITECTURE_INFORMATION_FOR_THE_AGENT_NODE_EXCEPTION =
+            "An exception occurred while fetching the OS architecture information for the agent node: %s";
+    public static final String FETCHING_OS_INFORMATION_FOR_THE_AGENT_NODE_EXCEPTION =
+            "An exception occurred while fetching the OS information for the agent node: %s";
+    public static final String NECESSARY_BRANCH_SOURCE_PLUGIN_IS_NOT_INSTALLED =
+            "Necessary 'Branch Source Plugin' is not installed in Jenkins instance. Please install necessary 'Branch Source Plugin' in your Jenkins instance";
+    public static final String FAILED_TO_CREATE_DEFAULT_INSTALLATION_DIRECTORY =
+            "Failed to create default installation directory: %s";
+    public static final String FAILED_TO_FETCH_PLUGINS_DEFAULT_INSTALLATION_PATH =
+            "Failed to fetch plugin's default installation path: %s";
+    public static final String EXCEPTION_WHILE_GETTING_THE_BITBUCKET_REPOSITORY_FROM_BITBUCKET_API =
+            "An exception occurred while getting the BitbucketRepository from BitbucketApi: %s";
+    public static final String EXCEPTION_WHILE_GETTING_DIRECTORY_URL_FROM_DOWNLOAD_URL =
+            "An exception occurred while getting directoryUrl from downloadUrl: %s";
+    public static final String EXCEPTION_WHILE_CHECKING_VERSIONS_TXT_IS_AVAILABLE_OR_NOT_IN_THE_URL =
+            "An exception occurred while checking if 'versions.txt' is available or not in the URL: %s";
+    public static final String EXCEPTION_WHILE_DOWNLOADING_VERSIONS_TXT =
+            "An exception occurred while downloading 'versions.txt': %s";
+    public static final String EXCEPTION_WHILE_EXTRACTING_BRIDGE_VERSION_FROM_VERSIONS_TXT =
+            "An exception occurred while extracting bridge-version from the 'versions.txt': %s";
+    public static final String BRIDGE_CLI_DOWNLOAD_FAILED_WITH_STATUS_CODE =
+            "Bridge CLI download failed with status code: %s and plugin won't retry to download";
+    public static final String BRIDGE_CLI_EXECUTABLE_FILE_NOT_FOUND =
+            "Bridge CLI executable file could not be found at %s";
+    public static final String EXCEPTION_WHILE_INVOKING_BRIDGE_CLI =
+            "An exception occurred while invoking bridge-cli from the plugin: %s";
+    public static final String INTERRUPTED_WHILE_WAITING_TO_RETRY_BRIDGE_CLI_DOWNLOAD =
+            "Interrupted while waiting to retry Bridge CLI download";
+    public static final String EXCEPTION_WHILE_CHECKING_THE_HTTP_STATUS_CODE =
+            "An exception occurred while checking the http status code: %s";
+    public static final String EXCEPTION_WHILE_CHECKING_BRIDGE_URL_EXISTS_OR_NOT =
+            "An exception occurred while checking bridge url exists or not: %s";
+    public static final String EXCEPTION_WHILE_CHECKING_IF_THE_BRIDGE_IS_INSTALLED =
+            "An exception occurred while checking if the bridge is installed: %s";
+
+    // Warn Log Related Constants
+    public static final String BRIDGE_CLI_WILL_BE_DOWNLOADED_FROM_THE_PROVIDED_CUSTOM_URL =
+            "Bridge-CLI will be downloaded from the provided custom URL. Make sure the network is reachable";
+    public static final String INVALID_BRIDGE_CLI_DOWNLOAD_URL = "Invalid Bridge CLI download URL: %s";
+    public static final String EXCEPTION_OCCURRED_IN_BETWEEN_CONSECUTIVE_RETRY_ATTEMPTS =
+            "An exception occurred in between consecutive retry attempts: %s";
+    public static final String BRIDGE_CLI_DOWNLOAD_FAILED_AND_ATTEMPT_TO_DOWNLOAD_AGAIN =
+            "Bridge CLI download failed and attempt#%s to download again.";
+    public static final String EXCEPTION_WHILE_DELETING_BRIDGE_CLI_ZIP_FILE =
+            "An exception occurred while deleting Bridge CLI zip file: %s";
+    public static final String EMPTY_BRIDGE_CLI_URL = "Provided Bridge CLI URL cannot be empty";
+    public static final String UNSUPPORTED_VALUE_FOR_MARK_BUILD_STATUS_AND_SUPPORTED_VALUES_FOR_BUILD_STATUS =
+            "Unsupported value for %s: %s. Supported values are: %s";
+    public static final String
+            DEPRECATED_PARAMETERS_WILL_BE_REMOVED_IN_FUTURE_AND_CHECK_DOCUMENTATION_FOR_NEW_PARAMETERS =
+                    "%s is/are deprecated and will be removed in future. Check documentation for new parameters: %s";
+    public static final String
+            DEPRECATED_PRODUCT_WILL_BE_REMOVED_IN_FUTURE_AND_RECOMMENDING_TO_USE_NEW_PRODUCT_AND_ITS_PARAMETERS =
+                    "%s product is deprecated and will be removed in future. Please use %s and its corresponding parameters instead.";
+
     // Bridge Download Parameters
     @Deprecated
     public static final String SYNOPSYS_BRIDGE_DOWNLOAD_URL = "synopsys_bridge_download_url";

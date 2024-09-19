@@ -6,6 +6,7 @@ import hudson.Launcher;
 import hudson.model.Run;
 import hudson.model.TaskListener;
 import hudson.tasks.ArtifactArchiver;
+import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.global.enums.ReportType;
 
@@ -40,14 +41,16 @@ public class UploadReportService {
                             "Archiving " + reportType.name() + " jenkins artifact from: " + reportsPath.getRemote());
                     artifactArchiver.perform(run, path, envVars, launcher, listener);
                 } else {
-                    logger.error("Archiving " + reportType.name() + " failed as " + reportType.name()
-                            + " path not found at: " + path.getRemote());
+                    logger.error(
+                            ApplicationConstants.ARCHIVING_REPORTS_FAILED_AS_REPORT_PATH_NOT_FOUND,
+                            reportType.name(),
+                            reportType.name(),
+                            path.getRemote());
                     return;
                 }
             }
         } catch (Exception e) {
-            logger.error("An exception occurred while archiving " + reportType.name() + " in jenkins artifact: "
-                    + e.getMessage());
+            logger.error(ApplicationConstants.ARCHIVING_REPORTS_IN_JENKINS_ARTIFACT, reportType.name(), e.getMessage());
             Thread.currentThread().interrupt();
             return;
         }

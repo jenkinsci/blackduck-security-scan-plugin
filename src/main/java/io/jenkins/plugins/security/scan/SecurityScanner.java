@@ -67,7 +67,7 @@ public class SecurityScanner {
                     .quiet(true)
                     .join();
         } catch (Exception e) {
-            logger.error("An exception occurred while invoking bridge-cli from the plugin: %s", e.getMessage());
+            logger.error(ApplicationConstants.EXCEPTION_WHILE_INVOKING_BRIDGE_CLI, e.getMessage());
             Thread.currentThread().interrupt();
         } finally {
             logger.println(

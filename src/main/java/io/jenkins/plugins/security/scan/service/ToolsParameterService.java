@@ -214,7 +214,7 @@ public class ToolsParameterService {
         try {
             return mapper.writeValueAsString(inputJsonMap);
         } catch (Exception e) {
-            logger.error("An exception occurred while creating input.json file: " + e.getMessage());
+            logger.error(ApplicationConstants.CREATING_INPUT_JSON_FILE_EXCEPTION, e.getMessage());
         }
         return null;
     }
@@ -303,10 +303,10 @@ public class ToolsParameterService {
                 tempFile.write(inputJson, StandardCharsets.UTF_8.name());
                 inputJsonPath = tempFile.getRemote();
             } else {
-                logger.error("Failed to create json file in workspace parent path");
+                logger.error(ApplicationConstants.FAILED_TO_CREATE_JSON_FILE_IN_WORKSPACE_PARENT_PATH);
             }
         } catch (Exception e) {
-            logger.error("An exception occurred while writing into json file: " + e.getMessage());
+            logger.error(ApplicationConstants.WRITING_INTO_JSON_FILE_EXCEPTION, e.getMessage());
             Thread.currentThread().interrupt();
         }
 

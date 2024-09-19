@@ -5,6 +5,7 @@ import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.global.Utility;
+import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import io.jenkins.plugins.security.scan.input.polaris.Parent;
 import io.jenkins.plugins.security.scan.input.polaris.Polaris;
 import io.jenkins.plugins.security.scan.input.polaris.Prcomment;
@@ -43,7 +44,10 @@ public class PolarisParametersService {
             logger.info("Polaris parameters are validated successfully");
             return true;
         } else {
-            logger.error(missingMandatoryParams + " - required parameters for Polaris is missing");
+            logger.error(
+                    ApplicationConstants.REQUIRED_PARAMETERS_FOR_SPECIFIC_SCAN_TYPE_IS_MISSING,
+                    missingMandatoryParams.toString(),
+                    SecurityProduct.POLARIS.getProductLabel());
             return false;
         }
     }
@@ -86,7 +90,10 @@ public class PolarisParametersService {
                 jobTypeName = "Pipeline";
             }
 
-            logger.error(missingMandatoryParams + " - required parameters for " + jobTypeName + " job type is missing");
+            logger.error(
+                    ApplicationConstants.REQUIRED_PARAMETERS_FOR_SPECIFIC_JOB_TYPE_IS_MISSING,
+                    missingMandatoryParams,
+                    jobTypeName);
         }
     }
 

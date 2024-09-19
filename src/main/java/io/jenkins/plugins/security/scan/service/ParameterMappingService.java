@@ -718,7 +718,7 @@ public class ParameterMappingService {
                                 || p.equals(SecurityProduct.SRM.name()));
 
         if (!isValid) {
-            logger.error("Invalid Security Product");
+            logger.error(ApplicationConstants.INVALID_SECURITY_PRODUCT);
             logger.info("Supported values for security products: "
                     + Arrays.stream(SecurityProduct.values())
                             .filter(p -> p != SecurityProduct.BLACKDUCK)
@@ -739,10 +739,12 @@ public class ParameterMappingService {
                     result = Utility.getMappedResultForBuildStatus(buildStatus);
                 }
             } catch (IllegalArgumentException e) {
-                logger.warn("Unsupported value for " + ApplicationConstants.MARK_BUILD_STATUS
-                        + ": " + markBuildIfIssuesArePresent
-                        + ". Supported values are: "
-                        + Arrays.asList(BuildStatus.values()));
+                logger.warn(
+                        ApplicationConstants
+                                .UNSUPPORTED_VALUE_FOR_MARK_BUILD_STATUS_AND_SUPPORTED_VALUES_FOR_BUILD_STATUS,
+                        ApplicationConstants.MARK_BUILD_STATUS,
+                        markBuildIfIssuesArePresent,
+                        Arrays.asList(BuildStatus.values()));
             }
         }
 

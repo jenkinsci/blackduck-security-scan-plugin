@@ -33,8 +33,7 @@ public class Utility {
             try {
                 os = workspace.act(new OsNameTask());
             } catch (IOException | InterruptedException e) {
-                logger.error("An exception occurred while fetching the OS information for the agent node: "
-                        + e.getMessage());
+                logger.error(ApplicationConstants.FETCHING_OS_INFORMATION_FOR_THE_AGENT_NODE_EXCEPTION, e.getMessage());
                 Thread.currentThread().interrupt();
             }
         } else {
@@ -52,8 +51,9 @@ public class Utility {
             try {
                 arch = workspace.act(new OsArchTask());
             } catch (IOException | InterruptedException e) {
-                logger.error("An exception occurred while fetching OS architecture information for the agent node: "
-                        + e.getMessage());
+                logger.error(
+                        ApplicationConstants.FETCHING_OS_ARCHITECTURE_INFORMATION_FOR_THE_AGENT_NODE_EXCEPTION,
+                        e.getMessage());
                 Thread.currentThread().interrupt();
             }
         } else {
@@ -73,7 +73,7 @@ public class Utility {
                 file.delete();
             }
         } catch (IOException | InterruptedException e) {
-            logger.error("An exception occurred while deleting file: " + e.getMessage());
+            logger.error(ApplicationConstants.DELETING_FILE_EXCEPTION, e.getMessage());
             Thread.currentThread().interrupt();
         }
     }
@@ -97,7 +97,7 @@ public class Utility {
                 return connection;
             }
         } catch (IOException e) {
-            logger.error("An exception occurred while getting HttpURLConnection: " + e.getMessage());
+            logger.error(ApplicationConstants.HTTP_URL_CONNECTION_EXCEPTION, e.getMessage());
         }
 
         return null;

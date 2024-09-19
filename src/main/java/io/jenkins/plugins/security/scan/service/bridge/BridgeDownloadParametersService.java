@@ -37,14 +37,14 @@ public class BridgeDownloadParametersService {
             logger.info("Bridge download parameters are validated successfully");
             return true;
         } else {
-            logger.error("Bridge download parameters are not valid");
+            logger.error(ApplicationConstants.BRIDGE_DOWNLOAD_PARAMETERS_ARE_NOT_VALID);
             throw new PluginExceptionHandler(ErrorCode.INVALID_BRIDGE_DOWNLOAD_PARAMETERS);
         }
     }
 
     public boolean isValidUrl(String url) {
         if (url.isEmpty()) {
-            logger.warn("The provided Bridge download URL is empty");
+            logger.warn(ApplicationConstants.EMPTY_BRIDGE_CLI_URL);
             return false;
         }
 
@@ -52,7 +52,7 @@ public class BridgeDownloadParametersService {
             new URL(url);
             return true;
         } catch (MalformedURLException me) {
-            logger.error("The provided Bridge download URL is not valid: %s", me.getMessage());
+            logger.error(ApplicationConstants.INVALID_BRIDGE_CLI_URL, me.getMessage());
             return false;
         }
     }
@@ -63,7 +63,7 @@ public class BridgeDownloadParametersService {
         if (matcher.matches() || version.equals(ApplicationConstants.BRIDGE_CLI_LATEST_VERSION)) {
             return true;
         } else {
-            logger.error("The provided Bridge download version is not valid: %s", version);
+            logger.error(ApplicationConstants.BRIDGE_CLI_VERSION_NOT_FOUND, version);
             return false;
         }
     }
@@ -80,19 +80,24 @@ public class BridgeDownloadParametersService {
                 if (isWritable) {
                     return true;
                 } else {
-                    logger.error("The bridge installation parent path: %s is not writable", parentPath.toURI());
+                    logger.error(
+                            ApplicationConstants.BRIDGE_INSTALLATION_PARENT_PATH_IS_NOT_WRITABLE, parentPath.toURI());
                     return false;
                 }
             } else {
                 if (parentPath == null || !parentPath.exists()) {
-                    logger.error("The bridge installation parent path: %s doesn't exist", path.toURI());
+                    logger.error(
+                            ApplicationConstants.BRIDGE_INSTALLATION_PARENT_PATH_DOES_NOT_EXIST,
+                            path.toURI().toString());
                 } else if (!parentPath.isDirectory()) {
-                    logger.error("The bridge installation parent path: %s is not a directory", parentPath.toURI());
+                    logger.error(
+                            ApplicationConstants.BRIDGE_INSTALLATION_PARENT_PATH_IS_NOT_A_DIRECTORY,
+                            parentPath.toURI().toString());
                 }
                 return false;
             }
         } catch (IOException | InterruptedException e) {
-            logger.error("An exception occurred while validating the installation path: " + e.getMessage());
+            logger.error(ApplicationConstants.VALIDATING_THE_INSTALLATION_PATH_EXCEPTION, e.getMessage());
             Thread.currentThread().interrupt();
             return false;
         }
