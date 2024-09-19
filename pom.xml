@@ -8,10 +8,10 @@
     <relativePath />
   </parent>
   <groupId>io.jenkins.plugins</groupId>
-  <artifactId>synopsys-security-scan</artifactId>
+  <artifactId>blackduck-security-scan</artifactId>
   <version>${revision}${changelist}</version>
   <packaging>hpi</packaging>
-  <name>Synopsys Security Scan</name>
+  <name>Black Duck Security Scan</name>
   <url>https://github.com/jenkinsci/${project.artifactId}-plugin</url>
   <licenses>
     <license>
@@ -27,7 +27,7 @@
   </scm>
   <properties>
     <!-- https://www.jenkins.io/doc/developer/plugin-development/choosing-jenkins-baseline/ -->
-    <revision>1.9.0</revision>
+    <revision>1.0.0</revision>
     <changelist>-SNAPSHOT</changelist>
     <jenkins.version>2.401.3</jenkins.version>
     <gitHubRepo>jenkinsci/${project.artifactId}-plugin</gitHubRepo>
@@ -186,8 +186,10 @@
         <version>0.8.10</version>
         <configuration>
           <excludes>
-            <exclude>io/jenkins/plugins/synopsys/security/scan/extension/**/*.class</exclude>
-            <exclude>io/jenkins/plugins/synopsys/security/scan/SecurityScanner.class</exclude>
+            <exclude>io/jenkins/plugins/security/scan/extension/**/*.class</exclude>
+            <exclude>io/jenkins/plugins/security/scan/SecurityScanner.class</exclude>
+            <exclude>io/jenkins/plugins/security/scan/input/**</exclude>
+            <exclude>io/jenkins/plugins/security/scan/service/scm/SCMRepositoryService.class</exclude>
           </excludes>
         </configuration>
         <executions>

@@ -1,0 +1,348 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form" xmlns:c="/lib/credentials">
+    <f:section title="Black Duck Security Scan">
+
+        <!-- Place a single info line above the tabs -->
+        <div class="tab-info">Black Duck Security Product Configuration </div>
+
+        <!-- Tab Container -->
+        <div class="tab-container-box">
+            <!-- Black Duck Tab -->
+            <div class="scan-tab-box" onclick="showProductType('blackducksca-section')">Black Duck SCA</div>
+            <!-- Coverity Tab -->
+            <div class="scan-tab-box" onclick="showProductType('coverity-section')">Coverity</div>
+            <!-- Polaris Tab -->
+            <div class="scan-tab-box" onclick="showProductType('polaris-section')">Polaris</div>
+            <!-- SRM Tab -->
+            <div class="scan-tab-box" onclick="showProductType('srm-section')">Software Risk Manager (SRM)</div>
+        </div>
+
+        <!-- Black Duck Configuration -->
+        <div class="product-type-section" id="blackducksca-section" style="display: block;"> <!-- Set display to block -->
+            <f:entry field="blackDuckSCAUrl" title="Black Duck SCA URL">
+                <f:textbox name="blackDuckSCAUrl" />
+            </f:entry>
+            <f:entry field="blackDuckSCACredentialsId" title="Black Duck SCA Token">
+                 <c:select/>
+            </f:entry>
+            <f:entry field="detectInstallationPath" title="Detect Install Directory (Optional)">
+                <f:textbox name="detectInstallationPath" />
+            </f:entry>
+            <div class="button-container">
+                <div class="flex-1">
+                    <f:validateButton method="testBlackDuckSCAConnection" title="Test Connection" progress="Testing..." with="blackDuckSCAUrl,blackDuckSCACredentialsId"/>
+                </div>
+                <f:entry>
+                    <button type="button" class="jenkins-button ml-7" onclick="clearAllTabFieldsAndTestConnectionMessages('blackducksca-section')">Clear</button>
+                </f:entry>
+            </div>
+        </div>
+
+        <!-- Coverity Configuration -->
+        <div class="product-type-section" id="coverity-section" style="display: none;">
+            <f:entry field="coverityConnectUrl" title="Coverity URL">
+                <f:textbox name="coverityConnectUrl" />
+            </f:entry>
+            <f:entry field="coverityCredentialsId" title="Coverity Credentials">
+                <c:select/>
+            </f:entry>
+            <f:entry field="coverityInstallationPath" title="Coverity Install Directory (Optional)">
+                <f:textbox name="coverityInstallationPath" />
+            </f:entry>
+            <div class="button-container">
+                <div class="flex-1">
+                    <f:validateButton method="testCoverityConnection" title="Test Connection" progress="Testing..." with="coverityConnectUrl,coverityCredentialsId"/>
+                </div>
+                <f:entry>
+                    <button type="button" class="jenkins-button ml-7" onclick="clearAllTabFieldsAndTestConnectionMessages('coverity-section')">Clear</button>
+                </f:entry>
+            </div>
+        </div>
+
+        <!-- Polaris Configuration -->
+        <div class="product-type-section" id="polaris-section" style="display: none;">
+            <f:entry field="polarisServerUrl" title="Polaris Server URL">
+                <f:textbox name="polarisServerUrl" />
+            </f:entry>
+            <f:entry field="polarisCredentialsId" title="Polaris Access Token">
+                <c:select/>
+            </f:entry>
+            <div class="button-container">
+                <div class="flex-1">
+                    <f:validateButton method="testPolarisConnection" title="Test Connection" progress="Testing..." with="polarisServerUrl,polarisCredentialsId"/>
+                </div>
+                <f:entry>
+                    <button type="button" class="jenkins-button ml-7" onclick="clearAllTabFieldsAndTestConnectionMessages('polaris-section')">Clear</button>
+                </f:entry>
+            </div>
+        </div>
+
+        <!-- SRM Configuration -->
+        <div class="product-type-section" id="srm-section" style="display: block;"> <!-- Set display to block -->
+            <f:entry field="srmUrl" title="SRM Server URL">
+                <f:textbox name="srmUrl" />
+            </f:entry>
+            <f:entry field="srmCredentialsId" title="SRM API Key">
+                <c:select/>
+            </f:entry>
+            <f:entry field="srmSCAInstallationPath" title="Detect Install Directory(Optional)">
+                <f:textbox name="srmSCAInstallationPath" />
+            </f:entry>
+            <f:entry field="srmSASTInstallationPath" title="Coverity Install Directory(Optional)">
+                <f:textbox name="srmSASTInstallationPath" />
+            </f:entry>
+            <div class="button-container">
+                <div class="flex-1">
+                    <f:validateButton method="testSrmConnection" title="Test Connection" progress="Testing..." with="srmUrl,srmCredentialsId"/>
+                </div>
+                <f:entry>
+                    <button type="button" class="jenkins-button ml-7" onclick="clearAllTabFieldsAndTestConnectionMessages('srm-section')">Clear</button>
+                </f:entry>
+            </div>
+        </div>
+
+        <div>
+            <f:entry field="bitbucketCredentialsId" title="Bitbucket Token / Username and App Password (Optional)">
+                <c:select/>
+            </f:entry>
+
+            <f:entry field="githubCredentialsId" title="GitHub Token (Optional)">
+                <c:select/>
+            </f:entry>
+
+            <f:entry field="gitlabCredentialsId" title="GitLab Token (Optional)">
+                <c:select/>
+            </f:entry>
+
+            <!-- Place a single info line above the tabs -->
+            <div class="tab-info-os">Configure Bridge CLI download URL for different platforms</div>
+
+            <!-- Tab Container for Bridge CLI Download URLs -->
+            <div class="tab-container-box">
+                <!-- Mac Tab -->
+                <div class="os-tab-box" onclick="showOSType('mac-section')">Mac</div>
+                <!-- Linux Tab -->
+                <div class="os-tab-box" onclick="showOSType('linux-section')">Linux </div>
+                <!-- Windows Tab -->
+                <div class="os-tab-box" onclick="showOSType('windows-section')">Windows</div>
+            </div>
+
+            <!-- Mac Download URL Configuration -->
+            <div class="os-section" id="mac-section" style="display: block;">
+                <f:entry field="bridgeDownloadUrlForMac" title="Bridge CLI Download URL (Optional)">
+                    <f:textbox name="bridgeDownloadUrlForMac" />
+                </f:entry>
+            </div>
+
+            <!-- Windows Download URL Configuration -->
+            <div class="os-section" id="windows-section" style="display: none;">
+                <f:entry field="bridgeDownloadUrlForWindows" title="Bridge CLI Download URL (Optional)">
+                    <f:textbox name="bridgeDownloadUrlForWindows" />
+                </f:entry>
+            </div>
+
+            <!-- Linux Download URL Configuration -->
+            <div class="os-section" id="linux-section" style="display: none;">
+                <f:entry field="bridgeDownloadUrlForLinux" title="Bridge CLI Download URL (Optional)">
+                    <f:textbox name="bridgeDownloadUrlForLinux" />
+                </f:entry>
+            </div>
+
+            <!-- Other Configuration -->
+            <f:entry field="bridgeDownloadVersion" title="Bridge CLI Download Version (Optional)">
+                <f:textbox/>
+            </f:entry>
+            <f:entry field="bridgeInstallationPath" title="Bridge CLI Installation Path (Optional)">
+                <f:textbox/>
+            </f:entry>
+        </div>
+    </f:section>
+
+    <style>
+        .tab-container-box {
+        display: flex;
+        margin-bottom: 10px;
+        }
+
+        .scan-tab-box, .os-tab-box {
+        cursor: pointer;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-right: 10px;
+        }
+
+        .tab:hover {
+        background-color: #f1f1f1;
+        }
+
+        .product-type-section, .os-section {
+        border: 2px dashed var(--input-border);
+        border-radius: 10px;
+        padding: 10px 10px 0px 10px;
+        margin-top: 10px;
+        margin-bottom: 20px;
+        }
+
+        .box-header {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        }
+
+        .tab-info {
+        font-size: 14px;
+        font-weight: bold;
+<!--        color: red; /* Text color */-->
+        margin-bottom: 10px; /* Adjust the margin as needed */
+        }
+
+        .tab-info-os {
+        font-size: 14px;
+        font-weight: bold;
+        color: black; /* Text color */
+        margin-top: 10px; /* Adjust the margin as needed */
+        margin-bottom: 20px; /* Adjust the margin as needed */
+        }
+
+        .ml-7 {
+        margin-left: 7px;
+        }
+
+        .flex-1 {
+        flex: 1;
+        }
+
+        .button-container {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        }
+
+        /*Override jenkins-validate-button default css*/
+        .jenkins-validate-button__container__status {
+            .validation-error-area {
+            min-height: 24px !important;
+            }
+        }
+    </style>
+
+    <script type="text/javascript">
+        function showProductType(sectionId) {
+            // Hide all sections
+            var sections = document.querySelectorAll('.product-type-section');
+            sections.forEach(function (section) {
+                section.style.display = 'none';
+            });
+
+            // Show the selected section
+            var scanTypeSection = document.getElementById(sectionId);
+            if (scanTypeSection) {
+                scanTypeSection.style.display = "block";
+            }
+
+            // Highlight the selected tab
+            var tabs = document.querySelectorAll('.scan-tab-box');
+            tabs.forEach(function (tab) {
+                tab.style.backgroundColor = '';
+            });
+
+            var selectedTab = document.querySelector('.tab-container-box [onclick*="' + sectionId + '"]');
+            if (selectedTab) {
+                selectedTab.style.backgroundColor = '#f1f1f1';
+            }
+        }
+
+        function showOSType(sectionId) {
+            // Hide all sections
+            var sections = document.querySelectorAll('.os-section');
+            sections.forEach(function (section) {
+                section.style.display = 'none';
+            });
+
+            // Show the selected section
+            var scanTypeSection = document.getElementById(sectionId);
+            if (scanTypeSection) {
+                scanTypeSection.style.display = "block";
+            }
+
+            // Highlight the selected tab
+            var tabs = document.querySelectorAll('.os-tab-box');
+            tabs.forEach(function (tab) {
+                tab.style.backgroundColor = '';
+            });
+
+            var selectedTab = document.querySelector('.tab-container-box [onclick*="' + sectionId + '"]');
+            if (selectedTab) {
+                selectedTab.style.backgroundColor = '#f1f1f1';
+            }
+        }
+
+        // Function to clear all input fields except those with a specific class
+        function clearAllTabFieldsAndTestConnectionMessages(sectionId) {
+            // Clear tab fields
+            var tabSection = document.getElementById(sectionId);
+            if (tabSection) {
+                var inputFields = tabSection.querySelectorAll("input, select");
+                inputFields.forEach(function (inputField) {
+                    inputField.value = "";
+                });
+
+                var okElement = tabSection.querySelector('.ok');
+                if (okElement) {
+                    okElement.remove();
+                }
+
+                var errorElement = tabSection.querySelector('.error');
+                if (errorElement) {
+                    errorElement.remove();
+                }
+            }
+        }
+
+        // Function to check for existing values and display related boxes on page load
+        function checkExistingFieldValues() {
+            let blackDuckSCAUrl = document.querySelector("input[name='blackDuckSCAUrl']").value;
+            let coverityConnectUrl = document.querySelector("input[name='coverityConnectUrl']").value;
+            let polarisServerUrl = document.querySelector("input[name='polarisServerUrl']").value;
+            let srmUrl = document.querySelector("input[name='srmUrl']").value;
+
+            let bridgeCliDownloadUrlForWindows = document.querySelector("input[name='bridgeDownloadUrlForWindows']").value;
+            let bridgeCliDownloadUrlForLinux = document.querySelector("input[name='bridgeDownloadUrlForLinux']").value;
+            let bridgeCliDownloadUrlForMac = document.querySelector("input[name='bridgeDownloadUrlForMac']").value;
+
+            // Check the values of blackDuckSCAUrl, coverityConnectUrl, and polarisServerUrl
+            // and select the appropriate scan type based on their values
+            if (blackDuckSCAUrl) {
+                showProductType("blackducksca-section"); // Show Black Duck SCA box if there is a value
+            } else if (coverityConnectUrl) {
+                showProductType("coverity-section"); // Show Coverity box if there is a value
+            } else if (polarisServerUrl) {
+                showProductType("polaris-section"); // Show Polaris box if there is a value
+            }  else if (srmUrl) {
+                showProductType("srm-section"); // Show Polaris box if there is a value
+            }  else {
+                // If none of the URLs have a value, default to Black Duck SCA
+                showProductType("blackducksca-section");
+            }
+
+            // Check the values of bridgeDownloadUrlForMac, bridgeDownloadUrlForLinux, and bridgeDownloadUrlForWindows
+            // and select the appropriate OS type based on their values
+            if (bridgeCliDownloadUrlForMac) {
+                showOSType("mac-section");
+            } else if (bridgeCliDownloadUrlForLinux) {
+                showOSType("linux-section");
+            } else if (bridgeCliDownloadUrlForWindows) {
+                showOSType("windows-section");
+            } else {
+                console.log("here" )
+                // If none of the URLs have a value, default to MAC
+                showOSType("mac-section");
+            }
+        }
+
+        // Add an event listener to call the checkExistingFieldValues function on page load
+        window.addEventListener("load", checkExistingFieldValues);
+
+    </script>
+</j:jelly>
