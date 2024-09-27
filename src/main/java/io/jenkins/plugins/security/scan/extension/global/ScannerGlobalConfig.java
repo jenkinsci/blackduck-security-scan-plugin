@@ -272,14 +272,17 @@ public class ScannerGlobalConfig extends GlobalConfiguration implements Serializ
                         ScanCredentialsHelper.API_TOKEN_CREDENTIALS);
     }
 
+    @SuppressWarnings({"lgtm[jenkins/no-permission-check]", "lgtm[jenkins/csrf]"})
     public ListBoxModel doFillBlackDuckSCACredentialsIdItems() {
         return getOptionsWithApiTokenCredentials();
     }
 
+    @SuppressWarnings({"lgtm[jenkins/no-permission-check]", "lgtm[jenkins/csrf]"})
     public ListBoxModel doFillPolarisCredentialsIdItems() {
         return getOptionsWithApiTokenCredentials();
     }
 
+    @SuppressWarnings({"lgtm[jenkins/no-permission-check]", "lgtm[jenkins/csrf]"})
     public ListBoxModel doFillCoverityCredentialsIdItems() {
         Jenkins jenkins = Jenkins.getInstanceOrNull();
         if (jenkins == null) {
