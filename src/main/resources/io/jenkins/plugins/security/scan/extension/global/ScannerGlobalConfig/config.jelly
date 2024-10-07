@@ -159,76 +159,8 @@
         </div>
     </f:section>
 
-    <style>
-<!--        .tab-container-box {-->
-<!--        display: flex;-->
-<!--        margin-bottom: 10px;-->
-<!--        }-->
-
-<!--        .scan-tab-box, .os-tab-box {-->
-<!--        cursor: pointer;-->
-<!--        padding: 10px;-->
-<!--        border: 1px solid #ccc;-->
-<!--        border-radius: 5px;-->
-<!--        margin-right: 10px;-->
-<!--        }-->
-
-<!--        .tab:hover {-->
-<!--        background-color: #f1f1f1;-->
-<!--        }-->
-
-<!--        .product-type-section, .os-section {-->
-<!--        border: 2px dashed var(&#45;&#45;input-border);-->
-<!--        border-radius: 10px;-->
-<!--        padding: 10px 10px 0px 10px;-->
-<!--        margin-top: 10px;-->
-<!--        margin-bottom: 20px;-->
-<!--        }-->
-
-<!--        .box-header {-->
-<!--        display: flex;-->
-<!--        justify-content: flex-end;-->
-<!--        align-items: center;-->
-<!--        }-->
-
-<!--        .tab-info {-->
-<!--        font-size: 14px;-->
-<!--        font-weight: bold;-->
-<!--&lt;!&ndash;        color: red; /* Text color */&ndash;&gt;-->
-<!--        margin-bottom: 10px; /* Adjust the margin as needed */-->
-<!--        }-->
-
-<!--        .tab-info-os {-->
-<!--        font-size: 14px;-->
-<!--        font-weight: bold;-->
-<!--        color: black; /* Text color */-->
-<!--        margin-top: 10px; /* Adjust the margin as needed */-->
-<!--        margin-bottom: 20px; /* Adjust the margin as needed */-->
-<!--        }-->
-
-<!--        .ml-7 {-->
-<!--        margin-left: 7px;-->
-<!--        }-->
-
-<!--        .flex-1 {-->
-<!--        flex: 1;-->
-<!--        }-->
-
-<!--        .button-container {-->
-<!--        display: flex;-->
-<!--        align-items: center;-->
-<!--        justify-content: flex-end;-->
-<!--        }-->
-
-<!--        /*Override jenkins-validate-button default css*/-->
-<!--        .jenkins-validate-button__container__status {-->
-<!--            .validation-error-area {-->
-<!--            min-height: 24px !important;-->
-<!--            }-->
-<!--        }-->
-    </style>
-
     <link rel="stylesheet" type="text/css" href="${rootURL}/plugin/blackduck-security-scan/styles/scanner-global-config.css" />
+
     <script type="text/javascript" src="${rootURL}/plugin/blackduck-security-scan/scripts/ScannerGlobalConfig.js"  />
 
 </j:jelly>
