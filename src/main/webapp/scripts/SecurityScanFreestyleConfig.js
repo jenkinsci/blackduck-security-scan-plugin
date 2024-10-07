@@ -3,8 +3,6 @@ var polarisAssessmentModeOption = document.querySelector('select[name="_.polaris
 var sourceUploadDiv = document.getElementById('source_upload');
 
 
-console.log("Selected option in the beginning: ", selectedOption)
-
 if (selectedOption && selectedOption !== 'select') {
     document.getElementById(selectedOption).style.display = 'block';
     validateProductField();
@@ -56,9 +54,6 @@ function clearInputFields(div) {
 document.addEventListener('change', function () {
     var selectedOption = document.querySelector('select[name="_.product"]')?.value;
     var polarisAssessmentModeOption = document.querySelector('select[name="_.polaris_assessment_mode"]')?.value;
-
-    console.log(":++++++++++++++ ", selectedOption)
-
 
     var blackduckscaDiv = document.getElementById('blackducksca');
     var coverityDiv = document.getElementById('coverity');
