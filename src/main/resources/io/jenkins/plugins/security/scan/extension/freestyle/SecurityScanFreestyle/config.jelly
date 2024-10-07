@@ -264,13 +264,13 @@
         </f:entry>
     </f:section>
 
-    <style>
-        .error-margin {
-            margin-top: 4px;
-        }
-    </style>
+<!--    <style>-->
+<!--        .error-margin {-->
+<!--            margin-top: 4px;-->
+<!--        }-->
+<!--    </style>-->
 
-<!--    <link rel="stylesheet" type="text/css" href="${rootURL}/plugin/blackduck-security-scan/styles/security-scan-freestyle-config.css" />-->
+    <link rel="stylesheet" type="text/css" href="${rootURL}/plugin/blackduck-security-scan/styles/security-scan-freestyle-config.css" />
 
     <script type="text/javascript" src="${rootURL}/plugin/blackduck-security-scan/scripts/SecurityScanFreestyleConfig.js"  />
 
