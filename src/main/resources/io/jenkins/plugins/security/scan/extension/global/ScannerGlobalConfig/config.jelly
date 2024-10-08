@@ -102,17 +102,42 @@
         </div>
 
         <div>
-            <f:entry field="bitbucketCredentialsId" title="Bitbucket Token / Username and App Password (Optional)">
-                <c:select/>
-            </f:entry>
+            <!-- Place a single info line above the tabs -->
+            <div class="tab-info-os">Configure Source Code Management Token</div>
 
-            <f:entry field="githubCredentialsId" title="GitHub Token (Optional)">
-                <c:select/>
-            </f:entry>
+            <!-- Tab Container -->
+            <div class="tab-container-box">
+                <!-- Mac Tab -->
+                <div class="scm-token-tab-box" onclick="showScmToken('bitbucket-section')">BitBucket</div>
+                <!-- Linux Tab -->
+                <div class="scm-token-tab-box" onclick="showScmToken('github-section')">Github</div>
+                <!-- Windows Tab -->
+                <div class="scm-token-tab-box" onclick="showScmToken('gitlab-section')">Gitlab</div>
 
-            <f:entry field="gitlabCredentialsId" title="GitLab Token (Optional)">
-                <c:select/>
-            </f:entry>
+            </div>
+
+            <!-- Bitbucket Token Configuration -->
+            <div class="scm-token-section" id="bitbucket-section" style="display: none;">
+                <f:entry field="bitbucketCredentialsId" title="Bitbucket Token / Username and App Password (Optional)">
+                    <c:select/>
+                </f:entry>
+            </div>
+
+            <!-- Github Token Configuration -->
+            <div class="scm-token-section" id="github-section" style="display: none;">
+                <f:entry field="githubCredentialsId" title="GitHub Token (Optional)">
+                    <c:select/>
+                </f:entry>
+            </div>
+
+            <!-- gitlab Token Configuration -->
+            <div class="scm-token-section" id="gitlab-section" style="display: none;">
+                <f:entry field="gitlabCredentialsId" title="GitLab Token (Optional)">
+                    <c:select/>
+                </f:entry>
+            </div>
+
+
 
             <!-- Place a single info line above the tabs -->
             <div class="tab-info-os">Configure Bridge CLI download URL for different platforms</div>
@@ -164,7 +189,7 @@
         margin-bottom: 10px;
         }
 
-        .scan-tab-box, .os-tab-box {
+        .scan-tab-box, .os-tab-box, .scm-token-tab-box {
         cursor: pointer;
         padding: 10px;
         border: 1px solid #ccc;
@@ -278,6 +303,31 @@
             }
         }
 
+        function showScmToken(sectionId) {
+            // Hide all sections
+            var sections = document.querySelectorAll('.scm-token-section');
+            sections.forEach(function (section) {
+                section.style.display = 'none';
+            });
+
+            // Show the selected section
+            var scanTypeSection = document.getElementById(sectionId);
+            if (scanTypeSection) {
+                scanTypeSection.style.display = "block";
+            }
+
+            // Highlight the selected tab
+            var tabs = document.querySelectorAll('.scm-token-tab-box');
+            tabs.forEach(function (tab) {
+                tab.style.backgroundColor = '';
+            });
+
+            var selectedTab = document.querySelector('.tab-container-box [onclick*="' + sectionId + '"]');
+            if (selectedTab) {
+                selectedTab.style.backgroundColor = '#f1f1f1';
+            }
+        }
+
         // Function to clear all input fields except those with a specific class
         function clearAllTabFieldsAndTestConnectionMessages(sectionId) {
             // Clear tab fields
@@ -311,6 +361,10 @@
             let bridgeCliDownloadUrlForLinux = document.querySelector("input[name='bridgeDownloadUrlForLinux']").value;
             let bridgeCliDownloadUrlForMac = document.querySelector("input[name='bridgeDownloadUrlForMac']").value;
 
+            let bitbucketCredentialsId = document.querySelector("select[name='_.bitbucketCredentialsId']").value;
+            let githubCredentialsId = document.querySelector("select[name='_.githubCredentialsId']").value;
+            let gitlabCredentialsId = document.querySelector("select[name='_.gitlabCredentialsId']").value;
+
             // Check the values of blackDuckSCAUrl, coverityConnectUrl, and polarisServerUrl
             // and select the appropriate scan type based on their values
             if (blackDuckSCAUrl) {
@@ -335,9 +389,21 @@
             } else if (bridgeCliDownloadUrlForWindows) {
                 showOSType("windows-section");
             } else {
-                console.log("here" )
                 // If none of the URLs have a value, default to MAC
                 showOSType("mac-section");
+            }
+
+            // Check the values of bitbucketCredentialsId, githubCredentialsId, and gitlabCredentialsId
+            // and select the appropriate SCM Token tab based on their values
+            if (bitbucketCredentialsId) {
+                showOSType("bitbucket-section");
+            } else if (githubCredentialsId) {
+                showOSType("github-section");
+            } else if (gitlabCredentialsId) {
+                showOSType("gitlab-section");
+            } else {
+                // If none of the URLs have a value, default to bitbucket
+                showOSType("bitbucket-section");
             }
         }
 

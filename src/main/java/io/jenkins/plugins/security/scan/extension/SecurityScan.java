@@ -135,8 +135,6 @@ public interface SecurityScan {
 
     public String getPolaris_assessment_types();
 
-    public String getPolaris_triage();
-
     public String getPolaris_branch_name();
 
     public String getPolaris_prComment_severities();

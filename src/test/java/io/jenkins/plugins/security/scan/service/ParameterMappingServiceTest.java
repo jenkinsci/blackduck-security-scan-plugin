@@ -292,7 +292,6 @@ public class ParameterMappingServiceTest {
         securityScanStep.setPolaris_application_name("fake-application-name");
         securityScanStep.setPolaris_project_name("fake-project-name");
         securityScanStep.setPolaris_assessment_types("SCA");
-        securityScanStep.setPolaris_triage("REQUIRED");
         securityScanStep.setPolaris_branch_name("test");
         securityScanStep.setPolaris_branch_parent_name("master");
         securityScanStep.setPolaris_prComment_enabled(true);
@@ -313,7 +312,6 @@ public class ParameterMappingServiceTest {
                 polarisParametersMap.get(ApplicationConstants.POLARIS_SERVER_URL_KEY));
         assertEquals("fake-access-token", polarisParametersMap.get(ApplicationConstants.POLARIS_ACCESS_TOKEN_KEY));
         assertEquals("test", polarisParametersMap.get(ApplicationConstants.POLARIS_BRANCH_NAME_KEY));
-        assertEquals("REQUIRED", polarisParametersMap.get(ApplicationConstants.POLARIS_TRIAGE_KEY));
         assertEquals("master", polarisParametersMap.get(ApplicationConstants.POLARIS_BRANCH_PARENT_NAME_KEY));
         assertEquals(true, polarisParametersMap.get(ApplicationConstants.POLARIS_PRCOMMENT_ENABLED_KEY));
         assertEquals("high, critical", polarisParametersMap.get(ApplicationConstants.POLARIS_PRCOMMENT_SEVERITIES_KEY));

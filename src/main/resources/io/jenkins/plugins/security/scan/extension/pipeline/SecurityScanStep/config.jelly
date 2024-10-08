@@ -1,226 +1,306 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form">
-
     <div id="product">
-        <f:entry field="product" title="Select Security Product">
+        <f:entry field="product" title="Select Product">
             <f:select/>
         </f:entry>
     </div>
 
     <div id="blackducksca" style="display: none;">
-        <f:section title="Black Duck SCA Parameters">
-            <f:entry field="blackducksca_scan_failure_severities" title="Black Duck SCA Scan Failure Severities (Optional)">
+        <f:section title="Scan Configuration">
+            <f:entry field="blackducksca_project_directory" title="Project Directory (Optional)">
+                <f:textbox/>
+            </f:entry>
+            <f:entry field="blackducksca_include_diagnostics" title="Include Diagnostics (Optional)">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry field="blackducksca_mark_build_status" title="Mark Build Status (Optional)">
+                <f:select/>
+            </f:entry>
+            <f:entry field="blackducksca_waitForScan" title="Wait For Scan Completion (Optional)">
+                <f:checkbox/>
+            </f:entry>
+        </f:section>
+
+        <f:advanced title="Scan Options">
+            <f:entry field="detect_scan_full" title="Full Scan (Optional)">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry field="blackducksca_scan_failure_severities" title="Scan Failure Severities (Optional)">
                 <f:textbox/>
             </f:entry>
             <f:entry field="detect_download_url" title="Detect Download URL (Optional)">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="detect_scan_full" title="Detect Full Scan (Optional)">
-                <f:checkbox/>
-            </f:entry>
-            <f:entry field="blackducksca_waitForScan" title="Black Duck SCA Wait For Scan Completion (Optional)">
-                <f:checkbox/>
-            </f:entry>
-            <f:entry field="blackducksca_prComment_enabled" title="Add Comments to Pull Requests (Optional)">
-                <f:checkbox/>
-            </f:entry>
-            <f:entry field="blackducksca_project_directory" title="Project Directory (Optional)">
-                <f:textbox/>
-            </f:entry>
-        </f:section>
+        </f:advanced>
 
-        <f:section title="SARIF Report Options">
-            <f:entry field="blackducksca_reports_sarif_create" title="Generate SARIF Report for Black Duck SCA Issues (Optional)">
-                <f:checkbox/>
-            </f:entry>
-            <f:entry field="blackducksca_reports_sarif_groupSCAIssues" title="Group SCA Issues by Component (Optional)">
-                <f:checkbox/>
-            </f:entry>
-            <f:entry field="blackducksca_reports_sarif_file_path" title="Black Duck SCA SARIF Report File Path (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="blackducksca_reports_sarif_severities" title="Black Duck SCA SARIF Report Severities (Optional)">
-                <f:textbox/>
-            </f:entry>
-        </f:section>
+        <div id="blackducksca_pr_comment_sec">
+            <f:advanced title="Pull Request Comment Options">
+                <f:entry field="blackducksca_prComment_enabled" title="Add Comments to Pull Requests (Optional)">
+                    <f:checkbox/>
+                </f:entry>
+            </f:advanced>
+        </div>
+
+        <div id="blackducksca_sarif_report_sec">
+            <f:advanced title="SARIF Report Options">
+                <f:entry field="blackducksca_reports_sarif_create" title="Generate SARIF Report(Optional)">
+                    <f:checkbox/>
+                </f:entry>
+                <div id="blackducksca_sarif_params">
+                    <f:entry field="blackducksca_reports_sarif_groupSCAIssues" title="Group SCA Issues by Component (Optional)">
+                        <f:checkbox default="true"/>
+                    </f:entry>
+                    <f:entry field="blackducksca_reports_sarif_file_path" title="SARIF Report File Path (Optional)">
+                        <f:textbox/>
+                    </f:entry>
+                    <f:entry field="blackducksca_reports_sarif_severities" title="SARIF Report Severities (Optional)">
+                        <f:textbox/>
+                    </f:entry>
+                </div>
+            </f:advanced>
+        </div>
     </div>
 
     <div id="coverity" style="display: none;">
-        <f:section title="Coverity Parameters">
-            <f:entry field="coverity_project_name" title="Coverity Project Name">
+        <f:section title="Scan Configuration">
+            <f:entry field="coverity_project_directory" title="Project Directory (Optional)">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="coverity_stream_name" title="Coverity Stream Name">
+            <f:entry field="coverity_local" title="Using Coverity Connect? (Optional)">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry field="coverity_include_diagnostics" title="Include Diagnostics (Optional)">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry field="coverity_mark_build_status" title="Mark Build Status (Optional)">
+                <f:select/>
+            </f:entry>
+            <f:entry field="coverity_waitForScan" title="Wait For Scan Completion (Optional)">
+                <f:checkbox/>
+            </f:entry>
+        </f:section>
+
+        <f:advanced title="Scan Options">
+            <f:entry field="coverity_project_name" title="Coverity Project">
+                <f:textbox/>
+            </f:entry>
+            <f:entry field="coverity_stream_name" title="Coverity Stream">
                 <f:textbox/>
             </f:entry>
             <f:entry field="coverity_policy_view" title="Coverity Policy View (Optional)">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="coverity_version" title="Coverity Version Number (Optional)">
+            <f:entry field="coverity_version" title="Coverity Version (Optional)">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="coverity_waitForScan" title="Coverity Wait For Scan Completion (Optional)">
-                <f:checkbox/>
-            </f:entry>
-            <f:entry field="coverity_prComment_enabled" title="Add Comments to Pull Requests (Optional)">
-                <f:checkbox/>
-            </f:entry>
-            <f:entry field="coverity_local" title="Coverity Local Analysis (Optional)">
-                <f:checkbox/>
-            </f:entry>
-            <f:entry field="coverity_project_directory" title="Project Directory (Optional)">
-                <f:textbox/>
-            </f:entry>
-        </f:section>
+        </f:advanced>
+
+        <div id="coverity_pr_comment_sec">
+            <f:advanced title="Pull Request Comment Options">
+                <f:entry field="coverity_prComment_enabled" title="Add Comments to Pull Requests (Optional)">
+                    <f:checkbox/>
+                </f:entry>
+            </f:advanced>
+        </div>
     </div>
 
     <div id="polaris" style="display: none;">
-        <f:section title="Polaris Parameters">
-            <f:entry field="polaris_application_name" title="Polaris Application Name (Optional)">
+        <f:section title="Scan Configuration">
+            <f:entry field="polaris_assessment_types" title="Assessment Types (Mandatory)">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="polaris_project_name" title="Polaris Project Name (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="polaris_assessment_types" title="Polaris Assessment Types (Mandatory)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="polaris_branch_name" title="Polaris Branch Name (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="polaris_branch_parent_name" title="Polaris Parent Branch Name (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="polaris_waitForScan" title="Polaris Wait For Scan Completion (Optional)">
-                <f:checkbox/>
-            </f:entry>
-            <f:entry field="polaris_prComment_enabled" title="Add Comments to Pull Requests (Optional)">
-                <f:checkbox/>
-            </f:entry>
-            <f:entry field="polaris_prComment_severities" title="Polaris PR Comment Severities (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="polaris_triage" title="Polaris Triage (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="polaris_test_sca_type" title="Polaris Test SCA Type (Optional)">
+            <f:entry field="polaris_test_sca_type" title="SCA Test Type (Optional)">
                 <f:textbox/>
             </f:entry>
             <f:entry field="polaris_project_directory" title="Project Directory (Optional)">
                 <f:textbox/>
             </f:entry>
-        </f:section>
-
-        <div id="polaris_assessment_mode">
-            <f:entry field="polaris_assessment_mode" title="Polaris Assessment Mode (Optional)">
+            <f:entry field="polaris_include_diagnostics" title="Include Diagnostics (Optional)">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry field="polaris_mark_build_status" title="Mark Build Status (Optional)">
                 <f:select/>
             </f:entry>
-        </div>
-
-        <div id="source_upload" style="display: none;">
-            <f:section title="Source Code Upload Options">
-                <f:entry field="project_source_archive" title="Upload Archive Instead Of Project Directory (Optional)">
-                    <f:textbox/>
-                </f:entry>
-                <f:entry field="project_source_excludes" title="Project Source Excludes (Optional)">
-                    <f:textbox/>
-                </f:entry>
-                <f:entry field="project_source_preserveSymLinks" title="Project Source Preserve Sym Links (Optional)">
-                    <f:checkbox/>
-                </f:entry>
-            </f:section>
-        </div>
-
-        <f:section title="SARIF Report Options">
-            <f:entry field="polaris_reports_sarif_create" title="Generate SARIF Report for Polaris Issues (Optional)">
+            <f:entry field="polaris_waitForScan" title="Wait For Scan Completion (Optional)">
                 <f:checkbox/>
-            </f:entry>
-            <f:entry field="polaris_reports_sarif_groupSCAIssues" title="Group SCA Issues by Component (Optional)">
-                <f:checkbox/>
-            </f:entry>
-            <f:entry field="polaris_reports_sarif_file_path" title="Polaris SARIF Report File Path (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="polaris_reports_sarif_issue_types" title="Polaris SARIF Report Issue Types (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="polaris_reports_sarif_severities" title="Polaris SARIF Report Severities (Optional)">
-                <f:textbox/>
             </f:entry>
         </f:section>
+
+        <f:advanced title="Scan Options">
+            <f:entry field="polaris_application_name" title="Application Name (Optional)">
+                <f:textbox/>
+            </f:entry>
+            <f:entry field="polaris_project_name" title="Polaris Project (Optional)">
+                <f:textbox/>
+            </f:entry>
+            <f:entry field="polaris_branch_name" title="Polaris Branch (Optional)">
+                <f:textbox/>
+            </f:entry>
+            <div id="polaris_assessment_mode">
+                <f:entry field="polaris_assessment_mode" title="Assessment Mode (Optional)">
+                    <f:select/>
+                </f:entry>
+            </div>
+
+            <div id="source_upload" style="display: none;">
+                <f:section title="Source Code Upload Options">
+                    <f:entry field="project_source_archive" title="Upload Archive Instead Of Project Directory (Optional)">
+                        <f:textbox/>
+                    </f:entry>
+                    <f:entry field="project_source_excludes" title="Project Source Excludes (Optional)">
+                        <f:textbox/>
+                    </f:entry>
+                    <f:entry field="project_source_preserveSymLinks" title="Project Source Preserve Sym Links (Optional)">
+                        <f:checkbox/>
+                    </f:entry>
+                </f:section>
+            </div>
+        </f:advanced>
+
+
+        <div id="polaris_pr_comment_sec">
+            <f:advanced title="Pull Request Comment Options">
+                <f:entry field="polaris_prComment_enabled" title="Add Comments to Pull Requests (Optional)">
+                    <f:checkbox/>
+                </f:entry>
+                <div id="polaris_pr_comment_params">
+                    <f:entry field="polaris_prComment_severities" title="PR Comment Severities (Optional)">
+                        <f:textbox/>
+                    </f:entry>
+                    <f:entry field="polaris_branch_parent_name" title="Parent Branch Name (Optional)">
+                        <f:textbox/>
+                    </f:entry>
+                </div>
+            </f:advanced>
+        </div>
+
+        <div id="polaris_sarif_report_sec">
+            <f:advanced title="SARIF Report Options">
+                <f:entry field="polaris_reports_sarif_create" title="Generate SARIF Report(Optional)">
+                    <f:checkbox/>
+                </f:entry>
+                <div id="polaris_sarif_params">
+                    <f:entry field="polaris_reports_sarif_groupSCAIssues" title="Group SCA Issues by Component (Optional)">
+                        <f:checkbox default="true"/>
+                    </f:entry>
+                    <f:entry field="polaris_reports_sarif_file_path" title="Polaris SARIF Report File Path (Optional)">
+                        <f:textbox/>
+                    </f:entry>
+                    <f:entry field="polaris_reports_sarif_issue_types" title="Polaris SARIF Report Issue Types (Optional)">
+                        <f:textbox/>
+                    </f:entry>
+                    <f:entry field="polaris_reports_sarif_severities" title="Polaris SARIF Report Severities (Optional)">
+                        <f:textbox/>
+                    </f:entry>
+                </div>
+            </f:advanced>
+        </div>
     </div>
 
     <div id="srm" style="display: none;">
-        <f:section title="SRM Parameters">
-            <f:entry field="srm_assessment_types" title="SRM Assessment Types (Mandatory)">
+        <f:section title="Scan Configuration">
+            <f:entry field="srm_assessment_types" title="Assessment Types (Mandatory)">
                 <f:textbox/>
-            </f:entry>
-            <f:entry field="srm_project_name" title="SRM Project Name">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="srm_project_id" title="SRM Project Id (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="srm_branch_name" title="SRM Branch Name (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="srm_branch_parent" title="SRM Parent Branch Name (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="srm_waitForScan" title="SRM Wait For Scan Completion (Optional)">
-                <f:checkbox/>
             </f:entry>
             <f:entry field="srm_project_directory" title="Project Directory (Optional)">
                 <f:textbox/>
             </f:entry>
+            <f:entry field="srm_include_diagnostics" title="Include Diagnostics (Optional)">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry field="srm_mark_build_status" title="Mark Build Status (Optional)">
+                <f:select/>
+            </f:entry>
+            <f:entry field="srm_waitForScan" title="Wait For Scan Completion (Optional)">
+                <f:checkbox/>
+            </f:entry>
         </f:section>
-    </div>
 
-    <div id="coverity-tool-configuration" style="display: none;">
-        <f:section title="Coverity (SAST) Tool Configuration Options">
-            <f:entry field="coverity_build_command" title="Coverity Build Command (Optional)">
+        <f:advanced title="Scan Options">
+            <f:entry field="srm_project_name" title="Project Name">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="coverity_clean_command" title="Coverity Clean Command (Optional)">
+            <f:entry field="srm_project_id" title="Project ID (Optional)">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="coverity_config_path" title="Coverity Config File Path (Optional)">
+            <f:entry field="srm_branch_name" title="Branch Name (Optional)">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="coverity_args" title="Coverity Additional Arguments (Optional)">
+            <f:entry field="srm_branch_parent" title="Parent Branch Name (Optional)">
                 <f:textbox/>
             </f:entry>
-        </f:section>
+        </f:advanced>
     </div>
 
     <div id="blackducksca-tool-configuration" style="display: none;">
-        <f:section title="Black Duck (SCA) Tool Configuration Options">
-            <f:entry field="detect_search_depth" title="Detect Search Depth (Optional)">
+        <f:advanced title="Detect (SCA) Tool Options">
+            <f:entry field="detect_search_depth" title="Search Depth (Optional)">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="detect_config_path" title="Detect Config File Path (Optional)">
+            <f:entry field="detect_config_path" title="Config File Path (Optional)">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="detect_args" title="Detect Additional Arguments (Optional)">
+            <f:entry field="detect_args" title="Additional Arguments (Optional)">
                 <f:textbox/>
             </f:entry>
-        </f:section>
+        </f:advanced>
     </div>
 
-    <f:section title="Additional Options">
-        <f:entry field="include_diagnostics" title="Include Diagnostics (Optional)">
-            <f:checkbox/>
-        </f:entry>
+    <div id="coverity-tool-configuration" style="display: none;">
+        <f:advanced title="Coverity (SAST) Tool Options">
+            <f:entry field="coverity_build_command" title="Build Command (Optional)">
+                <f:textbox/>
+            </f:entry>
+            <f:entry field="coverity_clean_command" title="Clean Command (Optional)">
+                <f:textbox/>
+            </f:entry>
+            <f:entry field="coverity_config_path" title="Config File Path (Optional)">
+                <f:textbox/>
+            </f:entry>
+            <f:entry field="coverity_args" title="Additional Arguments (Optional)">
+                <f:textbox/>
+            </f:entry>
+        </f:advanced>
+    </div>
+
+<div id="bridge_cli_sec" style="display: none">
+    <f:advanced title="Bridge CLI Options">
         <f:entry field="network_airgap" title="Network Airgap (Optional)">
             <f:checkbox/>
         </f:entry>
-        <f:entry field="mark_build_status" title="Mark Build Status (Optional)">
-            <f:select/>
-        </f:entry>
-<!--        <f:entry field="return_status" title="Return Status Code (Optional)">-->
-<!--            <f:checkbox/>-->
-<!--        </f:entry>-->
-    </f:section>
+        <!--        <f:entry field="return_status" title="Return Status Code (Optional)">-->
+        <!--            <f:checkbox/>-->
+        <!--        </f:entry>-->
+    </f:advanced>
+</div>
+
+    <style>
+        /* Styling for the checkbox entry */
+        .sarif-checkbox {
+        display: block;
+        margin-bottom: 25px; /* Space below the checkbox entry */
+        }
+
+        /* Style for the nested div to be indented */
+        #polaris_sarif_params,
+        #blackducksca_sarif_params,
+        #source_upload {
+            margin-left: 10px;
+            border-left: 2.23px solid #C3CCD1;
+            padding-left: 10px;
+        }
+
+        .advancedButton {
+            font-size: 17px;    /* Increases the font size */
+        }
+
+        /* Style for entries within the nested div */
+        #polaris_sarif_params .f\:entry,
+        #blackducksca_sarif_params .f\:entry {
+            margin-bottom: 10px; /* Space below each entry */
+        }
+    </style>
 
     <script type="text/javascript">
         var securityProduct = document.querySelector('select[name="_.product"]');
@@ -230,8 +310,10 @@
         var srmDiv = document.getElementById('srm');
         var blackduckscaToolConfigDiv = document.getElementById('blackducksca-tool-configuration');
         var coverityToolConfigDiv = document.getElementById('coverity-tool-configuration');
+        var bridgeCliSecDiv = document.getElementById('bridge_cli_sec');
 
         function hideAllDivs() {
+            bridgeCliSecDiv.style.display = 'none';
             blackduckscaDiv.style.display = 'none';
             coverityDiv.style.display = 'none';
             polarisDiv.style.display = 'none';
@@ -256,29 +338,21 @@
         }
 
         function hideParticularDiv(div) {
-            if(div) {
+            if (div) {
                 div.style.display = 'none';
             }
         }
 
         function clearInputFields(div) {
             if (div) {
-                var inputFields = div.querySelectorAll('input[type="text"], input[type="checkbox"]');
-                inputFields.forEach(function (field) {
-                    if (field.type === 'text') {
+                var inputFields = div.querySelectorAll('input[type="text"], input[type="checkbox"], select');
+                inputFields.forEach(function(field) {
+                    if (field.type === 'text' || field.tagName.toLowerCase() === 'select') {
                         field.value = '';
                     } else if (field.type === 'checkbox') {
                         field.checked = false;
                     }
                 });
-                // clears polaris assessment mode dropdown value
-                var selectedOption = document.querySelector('select[name="_.product"]')?.value;
-                if(selectedOption !== 'polaris') {
-                    var polarisAssessmentModeOption = document.querySelector('select[name="_.polaris_assessment_mode"]');
-                    if(polarisAssessmentModeOption) {
-                        polarisAssessmentModeOption.value = ""
-                    }
-                }
             }
         }
 
@@ -287,11 +361,12 @@
                 var checkbox = document.getElementsByName(name);
                 if (checkbox &amp;&amp; checkbox.length > 0) {
                     checkbox[0].checked = true;
+
                 }
             });
         }
 
-        securityProduct.addEventListener('change', function () {
+        securityProduct.addEventListener('change', function() {
             var selectedOption = securityProduct.value;
             clearAllFields();
             if (selectedOption == 'blackducksca') {
@@ -301,6 +376,7 @@
                 showParticularDiv(blackduckscaDiv);
                 hideParticularDiv(coverityToolConfigDiv);
                 showParticularDiv(blackduckscaToolConfigDiv);
+                showParticularDiv(bridgeCliSecDiv);
                 setCheckboxToDefaultTrue(['_.blackducksca_reports_sarif_groupSCAIssues', '_.blackducksca_waitForScan']);
             } else if (selectedOption == 'coverity') {
                 hideParticularDiv(blackduckscaDiv);
@@ -309,6 +385,7 @@
                 showParticularDiv(coverityDiv);
                 hideParticularDiv(blackduckscaToolConfigDiv);
                 showParticularDiv(coverityToolConfigDiv);
+                showParticularDiv(bridgeCliSecDiv);
                 setCheckboxToDefaultTrue(['_.coverity_waitForScan']);
             } else if (selectedOption == 'polaris') {
                 hideParticularDiv(blackduckscaDiv);
@@ -317,6 +394,7 @@
                 showParticularDiv(polarisDiv);
                 showParticularDiv(blackduckscaToolConfigDiv);
                 showParticularDiv(coverityToolConfigDiv);
+                showParticularDiv(bridgeCliSecDiv);
                 setCheckboxToDefaultTrue(['_.polaris_reports_sarif_groupSCAIssues', '_.polaris_waitForScan']);
             } else if (selectedOption == 'srm') {
                 hideParticularDiv(blackduckscaDiv);
@@ -325,26 +403,111 @@
                 showParticularDiv(srmDiv);
                 showParticularDiv(blackduckscaToolConfigDiv);
                 showParticularDiv(coverityToolConfigDiv);
+                showParticularDiv(bridgeCliSecDiv);
                 setCheckboxToDefaultTrue(['_.srm_waitForScan']);
             } else if (selectedOption == '') {
                 hideAllDivs();
             }
         });
 
-        document.addEventListener('change', function () {
+        document.addEventListener('change', function() {
             var polarisAssessmentModeOption = document.querySelector('select[name="_.polaris_assessment_mode"]')?.value;
             var sourceUploadDiv = document.getElementById('source_upload');
 
-            if(polarisAssessmentModeOption === 'SOURCE_UPLOAD') {
+            if (polarisAssessmentModeOption === 'SOURCE_UPLOAD') {
                 showParticularDiv(sourceUploadDiv);
             }
 
-            if(polarisAssessmentModeOption === 'CI' || polarisAssessmentModeOption === '') {
+            if (polarisAssessmentModeOption === 'CI' || polarisAssessmentModeOption === '') {
                 clearInputFields(sourceUploadDiv);
                 hideParticularDiv(sourceUploadDiv);
             }
+
+            toggleSarifParamsDivs();
+            togglePrCommentDivs();
+            handlePostMergeWorkflowSectionsVisibility();
         });
 
-    </script>
+        function toggleSarifParamsDivs() {
+            var selectedOption = securityProduct.value;
+            if (selectedOption == "blackducksca") {
+                var blackduckCheckbox = document.querySelector('input[name="_.blackducksca_reports_sarif_create"]')
+                var blackduckSarifParamSection = document.getElementById('blackducksca_sarif_params')
+                if (blackduckCheckbox.checked) {
+                    blackduckSarifParamSection.style.display = 'block';
+                } else {
+                    blackduckSarifParamSection.style.display = 'none';
+                    clearInputFields(blackduckSarifParamSection);
+                }
+            } else if (selectedOption == "polaris") {
+                var polarisCheckbox = document.querySelector('input[name="_.polaris_reports_sarif_create"]')
+                var polarisSarifParamSection = document.getElementById('polaris_sarif_params')
 
+                if (polarisCheckbox.checked) {
+                    polarisSarifParamSection.style.display = 'block';
+                } else {
+                    polarisSarifParamSection.style.display = 'none';
+                    clearInputFields(polarisSarifParamSection);
+                }
+            }
+
+        }
+
+        function togglePrCommentDivs() {
+            var selectedOption = securityProduct.value;
+            if (selectedOption == "polaris") {
+                var polarisPrEnabledCheckbox = document.querySelector('input[name="_.polaris_prComment_enabled"]')
+                var polarisPrCommentSection = document.getElementById('polaris_pr_comment_params')
+                if (polarisPrEnabledCheckbox.checked) {
+                    polarisPrCommentSection.style.display = 'block';
+                } else {
+                    polarisPrCommentSection.style.display = 'none';
+                    clearInputFields(polarisPrCommentSection);
+                }
+            }
+
+        }
+
+        function handlePostMergeWorkflowSectionsVisibility() {
+            var selectedOption = securityProduct.value;
+            var blackduckscaWaitForScanEnabled = document.querySelector('input[name="_.blackducksca_waitForScan"]').checked;
+            var polarisWaitForScanEnabled = document.querySelector('input[name="_.polaris_waitForScan"]').checked;
+            var coverityWaitForScanEnabled = document.querySelector('input[name="_.coverity_waitForScan"]').checked;
+
+            if (selectedOption === 'blackducksca') {
+                var blackduckSCASarif_section = document.getElementById('blackducksca_sarif_report_sec');
+                var blackduckSCAPRComment_section = document.getElementById('blackducksca_pr_comment_sec');
+                if (blackduckscaWaitForScanEnabled == false) {
+                    hideParticularDiv(blackduckSCASarif_section);
+                    hideParticularDiv(blackduckSCAPRComment_section);
+                    clearInputFields(blackduckSCASarif_section);
+                    clearInputFields(blackduckSCAPRComment_section);
+                } else if (blackduckscaWaitForScanEnabled == true) {
+                    showParticularDiv(blackduckSCASarif_section);
+                    showParticularDiv(blackduckSCAPRComment_section);
+                }
+            } else if (selectedOption === 'polaris') {
+                var polarisSarif_section = document.getElementById('polaris_sarif_report_sec');
+                var polarisPRComment_section = document.getElementById('polaris_pr_comment_sec');
+                if (polarisWaitForScanEnabled == false) {
+                    hideParticularDiv(polarisSarif_section);
+                    hideParticularDiv(polarisPRComment_section);
+                    clearInputFields(polarisSarif_section);
+                    clearInputFields(polarisPRComment_section);
+                } else if (polarisWaitForScanEnabled == true) {
+                    showParticularDiv(polarisSarif_section);
+                    showParticularDiv(polarisPRComment_section);
+                }
+            } else if (selectedOption === 'coverity') {
+                var coverityPRComment_section = document.getElementById('coverity_pr_comment_sec');
+                if (coverityWaitForScanEnabled == false) {
+                    hideParticularDiv(coverityPRComment_section);
+                    clearInputFields(coverityPRComment_section);
+                } else if (coverityWaitForScanEnabled == true) {
+                    showParticularDiv(coverityPRComment_section);
+                }
+            }
+
+        }
+    </script>
 </j:jelly>

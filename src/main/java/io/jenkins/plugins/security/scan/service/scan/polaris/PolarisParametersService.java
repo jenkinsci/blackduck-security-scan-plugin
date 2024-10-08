@@ -128,8 +128,6 @@ public class PolarisParametersService {
         setApplicationName(polarisParameters, polaris);
         setProjectName(polarisParameters, polaris);
         setBranchName(polarisParameters, polaris);
-
-        setTriage(polarisParameters, polaris);
         setTestScaType(polarisParameters, polaris);
         setPolarisPrCommentInputs(polarisParameters, prcomment, polaris);
         setAssessmentMode(polarisParameters, polaris);
@@ -216,15 +214,6 @@ public class PolarisParametersService {
                     : envVars.get(ApplicationConstants.ENV_BRANCH_NAME_KEY);
             polaris.getBranch().setName(branchName);
             logger.info("Polaris Branch Name: " + branchName);
-        }
-    }
-
-    private void setTriage(Map<String, Object> polarisParameters, Polaris polaris) {
-        if (polarisParameters.containsKey(ApplicationConstants.POLARIS_TRIAGE_KEY)) {
-            polaris.setTriage(polarisParameters
-                    .get(ApplicationConstants.POLARIS_TRIAGE_KEY)
-                    .toString()
-                    .trim());
         }
     }
 
