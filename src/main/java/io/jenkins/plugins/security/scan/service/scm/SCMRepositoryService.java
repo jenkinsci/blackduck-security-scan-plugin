@@ -79,10 +79,7 @@ public class SCMRepositoryService {
 
     public SCMSource findSCMSource() {
         String jobName = envVars.get(ApplicationConstants.ENV_JOB_NAME_KEY);
-        if (jobName == null || !jobName.contains("/")) {
-            return null;
-        }
-        jobName = jobName.substring(0, jobName.indexOf("/"));
+        jobName = jobName.contains("/") ? jobName.substring(0, jobName.lastIndexOf('/')) : jobName;
         logger.info("Jenkins Job name: " + jobName);
 
         Jenkins jenkins = Jenkins.getInstanceOrNull();
