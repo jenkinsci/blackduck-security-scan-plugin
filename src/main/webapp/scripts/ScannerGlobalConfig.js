@@ -111,9 +111,6 @@ function checkExistingFieldValues() {
     }
 }
 
-
-// window.addEventListener("load", checkExistingFieldValues);
-
 window.addEventListener("load", function() {
     // Add an event listener to call the checkExistingFieldValues function on page load
     checkExistingFieldValues();
