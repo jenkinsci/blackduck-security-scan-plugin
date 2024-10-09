@@ -111,6 +111,57 @@ function checkExistingFieldValues() {
     }
 }
 
-// Add an event listener to call the checkExistingFieldValues function on page load
-window.addEventListener("load", checkExistingFieldValues);
 
+// window.addEventListener("load", checkExistingFieldValues);
+
+window.addEventListener("load", function() {
+    // Add an event listener to call the checkExistingFieldValues function on page load
+    checkExistingFieldValues();
+
+    // Add event listeners for the tabs
+    document.getElementById('blackduck-tab').addEventListener('click', function() {
+        showProductType('blackducksca-section');
+    });
+
+    document.getElementById('coverity-tab').addEventListener('click', function() {
+        showProductType('coverity-section');
+    });
+
+    document.getElementById('polaris-tab').addEventListener('click', function() {
+        showProductType('polaris-section');
+    });
+
+    document.getElementById('srm-tab').addEventListener('click', function() {
+        showProductType('srm-section');
+    });
+
+    // Add event listeners for OS tabs
+    document.getElementById('mac-tab').addEventListener('click', function() {
+        showOSType('mac-section');
+    });
+
+    document.getElementById('linux-tab').addEventListener('click', function() {
+        showOSType('linux-section');
+    });
+
+    document.getElementById('windows-tab').addEventListener('click', function() {
+        showOSType('windows-section');
+    });
+
+    // Add event listeners for the Clear buttons
+    document.getElementById('clear-blackduck').addEventListener('click', function() {
+        clearAllTabFieldsAndTestConnectionMessages('blackducksca-section');
+    });
+
+    document.getElementById('clear-coverity').addEventListener('click', function() {
+        clearAllTabFieldsAndTestConnectionMessages('coverity-section');
+    });
+
+    document.getElementById('clear-polaris').addEventListener('click', function() {
+        clearAllTabFieldsAndTestConnectionMessages('polaris-section');
+    });
+
+    document.getElementById('clear-srm').addEventListener('click', function() {
+        clearAllTabFieldsAndTestConnectionMessages('srm-section');
+    });
+});

@@ -9,13 +9,17 @@
         <!-- Tab Container -->
         <div class="tab-container-box">
             <!-- Black Duck Tab -->
-            <div class="scan-tab-box" onclick="showProductType('blackducksca-section')">Black Duck SCA</div>
+            <!--            <div class="scan-tab-box" onclick="showProductType('blackducksca-section')">Black Duck SCA</div>-->
+            <div class="scan-tab-box" id="blackduck-tab">Black Duck SCA</div>
             <!-- Coverity Tab -->
-            <div class="scan-tab-box" onclick="showProductType('coverity-section')">Coverity</div>
+            <!--            <div class="scan-tab-box" onclick="showProductType('coverity-section')">Coverity</div>-->
+            <div class="scan-tab-box" id="coverity-tab">Coverity</div>
             <!-- Polaris Tab -->
-            <div class="scan-tab-box" onclick="showProductType('polaris-section')">Polaris</div>
+            <!--            <div class="scan-tab-box" onclick="showProductType('polaris-section')">Polaris</div>-->
+            <div class="scan-tab-box" id="polaris-tab">Polaris</div>
             <!-- SRM Tab -->
-            <div class="scan-tab-box" onclick="showProductType('srm-section')">Software Risk Manager (SRM)</div>
+            <!--            <div class="scan-tab-box" onclick="showProductType('srm-section')">Software Risk Manager (SRM)</div>-->
+            <div class="scan-tab-box" id="srm-tab">Software Risk Manager (SRM)</div>
         </div>
 
         <!-- Black Duck Configuration -->
@@ -24,7 +28,7 @@
                 <f:textbox name="blackDuckSCAUrl" />
             </f:entry>
             <f:entry field="blackDuckSCACredentialsId" title="Black Duck SCA Token">
-                 <c:select/>
+                <c:select/>
             </f:entry>
             <f:entry field="detectInstallationPath" title="Detect Install Directory (Optional)">
                 <f:textbox name="detectInstallationPath" />
@@ -34,7 +38,8 @@
                     <f:validateButton method="testBlackDuckSCAConnection" title="Test Connection" progress="Testing..." with="blackDuckSCAUrl,blackDuckSCACredentialsId"/>
                 </div>
                 <f:entry>
-                    <button type="button" class="jenkins-button ml-7" onclick="clearAllTabFieldsAndTestConnectionMessages('blackducksca-section')">Clear</button>
+                    <!--<button type="button" class="jenkins-button ml-7" onclick="clearAllTabFieldsAndTestConnectionMessages('blackducksca-section')">Clear</button>-->
+                    <button type="button" class="jenkins-button ml-7" id="clear-blackduck">Clear</button>
                 </f:entry>
             </div>
         </div>
@@ -55,7 +60,8 @@
                     <f:validateButton method="testCoverityConnection" title="Test Connection" progress="Testing..." with="coverityConnectUrl,coverityCredentialsId"/>
                 </div>
                 <f:entry>
-                    <button type="button" class="jenkins-button ml-7" onclick="clearAllTabFieldsAndTestConnectionMessages('coverity-section')">Clear</button>
+                    <!--                    <button type="button" class="jenkins-button ml-7" onclick="clearAllTabFieldsAndTestConnectionMessages('coverity-section')">Clear</button>-->
+                    <button type="button" class="jenkins-button ml-7" id="clear-coverity">Clear</button>
                 </f:entry>
             </div>
         </div>
@@ -73,7 +79,8 @@
                     <f:validateButton method="testPolarisConnection" title="Test Connection" progress="Testing..." with="polarisServerUrl,polarisCredentialsId"/>
                 </div>
                 <f:entry>
-                    <button type="button" class="jenkins-button ml-7" onclick="clearAllTabFieldsAndTestConnectionMessages('polaris-section')">Clear</button>
+                    <!--                    <button type="button" class="jenkins-button ml-7" onclick="clearAllTabFieldsAndTestConnectionMessages('polaris-section')">Clear</button>-->
+                    <button type="button" class="jenkins-button ml-7" id="clear-polaris">Clear</button>
                 </f:entry>
             </div>
         </div>
@@ -97,7 +104,8 @@
                     <f:validateButton method="testSrmConnection" title="Test Connection" progress="Testing..." with="srmUrl,srmCredentialsId"/>
                 </div>
                 <f:entry>
-                    <button type="button" class="jenkins-button ml-7" onclick="clearAllTabFieldsAndTestConnectionMessages('srm-section')">Clear</button>
+                    <!--                    <button type="button" class="jenkins-button ml-7" onclick="clearAllTabFieldsAndTestConnectionMessages('srm-section')">Clear</button>-->
+                    <button type="button" class="jenkins-button ml-7" id="clear-srm">Clear</button>
                 </f:entry>
             </div>
         </div>
@@ -121,11 +129,14 @@
             <!-- Tab Container for Bridge CLI Download URLs -->
             <div class="tab-container-box">
                 <!-- Mac Tab -->
-                <div class="os-tab-box" onclick="showOSType('mac-section')">Mac</div>
+                <!--                <div class="os-tab-box" onclick="showOSType('mac-section')">Mac</div>-->
+                <div class="os-tab-box" id="mac-tab">Mac</div>
                 <!-- Linux Tab -->
-                <div class="os-tab-box" onclick="showOSType('linux-section')">Linux </div>
+                <!--                <div class="os-tab-box" onclick="showOSType('linux-section')">Linux </div>-->
+                <div class="os-tab-box" id="linux-tab">Linux </div>
                 <!-- Windows Tab -->
-                <div class="os-tab-box" onclick="showOSType('windows-section')">Windows</div>
+                <!--                <div class="os-tab-box" onclick="showOSType('windows-section')">Windows</div>-->
+                <div class="os-tab-box" id="windows-tab">Windows</div>
             </div>
 
             <!-- Mac Download URL Configuration -->
