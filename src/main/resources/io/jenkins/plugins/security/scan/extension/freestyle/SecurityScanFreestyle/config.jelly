@@ -268,5 +268,4 @@
 
     <script type="text/javascript" src="${rootURL}/plugin/blackduck-security-scan/scripts/SecurityScanFreestyleConfig.js"  />
 
-
 </j:jelly>
