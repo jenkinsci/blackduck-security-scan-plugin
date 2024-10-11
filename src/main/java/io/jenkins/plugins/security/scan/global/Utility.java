@@ -229,11 +229,11 @@ public class Utility {
     public static String getDefaultSarifReportFilePath(boolean isBlackDuckScan, boolean isPolarisDuckScan) {
         return isBlackDuckScan
                 ? ApplicationConstants.DEFAULT_BLACKDUCKSCA_SARIF_REPORT_FILE_PATH.concat(
-                ApplicationConstants.SARIF_REPORT_FILENAME)
+                        ApplicationConstants.SARIF_REPORT_FILENAME)
                 : isPolarisDuckScan
-                ? ApplicationConstants.DEFAULT_POLARIS_SARIF_REPORT_FILE_PATH.concat(
-                ApplicationConstants.SARIF_REPORT_FILENAME)
-                : "";
+                        ? ApplicationConstants.DEFAULT_POLARIS_SARIF_REPORT_FILE_PATH.concat(
+                                ApplicationConstants.SARIF_REPORT_FILENAME)
+                        : "";
     }
 
     public static String getCustomSarifReportFilePath(
@@ -241,8 +241,8 @@ public class Utility {
         return isBlackDuckScan
                 ? (String) scanParams.get(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_FILE_PATH_KEY)
                 : isPolarisDuckScan
-                ? (String) scanParams.get(ApplicationConstants.POLARIS_REPORTS_SARIF_FILE_PATH_KEY)
-                : "";
+                        ? (String) scanParams.get(ApplicationConstants.POLARIS_REPORTS_SARIF_FILE_PATH_KEY)
+                        : "";
     }
 
     public static String determineSARIFReportFilePath(
