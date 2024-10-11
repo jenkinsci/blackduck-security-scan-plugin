@@ -135,7 +135,7 @@ public class BridgeDownloadManager {
             FilePath tempFilePath = workspace.createTempFile("versions", ".txt");
             URL url = new URL(versionFileUrl);
 
-            HttpURLConnection connection = Utility.getHttpURLConnection(url, envVars, logger);
+            HttpURLConnection connection = Utility.getHttpURLConnection(url, logger);
             if (connection != null) {
                 tempFilePath.copyFrom(connection.getURL());
                 tempVersionFilePath = tempFilePath.getRemote();
@@ -151,7 +151,7 @@ public class BridgeDownloadManager {
         try {
             URL url = new URL(String.join("/", directoryUrl, ApplicationConstants.VERSION_FILE));
 
-            HttpURLConnection connection = Utility.getHttpURLConnection(url, envVars, logger);
+            HttpURLConnection connection = Utility.getHttpURLConnection(url, logger);
             if (connection != null) {
                 connection.setRequestMethod("HEAD");
                 return (connection.getResponseCode() >= 200 && connection.getResponseCode() < 300);
