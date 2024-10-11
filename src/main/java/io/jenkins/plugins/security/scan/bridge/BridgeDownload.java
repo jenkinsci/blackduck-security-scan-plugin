@@ -69,7 +69,7 @@ public class BridgeDownload {
     private FilePath downloadBridge(String bridgeDownloadUrl, FilePath bridgeInstallationFilePath)
             throws InterruptedException, IOException {
         FilePath bridgeZipFilePath = bridgeInstallationFilePath.child(ApplicationConstants.BRIDGE_ZIP_FILE_FORMAT);
-        HttpURLConnection connection = Utility.getHttpURLConnection(new URL(bridgeDownloadUrl), logger);
+        HttpURLConnection connection = Utility.getHttpURLConnection(new URL(bridgeDownloadUrl), envVars, logger);
 
         if (connection != null) {
             bridgeZipFilePath.copyFrom(connection.getURL());
@@ -100,7 +100,7 @@ public class BridgeDownload {
         int statusCode = -1;
 
         try {
-            HttpURLConnection connection = Utility.getHttpURLConnection(new URL(url), logger);
+            HttpURLConnection connection = Utility.getHttpURLConnection(new URL(url), envVars, logger);
             if (connection != null) {
                 connection.setRequestMethod("HEAD");
                 statusCode = connection.getResponseCode();
@@ -125,7 +125,7 @@ public class BridgeDownload {
         try {
             URL url = new URL(bridgeDownloadUrl);
 
-            HttpURLConnection connection = Utility.getHttpURLConnection(url, logger);
+            HttpURLConnection connection = Utility.getHttpURLConnection(url, envVars, logger);
             if (connection != null) {
                 connection.setRequestMethod("HEAD");
                 return (connection.getResponseCode() == HttpURLConnection.HTTP_OK);

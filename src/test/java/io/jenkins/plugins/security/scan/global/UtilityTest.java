@@ -1,7 +1,6 @@
 package io.jenkins.plugins.security.scan.global;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import hudson.EnvVars;
@@ -12,10 +11,7 @@ import io.jenkins.plugins.security.scan.global.enums.BuildStatus;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.net.Authenticator;
-import java.net.MalformedURLException;
-import java.net.PasswordAuthentication;
-import java.net.URL;
+import java.net.*;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,8 +21,8 @@ import org.mockito.Mockito;
 
 public class UtilityTest {
     private FilePath workspace;
-    private final TaskListener listenerMock = mock(TaskListener.class);
-    private final EnvVars envVarsMock = mock(EnvVars.class);
+    private final TaskListener listenerMock = Mockito.mock(TaskListener.class);
+    private final EnvVars envVarsMock = Mockito.mock(EnvVars.class);
     private LoggerWrapper logger;
     private URL url;
 
@@ -34,7 +30,7 @@ public class UtilityTest {
     void setup() {
         workspace = new FilePath(new File(getHomeDirectory()));
         logger = new LoggerWrapper(listenerMock);
-        when(listenerMock.getLogger()).thenReturn(mock(PrintStream.class));
+        when(listenerMock.getLogger()).thenReturn(Mockito.mock(PrintStream.class));
 
         try {
             url = new URL("https://fake-url.com");
@@ -95,6 +91,67 @@ public class UtilityTest {
     }
 
     @Test
+    public void getHttpURLConnectionTest() {
+        EnvVars envVars = new EnvVars();
+        envVars.put("HTTP_PROXY", "http://fake-proxy.com:1010");
+
+        HttpURLConnection httpProxyConnection = Utility.getHttpURLConnection(url, envVars, logger);
+
+        assertNotNull(httpProxyConnection);
+        assertEquals(url, httpProxyConnection.getURL());
+
+        envVars.put("NO_PROXY", "https://test-url.com, https://fake-url.com");
+
+        HttpURLConnection noProxyConnection = Utility.getHttpURLConnection(url, envVars, logger);
+
+        assertNotNull(noProxyConnection);
+        assertEquals(url, noProxyConnection.getURL());
+    }
+
+    @Test
+    public void getProxyTest() throws IOException {
+        EnvVars envVars = new EnvVars();
+
+        assertEquals(ApplicationConstants.NO_PROXY, Utility.getProxy(url, envVars, logger));
+
+        envVars.put("NO_PROXY", "https://test-url.com, https://fake-url.com");
+
+        assertEquals(ApplicationConstants.NO_PROXY, Utility.getProxy(url, envVars, logger));
+
+        envVars.put("HTTP_PROXY", "https://fake-proxy.com:1010");
+        envVars.replace("NO_PROXY", "https://test-url.com");
+        envVars.put("HTTPS_PROXY", "https://fake-proxy.com:1010");
+
+        assertEquals(envVars.get("HTTPS_PROXY"), Utility.getProxy(url, envVars, logger));
+
+        envVars.remove("HTTPS_PROXY");
+
+        assertEquals(envVars.get("HTTP_PROXY"), Utility.getProxy(url, envVars, logger));
+    }
+
+    @Test
+    public void getEnvOrSystemProxyDetailsTest() {
+        EnvVars envVars = new EnvVars();
+
+        assertNull(Utility.getEnvOrSystemProxyDetails(ApplicationConstants.NO_PROXY, envVars));
+        assertNull(Utility.getEnvOrSystemProxyDetails(ApplicationConstants.HTTP_PROXY, envVars));
+        assertNull(Utility.getEnvOrSystemProxyDetails(ApplicationConstants.HTTPS_PROXY, envVars));
+
+        envVars.put("NO_PROXY", "https://test-url.com, https://fake-url.com");
+        envVars.put("HTTP_PROXY", "https://fake-proxy.com:1010");
+        envVars.put("HTTPS_PROXY", "https://fake-proxy.com:1010");
+
+        assertEquals(
+                envVars.get("NO_PROXY"), Utility.getEnvOrSystemProxyDetails(ApplicationConstants.NO_PROXY, envVars));
+        assertEquals(
+                envVars.get("HTTP_PROXY"),
+                Utility.getEnvOrSystemProxyDetails(ApplicationConstants.HTTP_PROXY, envVars));
+        assertEquals(
+                envVars.get("HTTPS_PROXY"),
+                Utility.getEnvOrSystemProxyDetails(ApplicationConstants.HTTPS_PROXY, envVars));
+    }
+
+    @Test
     public void setDefaultProxyAuthenticatorTest() {
         Authenticator.setDefault(null);
 
@@ -103,7 +160,8 @@ public class UtilityTest {
         assertEquals("username", passwordAuth.getUserName());
         assertArrayEquals("password".toCharArray(), passwordAuth.getPassword());
 
-        Utility.setDefaultProxyAuthenticator(passwordAuth.getUserName(), Arrays.toString(passwordAuth.getPassword()));
+        Utility.setDefaultProxyAuthenticator(
+                passwordAuth.getUserName().concat(":").concat(Arrays.toString(passwordAuth.getPassword())));
         Authenticator authenticator = Authenticator.getDefault();
         assertNotNull(authenticator);
 
@@ -114,7 +172,7 @@ public class UtilityTest {
     public void testSetDefaultProxyAuthenticatorWithInvalidUserInfo() {
         Authenticator.setDefault(null);
 
-        Utility.setDefaultProxyAuthenticator(null, null);
+        Utility.setDefaultProxyAuthenticator("invalidUserInfo");
 
         assertNull(Authenticator.getDefault());
     }
