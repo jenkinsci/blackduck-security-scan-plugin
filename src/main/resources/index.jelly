@@ -1,4 +1,4 @@
 <?jelly escape-by-default='true'?>
 <div>
-    Black Duck Security Scan Plugin
+    The plugin provides functionality for performing Black Duck Security Scan with Black Duck SCA, Coverity and Polaris.
 </div>
