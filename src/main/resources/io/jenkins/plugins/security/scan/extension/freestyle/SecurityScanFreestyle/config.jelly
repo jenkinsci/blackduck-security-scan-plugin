@@ -38,7 +38,7 @@
 
         <div id="blackducksca_sarif_report_sec">
             <f:advanced title="SARIF Report Options">
-                <f:entry class="sarif-checkbox" field="blackducksca_reports_sarif_create" title="Generate SARIF Report (Optional)">
+                <f:entry field="blackducksca_reports_sarif_create" title="Generate SARIF Report (Optional)">
                     <f:checkbox checked="${instance.isBlackducksca_reports_sarif_create() == true}"/>
                 </f:entry>
                 <div id="blackducksca_sarif_params">
@@ -184,7 +184,7 @@
 
         <div id="polaris_sarif_report_sec">
             <f:advanced title="SARIF Report Options">
-                <f:entry class="sarif-checkbox" field="polaris_reports_sarif_create" title="Generate SARIF Report(Optional)">
+                <f:entry field="polaris_reports_sarif_create" title="Generate SARIF Report(Optional)">
                     <f:checkbox checked="${instance.isPolaris_reports_sarif_create() == true}"/>
                 </f:entry>
                 <div id="polaris_sarif_params">
@@ -310,29 +310,23 @@
             margin-top: 4px;
         }
 
-        /* Styling for the checkbox entry */
-        .sarif-checkbox {
-        display: block;
-        margin-bottom: 25px; /* Space below the checkbox entry */
-        }
-
         /* Style for the nested div to be indented */
         #polaris_sarif_params,
         #blackducksca_sarif_params,
         #source_upload {
-        margin-left: 10px;
-        border-left: 2.23px solid #C3CCD1;
-        padding-left: 10px;
+            margin-left: 10px;
+            border-left: 2.23px solid #C3CCD1;
+            padding-left: 10px;
         }
 
         /* Style for entries within the nested div */
         #polaris_sarif_params .f\:entry,
         #blackducksca_sarif_params .f\:entry {
-        margin-bottom: 10px; /* Space below each entry */
+            margin-bottom: 10px;
         }
 
         .advancedButton {
-        font-size: 17px;    /* Increases the font size */
+            font-size: 17px;
         }
     </style>
 

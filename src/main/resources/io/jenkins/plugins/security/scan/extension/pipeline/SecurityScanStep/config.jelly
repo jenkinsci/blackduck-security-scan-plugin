@@ -49,7 +49,7 @@
                 </f:entry>
                 <div id="blackducksca_sarif_params">
                     <f:entry field="blackducksca_reports_sarif_groupSCAIssues" title="Group SCA Issues by Component (Optional)">
-                        <f:checkbox default="true"/>
+                        <f:checkbox/>
                     </f:entry>
                     <f:entry field="blackducksca_reports_sarif_file_path" title="SARIF Report File Path (Optional)">
                         <f:textbox/>
@@ -182,7 +182,7 @@
                 </f:entry>
                 <div id="polaris_sarif_params">
                     <f:entry field="polaris_reports_sarif_groupSCAIssues" title="Group SCA Issues by Component (Optional)">
-                        <f:checkbox default="true"/>
+                        <f:checkbox/>
                     </f:entry>
                     <f:entry field="polaris_reports_sarif_file_path" title="Polaris SARIF Report File Path (Optional)">
                         <f:textbox/>
@@ -276,12 +276,6 @@
 </div>
 
     <style>
-        /* Styling for the checkbox entry */
-        .sarif-checkbox {
-        display: block;
-        margin-bottom: 25px; /* Space below the checkbox entry */
-        }
-
         /* Style for the nested div to be indented */
         #polaris_sarif_params,
         #blackducksca_sarif_params,
@@ -292,13 +286,13 @@
         }
 
         .advancedButton {
-            font-size: 17px;    /* Increases the font size */
+            font-size: 17px;
         }
 
         /* Style for entries within the nested div */
         #polaris_sarif_params .f\:entry,
         #blackducksca_sarif_params .f\:entry {
-            margin-bottom: 10px; /* Space below each entry */
+            margin-bottom: 10px;
         }
     </style>
 
@@ -410,7 +404,7 @@
             }
         });
 
-        document.addEventListener('change', function() {
+        document.addEventListener('change', function(event) {
             var polarisAssessmentModeOption = document.querySelector('select[name="_.polaris_assessment_mode"]')?.value;
             var sourceUploadDiv = document.getElementById('source_upload');
 
@@ -423,7 +417,7 @@
                 hideParticularDiv(sourceUploadDiv);
             }
 
-            toggleSarifParamsDivs();
+            toggleSarifParamsDivs(event);
             togglePrCommentDivs();
             handlePostMergeWorkflowSectionsVisibility();
         });
@@ -439,6 +433,9 @@
                     blackduckSarifParamSection.style.display = 'none';
                     clearInputFields(blackduckSarifParamSection);
                 }
+                if(event.target.name == "_.blackducksca_reports_sarif_create" ){
+                    setCheckboxToDefaultTrue(['_.blackducksca_reports_sarif_groupSCAIssues']);
+                }
             } else if (selectedOption == "polaris") {
                 var polarisCheckbox = document.querySelector('input[name="_.polaris_reports_sarif_create"]')
                 var polarisSarifParamSection = document.getElementById('polaris_sarif_params')
@@ -448,6 +445,9 @@
                 } else {
                     polarisSarifParamSection.style.display = 'none';
                     clearInputFields(polarisSarifParamSection);
+                }
+                if(event.target.name == "_.polaris_reports_sarif_create"){
+                    setCheckboxToDefaultTrue(['_.polaris_reports_sarif_groupSCAIssues']);
                 }
             }
 
