@@ -8,13 +8,13 @@
         <!-- Tab Container -->
         <div class="tab-container-box">
             <!-- Black Duck Tab -->
-            <div class="scan-tab-box" onclick="showProductType('blackducksca-section')">Black Duck SCA</div>
+            <div class="scan-tab-box" id="blackduck-tab">Black Duck SCA</div>
             <!-- Coverity Tab -->
-            <div class="scan-tab-box" onclick="showProductType('coverity-section')">Coverity</div>
+            <div class="scan-tab-box" id="coverity-tab">Coverity</div>
             <!-- Polaris Tab -->
-            <div class="scan-tab-box" onclick="showProductType('polaris-section')">Polaris</div>
+            <div class="scan-tab-box" id="polaris-tab">Polaris</div>
             <!-- SRM Tab -->
-            <div class="scan-tab-box" onclick="showProductType('srm-section')">Software Risk Manager (SRM)</div>
+            <div class="scan-tab-box" id="srm-tab">Software Risk Manager (SRM)</div>
         </div>
 
         <!-- Black Duck Configuration -->
@@ -33,7 +33,7 @@
                     <f:validateButton method="testBlackDuckSCAConnection" title="Test Connection" progress="Testing..." with="blackDuckSCAUrl,blackDuckSCACredentialsId"/>
                 </div>
                 <f:entry>
-                    <button type="button" class="jenkins-button ml-7" onclick="clearAllTabFieldsAndTestConnectionMessages('blackducksca-section')">Clear</button>
+                    <button type="button" class="jenkins-button ml-7" id="clear-blackduck">Clear</button>
                 </f:entry>
             </div>
         </div>
@@ -54,7 +54,7 @@
                     <f:validateButton method="testCoverityConnection" title="Test Connection" progress="Testing..." with="coverityConnectUrl,coverityCredentialsId"/>
                 </div>
                 <f:entry>
-                    <button type="button" class="jenkins-button ml-7" onclick="clearAllTabFieldsAndTestConnectionMessages('coverity-section')">Clear</button>
+                    <button type="button" class="jenkins-button ml-7" id="clear-coverity">Clear</button>
                 </f:entry>
             </div>
         </div>
@@ -72,7 +72,7 @@
                     <f:validateButton method="testPolarisConnection" title="Test Connection" progress="Testing..." with="polarisServerUrl,polarisCredentialsId"/>
                 </div>
                 <f:entry>
-                    <button type="button" class="jenkins-button ml-7" onclick="clearAllTabFieldsAndTestConnectionMessages('polaris-section')">Clear</button>
+                    <button type="button" class="jenkins-button ml-7" id="clear-polaris">Clear</button>
                 </f:entry>
             </div>
         </div>
@@ -96,7 +96,7 @@
                     <f:validateButton method="testSrmConnection" title="Test Connection" progress="Testing..." with="srmUrl,srmCredentialsId"/>
                 </div>
                 <f:entry>
-                    <button type="button" class="jenkins-button ml-7" onclick="clearAllTabFieldsAndTestConnectionMessages('srm-section')">Clear</button>
+                    <button type="button" class="jenkins-button ml-7" id="clear-srm">Clear</button>
                 </f:entry>
             </div>
         </div>
@@ -108,12 +108,11 @@
             <!-- Tab Container -->
             <div class="tab-container-box">
                 <!-- Mac Tab -->
-                <div class="scm-token-tab-box" onclick="showScmToken('bitbucket-section')">BitBucket</div>
+                <div class="scm-token-tab-box" id="bitbucket-scm-tab">BitBucket</div>
                 <!-- Linux Tab -->
-                <div class="scm-token-tab-box" onclick="showScmToken('github-section')">Github</div>
+                <div class="scm-token-tab-box" id="github-scm-tab">Github</div>
                 <!-- Windows Tab -->
-                <div class="scm-token-tab-box" onclick="showScmToken('gitlab-section')">Gitlab</div>
-
+                <div class="scm-token-tab-box" id="gitlab-scm-tab">Gitlab</div>
             </div>
 
             <!-- Bitbucket Token Configuration -->
@@ -145,11 +144,11 @@
             <!-- Tab Container for Bridge CLI Download URLs -->
             <div class="tab-container-box">
                 <!-- Mac Tab -->
-                <div class="os-tab-box" onclick="showOSType('mac-section')">Mac</div>
+                <div class="os-tab-box" id="mac-tab">Mac</div>
                 <!-- Linux Tab -->
-                <div class="os-tab-box" onclick="showOSType('linux-section')">Linux </div>
+                <div class="os-tab-box" id="linux-tab">Linux </div>
                 <!-- Windows Tab -->
-                <div class="os-tab-box" onclick="showOSType('windows-section')">Windows</div>
+                <div class="os-tab-box" id="windows-tab">Windows</div>
             </div>
 
             <!-- Mac Download URL Configuration -->
@@ -183,232 +182,9 @@
         </div>
     </f:section>
 
-    <style>
-        .tab-container-box {
-        display: flex;
-        margin-bottom: 10px;
-        }
 
-        .scan-tab-box, .os-tab-box, .scm-token-tab-box {
-        cursor: pointer;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        margin-right: 10px;
-        }
+    <link rel="stylesheet" type="text/css" href="${rootURL}/plugin/blackduck-security-scan/styles/scanner-global-config.css" />
 
-        .tab:hover {
-        background-color: #f1f1f1;
-        }
+    <script type="text/javascript" src="${rootURL}/plugin/blackduck-security-scan/scripts/ScannerGlobalConfig.js"  />
 
-        .product-type-section, .os-section {
-        border: 2px dashed var(--input-border);
-        border-radius: 10px;
-        padding: 10px 10px 0px 10px;
-        margin-top: 10px;
-        margin-bottom: 20px;
-        }
-
-        .box-header {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        }
-
-        .tab-info {
-        font-size: 14px;
-        font-weight: bold;
-<!--        color: red; /* Text color */-->
-        margin-bottom: 10px; /* Adjust the margin as needed */
-        }
-
-        .tab-info-os {
-        font-size: 14px;
-        font-weight: bold;
-        color: black; /* Text color */
-        margin-top: 10px; /* Adjust the margin as needed */
-        margin-bottom: 20px; /* Adjust the margin as needed */
-        }
-
-        .ml-7 {
-        margin-left: 7px;
-        }
-
-        .flex-1 {
-        flex: 1;
-        }
-
-        .button-container {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        }
-
-        /*Override jenkins-validate-button default css*/
-        .jenkins-validate-button__container__status {
-            .validation-error-area {
-            min-height: 24px !important;
-            }
-        }
-    </style>
-
-    <script type="text/javascript">
-        function showProductType(sectionId) {
-            // Hide all sections
-            var sections = document.querySelectorAll('.product-type-section');
-            sections.forEach(function (section) {
-                section.style.display = 'none';
-            });
-
-            // Show the selected section
-            var scanTypeSection = document.getElementById(sectionId);
-            if (scanTypeSection) {
-                scanTypeSection.style.display = "block";
-            }
-
-            // Highlight the selected tab
-            var tabs = document.querySelectorAll('.scan-tab-box');
-            tabs.forEach(function (tab) {
-                tab.style.backgroundColor = '';
-            });
-
-            var selectedTab = document.querySelector('.tab-container-box [onclick*="' + sectionId + '"]');
-            if (selectedTab) {
-                selectedTab.style.backgroundColor = '#f1f1f1';
-            }
-        }
-
-        function showOSType(sectionId) {
-            // Hide all sections
-            var sections = document.querySelectorAll('.os-section');
-            sections.forEach(function (section) {
-                section.style.display = 'none';
-            });
-
-            // Show the selected section
-            var scanTypeSection = document.getElementById(sectionId);
-            if (scanTypeSection) {
-                scanTypeSection.style.display = "block";
-            }
-
-            // Highlight the selected tab
-            var tabs = document.querySelectorAll('.os-tab-box');
-            tabs.forEach(function (tab) {
-                tab.style.backgroundColor = '';
-            });
-
-            var selectedTab = document.querySelector('.tab-container-box [onclick*="' + sectionId + '"]');
-            if (selectedTab) {
-                selectedTab.style.backgroundColor = '#f1f1f1';
-            }
-        }
-
-        function showScmToken(sectionId) {
-            // Hide all sections
-            var sections = document.querySelectorAll('.scm-token-section');
-            sections.forEach(function (section) {
-                section.style.display = 'none';
-            });
-
-            // Show the selected section
-            var scanTypeSection = document.getElementById(sectionId);
-            if (scanTypeSection) {
-                scanTypeSection.style.display = "block";
-            }
-
-            // Highlight the selected tab
-            var tabs = document.querySelectorAll('.scm-token-tab-box');
-            tabs.forEach(function (tab) {
-                tab.style.backgroundColor = '';
-            });
-
-            var selectedTab = document.querySelector('.tab-container-box [onclick*="' + sectionId + '"]');
-            if (selectedTab) {
-                selectedTab.style.backgroundColor = '#f1f1f1';
-            }
-        }
-
-        // Function to clear all input fields except those with a specific class
-        function clearAllTabFieldsAndTestConnectionMessages(sectionId) {
-            // Clear tab fields
-            var tabSection = document.getElementById(sectionId);
-            if (tabSection) {
-                var inputFields = tabSection.querySelectorAll("input, select");
-                inputFields.forEach(function (inputField) {
-                    inputField.value = "";
-                });
-
-                var okElement = tabSection.querySelector('.ok');
-                if (okElement) {
-                    okElement.remove();
-                }
-
-                var errorElement = tabSection.querySelector('.error');
-                if (errorElement) {
-                    errorElement.remove();
-                }
-            }
-        }
-
-        // Function to check for existing values and display related boxes on page load
-        function checkExistingFieldValues() {
-            let blackDuckSCAUrl = document.querySelector("input[name='blackDuckSCAUrl']").value;
-            let coverityConnectUrl = document.querySelector("input[name='coverityConnectUrl']").value;
-            let polarisServerUrl = document.querySelector("input[name='polarisServerUrl']").value;
-            let srmUrl = document.querySelector("input[name='srmUrl']").value;
-
-            let bridgeCliDownloadUrlForWindows = document.querySelector("input[name='bridgeDownloadUrlForWindows']").value;
-            let bridgeCliDownloadUrlForLinux = document.querySelector("input[name='bridgeDownloadUrlForLinux']").value;
-            let bridgeCliDownloadUrlForMac = document.querySelector("input[name='bridgeDownloadUrlForMac']").value;
-
-            let bitbucketCredentialsId = document.querySelector("select[name='_.bitbucketCredentialsId']").value;
-            let githubCredentialsId = document.querySelector("select[name='_.githubCredentialsId']").value;
-            let gitlabCredentialsId = document.querySelector("select[name='_.gitlabCredentialsId']").value;
-
-            // Check the values of blackDuckSCAUrl, coverityConnectUrl, and polarisServerUrl
-            // and select the appropriate scan type based on their values
-            if (blackDuckSCAUrl) {
-                showProductType("blackducksca-section"); // Show Black Duck SCA box if there is a value
-            } else if (coverityConnectUrl) {
-                showProductType("coverity-section"); // Show Coverity box if there is a value
-            } else if (polarisServerUrl) {
-                showProductType("polaris-section"); // Show Polaris box if there is a value
-            }  else if (srmUrl) {
-                showProductType("srm-section"); // Show Polaris box if there is a value
-            }  else {
-                // If none of the URLs have a value, default to Black Duck SCA
-                showProductType("blackducksca-section");
-            }
-
-            // Check the values of bridgeDownloadUrlForMac, bridgeDownloadUrlForLinux, and bridgeDownloadUrlForWindows
-            // and select the appropriate OS type based on their values
-            if (bridgeCliDownloadUrlForMac) {
-                showOSType("mac-section");
-            } else if (bridgeCliDownloadUrlForLinux) {
-                showOSType("linux-section");
-            } else if (bridgeCliDownloadUrlForWindows) {
-                showOSType("windows-section");
-            } else {
-                // If none of the URLs have a value, default to MAC
-                showOSType("mac-section");
-            }
-
-            // Check the values of bitbucketCredentialsId, githubCredentialsId, and gitlabCredentialsId
-            // and select the appropriate SCM Token tab based on their values
-            if (bitbucketCredentialsId) {
-                showOSType("bitbucket-section");
-            } else if (githubCredentialsId) {
-                showOSType("github-section");
-            } else if (gitlabCredentialsId) {
-                showOSType("gitlab-section");
-            } else {
-                // If none of the URLs have a value, default to bitbucket
-                showOSType("bitbucket-section");
-            }
-        }
-
-        // Add an event listener to call the checkExistingFieldValues function on page load
-        window.addEventListener("load", checkExistingFieldValues);
-
-    </script>
 </j:jelly>
