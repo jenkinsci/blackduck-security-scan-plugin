@@ -17,7 +17,7 @@ function showProductType(sectionId) {
         tab.style.backgroundColor = '';
     });
 
-    var selectedTab = document.querySelector('.tab-container-box [onclick*="' + sectionId + '"]');
+    var selectedTab = document.getElementById(sectionId.replace("section", "tab"));
     if (selectedTab) {
         selectedTab.style.backgroundColor = '#f1f1f1';
     }
@@ -41,8 +41,7 @@ function showOSType(sectionId) {
     tabs.forEach(function (tab) {
         tab.style.backgroundColor = '';
     });
-
-    var selectedTab = document.querySelector('.tab-container-box [onclick*="' + sectionId + '"]');
+    var selectedTab = document.getElementById(sectionId.replace("section", "tab"));
     if (selectedTab) {
         selectedTab.style.backgroundColor = '#f1f1f1';
     }
@@ -67,7 +66,7 @@ function showScmToken(sectionId) {
         tab.style.backgroundColor = '';
     });
 
-    var selectedTab = document.querySelector('.tab-container-box [onclick*="' + sectionId + '"]');
+    var selectedTab = document.getElementById(sectionId.replace("section", "tab"));
     if (selectedTab) {
         selectedTab.style.backgroundColor = '#f1f1f1';
     }
@@ -141,14 +140,14 @@ function checkExistingFieldValues() {
     // Check the values of bitbucketCredentialsId, githubCredentialsId, and gitlabCredentialsId
     // and select the appropriate SCM Token tab based on their values
     if (bitbucketCredentialsId) {
-        showOSType("bitbucket-section");
+        showScmToken("bitbucket-section");
     } else if (githubCredentialsId) {
-        showOSType("github-section");
+        showScmToken("github-section");
     } else if (gitlabCredentialsId) {
-        showOSType("gitlab-section");
+        showScmToken("gitlab-section");
     } else {
         // If none of the URLs have a value, default to bitbucket
-        showOSType("bitbucket-section");
+        showScmToken("bitbucket-section");
     }
 }
 
@@ -157,7 +156,7 @@ window.addEventListener("load", function() {
     checkExistingFieldValues();
 
     // Add event listeners for the tabs
-    document.getElementById('blackduck-tab').addEventListener('click', function() {
+    document.getElementById('blackducksca-tab').addEventListener('click', function() {
         showProductType('blackducksca-section');
     });
 
@@ -186,15 +185,15 @@ window.addEventListener("load", function() {
         showOSType('windows-section');
     });
 
-    document.getElementById('bitbucket-scm-tab').addEventListener('click', function() {
+    document.getElementById('bitbucket-tab').addEventListener('click', function() {
         showScmToken('bitbucket-section');
     });
 
-    document.getElementById('github-scm-tab').addEventListener('click', function() {
+    document.getElementById('github-tab').addEventListener('click', function() {
         showScmToken('github-section');
     });
 
-    document.getElementById('gitlab-scm-tab').addEventListener('click', function() {
+    document.getElementById('gitlab-tab').addEventListener('click', function() {
         showScmToken('gitlab-section');
     });
 

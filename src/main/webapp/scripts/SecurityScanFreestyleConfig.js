@@ -2,7 +2,7 @@ var selectedOption = document.querySelector('select[name="_.product"]')?.value;
 var polarisAssessmentModeOption = document.querySelector('select[name="_.polaris_assessment_mode"]')?.value;
 var sourceUploadDiv = document.getElementById('source_upload');
 
-if (selectedOption &amp;&amp; selectedOption !== 'select') {
+if (selectedOption && selectedOption !== 'select') {
     document.getElementById(selectedOption).style.display = 'block';
     document.getElementById('bridge_cli_sec').style.display = 'block';
 
@@ -40,7 +40,7 @@ function clearInputFields(div) {
             if (field.type === 'text' || field.tagName.toLowerCase() === 'select') {
                 field.value = '';
             } else if (field.type === 'checkbox') {
-                if (field.name !== "_.srm_waitForScan" &amp;&amp; field.name !== "_.polaris_waitForScan" &amp;&amp; field.name !== "_.blackducksca_waitForScan" &amp;&amp; field.name !== "_.coverity_waitForScan" &amp;&amp; field.name !== "_.polaris_reports_sarif_groupSCAIssues" &amp;&amp; field.name !== "_.blackducksca_reports_sarif_groupSCAIssues") {
+                if (field.name !== "_.srm_waitForScan" && field.name !== "_.polaris_waitForScan" && field.name !== "_.blackducksca_waitForScan" && field.name !== "_.coverity_waitForScan" && field.name !== "_.polaris_reports_sarif_groupSCAIssues" && field.name !== "_.blackducksca_reports_sarif_groupSCAIssues") {
                     field.checked = false;
                 }
             }
@@ -202,7 +202,7 @@ function validateSrmFields() {
     var errorSrmProjectIdDiv = document.getElementById("error_srm_project_id");
     var errorSrmAssessmentTypesDiv = document.getElementById("error_srm_assessment_types");
 
-    if (!srmProjectName &amp;&amp; !srmProjectId) {
+    if (!srmProjectName && !srmProjectId) {
         errorSrmProjectNameDiv.style.display = "block";
         errorSrmProjectIdDiv.style.display = "block";
     } else {

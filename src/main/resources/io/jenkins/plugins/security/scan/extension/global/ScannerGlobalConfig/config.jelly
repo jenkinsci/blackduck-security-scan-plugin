@@ -8,7 +8,7 @@
         <!-- Tab Container -->
         <div class="tab-container-box">
             <!-- Black Duck Tab -->
-            <div class="scan-tab-box" id="blackduck-tab">Black Duck SCA</div>
+            <div class="scan-tab-box" id="blackducksca-tab">Black Duck SCA</div>
             <!-- Coverity Tab -->
             <div class="scan-tab-box" id="coverity-tab">Coverity</div>
             <!-- Polaris Tab -->
@@ -108,11 +108,11 @@
             <!-- Tab Container -->
             <div class="tab-container-box">
                 <!-- Mac Tab -->
-                <div class="scm-token-tab-box" id="bitbucket-scm-tab">BitBucket</div>
+                <div class="scm-token-tab-box" id="bitbucket-tab">BitBucket</div>
                 <!-- Linux Tab -->
-                <div class="scm-token-tab-box" id="github-scm-tab">Github</div>
+                <div class="scm-token-tab-box" id="github-tab">Github</div>
                 <!-- Windows Tab -->
-                <div class="scm-token-tab-box" id="gitlab-scm-tab">Gitlab</div>
+                <div class="scm-token-tab-box" id="gitlab-tab">Gitlab</div>
             </div>
 
             <!-- Bitbucket Token Configuration -->

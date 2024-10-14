@@ -11,7 +11,7 @@
     margin-right: 10px;
 }
 
-.tab:hover {
+.scan-tab-box:hover, .os-tab-box:hover, .scm-token-tab-box:hover {
     background-color: #f1f1f1;
 }
 

@@ -54,7 +54,7 @@ function clearInputFields(div) {
 function setCheckboxToDefaultTrue(names) {
     names.forEach(function(name) {
         var checkbox = document.getElementsByName(name);
-        if (checkbox &amp;&amp; checkbox.length > 0) {
+        if (checkbox && checkbox.length > 0) {
             checkbox[0].checked = true;
 
         }
@@ -123,7 +123,7 @@ document.addEventListener('change', function(event) {
     handlePostMergeWorkflowSectionsVisibility();
 });
 
-function toggleSarifParamsDivs() {
+function toggleSarifParamsDivs(event) {
     var selectedOption = securityProduct.value;
     if (selectedOption == "blackducksca") {
         var blackduckCheckbox = document.querySelector('input[name="_.blackducksca_reports_sarif_create"]')
