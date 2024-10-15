@@ -84,7 +84,6 @@ public class PolarisParametersServiceTest {
         polarisParameters.put(ApplicationConstants.POLARIS_APPLICATION_NAME_KEY, TEST_APPLICATION_NAME);
         polarisParameters.put(ApplicationConstants.POLARIS_PROJECT_NAME_KEY, "fake-project-name");
         polarisParameters.put(ApplicationConstants.POLARIS_ASSESSMENT_TYPES_KEY, "SAST");
-        polarisParameters.put(ApplicationConstants.POLARIS_TRIAGE_KEY, "REQUIRED");
         polarisParameters.put(ApplicationConstants.POLARIS_BRANCH_NAME_KEY, "test-branch");
         polarisParameters.put(ApplicationConstants.POLARIS_BRANCH_PARENT_NAME_KEY, "test-parent-branch");
         polarisParameters.put(ApplicationConstants.POLARIS_PRCOMMENT_ENABLED_KEY, true);
@@ -99,7 +98,6 @@ public class PolarisParametersServiceTest {
         assertEquals(polaris.getApplicationName().getName(), TEST_APPLICATION_NAME);
         assertEquals(polaris.getPolarisProject().getName(), "fake-project-name");
         assertEquals(polaris.getAssessmentTypes().getTypes(), List.of("SAST"));
-        assertEquals(polaris.getTriage(), "REQUIRED");
         assertEquals(polaris.getBranch().getName(), "test-branch");
         assertEquals(polaris.getTest().getSca().getType(), "SCA-PACKAGE");
         assertNull(polaris.getBranch().getParent());
@@ -116,7 +114,6 @@ public class PolarisParametersServiceTest {
         polarisParameters.put(ApplicationConstants.POLARIS_APPLICATION_NAME_KEY, TEST_APPLICATION_NAME);
         polarisParameters.put(ApplicationConstants.POLARIS_PROJECT_NAME_KEY, "fake-project-name");
         polarisParameters.put(ApplicationConstants.POLARIS_ASSESSMENT_TYPES_KEY, "SAST");
-        polarisParameters.put(ApplicationConstants.POLARIS_TRIAGE_KEY, "REQUIRED");
         polarisParameters.put(ApplicationConstants.POLARIS_BRANCH_NAME_KEY, "test-branch");
         polarisParameters.put(ApplicationConstants.POLARIS_BRANCH_PARENT_NAME_KEY, "test-parent-branch");
         polarisParameters.put(ApplicationConstants.POLARIS_PRCOMMENT_ENABLED_KEY, true);
@@ -135,7 +132,6 @@ public class PolarisParametersServiceTest {
         assertEquals(polaris.getApplicationName().getName(), TEST_APPLICATION_NAME);
         assertEquals(polaris.getPolarisProject().getName(), "fake-project-name");
         assertEquals(polaris.getAssessmentTypes().getTypes(), List.of("SAST"));
-        assertEquals(polaris.getTriage(), "REQUIRED");
         assertEquals(polaris.getBranch().getName(), "test-branch");
         assertEquals(polaris.getTest().getSca().getType(), "SCA-PACKAGE");
         assertNull(polaris.getBranch().getParent());
@@ -159,7 +155,6 @@ public class PolarisParametersServiceTest {
         polarisParameters.put(ApplicationConstants.POLARIS_APPLICATION_NAME_KEY, TEST_APPLICATION_NAME);
         polarisParameters.put(ApplicationConstants.POLARIS_PROJECT_NAME_KEY, "fake-project-name");
         polarisParameters.put(ApplicationConstants.POLARIS_ASSESSMENT_TYPES_KEY, "SAST");
-        polarisParameters.put(ApplicationConstants.POLARIS_TRIAGE_KEY, "REQUIRED");
         polarisParameters.put(ApplicationConstants.POLARIS_BRANCH_NAME_KEY, "test-branch");
         polarisParameters.put(ApplicationConstants.POLARIS_BRANCH_PARENT_NAME_KEY, "test-parent-branch");
         polarisParameters.put(ApplicationConstants.POLARIS_PRCOMMENT_ENABLED_KEY, true);
@@ -176,7 +171,6 @@ public class PolarisParametersServiceTest {
         assertEquals(polaris.getApplicationName().getName(), TEST_APPLICATION_NAME);
         assertEquals(polaris.getPolarisProject().getName(), "fake-project-name");
         assertEquals(polaris.getAssessmentTypes().getTypes(), List.of("SAST"));
-        assertEquals(polaris.getTriage(), "REQUIRED");
         assertEquals(polaris.getBranch().getName(), "test-branch");
         assertEquals(polaris.getBranch().getParent().getName(), "test-parent-branch");
         assertEquals(polaris.getPrcomment().getEnabled(), true);

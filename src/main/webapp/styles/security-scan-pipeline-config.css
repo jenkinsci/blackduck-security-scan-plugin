@@ -1,7 +1,3 @@
-.error-margin {
-    margin-top: 4px;
-}
-
 /* Style for the nested div to be indented */
 #polaris_sarif_params,
 #blackducksca_sarif_params,
@@ -11,12 +7,12 @@
     padding-left: 10px;
 }
 
+.advancedButton {
+    font-size: 17px;
+}
+
 /* Style for entries within the nested div */
 #polaris_sarif_params .f\:entry,
 #blackducksca_sarif_params .f\:entry {
     margin-bottom: 10px;
-}
-
-.advancedButton {
-    font-size: 17px;
 }

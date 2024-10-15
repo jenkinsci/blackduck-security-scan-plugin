@@ -17,7 +17,7 @@ function showProductType(sectionId) {
         tab.style.backgroundColor = '';
     });
 
-    var selectedTab = document.querySelector('.tab-container-box [onclick*="' + sectionId + '"]');
+    var selectedTab = document.getElementById(sectionId.replace("section", "tab"));
     if (selectedTab) {
         selectedTab.style.backgroundColor = '#f1f1f1';
     }
@@ -41,8 +41,32 @@ function showOSType(sectionId) {
     tabs.forEach(function (tab) {
         tab.style.backgroundColor = '';
     });
+    var selectedTab = document.getElementById(sectionId.replace("section", "tab"));
+    if (selectedTab) {
+        selectedTab.style.backgroundColor = '#f1f1f1';
+    }
+}
 
-    var selectedTab = document.querySelector('.tab-container-box [onclick*="' + sectionId + '"]');
+function showScmToken(sectionId) {
+    // Hide all sections
+    var sections = document.querySelectorAll('.scm-token-section');
+    sections.forEach(function (section) {
+        section.style.display = 'none';
+    });
+
+    // Show the selected section
+    var scanTypeSection = document.getElementById(sectionId);
+    if (scanTypeSection) {
+        scanTypeSection.style.display = "block";
+    }
+
+    // Highlight the selected tab
+    var tabs = document.querySelectorAll('.scm-token-tab-box');
+    tabs.forEach(function (tab) {
+        tab.style.backgroundColor = '';
+    });
+
+    var selectedTab = document.getElementById(sectionId.replace("section", "tab"));
     if (selectedTab) {
         selectedTab.style.backgroundColor = '#f1f1f1';
     }
@@ -81,6 +105,10 @@ function checkExistingFieldValues() {
     let bridgeCliDownloadUrlForLinux = document.querySelector("input[name='bridgeDownloadUrlForLinux']").value;
     let bridgeCliDownloadUrlForMac = document.querySelector("input[name='bridgeDownloadUrlForMac']").value;
 
+    let bitbucketCredentialsId = document.querySelector("select[name='_.bitbucketCredentialsId']").value;
+    let githubCredentialsId = document.querySelector("select[name='_.githubCredentialsId']").value;
+    let gitlabCredentialsId = document.querySelector("select[name='_.gitlabCredentialsId']").value;
+
     // Check the values of blackDuckSCAUrl, coverityConnectUrl, and polarisServerUrl
     // and select the appropriate scan type based on their values
     if (blackDuckSCAUrl) {
@@ -89,9 +117,9 @@ function checkExistingFieldValues() {
         showProductType("coverity-section"); // Show Coverity box if there is a value
     } else if (polarisServerUrl) {
         showProductType("polaris-section"); // Show Polaris box if there is a value
-    } else if (srmUrl) {
+    }  else if (srmUrl) {
         showProductType("srm-section"); // Show Polaris box if there is a value
-    } else {
+    }  else {
         // If none of the URLs have a value, default to Black Duck SCA
         showProductType("blackducksca-section");
     }
@@ -105,9 +133,21 @@ function checkExistingFieldValues() {
     } else if (bridgeCliDownloadUrlForWindows) {
         showOSType("windows-section");
     } else {
-        console.log("here")
         // If none of the URLs have a value, default to MAC
         showOSType("mac-section");
+    }
+
+    // Check the values of bitbucketCredentialsId, githubCredentialsId, and gitlabCredentialsId
+    // and select the appropriate SCM Token tab based on their values
+    if (bitbucketCredentialsId) {
+        showScmToken("bitbucket-section");
+    } else if (githubCredentialsId) {
+        showScmToken("github-section");
+    } else if (gitlabCredentialsId) {
+        showScmToken("gitlab-section");
+    } else {
+        // If none of the URLs have a value, default to bitbucket
+        showScmToken("bitbucket-section");
     }
 }
 
@@ -116,7 +156,7 @@ window.addEventListener("load", function() {
     checkExistingFieldValues();
 
     // Add event listeners for the tabs
-    document.getElementById('blackduck-tab').addEventListener('click', function() {
+    document.getElementById('blackducksca-tab').addEventListener('click', function() {
         showProductType('blackducksca-section');
     });
 
@@ -143,6 +183,18 @@ window.addEventListener("load", function() {
 
     document.getElementById('windows-tab').addEventListener('click', function() {
         showOSType('windows-section');
+    });
+
+    document.getElementById('bitbucket-tab').addEventListener('click', function() {
+        showScmToken('bitbucket-section');
+    });
+
+    document.getElementById('github-tab').addEventListener('click', function() {
+        showScmToken('github-section');
+    });
+
+    document.getElementById('gitlab-tab').addEventListener('click', function() {
+        showScmToken('gitlab-section');
     });
 
     // Add event listeners for the Clear buttons

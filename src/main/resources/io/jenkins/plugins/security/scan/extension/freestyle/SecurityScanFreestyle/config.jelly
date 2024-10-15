@@ -1,268 +1,309 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form">
+
     <div id="product">
-        <f:entry field="product" title="Select Security Product">
+        <f:entry field="product" title="Select Product">
             <f:select/>
             <div id="error_product_name" style="display: block;" class="error error-margin" >No Product is selected!</div>
         </f:entry>
     </div>
 
     <div id="blackducksca" style="display: none;">
-        <f:section title="Black Duck SCA Parameters">
-            <f:entry field="blackducksca_scan_failure_severities" title="Black Duck SCA Scan Failure Severities (Optional)">
+        <f:section title="Scan Configuration">
+            <f:entry field="blackduck_project_directory" title="Project Directory (Optional)">
+                <f:textbox/>
+            </f:entry>
+            <f:entry field="blackducksca_mark_build_status" title="Mark Build Status (Optional)">
+                <f:select/>
+            </f:entry>
+            <f:entry field="blackducksca_include_diagnostics" title="Include Diagnostics (Optional)">
+                <f:checkbox checked="${instance.isInclude_diagnostics() == true}"/>
+            </f:entry>
+            <f:entry field="blackducksca_waitForScan" title="Wait For Scan Completion (Optional)">
+                <f:checkbox checked="${instance.isBlackducksca_waitForScan() == null || instance.isBlackducksca_waitForScan() == true}"/>
+            </f:entry>
+        </f:section>
+
+        <f:advanced title="Scan Options">
+            <f:entry field="detect_scan_full" title="Full Scan (Optional)">
+                <f:checkbox checked="${instance.isDetect_scan_full() == true}"/>
+            </f:entry>
+            <f:entry field="blackducksca_scan_failure_severities" title="Scan Failure Severities (Optional)">
                 <f:textbox/>
             </f:entry>
             <f:entry field="detect_download_url" title="Detect Download URL (Optional)">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="detect_scan_full" title="Detect Full Scan (Optional)">
-                <f:checkbox checked="${instance.isDetect_scan_full() == true}"/>
-            </f:entry>
-            <f:entry field="blackducksca_waitForScan" title="Black Duck SCA Wait For Scan Completion (Optional)">
-                <f:checkbox checked="${instance.isBlackducksca_waitForScan() == null || instance.isBlackducksca_waitForScan() == true}"/>
-            </f:entry>
-            <f:entry field="blackduck_project_directory" title="Project Directory (Optional)">
-                <f:textbox/>
-            </f:entry>
-        </f:section>
+        </f:advanced>
 
-        <f:section title="SARIF Report Options">
-            <f:entry field="blackducksca_reports_sarif_create" title="Generate SARIF Report for Black Duck SCA Issues (Optional)">
-                <f:checkbox checked="${instance.isBlackducksca_reports_sarif_create() == true}"/>
-            </f:entry>
-            <f:entry field="blackduck_reports_sarif_groupSCAIssues" title="Group SCA Issues by Component (Optional)">
-                <f:checkbox checked="${instance.isBlackducksca_reports_sarif_groupSCAIssues() == null || instance.isBlackducksca_reports_sarif_groupSCAIssues() == true}"/>
-            </f:entry>
-            <f:entry field="blackducksca_reports_sarif_file_path" title="Black Duck SCA SARIF Report File Path (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="blackducksca_reports_sarif_severities" title="Black Duck SCA SARIF Report Severities (Optional)">
-                <f:textbox/>
-            </f:entry>
-        </f:section>
+        <div id="blackducksca_sarif_report_sec">
+            <f:advanced title="SARIF Report Options">
+                <f:entry field="blackducksca_reports_sarif_create" title="Generate SARIF Report (Optional)">
+                    <f:checkbox checked="${instance.isBlackducksca_reports_sarif_create() == true}"/>
+                </f:entry>
+                <div id="blackducksca_sarif_params">
+                    <f:entry field="blackducksca_reports_sarif_groupSCAIssues" title="Group SCA Issues by Component (Optional)">
+                        <f:checkbox checked="${instance.isBlackducksca_reports_sarif_groupSCAIssues() == null || instance.isBlackducksca_reports_sarif_groupSCAIssues() == true}"/>
+                    </f:entry>
+                    <f:entry field="blackducksca_reports_sarif_file_path" title="SARIF Report File Path (Optional)">
+                        <f:textbox/>
+                    </f:entry>
+                    <f:entry field="blackducksca_reports_sarif_severities" title="SARIF Report Severities (Optional)">
+                        <f:textbox/>
+                    </f:entry>
+                </div>
+            </f:advanced>
+        </div>
 
-        <f:section title="Black Duck SCA Tool Configuration Options">
-            <f:entry field="detect_search_depth" title="Detect Search Depth (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="detect_config_path" title="Detect Config File Path (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="detect_args" title="Detect Additional Arguments (Optional)">
-                <f:textbox/>
-            </f:entry>
-        </f:section>
+        <div id="blackducksca_tool_configuration_sec">
+            <f:advanced title="Detect (SCA) Tool Options">
+                <f:entry field="detect_search_depth" title="Search Depth (Optional)">
+                    <f:textbox/>
+                </f:entry>
+                <f:entry field="detect_config_path" title="Config File Path (Optional)">
+                    <f:textbox/>
+                </f:entry>
+                <f:entry field="detect_args" title="Additional Arguments (Optional)">
+                    <f:textbox/>
+                </f:entry>
+            </f:advanced>
+        </div>
+
     </div>
 
     <div id="coverity" style="display: none;">
-        <f:section title="Coverity Parameters">
-            <f:entry field="coverity_project_name" title="Coverity Project Name">
+        <f:section title="Scan Configuration">
+            <f:entry field="coverity_project_name" title="Coverity Project (Mandatory)">
                 <f:textbox/>
                 <div id="error_coverity_project_name" style="display: block;" class="error error-margin">Coverity Project Name is missing</div>
             </f:entry>
-            <f:entry field="coverity_stream_name" title="Coverity Stream Name">
+            <f:entry field="coverity_stream_name" title="Coverity Stream (Mandatory)">
                 <f:textbox/>
                 <div id="error_coverity_stream_name" style="display: block;" class="error error-margin">Coverity Stream Name is missing</div>
             </f:entry>
             <f:entry field="coverity_policy_view" title="Coverity Policy View (Optional)">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="coverity_version" title="Coverity Version Number (Optional)">
+            <f:entry field="coverity_version" title="Coverity Version (Optional)">
                 <f:textbox/>
-            </f:entry>
-            <f:entry field="coverity_waitForScan" title="Coverity Wait For Scan Completion (Optional)">
-                <f:checkbox checked="${instance.isCoverity_waitForScan() == null || instance.isCoverity_waitForScan() == true}" />
-            </f:entry>
-            <f:entry field="coverity_local" title="Coverity Local Analysis (Optional)">
-                <f:checkbox checked="${instance.isCoverity_local() == true}"/>
             </f:entry>
             <f:entry field="coverity_project_directory" title="Project Directory (Optional)">
                 <f:textbox/>
             </f:entry>
+            <f:entry field="coverity_mark_build_status" title="Mark Build Status (Optional)">
+                <f:select/>
+            </f:entry>
+            <f:entry field="coverity_local" title="Using Coverity Connect? (Optional)">
+                <f:checkbox checked="${instance.isCoverity_local() == true}"/>
+            </f:entry>
+            <f:entry field="coverity_include_diagnostics" title="Include Diagnostics (Optional)">
+                <f:checkbox checked="${instance.isInclude_diagnostics() == true}"/>
+            </f:entry>
+            <f:entry field="coverity_waitForScan" title="Wait For Scan Completion (Optional)">
+                <f:checkbox checked="${instance.isCoverity_waitForScan() == null || instance.isCoverity_waitForScan() == true}" />
+            </f:entry>
         </f:section>
 
-        <f:section title="Coverity (SAST) Tool Configuration Options">
-            <f:entry field="coverity_build_command" title="Coverity Build Command (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="coverity_clean_command" title="Coverity Clean Command (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="coverity_config_path" title="Coverity Config File Path (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="coverity_args" title="Coverity Additional Arguments (Optional)">
-                <f:textbox/>
-            </f:entry>
-        </f:section>
+        <div id="coverity_tool_configuration_sec">
+            <f:advanced title="Coverity (SAST) Tool Options">
+                <f:entry field="coverity_build_command" title="Build Command (Optional)">
+                    <f:textbox/>
+                </f:entry>
+                <f:entry field="coverity_clean_command" title="Clean Command (Optional)">
+                    <f:textbox/>
+                </f:entry>
+                <f:entry field="coverity_config_path" title="Config File Path (Optional)">
+                    <f:textbox/>
+                </f:entry>
+                <f:entry field="coverity_args" title="Additional Arguments (Optional)">
+                    <f:textbox/>
+                </f:entry>
+            </f:advanced>
+        </div>
+
     </div>
 
     <div id="polaris" style="display: none;">
-        <f:section title="Polaris Parameters">
-            <f:entry field="polaris_application_name" title="Polaris Application Name (Mandatory)">
-                <f:textbox/>
-                <div id="error_polaris_application_name" style="display: block;" class="error error-margin">Polaris Application Name is missing</div>
-            </f:entry>
-            <f:entry field="polaris_project_name" title="Polaris Project Name (Mandatory)">
-                <f:textbox/>
-                <div id="error_polaris_project_name" style="display: block;" class="error error-margin">Polaris Project Name is missing</div>
-            </f:entry>
-            <f:entry field="polaris_assessment_types" title="Polaris Assessment Types (Mandatory)">
+        <f:section title="Scan Configuration">
+            <f:entry field="polaris_assessment_types" title="Assessment Types (Mandatory)">
                 <f:textbox/>
                 <div id="error_polaris_assessment_types" style="display: block;" class="error error-margin">Polaris Assessment Types are missing</div>
             </f:entry>
-            <f:entry field="polaris_branch_name" title="Polaris Branch Name (Mandatory)">
+            <f:entry field="polaris_application_name" title="Polaris Application (Mandatory)">
+                <f:textbox/>
+                <div id="error_polaris_application_name" style="display: block;" class="error error-margin">Polaris Application Name is missing</div>
+            </f:entry>
+            <f:entry field="polaris_project_name" title="Polaris Project (Mandatory)">
+                <f:textbox/>
+                <div id="error_polaris_project_name" style="display: block;" class="error error-margin">Polaris Project Name is missing</div>
+            </f:entry>
+            <f:entry field="polaris_branch_name" title="Polaris Branch (Mandatory)">
                 <f:textbox/>
                 <div id="error_polaris_branch_name" style="display: block;" class="error error-margin">Polaris Branch Name is missing</div>
             </f:entry>
-            <f:entry field="polaris_waitForScan" title="Polaris Wait For Scan Completion (Optional)">
-                <f:checkbox checked="${instance.isPolaris_waitForScan() == null || instance.isPolaris_waitForScan() == true}" />
-            </f:entry>
-            <f:entry field="polaris_triage" title="Polaris Triage (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="polaris_test_sca_type" title="Polaris Test SCA Type (Optional)">
+            <f:entry field="polaris_test_sca_type" title="SCA Test Type (Optional)">
                 <f:textbox/>
             </f:entry>
             <f:entry field="polaris_project_directory" title="Project Directory (Optional)">
                 <f:textbox/>
             </f:entry>
-        </f:section>
-
-        <div id="polaris_assessment_mode">
-            <f:entry field="polaris_assessment_mode" title="Polaris Assessment Mode (Optional)">
+            <f:entry field="polaris_mark_build_status" title="Mark Build Status (Optional)">
                 <f:select/>
             </f:entry>
+            <f:entry field="polaris_include_diagnostics" title="Include Diagnostics (Optional)">
+                <f:checkbox checked="${instance.isInclude_diagnostics() == true}"/>
+            </f:entry>
+            <f:entry field="polaris_waitForScan" title="Wait For Scan Completion (Optional)">
+                <f:checkbox checked="${instance.isPolaris_waitForScan() == null || instance.isPolaris_waitForScan() == true}" />
+            </f:entry>
+        </f:section>
+
+        <div id="polaris_assessment_mode_sec">
+            <f:advanced title="Scan Options">
+                <div id="polaris_assessment_mode">
+                    <f:entry field="polaris_assessment_mode" title="Assessment Mode (Optional)">
+                        <f:select/>
+                    </f:entry>
+                </div>
+
+                <div id="source_upload" style="display: none;">
+                    <f:section title="Source Code Upload Options">
+                        <f:entry field="project_source_archive" title="Upload Archive Instead Of Project Directory (Optional)">
+                            <f:textbox/>
+                        </f:entry>
+                        <f:entry field="project_source_excludes" title="Project Source Excludes (Optional)">
+                            <f:textbox/>
+                        </f:entry>
+                        <f:entry field="project_source_preserveSymLinks" title="Project Source Preserve Sym Links (Optional)">
+                            <f:checkbox checked="${instance.isProject_source_preserveSymLinks() == true}"/>
+                        </f:entry>
+                    </f:section>
+                </div>
+            </f:advanced>
         </div>
 
-        <div id="source_upload" style="display: none;">
-            <f:section title="Source Code Upload Options">
-                <f:entry field="project_source_archive" title="Upload Archive Instead Of Project Directory (Optional)">
-                    <f:textbox/>
+        <div id="polaris_sarif_report_sec">
+            <f:advanced title="SARIF Report Options">
+                <f:entry field="polaris_reports_sarif_create" title="Generate SARIF Report(Optional)">
+                    <f:checkbox checked="${instance.isPolaris_reports_sarif_create() == true}"/>
                 </f:entry>
-                <f:entry field="project_source_excludes" title="Project Source Excludes (Optional)">
-                    <f:textbox/>
-                </f:entry>
-                <f:entry field="project_source_preserveSymLinks" title="Project Source Preserve Sym Links (Optional)">
-                    <f:checkbox checked="${instance.isProject_source_preserveSymLinks() == true}"/>
-                </f:entry>
-            </f:section>
+                <div id="polaris_sarif_params">
+                    <f:entry field="polaris_reports_sarif_groupSCAIssues" title="Group SCA Issues by Component (Optional)">
+                        <f:checkbox checked="${instance.isPolaris_reports_sarif_groupSCAIssues() == null || instance.isPolaris_reports_sarif_groupSCAIssues() == true}"/>
+                    </f:entry>
+                    <f:entry field="polaris_reports_sarif_file_path" title="SARIF Report File Path (Optional)">
+                        <f:textbox/>
+                    </f:entry>
+                    <f:entry field="polaris_reports_sarif_severities" title="SARIF Report Severities (Optional)">
+                        <f:textbox/>
+                    </f:entry>
+                    <f:entry field="polaris_reports_sarif_issue_types" title="SARIF Report Issue Types (Optional)">
+                        <f:textbox/>
+                    </f:entry>
+                </div>
+            </f:advanced>
         </div>
 
-        <f:section title="SARIF Report Options">
-            <f:entry field="polaris_reports_sarif_create" title="Generate SARIF Report for Polaris Issues (Optional)">
-                <f:checkbox checked="${instance.isPolaris_reports_sarif_create() == true}"/>
-            </f:entry>
-            <f:entry field="polaris_reports_sarif_groupSCAIssues" title="Group SCA Issues by Component (Optional)">
-                <f:checkbox checked="${instance.isPolaris_reports_sarif_groupSCAIssues() == null || instance.isPolaris_reports_sarif_groupSCAIssues() == true}"/>
-            </f:entry>
-            <f:entry field="polaris_reports_sarif_file_path" title="Polaris SARIF Report File Path (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="polaris_reports_sarif_issue_types" title="Polaris SARIF Report Issue Types (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="polaris_reports_sarif_severities" title="Polaris SARIF Report Severities (Optional)">
-                <f:textbox/>
-            </f:entry>
-        </f:section>
+        <div id="polaris_tool_configuration_sec">
+            <f:advanced title="Coverity (SAST) Tool Options">
+                <f:entry field="polaris_sast_build_command" title="Coverity Build Command (Optional)">
+                    <f:textbox/>
+                </f:entry>
+                <f:entry field="polaris_sast_clean_command" title="Clean Command (Optional)">
+                    <f:textbox/>
+                </f:entry>
+                <f:entry field="polaris_sast_config_path" title="Config File Path (Optional)">
+                    <f:textbox/>
+                </f:entry>
+                <f:entry field="polaris_sast_args" title="Additional Arguments (Optional)">
+                    <f:textbox/>
+                </f:entry>
+            </f:advanced>
 
-        <f:section title="Coverity (SAST) Tool Configuration Options">
-            <f:entry field="polaris_sast_build_command" title="Coverity Build Command (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="polaris_sast_clean_command" title="Coverity Clean Command (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="polaris_sast_config_path" title="Coverity Config File Path (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="polaris_sast_args" title="Coverity Additional Arguments (Optional)">
-                <f:textbox/>
-            </f:entry>
-        </f:section>
-
-        <f:section title="Black Duck (SCA) Tool Configuration Options">
-            <f:entry field="polaris_sca_search_depth" title="Detect Search Depth (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="polaris_sca_config_path" title="Detect Config File Path (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="polaris_sca_args" title="Detect Additional Arguments (Optional)">
-                <f:textbox/>
-            </f:entry>
-        </f:section>
+            <f:advanced title="Detect (SCA) Tool Options">
+                    <f:entry field="polaris_sca_search_depth" title="Search Depth (Optional)">
+                        <f:textbox/>
+                    </f:entry>
+                    <f:entry field="polaris_sca_config_path" title="Config File Path (Optional)">
+                        <f:textbox/>
+                    </f:entry>
+                    <f:entry field="polaris_sca_args" title="Additional Arguments (Optional)">
+                        <f:textbox/>
+                    </f:entry>
+            </f:advanced>
+        </div>
 
     </div>
 
     <div id="srm" style="display: none;">
-        <f:section title="SRM Parameters">
-            <f:entry field="srm_assessment_types" title="SRM Assessment Types (Mandatory)">
+        <f:section title="Scan Configuration">
+            <f:entry field="srm_assessment_types" title="Assessment Types (Mandatory)">
                 <f:textbox/>
                 <div id="error_srm_assessment_types" style="display: block;" class="error error-margin">SRM Assessment Types are missing</div>
             </f:entry>
-            <f:entry field="srm_project_name" title="SRM Project Name (Mandatory)">
+            <f:entry field="srm_project_name" title="SRM Project (Mandatory)">
                 <f:textbox/>
                 <div id="error_srm_project_name" style="display: block;" class="error error-margin">SRM Project Name is missing</div>
             </f:entry>
-            <f:entry field="srm_project_id" title="SRM Project Id (Mandatory)">
+            <f:entry field="srm_project_id" title="Project ID (Mandatory)">
                 <f:textbox/>
-                <div id="error_srm_project_id" style="display: block;" class="error error-margin">SRM Project Id is missing</div>
+                <div id="error_srm_project_id" style="display: block;" class="error error-margin">SRM Project ID is missing</div>
             </f:entry>
-            <f:entry field="srm_branch_name" title="SRM Branch Name (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="srm_branch_parent" title="SRM Parent Branch Name (Optional)">
+            <f:entry field="srm_branch_name" title="SRM Branch (Optional)">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="srm_waitForScan" title="SRM Wait For Scan Completion (Optional)">
-                <f:checkbox checked="${instance.isSrm_waitForScan() == null || instance.isSrm_waitForScan() == true}" />
+            <f:entry field="srm_branch_parent" title="SRM Parent Branch (Optional)">
+                <f:textbox/>
             </f:entry>
             <f:entry field="srm_project_directory" title="Project Directory (Optional)">
                 <f:textbox/>
             </f:entry>
-        </f:section>
-
-        <f:section title="Coverity (SAST) Tool Configuration Options">
-            <f:entry field="srm_sast_build_command" title="Coverity Build Command (Optional)">
-                <f:textbox/>
+            <f:entry field="srm_include_diagnostics" title="Include Diagnostics (Optional)">
+                <f:checkbox/>
             </f:entry>
-            <f:entry field="srm_sast_clean_command" title="Coverity Clean Command (Optional)">
-                <f:textbox/>
+            <f:entry field="srm_mark_build_status" title="Mark Build Status (Optional)">
+                <f:select/>
             </f:entry>
-            <f:entry field="srm_sast_config_path" title="Coverity Config File Path (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="srm_sast_args" title="Coverity Additional Arguments (Optional)">
-                <f:textbox/>
+            <f:entry field="srm_waitForScan" title="Wait For Scan Completion (Optional)">
+                <f:checkbox checked="${instance.isSrm_waitForScan() == null || instance.isSrm_waitForScan() == true}" />
             </f:entry>
         </f:section>
 
-        <f:section title="Black Duck (SCA) Tool Configuration Options">
-            <f:entry field="srm_sca_search_depth" title="Detect Search Depth (Optional)">
+        <f:advanced title="Coverity (SAST) Tool Options">
+            <f:entry field="srm_sast_build_command" title="Build Command (Optional)">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="srm_sca_config_path" title="Detect Config File Path (Optional)">
+            <f:entry field="srm_sast_clean_command" title="Clean Command (Optional)">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="srm_sca_args" title="Detect Additional Arguments (Optional)">
+            <f:entry field="srm_sast_config_path" title="Config File Path (Optional)">
                 <f:textbox/>
             </f:entry>
-        </f:section>
+            <f:entry field="srm_sast_args" title="Additional Arguments (Optional)">
+                <f:textbox/>
+            </f:entry>
+        </f:advanced>
+
+        <f:advanced title="Detect (SCA) Tool Options">
+            <f:entry field="srm_sca_search_depth" title="Search Depth (Optional)">
+                <f:textbox/>
+            </f:entry>
+            <f:entry field="srm_sca_config_path" title="Config File Path (Optional)">
+                <f:textbox/>
+            </f:entry>
+            <f:entry field="srm_sca_args" title="Additional Arguments (Optional)">
+                <f:textbox/>
+            </f:entry>
+        </f:advanced>
     </div>
 
-    <f:section title="Additional Options">
-        <f:entry field="include_diagnostics" title="Include Diagnostics (Optional)">
-            <f:checkbox checked="${instance.isInclude_diagnostics() == true}"/>
-        </f:entry>
-        <f:entry field="network_airgap" title="Network Airgap (Optional)">
-            <f:checkbox checked="${instance.isNetwork_airgap() == true}"/>
-        </f:entry>
-        <f:entry field="mark_build_status" title="Mark Build Status (Optional)">
-            <f:select/>
-        </f:entry>
-    </f:section>
+    <div id="bridge_cli_sec" style="display: none">
+        <f:advanced title="Bridge CLI Options">
+            <f:entry field="network_airgap" title="Network Airgap (Optional)">
+                <f:checkbox checked="${instance.isNetwork_airgap() == true}"/>
+            </f:entry>
+        </f:advanced>
+    </div>
 
     <link rel="stylesheet" type="text/css" href="${rootURL}/plugin/blackduck-security-scan/styles/security-scan-freestyle-config.css" />
 

@@ -2,16 +2,22 @@ var selectedOption = document.querySelector('select[name="_.product"]')?.value;
 var polarisAssessmentModeOption = document.querySelector('select[name="_.polaris_assessment_mode"]')?.value;
 var sourceUploadDiv = document.getElementById('source_upload');
 
-
 if (selectedOption && selectedOption !== 'select') {
     document.getElementById(selectedOption).style.display = 'block';
+    document.getElementById('bridge_cli_sec').style.display = 'block';
+
     validateProductField();
     validateCoverityFields();
     validatePolarisFields();
     validateSrmFields();
-
-    if (selectedOption === 'polaris' && polarisAssessmentModeOption === 'SOURCE_UPLOAD') {
-        showParticularDiv(sourceUploadDiv);
+    if (selectedOption === 'polaris') {
+        toggleSarifParamsDivs();
+        if(polarisAssessmentModeOption === 'SOURCE_UPLOAD'){
+            showParticularDiv(sourceUploadDiv);
+        }
+    }else if(selectedOption === 'blackducksca') {
+        toggleSarifParamsDivs();
+        handleSarifReportSectionVisibility();
     }
 }
 
@@ -29,32 +35,23 @@ function showParticularDiv(div) {
 
 function clearInputFields(div) {
     if (div) {
-        var inputFields = div.querySelectorAll('input[type="text"], input[type="checkbox"]');
+        var inputFields = div.querySelectorAll('input[type="text"], input[type="checkbox"], select');
         inputFields.forEach(function (field) {
-            if (field.type === 'text') {
+            if (field.type === 'text' || field.tagName.toLowerCase() === 'select') {
                 field.value = '';
             } else if (field.type === 'checkbox') {
-                if (field.name !== "_.srm_waitForScan" && field.name !== "_.polaris_waitForScan" && field.name !== "_.blackduck_waitForScan" && field.name !== "_.coverity_waitForScan" && field.name !== "_.polaris_reports_sarif_groupSCAIssues" && field.name !== "_.blackduck_reports_sarif_groupSCAIssues") {
+                if (field.name !== "_.srm_waitForScan" && field.name !== "_.polaris_waitForScan" && field.name !== "_.blackducksca_waitForScan" && field.name !== "_.coverity_waitForScan" && field.name !== "_.polaris_reports_sarif_groupSCAIssues" && field.name !== "_.blackducksca_reports_sarif_groupSCAIssues") {
                     field.checked = false;
                 }
             }
         });
-        // clears polaris assessment mode dropdown value
-        var selectedOption = document.querySelector('select[name="_.product"]')?.value;
-        if (selectedOption !== 'polaris') {
-            var polarisAssessmentModeOption = document.querySelector('select[name="_.polaris_assessment_mode"]');
-            if (polarisAssessmentModeOption) {
-                polarisAssessmentModeOption.value = ""
-            }
-        }
     }
 }
-
 
 document.addEventListener('change', function () {
     var selectedOption = document.querySelector('select[name="_.product"]')?.value;
     var polarisAssessmentModeOption = document.querySelector('select[name="_.polaris_assessment_mode"]')?.value;
-
+    var bridgeCliSecDiv = document.getElementById('bridge_cli_sec');
     var blackduckscaDiv = document.getElementById('blackducksca');
     var coverityDiv = document.getElementById('coverity');
     var polarisDiv = document.getElementById('polaris');
@@ -79,6 +76,9 @@ document.addEventListener('change', function () {
         hideParticularDiv(srmDiv);
         showParticularDiv(blackduckscaDiv);
         validateProductField();
+        toggleSarifParamsDivs();
+        handleSarifReportSectionVisibility();
+        showParticularDiv(bridgeCliSecDiv);
     } else if (selectedOption === 'coverity') {
         clearInputFields(blackduckscaDiv);
         hideParticularDiv(blackduckscaDiv);
@@ -89,6 +89,7 @@ document.addEventListener('change', function () {
         showParticularDiv(coverityDiv);
         validateProductField();
         validateCoverityFields();
+        showParticularDiv(bridgeCliSecDiv);
     } else if (selectedOption === 'polaris') {
         clearInputFields(blackduckscaDiv);
         hideParticularDiv(blackduckscaDiv);
@@ -99,6 +100,9 @@ document.addEventListener('change', function () {
         showParticularDiv(polarisDiv);
         validateProductField();
         validatePolarisFields();
+        toggleSarifParamsDivs();
+        handleSarifReportSectionVisibility();
+        showParticularDiv(bridgeCliSecDiv);
     } else if (selectedOption === 'srm') {
         clearInputFields(blackduckscaDiv);
         hideParticularDiv(blackduckscaDiv);
@@ -109,6 +113,7 @@ document.addEventListener('change', function () {
         showParticularDiv(srmDiv);
         validateProductField();
         validateSrmFields();
+        showParticularDiv(bridgeCliSecDiv);
     } else if (selectedOption === 'select') {
         clearInputFields(blackduckscaDiv);
         clearInputFields(coverityDiv);
@@ -118,6 +123,7 @@ document.addEventListener('change', function () {
         hideParticularDiv(coverityDiv);
         hideParticularDiv(polarisDiv);
         hideParticularDiv(srmDiv);
+        hideParticularDiv(bridgeCliSecDiv);
         validateProductField();
     }
 
@@ -209,4 +215,51 @@ function validateSrmFields() {
     } else {
         errorSrmAssessmentTypesDiv.style.display = "none";
     }
+}
+
+function toggleSarifParamsDivs() {
+    var blackduckCheckbox = document.querySelector('input[name="_.blackducksca_reports_sarif_create"]')
+    var polarisCheckbox = document.querySelector('input[name="_.polaris_reports_sarif_create"]')
+
+    var blackduckSarifParamSection = document.getElementById('blackducksca_sarif_params')
+    var polarisSarifParamSection = document.getElementById('polaris_sarif_params')
+
+    if (polarisCheckbox.checked) {
+        polarisSarifParamSection.style.display = 'block';
+    } else {
+        polarisSarifParamSection.style.display = 'none';
+        clearInputFields(polarisSarifParamSection);
+    }
+
+    if (blackduckCheckbox.checked) {
+        blackduckSarifParamSection.style.display = 'block';
+    } else {
+        blackduckSarifParamSection.style.display = 'none';
+        clearInputFields(blackduckSarifParamSection);
+    }
+}
+
+function handleSarifReportSectionVisibility() {
+    var selectedOption = document.querySelector('select[name="_.product"]')?.value;
+    var blackduckscaWaitForScanEnabled = document.querySelector('input[name="_.blackducksca_waitForScan"]').checked;
+    var polarisWaitForScanEnabled = document.querySelector('input[name="_.polaris_waitForScan"]').checked;
+
+    if (selectedOption === 'blackducksca'){
+        var blackduckSACSarif_section = document.getElementById('blackducksca_sarif_report_sec');
+        if(blackduckscaWaitForScanEnabled == false){
+            hideParticularDiv(blackduckSACSarif_section);
+            clearInputFields(blackduckSACSarif_section);
+        }else if(blackduckscaWaitForScanEnabled == true){
+            showParticularDiv(blackduckSACSarif_section);
+        }
+    }else if (selectedOption === 'polaris'){
+        var polarisSarif_section = document.getElementById('polaris_sarif_report_sec');
+        if(polarisWaitForScanEnabled == false){
+            hideParticularDiv(polarisSarif_section);
+            clearInputFields(polarisSarif_section);
+        }else if(polarisWaitForScanEnabled == true){
+            showParticularDiv(polarisSarif_section);
+        }
+    }
+
 }

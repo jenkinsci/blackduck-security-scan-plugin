@@ -1,226 +1,281 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form">
-
     <div id="product">
-        <f:entry field="product" title="Select Security Product">
+        <f:entry field="product" title="Select Product">
             <f:select/>
         </f:entry>
     </div>
 
     <div id="blackducksca" style="display: none;">
-        <f:section title="Black Duck SCA Parameters">
-            <f:entry field="blackducksca_scan_failure_severities" title="Black Duck SCA Scan Failure Severities (Optional)">
+        <f:section title="Scan Configuration">
+            <f:entry field="blackducksca_project_directory" title="Project Directory (Optional)">
+                <f:textbox/>
+            </f:entry>
+            <f:entry field="blackducksca_include_diagnostics" title="Include Diagnostics (Optional)">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry field="blackducksca_mark_build_status" title="Mark Build Status (Optional)">
+                <f:select/>
+            </f:entry>
+            <f:entry field="blackducksca_waitForScan" title="Wait For Scan Completion (Optional)">
+                <f:checkbox/>
+            </f:entry>
+        </f:section>
+
+        <f:advanced title="Scan Options">
+            <f:entry field="detect_scan_full" title="Full Scan (Optional)">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry field="blackducksca_scan_failure_severities" title="Scan Failure Severities (Optional)">
                 <f:textbox/>
             </f:entry>
             <f:entry field="detect_download_url" title="Detect Download URL (Optional)">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="detect_scan_full" title="Detect Full Scan (Optional)">
-                <f:checkbox/>
-            </f:entry>
-            <f:entry field="blackducksca_waitForScan" title="Black Duck SCA Wait For Scan Completion (Optional)">
-                <f:checkbox/>
-            </f:entry>
-            <f:entry field="blackducksca_prComment_enabled" title="Add Comments to Pull Requests (Optional)">
-                <f:checkbox/>
-            </f:entry>
-            <f:entry field="blackducksca_project_directory" title="Project Directory (Optional)">
-                <f:textbox/>
-            </f:entry>
-        </f:section>
+        </f:advanced>
 
-        <f:section title="SARIF Report Options">
-            <f:entry field="blackducksca_reports_sarif_create" title="Generate SARIF Report for Black Duck SCA Issues (Optional)">
-                <f:checkbox/>
-            </f:entry>
-            <f:entry field="blackducksca_reports_sarif_groupSCAIssues" title="Group SCA Issues by Component (Optional)">
-                <f:checkbox/>
-            </f:entry>
-            <f:entry field="blackducksca_reports_sarif_file_path" title="Black Duck SCA SARIF Report File Path (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="blackducksca_reports_sarif_severities" title="Black Duck SCA SARIF Report Severities (Optional)">
-                <f:textbox/>
-            </f:entry>
-        </f:section>
+        <div id="blackducksca_pr_comment_sec">
+            <f:advanced title="Pull Request Comment Options">
+                <f:entry field="blackducksca_prComment_enabled" title="Add Comments to Pull Requests (Optional)">
+                    <f:checkbox/>
+                </f:entry>
+            </f:advanced>
+        </div>
+
+        <div id="blackducksca_sarif_report_sec">
+            <f:advanced title="SARIF Report Options">
+                <f:entry field="blackducksca_reports_sarif_create" title="Generate SARIF Report(Optional)">
+                    <f:checkbox/>
+                </f:entry>
+                <div id="blackducksca_sarif_params">
+                    <f:entry field="blackducksca_reports_sarif_groupSCAIssues" title="Group SCA Issues by Component (Optional)">
+                        <f:checkbox/>
+                    </f:entry>
+                    <f:entry field="blackducksca_reports_sarif_file_path" title="SARIF Report File Path (Optional)">
+                        <f:textbox/>
+                    </f:entry>
+                    <f:entry field="blackducksca_reports_sarif_severities" title="SARIF Report Severities (Optional)">
+                        <f:textbox/>
+                    </f:entry>
+                </div>
+            </f:advanced>
+        </div>
     </div>
 
     <div id="coverity" style="display: none;">
-        <f:section title="Coverity Parameters">
-            <f:entry field="coverity_project_name" title="Coverity Project Name">
+        <f:section title="Scan Configuration">
+            <f:entry field="coverity_project_directory" title="Project Directory (Optional)">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="coverity_stream_name" title="Coverity Stream Name">
+            <f:entry field="coverity_local" title="Using Coverity Connect? (Optional)">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry field="coverity_include_diagnostics" title="Include Diagnostics (Optional)">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry field="coverity_mark_build_status" title="Mark Build Status (Optional)">
+                <f:select/>
+            </f:entry>
+            <f:entry field="coverity_waitForScan" title="Wait For Scan Completion (Optional)">
+                <f:checkbox/>
+            </f:entry>
+        </f:section>
+
+        <f:advanced title="Scan Options">
+            <f:entry field="coverity_project_name" title="Coverity Project">
+                <f:textbox/>
+            </f:entry>
+            <f:entry field="coverity_stream_name" title="Coverity Stream">
                 <f:textbox/>
             </f:entry>
             <f:entry field="coverity_policy_view" title="Coverity Policy View (Optional)">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="coverity_version" title="Coverity Version Number (Optional)">
+            <f:entry field="coverity_version" title="Coverity Version (Optional)">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="coverity_waitForScan" title="Coverity Wait For Scan Completion (Optional)">
-                <f:checkbox/>
-            </f:entry>
-            <f:entry field="coverity_prComment_enabled" title="Add Comments to Pull Requests (Optional)">
-                <f:checkbox/>
-            </f:entry>
-            <f:entry field="coverity_local" title="Coverity Local Analysis (Optional)">
-                <f:checkbox/>
-            </f:entry>
-            <f:entry field="coverity_project_directory" title="Project Directory (Optional)">
-                <f:textbox/>
-            </f:entry>
-        </f:section>
+        </f:advanced>
+
+        <div id="coverity_pr_comment_sec">
+            <f:advanced title="Pull Request Comment Options">
+                <f:entry field="coverity_prComment_enabled" title="Add Comments to Pull Requests (Optional)">
+                    <f:checkbox/>
+                </f:entry>
+            </f:advanced>
+        </div>
     </div>
 
     <div id="polaris" style="display: none;">
-        <f:section title="Polaris Parameters">
-            <f:entry field="polaris_application_name" title="Polaris Application Name (Optional)">
+        <f:section title="Scan Configuration">
+            <f:entry field="polaris_assessment_types" title="Assessment Types (Mandatory)">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="polaris_project_name" title="Polaris Project Name (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="polaris_assessment_types" title="Polaris Assessment Types (Mandatory)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="polaris_branch_name" title="Polaris Branch Name (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="polaris_branch_parent_name" title="Polaris Parent Branch Name (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="polaris_waitForScan" title="Polaris Wait For Scan Completion (Optional)">
-                <f:checkbox/>
-            </f:entry>
-            <f:entry field="polaris_prComment_enabled" title="Add Comments to Pull Requests (Optional)">
-                <f:checkbox/>
-            </f:entry>
-            <f:entry field="polaris_prComment_severities" title="Polaris PR Comment Severities (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="polaris_triage" title="Polaris Triage (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="polaris_test_sca_type" title="Polaris Test SCA Type (Optional)">
+            <f:entry field="polaris_test_sca_type" title="SCA Test Type (Optional)">
                 <f:textbox/>
             </f:entry>
             <f:entry field="polaris_project_directory" title="Project Directory (Optional)">
                 <f:textbox/>
             </f:entry>
-        </f:section>
-
-        <div id="polaris_assessment_mode">
-            <f:entry field="polaris_assessment_mode" title="Polaris Assessment Mode (Optional)">
+            <f:entry field="polaris_include_diagnostics" title="Include Diagnostics (Optional)">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry field="polaris_mark_build_status" title="Mark Build Status (Optional)">
                 <f:select/>
             </f:entry>
-        </div>
-
-        <div id="source_upload" style="display: none;">
-            <f:section title="Source Code Upload Options">
-                <f:entry field="project_source_archive" title="Upload Archive Instead Of Project Directory (Optional)">
-                    <f:textbox/>
-                </f:entry>
-                <f:entry field="project_source_excludes" title="Project Source Excludes (Optional)">
-                    <f:textbox/>
-                </f:entry>
-                <f:entry field="project_source_preserveSymLinks" title="Project Source Preserve Sym Links (Optional)">
-                    <f:checkbox/>
-                </f:entry>
-            </f:section>
-        </div>
-
-        <f:section title="SARIF Report Options">
-            <f:entry field="polaris_reports_sarif_create" title="Generate SARIF Report for Polaris Issues (Optional)">
+            <f:entry field="polaris_waitForScan" title="Wait For Scan Completion (Optional)">
                 <f:checkbox/>
-            </f:entry>
-            <f:entry field="polaris_reports_sarif_groupSCAIssues" title="Group SCA Issues by Component (Optional)">
-                <f:checkbox/>
-            </f:entry>
-            <f:entry field="polaris_reports_sarif_file_path" title="Polaris SARIF Report File Path (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="polaris_reports_sarif_issue_types" title="Polaris SARIF Report Issue Types (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="polaris_reports_sarif_severities" title="Polaris SARIF Report Severities (Optional)">
-                <f:textbox/>
             </f:entry>
         </f:section>
+
+        <f:advanced title="Scan Options">
+            <f:entry field="polaris_application_name" title="Application Name (Optional)">
+                <f:textbox/>
+            </f:entry>
+            <f:entry field="polaris_project_name" title="Polaris Project (Optional)">
+                <f:textbox/>
+            </f:entry>
+            <f:entry field="polaris_branch_name" title="Polaris Branch (Optional)">
+                <f:textbox/>
+            </f:entry>
+            <div id="polaris_assessment_mode">
+                <f:entry field="polaris_assessment_mode" title="Assessment Mode (Optional)">
+                    <f:select/>
+                </f:entry>
+            </div>
+
+            <div id="source_upload" style="display: none;">
+                <f:section title="Source Code Upload Options">
+                    <f:entry field="project_source_archive" title="Upload Archive Instead Of Project Directory (Optional)">
+                        <f:textbox/>
+                    </f:entry>
+                    <f:entry field="project_source_excludes" title="Project Source Excludes (Optional)">
+                        <f:textbox/>
+                    </f:entry>
+                    <f:entry field="project_source_preserveSymLinks" title="Project Source Preserve Sym Links (Optional)">
+                        <f:checkbox/>
+                    </f:entry>
+                </f:section>
+            </div>
+        </f:advanced>
+
+
+        <div id="polaris_pr_comment_sec">
+            <f:advanced title="Pull Request Comment Options">
+                <f:entry field="polaris_prComment_enabled" title="Add Comments to Pull Requests (Optional)">
+                    <f:checkbox/>
+                </f:entry>
+                <div id="polaris_pr_comment_params">
+                    <f:entry field="polaris_prComment_severities" title="PR Comment Severities (Optional)">
+                        <f:textbox/>
+                    </f:entry>
+                    <f:entry field="polaris_branch_parent_name" title="Parent Branch Name (Optional)">
+                        <f:textbox/>
+                    </f:entry>
+                </div>
+            </f:advanced>
+        </div>
+
+        <div id="polaris_sarif_report_sec">
+            <f:advanced title="SARIF Report Options">
+                <f:entry field="polaris_reports_sarif_create" title="Generate SARIF Report(Optional)">
+                    <f:checkbox/>
+                </f:entry>
+                <div id="polaris_sarif_params">
+                    <f:entry field="polaris_reports_sarif_groupSCAIssues" title="Group SCA Issues by Component (Optional)">
+                        <f:checkbox/>
+                    </f:entry>
+                    <f:entry field="polaris_reports_sarif_file_path" title="Polaris SARIF Report File Path (Optional)">
+                        <f:textbox/>
+                    </f:entry>
+                    <f:entry field="polaris_reports_sarif_issue_types" title="Polaris SARIF Report Issue Types (Optional)">
+                        <f:textbox/>
+                    </f:entry>
+                    <f:entry field="polaris_reports_sarif_severities" title="Polaris SARIF Report Severities (Optional)">
+                        <f:textbox/>
+                    </f:entry>
+                </div>
+            </f:advanced>
+        </div>
     </div>
 
     <div id="srm" style="display: none;">
-        <f:section title="SRM Parameters">
-            <f:entry field="srm_assessment_types" title="SRM Assessment Types (Mandatory)">
+        <f:section title="Scan Configuration">
+            <f:entry field="srm_assessment_types" title="Assessment Types (Mandatory)">
                 <f:textbox/>
-            </f:entry>
-            <f:entry field="srm_project_name" title="SRM Project Name">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="srm_project_id" title="SRM Project Id (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="srm_branch_name" title="SRM Branch Name (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="srm_branch_parent" title="SRM Parent Branch Name (Optional)">
-                <f:textbox/>
-            </f:entry>
-            <f:entry field="srm_waitForScan" title="SRM Wait For Scan Completion (Optional)">
-                <f:checkbox/>
             </f:entry>
             <f:entry field="srm_project_directory" title="Project Directory (Optional)">
                 <f:textbox/>
             </f:entry>
+            <f:entry field="srm_include_diagnostics" title="Include Diagnostics (Optional)">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry field="srm_mark_build_status" title="Mark Build Status (Optional)">
+                <f:select/>
+            </f:entry>
+            <f:entry field="srm_waitForScan" title="Wait For Scan Completion (Optional)">
+                <f:checkbox/>
+            </f:entry>
         </f:section>
-    </div>
 
-    <div id="coverity-tool-configuration" style="display: none;">
-        <f:section title="Coverity (SAST) Tool Configuration Options">
-            <f:entry field="coverity_build_command" title="Coverity Build Command (Optional)">
+        <f:advanced title="Scan Options">
+            <f:entry field="srm_project_name" title="Project Name">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="coverity_clean_command" title="Coverity Clean Command (Optional)">
+            <f:entry field="srm_project_id" title="Project ID (Optional)">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="coverity_config_path" title="Coverity Config File Path (Optional)">
+            <f:entry field="srm_branch_name" title="Branch Name (Optional)">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="coverity_args" title="Coverity Additional Arguments (Optional)">
+            <f:entry field="srm_branch_parent" title="Parent Branch Name (Optional)">
                 <f:textbox/>
             </f:entry>
-        </f:section>
+        </f:advanced>
     </div>
 
     <div id="blackducksca-tool-configuration" style="display: none;">
-        <f:section title="Black Duck (SCA) Tool Configuration Options">
-            <f:entry field="detect_search_depth" title="Detect Search Depth (Optional)">
+        <f:advanced title="Detect (SCA) Tool Options">
+            <f:entry field="detect_search_depth" title="Search Depth (Optional)">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="detect_config_path" title="Detect Config File Path (Optional)">
+            <f:entry field="detect_config_path" title="Config File Path (Optional)">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="detect_args" title="Detect Additional Arguments (Optional)">
+            <f:entry field="detect_args" title="Additional Arguments (Optional)">
                 <f:textbox/>
             </f:entry>
-        </f:section>
+        </f:advanced>
     </div>
 
-    <f:section title="Additional Options">
-        <f:entry field="include_diagnostics" title="Include Diagnostics (Optional)">
-            <f:checkbox/>
-        </f:entry>
+    <div id="coverity-tool-configuration" style="display: none;">
+        <f:advanced title="Coverity (SAST) Tool Options">
+            <f:entry field="coverity_build_command" title="Build Command (Optional)">
+                <f:textbox/>
+            </f:entry>
+            <f:entry field="coverity_clean_command" title="Clean Command (Optional)">
+                <f:textbox/>
+            </f:entry>
+            <f:entry field="coverity_config_path" title="Config File Path (Optional)">
+                <f:textbox/>
+            </f:entry>
+            <f:entry field="coverity_args" title="Additional Arguments (Optional)">
+                <f:textbox/>
+            </f:entry>
+        </f:advanced>
+    </div>
+
+<div id="bridge_cli_sec" style="display: none">
+    <f:advanced title="Bridge CLI Options">
         <f:entry field="network_airgap" title="Network Airgap (Optional)">
             <f:checkbox/>
         </f:entry>
-        <f:entry field="mark_build_status" title="Mark Build Status (Optional)">
-            <f:select/>
-        </f:entry>
-<!--        <f:entry field="return_status" title="Return Status Code (Optional)">-->
-<!--            <f:checkbox/>-->
-<!--        </f:entry>-->
-    </f:section>
+        <!--        <f:entry field="return_status" title="Return Status Code (Optional)">-->
+        <!--            <f:checkbox/>-->
+        <!--        </f:entry>-->
+    </f:advanced>
+</div>
+
+    <link rel="stylesheet" type="text/css" href="${rootURL}/plugin/blackduck-security-scan/styles/security-scan-pipeline-config.css" />
 
     <script type="text/javascript" src="${rootURL}/plugin/blackduck-security-scan/scripts/SecurityScanStepConfig.js"  />
 

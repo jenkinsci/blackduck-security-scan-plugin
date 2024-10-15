@@ -379,8 +379,6 @@ public class ParameterMappingService {
                 ApplicationConstants.POLARIS_ASSESSMENT_TYPES_KEY,
                 securityScan.getPolaris_assessment_types());
         addParameterIfNotBlank(
-                polarisParametersMap, ApplicationConstants.POLARIS_TRIAGE_KEY, securityScan.getPolaris_triage());
-        addParameterIfNotBlank(
                 polarisParametersMap,
                 ApplicationConstants.POLARIS_BRANCH_NAME_KEY,
                 securityScan.getPolaris_branch_name());

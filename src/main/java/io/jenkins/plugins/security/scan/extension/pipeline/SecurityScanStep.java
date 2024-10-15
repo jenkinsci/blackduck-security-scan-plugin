@@ -104,7 +104,6 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     private String polaris_application_name;
     private String polaris_project_name;
     private String polaris_assessment_types;
-    private String polaris_triage;
     private String polaris_branch_name;
     private String polaris_branch_parent_name;
     private Boolean polaris_prComment_enabled;
@@ -152,12 +151,20 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     private String synopsys_bridge_download_version;
     private String synopsys_bridge_install_directory;
     private Boolean include_diagnostics;
+    private Boolean coverity_include_diagnostics;
+    private Boolean blackducksca_include_diagnostics;
+    private Boolean polaris_include_diagnostics;
+    private Boolean srm_include_diagnostics;
     private Boolean network_airgap;
     /*
     By default, the plugin will always return a status code even if there is error.
      */
     private Boolean return_status = true;
     private String mark_build_status;
+    private String blackducksca_mark_build_status;
+    private String coverity_mark_build_status;
+    private String polaris_mark_build_status;
+    private String srm_mark_build_status;
 
     @DataBoundConstructor
     public SecurityScanStep() {
@@ -420,10 +427,6 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
         return polaris_assessment_types;
     }
 
-    public String getPolaris_triage() {
-        return polaris_triage;
-    }
-
     public String getPolaris_branch_name() {
         return polaris_branch_name;
     }
@@ -544,6 +547,26 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
         return include_diagnostics;
     }
 
+    @Nullable
+    public Boolean isCoverity_include_diagnostics() {
+        return null;
+    }
+
+    @Nullable
+    public Boolean isBlackducksca_include_diagnostics() {
+        return null;
+    }
+
+    @Nullable
+    public Boolean isPolaris_include_diagnostics() {
+        return null;
+    }
+
+    @Nullable
+    public Boolean isSrm_include_diagnostics() {
+        return null;
+    }
+
     public Boolean isNetwork_airgap() {
         return network_airgap;
     }
@@ -554,6 +577,26 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
 
     public String getMark_build_status() {
         return mark_build_status;
+    }
+
+    @Nullable
+    public String getBlackducksca_mark_build_status() {
+        return null;
+    }
+
+    @Nullable
+    public String getCoverity_mark_build_status() {
+        return null;
+    }
+
+    @Nullable
+    public String getPolaris_mark_build_status() {
+        return null;
+    }
+
+    @Nullable
+    public String getSrm_mark_build_status() {
+        return null;
     }
 
     public String getProject_directory() {
@@ -916,11 +959,6 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     }
 
     @DataBoundSetter
-    public void setPolaris_triage(String polaris_triage) {
-        this.polaris_triage = Util.fixEmptyAndTrim(polaris_triage);
-    }
-
-    @DataBoundSetter
     public void setPolaris_branch_name(String polaris_branch_name) {
         this.polaris_branch_name = Util.fixEmptyAndTrim(polaris_branch_name);
     }
@@ -1046,6 +1084,30 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     }
 
     @DataBoundSetter
+    public void setCoverity_include_diagnostics(Boolean coverity_include_diagnostics) {
+        if (getProduct().contentEquals(SecurityProduct.COVERITY.name().toLowerCase()))
+            this.include_diagnostics = coverity_include_diagnostics ? true : null;
+    }
+
+    @DataBoundSetter
+    public void setBlackducksca_include_diagnostics(Boolean blackducksca_include_diagnostics) {
+        if (getProduct().contentEquals(SecurityProduct.BLACKDUCKSCA.name().toLowerCase()))
+            this.include_diagnostics = blackducksca_include_diagnostics ? true : null;
+    }
+
+    @DataBoundSetter
+    public void setPolaris_include_diagnostics(Boolean polaris_include_diagnostics) {
+        if (getProduct().contentEquals(SecurityProduct.POLARIS.name().toLowerCase()))
+            this.include_diagnostics = polaris_include_diagnostics ? true : null;
+    }
+
+    @DataBoundSetter
+    public void setSrm_include_diagnostics(Boolean srm_include_diagnostics) {
+        if (getProduct().contentEquals(SecurityProduct.SRM.name().toLowerCase()))
+            this.include_diagnostics = srm_include_diagnostics ? true : null;
+    }
+
+    @DataBoundSetter
     public void setProject_directory(String project_directory) {
         this.project_directory = Util.fixEmptyAndTrim(project_directory);
     }
@@ -1139,6 +1201,30 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
         this.mark_build_status = Util.fixEmptyAndTrim(mark_build_status);
     }
 
+    @DataBoundSetter
+    public void setCoverity_mark_build_status(String coverity_mark_build_status) {
+        if (getProduct().contentEquals(SecurityProduct.COVERITY.name().toLowerCase()))
+            this.mark_build_status = Util.fixEmptyAndTrim(coverity_mark_build_status);
+    }
+
+    @DataBoundSetter
+    public void setBlackducksca_mark_build_status(String blackducksca_mark_build_status) {
+        if (getProduct().contentEquals(SecurityProduct.BLACKDUCKSCA.name().toLowerCase()))
+            this.mark_build_status = Util.fixEmptyAndTrim(blackducksca_mark_build_status);
+    }
+
+    @DataBoundSetter
+    public void setPolaris_mark_build_status(String polaris_mark_build_status) {
+        if (getProduct().contentEquals(SecurityProduct.POLARIS.name().toLowerCase()))
+            this.mark_build_status = Util.fixEmptyAndTrim(polaris_mark_build_status);
+    }
+
+    @DataBoundSetter
+    public void setSrm_mark_build_status(String srm_mark_build_status) {
+        if (getProduct().contentEquals(SecurityProduct.SRM.name().toLowerCase()))
+            this.mark_build_status = Util.fixEmptyAndTrim(srm_mark_build_status);
+    }
+
     private Map<String, Object> getParametersMap(FilePath workspace, TaskListener listener)
             throws PluginExceptionHandler {
         return ParameterMappingService.preparePipelineParametersMap(
@@ -1178,7 +1264,31 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
         }
 
         @SuppressWarnings({"lgtm[jenkins/no-permission-check]", "lgtm[jenkins/csrf]"})
-        public ListBoxModel doFillMark_build_statusItems() {
+        public ListBoxModel doFillBlackducksca_mark_build_statusItems() {
+            ListBoxModel items = new ListBoxModel();
+            items.add(ApplicationConstants.DEFAULT_DROPDOWN_OPTION_NAME, "");
+            items.addAll(ParameterMappingService.getMarkBuildStatusItems());
+            return items;
+        }
+
+        @SuppressWarnings({"lgtm[jenkins/no-permission-check]", "lgtm[jenkins/csrf]"})
+        public ListBoxModel doFillPolaris_mark_build_statusItems() {
+            ListBoxModel items = new ListBoxModel();
+            items.add(ApplicationConstants.DEFAULT_DROPDOWN_OPTION_NAME, "");
+            items.addAll(ParameterMappingService.getMarkBuildStatusItems());
+            return items;
+        }
+
+        @SuppressWarnings({"lgtm[jenkins/no-permission-check]", "lgtm[jenkins/csrf]"})
+        public ListBoxModel doFillCoverity_mark_build_statusItems() {
+            ListBoxModel items = new ListBoxModel();
+            items.add(ApplicationConstants.DEFAULT_DROPDOWN_OPTION_NAME, "");
+            items.addAll(ParameterMappingService.getMarkBuildStatusItems());
+            return items;
+        }
+
+        @SuppressWarnings({"lgtm[jenkins/no-permission-check]", "lgtm[jenkins/csrf]"})
+        public ListBoxModel doFillSrm_mark_build_statusItems() {
             ListBoxModel items = new ListBoxModel();
             items.add(ApplicationConstants.DEFAULT_DROPDOWN_OPTION_NAME, "");
             items.addAll(ParameterMappingService.getMarkBuildStatusItems());

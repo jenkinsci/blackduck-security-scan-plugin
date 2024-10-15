@@ -20,9 +20,6 @@ public class Polaris {
     @JsonProperty("assessment")
     private AssessmentTypes assessmentTypes;
 
-    @JsonProperty("triage")
-    private String triage;
-
     @JsonProperty("branch")
     private Branch branch;
 
@@ -83,14 +80,6 @@ public class Polaris {
 
     public void setServerUrl(String serverUrl) {
         this.serverUrl = serverUrl;
-    }
-
-    public String getTriage() {
-        return triage;
-    }
-
-    public void setTriage(String triage) {
-        this.triage = triage;
     }
 
     public Branch getBranch() {

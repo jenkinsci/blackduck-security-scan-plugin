@@ -1,6 +1,5 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form" xmlns:c="/lib/credentials">
-
     <f:section title="Black Duck Security Scan">
 
         <!-- Place a single info line above the tabs -->
@@ -9,7 +8,7 @@
         <!-- Tab Container -->
         <div class="tab-container-box">
             <!-- Black Duck Tab -->
-            <div class="scan-tab-box" id="blackduck-tab">Black Duck SCA</div>
+            <div class="scan-tab-box" id="blackducksca-tab">Black Duck SCA</div>
             <!-- Coverity Tab -->
             <div class="scan-tab-box" id="coverity-tab">Coverity</div>
             <!-- Polaris Tab -->
@@ -24,7 +23,7 @@
                 <f:textbox name="blackDuckSCAUrl" />
             </f:entry>
             <f:entry field="blackDuckSCACredentialsId" title="Black Duck SCA Token">
-                <c:select/>
+                 <c:select/>
             </f:entry>
             <f:entry field="detectInstallationPath" title="Detect Install Directory (Optional)">
                 <f:textbox name="detectInstallationPath" />
@@ -103,17 +102,41 @@
         </div>
 
         <div>
-            <f:entry field="bitbucketCredentialsId" title="Bitbucket Token / Username and App Password (Optional)">
-                <c:select/>
-            </f:entry>
+            <!-- Place a single info line above the tabs -->
+            <div class="tab-info-os">Configure Source Code Management Token</div>
 
-            <f:entry field="githubCredentialsId" title="GitHub Token (Optional)">
-                <c:select/>
-            </f:entry>
+            <!-- Tab Container -->
+            <div class="tab-container-box">
+                <!-- Mac Tab -->
+                <div class="scm-token-tab-box" id="bitbucket-tab">BitBucket</div>
+                <!-- Linux Tab -->
+                <div class="scm-token-tab-box" id="github-tab">Github</div>
+                <!-- Windows Tab -->
+                <div class="scm-token-tab-box" id="gitlab-tab">Gitlab</div>
+            </div>
 
-            <f:entry field="gitlabCredentialsId" title="GitLab Token (Optional)">
-                <c:select/>
-            </f:entry>
+            <!-- Bitbucket Token Configuration -->
+            <div class="scm-token-section" id="bitbucket-section" style="display: none;">
+                <f:entry field="bitbucketCredentialsId" title="Bitbucket Token / Username and App Password (Optional)">
+                    <c:select/>
+                </f:entry>
+            </div>
+
+            <!-- Github Token Configuration -->
+            <div class="scm-token-section" id="github-section" style="display: none;">
+                <f:entry field="githubCredentialsId" title="GitHub Token (Optional)">
+                    <c:select/>
+                </f:entry>
+            </div>
+
+            <!-- gitlab Token Configuration -->
+            <div class="scm-token-section" id="gitlab-section" style="display: none;">
+                <f:entry field="gitlabCredentialsId" title="GitLab Token (Optional)">
+                    <c:select/>
+                </f:entry>
+            </div>
+
+
 
             <!-- Place a single info line above the tabs -->
             <div class="tab-info-os">Configure Bridge CLI download URL for different platforms</div>
@@ -158,6 +181,7 @@
             </f:entry>
         </div>
     </f:section>
+
 
     <link rel="stylesheet" type="text/css" href="${rootURL}/plugin/blackduck-security-scan/styles/scanner-global-config.css" />
 

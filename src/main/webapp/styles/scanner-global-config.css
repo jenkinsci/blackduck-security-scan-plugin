@@ -3,7 +3,7 @@
     margin-bottom: 10px;
 }
 
-.scan-tab-box, .os-tab-box {
+.scan-tab-box, .os-tab-box, .scm-token-tab-box {
     cursor: pointer;
     padding: 10px;
     border: 1px solid #ccc;
@@ -11,7 +11,7 @@
     margin-right: 10px;
 }
 
-.tab:hover {
+.scan-tab-box:hover, .os-tab-box:hover, .scm-token-tab-box:hover {
     background-color: #f1f1f1;
 }
 
@@ -32,7 +32,7 @@
 .tab-info {
     font-size: 14px;
     font-weight: bold;
-    /*color: red; !* Text color *!*/
+<!--        color: red; /* Text color */-->
     margin-bottom: 10px; /* Adjust the margin as needed */
 }
 
@@ -61,6 +61,6 @@
 /*Override jenkins-validate-button default css*/
 .jenkins-validate-button__container__status {
     .validation-error-area {
-         min-height: 24px !important;
+        min-height: 24px !important;
     }
 }
