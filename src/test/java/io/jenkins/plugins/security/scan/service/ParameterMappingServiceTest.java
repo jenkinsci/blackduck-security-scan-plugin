@@ -306,7 +306,7 @@ public class ParameterMappingServiceTest {
         Map<String, Object> polarisParametersMap =
                 ParameterMappingService.preparePolarisParametersMap(securityScanStep);
 
-        assertEquals(16, polarisParametersMap.size());
+        assertEquals(15, polarisParametersMap.size());
         assertEquals(
                 "https://fake.polaris-server.url",
                 polarisParametersMap.get(ApplicationConstants.POLARIS_SERVER_URL_KEY));
