@@ -216,7 +216,7 @@ public class Utility {
         // If 'item' is an instanceof 'Folder', it is either 'WorkflowJob' or 'FreestyleJob'
         // Then try to get the item type with actual 'jobName'
         if (item instanceof Folder) {
-            item = jenkins != null ? jenkins.getItemByFullName(jobName, TopLevelItem.class) : null;
+            item = jenkins.getItemByFullName(jobName, TopLevelItem.class);
         }
 
         if (item != null) {
