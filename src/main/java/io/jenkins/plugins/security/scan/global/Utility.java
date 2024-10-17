@@ -205,25 +205,29 @@ public class Utility {
         String jobName = envVars.get(ApplicationConstants.ENV_JOB_NAME_KEY);
 
         // Extract the part before the last '/' for potential multibranch projects
-        String jobNameForMultibranchProject = jobName != null
-                ? jobName.contains("/") ? jobName.substring(0, jobName.lastIndexOf('/')) : jobName
-                : null;
+        if (jobName != null) {
+            String jobNameForMultibranchProject =
+                    jobName.contains("/") ? jobName.substring(0, jobName.lastIndexOf('/')) : jobName;
 
-        // If item is not a 'Folder', then it is a Multibranch pipeline job
-        TopLevelItem item =
-                jenkins != null ? jenkins.getItemByFullName(jobNameForMultibranchProject, TopLevelItem.class) : null;
+            // If item is not a 'Folder', then it is a Multibranch pipeline job
+            TopLevelItem item = jenkins != null
+                    ? jenkins.getItemByFullName(jobNameForMultibranchProject, TopLevelItem.class)
+                    : null;
 
-        // If 'item' is an instanceof 'Folder', it is either 'WorkflowJob' or 'FreestyleJob'
-        // Then try to get the item type with actual 'jobName'
-        if (item instanceof Folder) {
-            item = jenkins.getItemByFullName(jobName, TopLevelItem.class);
+            // If 'item' is an instanceof 'Folder', it is either 'WorkflowJob' or 'FreestyleJob'
+            // Then try to get the item type with actual 'jobName'
+            if (item instanceof Folder && jenkins != null) {
+                TopLevelItem actualItem = jenkins.getItemByFullName(jobName, TopLevelItem.class);
+                if (actualItem != null) {
+                    item = actualItem;
+                }
+            }
+
+            if (item != null) {
+                return item.getClass().getSimpleName();
+            }
         }
-
-        if (item != null) {
-            return item.getClass().getSimpleName();
-        } else {
-            return "UnknownJobType";
-        }
+        return "UnknownJobType";
     }
 
     public static String getDefaultSarifReportFilePath(boolean isBlackDuckScan, boolean isPolarisDuckScan) {
