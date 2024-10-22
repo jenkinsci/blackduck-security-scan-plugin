@@ -8,7 +8,7 @@
     <relativePath />
   </parent>
   <groupId>io.jenkins.plugins</groupId>
-  <artifactId>blackduck-security-scan</artifactId>
+  <artifactId>BlackDuckSecurityScan</artifactId>
   <version>${revision}${changelist}</version>
   <packaging>hpi</packaging>
   <name>Black Duck Security Scan</name>
@@ -27,7 +27,7 @@
   </scm>
   <properties>
     <!-- https://www.jenkins.io/doc/developer/plugin-development/choosing-jenkins-baseline/ -->
-    <revision>1.0.0</revision>
+    <revision>2.0.0</revision>
     <changelist>-SNAPSHOT</changelist>
     <jenkins.version>2.440.3</jenkins.version>
     <gitHubRepo>jenkinsci/${project.artifactId}-plugin</gitHubRepo>

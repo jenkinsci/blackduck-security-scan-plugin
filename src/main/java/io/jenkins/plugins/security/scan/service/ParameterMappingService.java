@@ -257,11 +257,13 @@ public class ParameterMappingService {
 
         addDeprecatedParameterIfNotBlank(
                 blackDuckParameters,
-                ApplicationConstants.DETECT_SCAN_FULL_KEY,
+                ApplicationConstants.BLACKDUCKSCA_SCAN_FULL_KEY,
                 securityScan.isBlackduckIntelligentScan(),
                 ApplicationConstants.BLACKDUCK_SCAN_FULL_KEY);
         addParameterIfNotBlank(
-                blackDuckParameters, ApplicationConstants.DETECT_SCAN_FULL_KEY, securityScan.isDetectIntelligentScan());
+                blackDuckParameters,
+                ApplicationConstants.BLACKDUCKSCA_SCAN_FULL_KEY,
+                securityScan.isDetectIntelligentScan());
 
         if (securityScan instanceof PrCommentScan) {
             PrCommentScan prCommentScan = (PrCommentScan) securityScan;

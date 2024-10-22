@@ -275,8 +275,8 @@
     </f:advanced>
 </div>
 
-    <link rel="stylesheet" type="text/css" href="${rootURL}/plugin/blackduck-security-scan/styles/security-scan-pipeline-config.css" />
+    <link rel="stylesheet" type="text/css" href="${rootURL}/plugin/BlackDuckSecurityScan/styles/security-scan-pipeline-config.css" />
 
-    <script type="text/javascript" src="${rootURL}/plugin/blackduck-security-scan/scripts/SecurityScanStepConfig.js"  />
+    <script type="text/javascript" src="${rootURL}/plugin/BlackDuckSecurityScan/scripts/SecurityScanStepConfig.js"  />
 
 </j:jelly>

@@ -1246,7 +1246,7 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
 
         @Override
         public String getFunctionName() {
-            return ApplicationConstants.PIPELINE_STEP_BLACKDUCK;
+            return ApplicationConstants.PIPELINE_STEP_NAME;
         }
 
         @Nonnull
