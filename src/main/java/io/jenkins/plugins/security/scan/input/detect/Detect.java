@@ -2,14 +2,10 @@ package io.jenkins.plugins.security.scan.input.detect;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jenkins.plugins.security.scan.input.blackducksca.Install;
-import io.jenkins.plugins.security.scan.input.blackducksca.Scan;
 
 public class Detect {
     @JsonProperty("install")
     private Install install;
-
-    @JsonProperty("scan")
-    private Scan scan;
 
     @JsonProperty("download")
     private Download download;
@@ -32,14 +28,6 @@ public class Detect {
 
     public void setInstall(Install install) {
         this.install = install;
-    }
-
-    public Scan getScan() {
-        return scan;
-    }
-
-    public void setScan(Scan scan) {
-        this.scan = scan;
     }
 
     public Download getDownload() {

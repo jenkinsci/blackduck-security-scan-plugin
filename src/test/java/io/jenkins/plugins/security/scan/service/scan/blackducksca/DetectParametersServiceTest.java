@@ -31,14 +31,12 @@ public class DetectParametersServiceTest {
         Map<String, Object> detectParametersMap = new HashMap<>();
 
         detectParametersMap.put(ApplicationConstants.PRODUCT_KEY, "blackducksca");
-        detectParametersMap.put(ApplicationConstants.DETECT_SCAN_FULL_KEY, true);
         detectParametersMap.put(ApplicationConstants.DETECT_INSTALL_DIRECTORY_KEY, "/user/tmp/detect");
         detectParametersMap.put(ApplicationConstants.DETECT_DOWNLOAD_URL_KEY, "https://fake.detect.url");
 
         Detect detect = detectParametersService.prepareDetectObject(detectParametersMap);
 
         assertNotNull(detect);
-        assertEquals(detect.getScan().getFull(), true);
         assertEquals(detect.getInstall().getDirectory(), "/user/tmp/detect");
         assertEquals(detect.getDownload().getUrl(), "https://fake.detect.url");
         assertNull(detect.getArgs());
@@ -60,7 +58,6 @@ public class DetectParametersServiceTest {
         assertEquals(detect.getArgs(), "--detect.diagnostic=true");
         assertEquals(detect.getSearch().getDepth(), 2);
         assertEquals(detect.getConfig().getPath(), "DIR/CONFIG/application.properties");
-        assertNull(detect.getScan());
         assertNull(detect.getInstall());
         assertNull(detect.getDownload());
     }

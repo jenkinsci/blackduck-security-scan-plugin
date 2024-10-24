@@ -433,7 +433,7 @@ public class ToolsParameterServiceTest {
         Map<String, Object> scanParameters = new HashMap<>();
         scanParameters.put(ApplicationConstants.PRODUCT_KEY, "blackducksca");
         scanParameters.put(ApplicationConstants.DETECT_ARGS_KEY, "args");
-        scanParameters.put(ApplicationConstants.DETECT_SCAN_FULL_KEY, true);
+        scanParameters.put(ApplicationConstants.BLACKDUCKSCA_SCAN_FULL_KEY, true);
         scanParameters.put(ApplicationConstants.DETECT_EXECUTION_PATH_KEY, "path/detect");
 
         String inputJsonPath = toolsParameterService.prepareBridgeInputJson(

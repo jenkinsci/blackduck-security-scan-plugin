@@ -160,7 +160,7 @@ public class ScanInitializer {
         List<String> arbitraryParamList = ApplicationConstants.ARBITRARY_PARAM_KEYS;
         if (!(securityProduct.equalsIgnoreCase(SecurityProduct.BLACKDUCKSCA.name())
                         || securityProduct.equalsIgnoreCase(SecurityProduct.BLACKDUCK.name()))
-                && key.contains(ApplicationConstants.DETECT_SCAN_FULL_KEY)) return false;
+                && key.contains(ApplicationConstants.BLACKDUCKSCA_SCAN_FULL_KEY)) return false;
         return key.contains(securityProduct)
                 || key.equals(ApplicationConstants.PROJECT_DIRECTORY_KEY)
                 || key.startsWith("detect_")

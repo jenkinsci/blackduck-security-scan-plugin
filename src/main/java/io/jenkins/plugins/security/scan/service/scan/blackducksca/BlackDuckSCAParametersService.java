@@ -93,6 +93,7 @@ public class BlackDuckSCAParametersService {
 
         setUrl(blackDuckSCAParameters, blackDuckSCA);
         setToken(blackDuckSCAParameters, blackDuckSCA);
+        setScanFull(blackDuckSCAParameters, blackDuckSCA);
         setScanFailureSeverities(blackDuckSCAParameters, blackDuckSCA);
         setAutomationPrComment(blackDuckSCAParameters, automation, blackDuckSCA);
         setSarif(blackDuckSCAParameters, blackDuckSCA);
@@ -157,6 +158,28 @@ public class BlackDuckSCAParametersService {
                     blackDuckSCA.setAutomation(automation);
                 } else {
                     logger.info(ApplicationConstants.BLACKDUCK_PRCOMMENT_INFO_FOR_NON_PR_SCANS);
+                }
+            }
+        }
+    }
+
+    private void setScanFull(Map<String, Object> scanParameters, BlackDuckSCA blackDuckSCA) {
+        if (scanParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_SCAN_FULL_KEY)) {
+            String product = scanParameters
+                    .get(ApplicationConstants.PRODUCT_KEY)
+                    .toString()
+                    .trim()
+                    .toUpperCase();
+            if ((product.contains(SecurityProduct.BLACKDUCK.name())
+                    || product.contains(SecurityProduct.BLACKDUCKSCA.name()))) {
+                String value = scanParameters
+                        .get(ApplicationConstants.BLACKDUCKSCA_SCAN_FULL_KEY)
+                        .toString()
+                        .trim();
+                if (Utility.isBoolean(value)) {
+                    Scan scan = new Scan();
+                    scan.setFull(Boolean.parseBoolean(value));
+                    blackDuckSCA.setScan(scan);
                 }
             }
         }
