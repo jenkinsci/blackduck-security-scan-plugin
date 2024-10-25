@@ -8,7 +8,7 @@ public class ApplicationConstants {
     public static final String BRIDGE_ARTIFACTORY_URL =
             "https://repo.blackduck.com/artifactory/bds-integrations-release/com/blackduck/integration/bridge-cli";
     public static final String BRIDGE_CLI_LATEST_VERSION = "latest";
-    public static final String BRIDGE_ZIP_FILE_FORMAT = "bridge-cli.zip";
+    public static final String BRIDGE_ZIP_FILE_FORMAT = "bridge-cli-bundle.zip";
     public static final String PLATFORM_LINUX = "linux64";
     public static final String PLATFORM_WINDOWS = "win64";
     public static final String PLATFORM_MAC_ARM = "macos_arm";
@@ -184,7 +184,7 @@ public class ApplicationConstants {
     public static final String PRCOMMENT_SET_TRUE_BUT_NO_SCM_TOKEN_FOUND =
             "PrComment is set true but no %s token found!";
     public static final String UNZIPPING_BRIDGE_CLI_ZIP_FILE =
-            "An exception occurred while unzipping Bridge CLI zip file: %s";
+            "An exception occurred while unzipping Bridge CLI Bundle zip file: %s";
     public static final String BRIDGE_DOWNLOAD_FAILED_AFTER_X_ATTEMPTS = "Bridge CLI download failed after %s attempts";
     public static final String ARCHIVING_REPORTS_IN_JENKINS_ARTIFACT =
             "An exception occurred while archiving %s in jenkins artifact: %s";
@@ -252,7 +252,7 @@ public class ApplicationConstants {
     public static final String BRIDGE_CLI_DOWNLOAD_FAILED_AND_ATTEMPT_TO_DOWNLOAD_AGAIN =
             "Bridge CLI download failed and attempt#%s to download again.";
     public static final String EXCEPTION_WHILE_DELETING_BRIDGE_CLI_ZIP_FILE =
-            "An exception occurred while deleting Bridge CLI zip file: %s";
+            "An exception occurred while deleting Bridge CLI Bundle zip file: %s";
     public static final String EMPTY_BRIDGE_CLI_URL = "Provided Bridge CLI URL cannot be empty";
     public static final String UNSUPPORTED_VALUE_FOR_MARK_BUILD_STATUS_AND_SUPPORTED_VALUES_FOR_BUILD_STATUS =
             "Unsupported value for %s: %s. Supported values are: %s";
