@@ -36,6 +36,8 @@ public class ScanInitializer {
         BridgeDownloadParameters bridgeDownloadParams =
                 bridgeDownloadParametersService.getBridgeDownloadParams(scanParameters, bridgeDownloadParameters);
 
+        bridgeDownloadParametersService.updateBridgeInstallationPath(bridgeDownloadParameters);
+
         logMessagesForParameters(scanParameters, scanParametersService.getSecurityProducts(scanParameters));
 
         scanParametersService.performScanParameterValidation(scanParameters, envVars);
@@ -58,6 +60,8 @@ public class ScanInitializer {
 
         FilePath bridgeInstallationPath =
                 new FilePath(workspace.getChannel(), bridgeDownloadParams.getBridgeInstallationPath());
+
+        envVars.put(ApplicationConstants.BRIDGE_CACHE_DIR, bridgeDownloadParams.getBridgeInstallationPath());
 
         return scanner.runScanner(scanParameters, bridgeInstallationPath);
     }

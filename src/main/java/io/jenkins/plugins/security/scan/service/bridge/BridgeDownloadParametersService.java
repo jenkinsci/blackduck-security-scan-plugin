@@ -146,6 +146,29 @@ public class BridgeDownloadParametersService {
         return bridgeDownloadParameters;
     }
 
+    public void updateBridgeInstallationPath(BridgeDownloadParameters bridgeDownloadParameters) {
+        String separator = Utility.getDirectorySeparator(workspace, listener);
+        if (bridgeDownloadParameters
+                .getBridgeDownloadVersion()
+                .equals(ApplicationConstants.BRIDGE_CLI_LATEST_VERSION)) {
+            bridgeDownloadParameters.setBridgeInstallationPath(bridgeDownloadParameters
+                    .getBridgeInstallationPath()
+                    .concat(separator)
+                    .concat(ApplicationConstants.DEFAULT_DIRECTORY_NAME)
+                    .concat("-")
+                    .concat(getPlatform(bridgeDownloadParameters.getBridgeDownloadVersion())));
+        } else {
+            bridgeDownloadParameters.setBridgeInstallationPath(bridgeDownloadParameters
+                    .getBridgeInstallationPath()
+                    .concat(separator)
+                    .concat(ApplicationConstants.DEFAULT_DIRECTORY_NAME)
+                    .concat("-")
+                    .concat(bridgeDownloadParameters.getBridgeDownloadVersion())
+                    .concat("-")
+                    .concat(getPlatform(bridgeDownloadParameters.getBridgeDownloadVersion())));
+        }
+    }
+
     public String getPlatform(String version) {
         String os = Utility.getAgentOs(workspace, listener);
         if (os.contains("win")) {

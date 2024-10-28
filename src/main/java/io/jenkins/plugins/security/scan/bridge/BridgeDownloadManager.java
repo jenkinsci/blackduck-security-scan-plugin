@@ -69,15 +69,12 @@ public class BridgeDownloadManager {
             FilePath installationDirectory = new FilePath(workspace.getChannel(), bridgeInstallationPath);
 
             if (installationDirectory.exists() && installationDirectory.isDirectory()) {
-                FilePath extensionsDir = installationDirectory.child(ApplicationConstants.EXTENSIONS_DIRECTORY);
                 FilePath bridgeBinaryFile = installationDirectory.child(ApplicationConstants.BRIDGE_CLI_EXECUTABLE);
                 FilePath bridgeBinaryFileWindows =
                         installationDirectory.child(ApplicationConstants.BRIDGE_CLI_EXECUTABLE_WINDOWS);
                 FilePath versionFile = installationDirectory.child(ApplicationConstants.VERSION_FILE);
 
-                return extensionsDir.isDirectory()
-                        && (bridgeBinaryFile.exists() || bridgeBinaryFileWindows.exists())
-                        && versionFile.exists();
+                return (bridgeBinaryFile.exists() || bridgeBinaryFileWindows.exists()) && versionFile.exists();
             }
         } catch (IOException | InterruptedException e) {
             logger.error(ApplicationConstants.EXCEPTION_WHILE_CHECKING_IF_THE_BRIDGE_IS_INSTALLED, e.getMessage());
