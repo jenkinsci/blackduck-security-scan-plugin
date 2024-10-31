@@ -263,7 +263,7 @@ public class ParameterMappingService {
         addParameterIfNotBlank(
                 blackDuckParameters,
                 ApplicationConstants.BLACKDUCKSCA_SCAN_FULL_KEY,
-                securityScan.isDetectIntelligentScan());
+                securityScan.isBlackduckscaIntelligentScan());
 
         if (securityScan instanceof PrCommentScan) {
             PrCommentScan prCommentScan = (PrCommentScan) securityScan;

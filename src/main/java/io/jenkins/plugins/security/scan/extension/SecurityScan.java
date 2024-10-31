@@ -9,9 +9,9 @@ public interface SecurityScan {
 
     public String getDetect_install_directory();
 
-    public Boolean isDetect_scan_full();
+    public Boolean isBlackducksca_scan_full();
 
-    public Boolean isDetectIntelligentScan();
+    public Boolean isBlackduckscaIntelligentScan();
 
     public String getBlackducksca_scan_failure_severities();
 

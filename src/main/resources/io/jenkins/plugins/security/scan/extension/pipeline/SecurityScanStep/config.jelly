@@ -23,7 +23,7 @@
         </f:section>
 
         <f:advanced title="Scan Options">
-            <f:entry field="detect_scan_full" title="Full Scan (Optional)">
+            <f:entry field="blackducksca_scan_full" title="Full Scan (Optional)">
                 <f:checkbox/>
             </f:entry>
             <f:entry field="blackducksca_scan_failure_severities" title="Scan Failure Severities (Optional)">
