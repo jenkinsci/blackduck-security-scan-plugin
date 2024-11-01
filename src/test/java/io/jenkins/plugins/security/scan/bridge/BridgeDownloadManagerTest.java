@@ -99,12 +99,12 @@ public class BridgeDownloadManagerTest {
         String urlWithVersion = "https://myown.artifactory.com/bridge-cli/0.3.59/bridge-cli-0.3.59-linux64.zip";
         String expectedVersionWithVersion = "0.3.59";
 
-        assertEquals(expectedVersionWithVersion, bridgeDownloadManager.extractVersionFromUrl(urlWithVersion));
+        assertEquals(expectedVersionWithVersion, Utility.extractVersionFromUrl(urlWithVersion));
 
         String urlWithoutVersion = "https://myown.artifactory.com/bridge-cli/latest/bridge-cli-latest-linux64.zip";
         String expectedVersionWithLatest = "NA";
 
-        assertEquals(expectedVersionWithLatest, bridgeDownloadManager.extractVersionFromUrl(urlWithoutVersion));
+        assertEquals(expectedVersionWithLatest, Utility.extractVersionFromUrl(urlWithoutVersion));
     }
 
     @Test

@@ -36,13 +36,13 @@ public class ScanInitializer {
         BridgeDownloadParameters bridgeDownloadParams =
                 bridgeDownloadParametersService.getBridgeDownloadParams(scanParameters, bridgeDownloadParameters);
 
+        bridgeDownloadParametersService.updateBridgeInstallationPath(bridgeDownloadParameters);
+
         logMessagesForParameters(scanParameters, scanParametersService.getSecurityProducts(scanParameters));
 
         scanParametersService.performScanParameterValidation(scanParameters, envVars);
 
         bridgeDownloadParametersService.performBridgeDownloadParameterValidation(bridgeDownloadParams);
-
-        bridgeDownloadParametersService.updateBridgeInstallationPath(bridgeDownloadParameters);
 
         BridgeDownloadManager bridgeDownloadManager = new BridgeDownloadManager(workspace, listener, envVars);
         boolean isNetworkAirGap = checkNetworkAirgap(scanParameters);

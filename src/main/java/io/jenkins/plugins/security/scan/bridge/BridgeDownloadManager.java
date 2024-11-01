@@ -7,6 +7,7 @@ import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.global.Utility;
+import io.jenkins.plugins.security.scan.service.bridge.BridgeDownloadParametersService;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -33,9 +34,12 @@ public class BridgeDownloadManager {
             throws PluginExceptionHandler {
         BridgeDownload bridgeDownload = new BridgeDownload(workspace, listener, envVars);
         BridgeInstall bridgeInstall = new BridgeInstall(workspace, listener);
+        BridgeDownloadParametersService bridgeDownloadParametersService =
+                new BridgeDownloadParametersService(workspace, listener);
 
         String bridgeDownloadUrl = bridgeDownloadParams.getBridgeDownloadUrl();
-        String bridgeInstallationPath = bridgeDownloadParams.getBridgeInstallationPath();
+        String bridgeInstallationPath =
+                bridgeDownloadParametersService.preferredBridgeCLIInstalledPath(bridgeDownloadParams);
 
         bridgeInstall.verifyAndCreateInstallationPath(bridgeInstallationPath);
 
@@ -88,7 +92,7 @@ public class BridgeDownloadManager {
             FilePath file = new FilePath(workspace.getChannel(), versionFilePath);
             if (file.exists()) {
                 String versionsFileContent = file.readToString();
-                Matcher matcher = Pattern.compile("Bridge CLI Package: (\\d+\\.\\d+\\.\\d+)")
+                Matcher matcher = Pattern.compile("bridge-cli-bundle: (\\d+\\.\\d+\\.\\d+)")
                         .matcher(versionsFileContent);
 
                 if (matcher.find()) {
@@ -106,7 +110,7 @@ public class BridgeDownloadManager {
     public String getLatestBridgeVersionFromArtifactory(String bridgeDownloadUrl) {
         if (Utility.isStringNullOrBlank(bridgeDownloadUrl)) return ApplicationConstants.NOT_AVAILABLE;
 
-        String extractedVersionNumber = extractVersionFromUrl(bridgeDownloadUrl);
+        String extractedVersionNumber = Utility.extractVersionFromUrl(bridgeDownloadUrl);
         if (extractedVersionNumber.equals(ApplicationConstants.NOT_AVAILABLE)) {
             String directoryUrl = getDirectoryUrl(bridgeDownloadUrl);
             if (isVersionFileAvailableInArtifactory(directoryUrl)) {
@@ -177,21 +181,5 @@ public class BridgeDownloadManager {
             logger.error(ApplicationConstants.EXCEPTION_WHILE_GETTING_DIRECTORY_URL_FROM_DOWNLOAD_URL, e.getMessage());
         }
         return directoryUrl;
-    }
-
-    public String extractVersionFromUrl(String url) {
-        String regex = "/(\\d+\\.\\d+\\.\\d+)/";
-        Pattern pattern = Pattern.compile(regex);
-        String version;
-
-        Matcher matcher = pattern.matcher(url);
-
-        if (matcher.find()) {
-            version = matcher.group(1);
-        } else {
-            version = ApplicationConstants.NOT_AVAILABLE;
-        }
-
-        return version;
     }
 }

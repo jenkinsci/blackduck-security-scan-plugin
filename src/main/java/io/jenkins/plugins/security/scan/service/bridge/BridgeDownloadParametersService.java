@@ -9,6 +9,7 @@ import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.global.ErrorCode;
 import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.global.Utility;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -120,6 +121,12 @@ public class BridgeDownloadParametersService {
                     .get(ApplicationConstants.BRIDGECLI_DOWNLOAD_URL)
                     .toString()
                     .trim());
+            String extractedVersionNumber =
+                    Utility.extractVersionFromUrl(bridgeDownloadParameters.getBridgeDownloadUrl());
+            if (!extractedVersionNumber.equals(ApplicationConstants.NOT_AVAILABLE)) {
+                bridgeDownloadParameters.setBridgeDownloadVersion(extractedVersionNumber);
+            }
+
         } else if (scanParameters.containsKey(ApplicationConstants.BRIDGECLI_DOWNLOAD_VERSION) && !isNetworkAirgap) {
             String desiredVersion = scanParameters
                     .get(ApplicationConstants.BRIDGECLI_DOWNLOAD_VERSION)
@@ -186,6 +193,23 @@ public class BridgeDownloadParametersService {
             }
         } else {
             return ApplicationConstants.PLATFORM_LINUX;
+        }
+    }
+
+    public String preferredBridgeCLIInstalledPath(BridgeDownloadParameters bridgeDownloadParameters) {
+        String pattern = "[/\\\\]bridge-cli-bundle-[^/\\\\]*$"; // updated to handle both / and \ as separators
+        Pattern regex = Pattern.compile(pattern);
+        Matcher matcher = regex.matcher(bridgeDownloadParameters.getBridgeInstallationPath());
+
+        if (matcher.find()) {
+            String path = bridgeDownloadParameters.getBridgeInstallationPath();
+            int lastSeparatorIndex = path.lastIndexOf(File.separator); // platform-specific separator
+            if (lastSeparatorIndex != -1) {
+                return path.substring(0, lastSeparatorIndex); // remove last segment
+            }
+            return path; // if no separator is found, return the original path
+        } else {
+            return bridgeDownloadParameters.getBridgeInstallationPath();
         }
     }
 
