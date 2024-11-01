@@ -111,6 +111,7 @@ public class BridgeDownloadParametersService {
                     .get(ApplicationConstants.BRIDGECLI_INSTALL_DIRECTORY)
                     .toString()
                     .trim());
+            bridgeDownloadParameters.setBridgeInstalledDirectoryValued(true);
         }
 
         boolean isNetworkAirgap = scanParameters.containsKey(ApplicationConstants.NETWORK_AIRGAP_KEY)
@@ -155,24 +156,71 @@ public class BridgeDownloadParametersService {
 
     public void updateBridgeInstallationPath(BridgeDownloadParameters bridgeDownloadParameters) {
         String separator = Utility.getDirectorySeparator(workspace, listener);
-        if (bridgeDownloadParameters
-                .getBridgeDownloadVersion()
-                .equals(ApplicationConstants.BRIDGE_CLI_LATEST_VERSION)) {
-            bridgeDownloadParameters.setBridgeInstallationPath(bridgeDownloadParameters
-                    .getBridgeInstallationPath()
-                    .concat(separator)
-                    .concat(ApplicationConstants.DEFAULT_DIRECTORY_NAME)
-                    .concat("-")
-                    .concat(getPlatform(bridgeDownloadParameters.getBridgeDownloadVersion())));
+        String actualBridgeInstallationPath = bridgeDownloadParameters.getBridgeInstallationPath();
+        String latestBridgeInstalationPath = actualBridgeInstallationPath
+                .concat(separator)
+                .concat(ApplicationConstants.DEFAULT_DIRECTORY_NAME)
+                .concat("-")
+                .concat(getPlatform(bridgeDownloadParameters.getBridgeDownloadVersion()));
+
+        String versionedBridgeInstalationPath = actualBridgeInstallationPath
+                .concat(separator)
+                .concat(ApplicationConstants.DEFAULT_DIRECTORY_NAME)
+                .concat("-")
+                .concat(bridgeDownloadParameters.getBridgeDownloadVersion())
+                .concat("-")
+                .concat(getPlatform(bridgeDownloadParameters.getBridgeDownloadVersion()));
+
+        String installedLatestBridgeVersion = ApplicationConstants.NOT_AVAILABLE;
+        String installedBridgeVersionFilePath;
+        String os = Utility.getAgentOs(workspace, listener);
+        if (os.contains("win")) {
+            installedBridgeVersionFilePath =
+                    String.join("\\", latestBridgeInstalationPath, ApplicationConstants.VERSION_FILE);
         } else {
-            bridgeDownloadParameters.setBridgeInstallationPath(bridgeDownloadParameters
-                    .getBridgeInstallationPath()
-                    .concat(separator)
-                    .concat(ApplicationConstants.DEFAULT_DIRECTORY_NAME)
-                    .concat("-")
-                    .concat(bridgeDownloadParameters.getBridgeDownloadVersion())
-                    .concat("-")
-                    .concat(getPlatform(bridgeDownloadParameters.getBridgeDownloadVersion())));
+            installedBridgeVersionFilePath =
+                    String.join("/", latestBridgeInstalationPath, ApplicationConstants.VERSION_FILE);
+        }
+
+        try {
+            FilePath file = new FilePath(workspace.getChannel(), installedBridgeVersionFilePath);
+            if (file.exists()) {
+                String versionsFileContent = file.readToString();
+                Matcher matcher = Pattern.compile("bridge-cli-bundle: (\\d+\\.\\d+\\.\\d+)")
+                        .matcher(versionsFileContent);
+
+                if (matcher.find()) {
+                    installedLatestBridgeVersion = matcher.group(1);
+                }
+            }
+        } catch (IOException | InterruptedException e) {
+            logger.error(
+                    ApplicationConstants.EXCEPTION_WHILE_EXTRACTING_BRIDGE_VERSION_FROM_VERSIONS_TXT, e.getMessage());
+            Thread.currentThread().interrupt();
+        }
+
+        if (bridgeDownloadParameters.getBridgeDownloadVersion().equals(ApplicationConstants.BRIDGE_CLI_LATEST_VERSION)
+                || bridgeDownloadParameters.getBridgeDownloadVersion().equals(installedLatestBridgeVersion)) {
+            bridgeDownloadParameters.setBridgeInstallationPath(latestBridgeInstalationPath);
+        } else {
+            bridgeDownloadParameters.setBridgeInstallationPath(versionedBridgeInstalationPath);
+        }
+    }
+
+    public String preferredBridgeCLIInstalledPath(String bridgeInstallationPath) {
+        String pattern = "[/\\\\]bridge-cli-bundle-[^/\\\\]*$"; // updated to handle both / and \ as separators
+        Pattern regex = Pattern.compile(pattern);
+        Matcher matcher = regex.matcher(bridgeInstallationPath);
+
+        if (matcher.find()) {
+            String path = bridgeInstallationPath;
+            int lastSeparatorIndex = path.lastIndexOf(File.separator); // platform-specific separator
+            if (lastSeparatorIndex != -1) {
+                return path.substring(0, lastSeparatorIndex); // remove last segment
+            }
+            return path; // if no separator is found, return the original path
+        } else {
+            return bridgeInstallationPath;
         }
     }
 
@@ -196,32 +244,15 @@ public class BridgeDownloadParametersService {
         }
     }
 
-    public String preferredBridgeCLIInstalledPath(BridgeDownloadParameters bridgeDownloadParameters) {
-        String pattern = "[/\\\\]bridge-cli-bundle-[^/\\\\]*$"; // updated to handle both / and \ as separators
-        Pattern regex = Pattern.compile(pattern);
-        Matcher matcher = regex.matcher(bridgeDownloadParameters.getBridgeInstallationPath());
-
-        if (matcher.find()) {
-            String path = bridgeDownloadParameters.getBridgeInstallationPath();
-            int lastSeparatorIndex = path.lastIndexOf(File.separator); // platform-specific separator
-            if (lastSeparatorIndex != -1) {
-                return path.substring(0, lastSeparatorIndex); // remove last segment
-            }
-            return path; // if no separator is found, return the original path
-        } else {
-            return bridgeDownloadParameters.getBridgeInstallationPath();
-        }
-    }
-
     public String getBridgeZipFileName() {
-        return ApplicationConstants.BRIDGE_CLI_EXECUTABLE
+        return ApplicationConstants.DEFAULT_DIRECTORY_NAME
                 .concat("-")
                 .concat(getPlatform(null))
                 .concat(".zip");
     }
 
     public String getBridgeZipFileName(String version) {
-        return ApplicationConstants.BRIDGE_CLI_EXECUTABLE
+        return ApplicationConstants.DEFAULT_DIRECTORY_NAME
                 .concat("-")
                 .concat(version)
                 .concat("-")

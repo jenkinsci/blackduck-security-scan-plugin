@@ -9,11 +9,14 @@ public class BridgeDownloadParameters {
     private String bridgeDownloadVersion;
     private String bridgeInstallationPath;
 
+    private Boolean isBridgeInstalledDirectoryValued;
+
     public BridgeDownloadParameters(FilePath workspace, TaskListener listener) {
         BridgeInstall bridgeInstall = new BridgeInstall(workspace, listener);
         this.bridgeDownloadUrl = ApplicationConstants.BRIDGE_ARTIFACTORY_URL;
         this.bridgeDownloadVersion = ApplicationConstants.BRIDGE_CLI_LATEST_VERSION;
         this.bridgeInstallationPath = bridgeInstall.defaultBridgeInstallationPath(workspace, listener);
+        this.isBridgeInstalledDirectoryValued = false;
     }
 
     public String getBridgeDownloadUrl() {
@@ -38,5 +41,13 @@ public class BridgeDownloadParameters {
 
     public void setBridgeInstallationPath(String bridgeInstallationPath) {
         this.bridgeInstallationPath = bridgeInstallationPath;
+    }
+
+    public Boolean getBridgeInstalledDirectoryValued() {
+        return isBridgeInstalledDirectoryValued;
+    }
+
+    public void setBridgeInstalledDirectoryValued(Boolean bridgeInstalledDirectoryValued) {
+        isBridgeInstalledDirectoryValued = bridgeInstalledDirectoryValued;
     }
 }

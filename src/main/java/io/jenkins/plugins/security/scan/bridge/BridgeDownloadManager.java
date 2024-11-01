@@ -38,8 +38,8 @@ public class BridgeDownloadManager {
                 new BridgeDownloadParametersService(workspace, listener);
 
         String bridgeDownloadUrl = bridgeDownloadParams.getBridgeDownloadUrl();
-        String bridgeInstallationPath =
-                bridgeDownloadParametersService.preferredBridgeCLIInstalledPath(bridgeDownloadParams);
+        String bridgeInstallationPath = bridgeDownloadParametersService.preferredBridgeCLIInstalledPath(
+                bridgeDownloadParams.getBridgeInstallationPath());
 
         bridgeInstall.verifyAndCreateInstallationPath(bridgeInstallationPath);
 
@@ -176,7 +176,8 @@ public class BridgeDownloadManager {
             }
 
             String directoryPath = path.substring(0, path.lastIndexOf('/'));
-            directoryUrl = uri.getScheme().concat("://").concat(uri.getHost()).concat(directoryPath);
+            directoryUrl =
+                    uri.getScheme().concat("://").concat(uri.getAuthority()).concat(directoryPath);
         } catch (URISyntaxException e) {
             logger.error(ApplicationConstants.EXCEPTION_WHILE_GETTING_DIRECTORY_URL_FROM_DOWNLOAD_URL, e.getMessage());
         }
