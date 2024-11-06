@@ -7,7 +7,6 @@ import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.global.Utility;
-import io.jenkins.plugins.security.scan.service.bridge.BridgeDownloadParametersService;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -34,8 +33,6 @@ public class BridgeDownloadManager {
             throws PluginExceptionHandler {
         BridgeDownload bridgeDownload = new BridgeDownload(workspace, listener, envVars);
         BridgeInstall bridgeInstall = new BridgeInstall(workspace, listener);
-        BridgeDownloadParametersService bridgeDownloadParametersService =
-                new BridgeDownloadParametersService(workspace, listener);
 
         String bridgeDownloadUrl = bridgeDownloadParams.getBridgeDownloadUrl();
         String bridgeInstallationPath = bridgeDownloadParams.getBridgeInstallationPath();
