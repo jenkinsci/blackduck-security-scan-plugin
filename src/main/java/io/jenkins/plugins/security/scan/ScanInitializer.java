@@ -43,10 +43,8 @@ public class ScanInitializer {
         bridgeDownloadParametersService.performBridgeDownloadParameterValidation(bridgeDownloadParams);
 
         BridgeDownloadManager bridgeDownloadManager = new BridgeDownloadManager(workspace, listener, envVars);
-        if (!(bridgeDownloadParameters.getBridgeInstalledDirectoryValued()
-                && bridgeDownloadManager.checkIfBridgeInstalled(bridgeDownloadParams.getBridgeInstallationPath()))) {
-            bridgeDownloadParametersService.updateBridgeInstallationPath(bridgeDownloadParameters);
-        }
+
+        bridgeDownloadParametersService.updateBridgeInstallationPath(bridgeDownloadParameters);
 
         boolean isNetworkAirGap = checkNetworkAirgap(scanParameters);
         boolean isBridgeInstalled =

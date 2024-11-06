@@ -38,14 +38,20 @@ public class BridgeDownloadManager {
                 new BridgeDownloadParametersService(workspace, listener);
 
         String bridgeDownloadUrl = bridgeDownloadParams.getBridgeDownloadUrl();
-        String bridgeInstallationPath = bridgeDownloadParametersService.preferredBridgeCLIInstalledPath(
-                bridgeDownloadParams.getBridgeInstallationPath());
+        String bridgeInstallationPath = bridgeDownloadParams.getBridgeInstallationPath();
+        int lastIndex = bridgeInstallationPath.lastIndexOf('/');
+        String subFolderName = "";
+        if (lastIndex != -1) {
+            subFolderName = bridgeInstallationPath.substring(lastIndex + 1);
+            bridgeInstallationPath = bridgeInstallationPath.substring(0, lastIndex);
+        }
 
         bridgeInstall.verifyAndCreateInstallationPath(bridgeInstallationPath);
 
         FilePath bridgeZipPath = bridgeDownload.downloadBridgeCLI(bridgeDownloadUrl, bridgeInstallationPath);
 
-        bridgeInstall.installBridgeCLI(bridgeZipPath, new FilePath(workspace.getChannel(), bridgeInstallationPath));
+        bridgeInstall.installBridgeCLI(
+                bridgeZipPath, new FilePath(workspace.getChannel(), bridgeInstallationPath), subFolderName);
     }
 
     public boolean isBridgeDownloadRequired(BridgeDownloadParameters bridgeDownloadParameters) {

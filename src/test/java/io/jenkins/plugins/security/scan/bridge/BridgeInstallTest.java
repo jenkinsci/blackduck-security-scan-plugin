@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import hudson.FilePath;
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
+import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -20,7 +21,8 @@ public class BridgeInstallTest {
 
     @BeforeEach
     public void setup() {
-        bridgeInstallationPath = new FilePath(new File(getHomeDirectory()));
+        bridgeInstallationPath = new FilePath(
+                new File(getHomeDirectory() + File.separator + ApplicationConstants.DEFAULT_DIRECTORY_NAME));
         Mockito.when(listenerMock.getLogger()).thenReturn(Mockito.mock(PrintStream.class));
         bridgeInstall = new BridgeInstall(bridgeInstallationPath, listenerMock);
     }
@@ -39,7 +41,7 @@ public class BridgeInstallTest {
 
         try {
             sourceBridge.copyTo(destinationBridge);
-            bridgeInstall.installBridgeCLI(getFullZipPath(), bridgeInstallationPath);
+            bridgeInstall.installBridgeCLI(getFullZipPath(), bridgeInstallationPath, "TEST_DIR");
 
             assertFalse(destinationBridge.exists());
             assertTrue(bridgeInstallationPath.child("demo-bridge-extensions").isDirectory());
