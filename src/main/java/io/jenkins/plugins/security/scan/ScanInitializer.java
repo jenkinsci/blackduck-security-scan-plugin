@@ -30,7 +30,7 @@ public class ScanInitializer {
 
     public int initializeScanner(Map<String, Object> scanParameters) throws PluginExceptionHandler {
         ScanParametersService scanParametersService = new ScanParametersService(listener);
-        BridgeDownloadParameters bridgeDownloadParameters = new BridgeDownloadParameters(workspace, listener);
+        BridgeDownloadParameters bridgeDownloadParameters = new BridgeDownloadParameters(workspace, listener, envVars);
         BridgeDownloadParametersService bridgeDownloadParametersService =
                 new BridgeDownloadParametersService(workspace, listener);
         BridgeDownloadParameters bridgeDownloadParams =
@@ -63,6 +63,8 @@ public class ScanInitializer {
                 new FilePath(workspace.getChannel(), bridgeDownloadParams.getBridgeInstallationPath());
 
         envVars.put(ApplicationConstants.BRIDGE_CACHE_DIR, bridgeDownloadParams.getBridgeInstallationPath());
+
+        logger.info("Bridge CLI version is - " + bridgeDownloadParams.getBridgeDownloadVersion());
 
         return scanner.runScanner(scanParameters, bridgeInstallationPath);
     }
@@ -100,6 +102,18 @@ public class ScanInitializer {
             }
             bridgeDownloadManager.initiateBridgeDownloadAndUnzip(bridgeDownloadParams);
         } else {
+            String installedBridgeVersionFilePath;
+            String os = Utility.getAgentOs(workspace, listener);
+            if (os.contains("win")) {
+                installedBridgeVersionFilePath = String.join(
+                        "\\", bridgeDownloadParams.getBridgeInstallationPath(), ApplicationConstants.VERSION_FILE);
+            } else {
+                installedBridgeVersionFilePath = String.join(
+                        "/", bridgeDownloadParams.getBridgeInstallationPath(), ApplicationConstants.VERSION_FILE);
+            }
+            String installedBridgeVersion =
+                    bridgeDownloadManager.getBridgeVersionFromVersionFile(installedBridgeVersionFilePath);
+            bridgeDownloadParams.setBridgeDownloadVersion(installedBridgeVersion);
             logger.info("Bridge download is not required. Found installed in: "
                     + bridgeDownloadParams.getBridgeInstallationPath());
             logger.println(LogMessages.DASHES);

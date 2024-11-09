@@ -3,6 +3,7 @@ package io.jenkins.plugins.security.scan.bridge;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import hudson.EnvVars;
 import hudson.FilePath;
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
@@ -16,15 +17,20 @@ import org.mockito.Mockito;
 
 public class BridgeInstallTest {
     private final TaskListener listenerMock = Mockito.mock(TaskListener.class);
+    private final EnvVars envVarsMock = Mockito.mock(EnvVars.class);
+    private FilePath workspace;
     private FilePath bridgeInstallationPath;
     private BridgeInstall bridgeInstall;
+    private BridgeDownloadParameters bridgeDownloadParameters;
 
     @BeforeEach
     public void setup() {
+        workspace = new FilePath(new File(getHomeDirectory()));
         bridgeInstallationPath = new FilePath(
                 new File(getHomeDirectory() + File.separator + ApplicationConstants.DEFAULT_DIRECTORY_NAME));
         Mockito.when(listenerMock.getLogger()).thenReturn(Mockito.mock(PrintStream.class));
-        bridgeInstall = new BridgeInstall(bridgeInstallationPath, listenerMock);
+        bridgeInstall = new BridgeInstall(bridgeInstallationPath, listenerMock, envVarsMock);
+        bridgeDownloadParameters = new BridgeDownloadParameters(bridgeInstallationPath, listenerMock, envVarsMock);
     }
 
     @Test
@@ -40,8 +46,14 @@ public class BridgeInstallTest {
         }
 
         try {
+            // Mock bridgeDownloadParameters to specify expected installation and versioning behavior
+            BridgeDownloadParameters bridgeDownloadParameters =
+                    new BridgeDownloadParameters(workspace, listenerMock, envVarsMock);
+            bridgeDownloadParameters.setBridgeInstallationPath(
+                    bridgeInstallationPath.getRemote() + "/demo-bridge-bundle-linux64");
+            bridgeDownloadParameters.setBridgeDownloadVersion("2.9.9");
             sourceBridge.copyTo(destinationBridge);
-            bridgeInstall.installBridgeCLI(getFullZipPath(), bridgeInstallationPath, "TEST_DIR");
+            bridgeInstall.installBridgeCLI(getFullZipPath(), bridgeDownloadParameters);
 
             assertFalse(destinationBridge.exists());
             assertTrue(bridgeInstallationPath.child("demo-bridge-extensions").isDirectory());

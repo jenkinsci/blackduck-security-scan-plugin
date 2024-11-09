@@ -47,7 +47,8 @@ public class BridgeDownloadManagerTest {
 
     @Test
     void isBridgeDownloadRequiredTest() {
-        BridgeDownloadParameters bridgeDownloadParameters = new BridgeDownloadParameters(workspace, listenerMock);
+        BridgeDownloadParameters bridgeDownloadParameters =
+                new BridgeDownloadParameters(workspace, listenerMock, envVarsMock);
         bridgeDownloadParameters.setBridgeDownloadUrl("https://fake.url.com/bridge");
         bridgeDownloadParameters.setBridgeInstallationPath("/path/to/bridge");
 

@@ -32,14 +32,12 @@ public class BridgeDownloadManager {
     public void initiateBridgeDownloadAndUnzip(BridgeDownloadParameters bridgeDownloadParams)
             throws PluginExceptionHandler {
         BridgeDownload bridgeDownload = new BridgeDownload(workspace, listener, envVars);
-        BridgeInstall bridgeInstall = new BridgeInstall(workspace, listener);
+        BridgeInstall bridgeInstall = new BridgeInstall(workspace, listener, envVars);
 
         String bridgeDownloadUrl = bridgeDownloadParams.getBridgeDownloadUrl();
         String bridgeInstallationPath = bridgeDownloadParams.getBridgeInstallationPath();
         int lastIndex = bridgeInstallationPath.lastIndexOf('/');
-        String subFolderName = "";
         if (lastIndex != -1) {
-            subFolderName = bridgeInstallationPath.substring(lastIndex + 1);
             bridgeInstallationPath = bridgeInstallationPath.substring(0, lastIndex);
         }
 
@@ -47,8 +45,7 @@ public class BridgeDownloadManager {
 
         FilePath bridgeZipPath = bridgeDownload.downloadBridgeCLI(bridgeDownloadUrl, bridgeInstallationPath);
 
-        bridgeInstall.installBridgeCLI(
-                bridgeZipPath, new FilePath(workspace.getChannel(), bridgeInstallationPath), subFolderName);
+        bridgeInstall.installBridgeCLI(bridgeZipPath, bridgeDownloadParams);
     }
 
     public boolean isBridgeDownloadRequired(BridgeDownloadParameters bridgeDownloadParameters) {
