@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.net.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import jenkins.model.Jenkins;
 
 public class Utility {
@@ -275,6 +277,22 @@ public class Utility {
             return Result.SUCCESS;
         }
         return null;
+    }
+
+    public static String extractVersionFromUrl(String url) {
+        String regex = "/(\\d+\\.\\d+\\.\\d+)/";
+        Pattern pattern = Pattern.compile(regex);
+        String version;
+
+        Matcher matcher = pattern.matcher(url);
+
+        if (matcher.find()) {
+            version = matcher.group(1);
+        } else {
+            version = ApplicationConstants.NOT_AVAILABLE;
+        }
+
+        return version;
     }
 
     public static boolean isBoolean(String value) {

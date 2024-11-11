@@ -11,7 +11,7 @@ This repository contains a Jenkins plugin implemented as a Maven project. The pl
 You can download the latest artifact from releases: https://updates.jenkins-ci.org/download/plugins/black-duck-security-scan/
 
 # Documentation
-Documentation for Black Duck Security Scan for Jenkins can be found [**here**](https://sig-product-docs.synopsys.com/bundle/bridge/page/documentation/c_using-synopsys-jenkins-plugin.html)
+Documentation for Black Duck Security Scan for Jenkins can be found [**here**](https://documentation.blackduck.com/bundle/bridge/page/documentation/c_using-jenkins-plugin.html)
 
 # Developers Guide
 Please follow the steps described [**here**](DeveloperGuide.md)

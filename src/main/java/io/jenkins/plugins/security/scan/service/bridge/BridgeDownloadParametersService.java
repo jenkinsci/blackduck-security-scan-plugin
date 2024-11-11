@@ -120,6 +120,12 @@ public class BridgeDownloadParametersService {
                     .get(ApplicationConstants.BRIDGECLI_DOWNLOAD_URL)
                     .toString()
                     .trim());
+            String extractedVersionNumber =
+                    Utility.extractVersionFromUrl(bridgeDownloadParameters.getBridgeDownloadUrl());
+            if (!extractedVersionNumber.equals(ApplicationConstants.NOT_AVAILABLE)) {
+                bridgeDownloadParameters.setBridgeDownloadVersion(extractedVersionNumber);
+            }
+
         } else if (scanParameters.containsKey(ApplicationConstants.BRIDGECLI_DOWNLOAD_VERSION) && !isNetworkAirgap) {
             String desiredVersion = scanParameters
                     .get(ApplicationConstants.BRIDGECLI_DOWNLOAD_VERSION)
@@ -146,6 +152,18 @@ public class BridgeDownloadParametersService {
         return bridgeDownloadParameters;
     }
 
+    public void updateBridgeInstallationPath(BridgeDownloadParameters bridgeDownloadParameters) {
+        String separator = Utility.getDirectorySeparator(workspace, listener);
+        String modifiedInstalationPath = bridgeDownloadParameters
+                .getBridgeInstallationPath()
+                .concat(separator)
+                .concat(ApplicationConstants.DEFAULT_DIRECTORY_NAME)
+                .concat("-")
+                .concat(getPlatform(bridgeDownloadParameters.getBridgeDownloadVersion()));
+
+        bridgeDownloadParameters.setBridgeInstallationPath(modifiedInstalationPath);
+    }
+
     public String getPlatform(String version) {
         String os = Utility.getAgentOs(workspace, listener);
         if (os.contains("win")) {
@@ -167,14 +185,14 @@ public class BridgeDownloadParametersService {
     }
 
     public String getBridgeZipFileName() {
-        return ApplicationConstants.BRIDGE_CLI_EXECUTABLE
+        return ApplicationConstants.DEFAULT_DIRECTORY_NAME
                 .concat("-")
                 .concat(getPlatform(null))
                 .concat(".zip");
     }
 
     public String getBridgeZipFileName(String version) {
-        return ApplicationConstants.BRIDGE_CLI_EXECUTABLE
+        return ApplicationConstants.DEFAULT_DIRECTORY_NAME
                 .concat("-")
                 .concat(version)
                 .concat("-")

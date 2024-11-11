@@ -32,16 +32,20 @@ public class BridgeDownloadManager {
     public void initiateBridgeDownloadAndUnzip(BridgeDownloadParameters bridgeDownloadParams)
             throws PluginExceptionHandler {
         BridgeDownload bridgeDownload = new BridgeDownload(workspace, listener, envVars);
-        BridgeInstall bridgeInstall = new BridgeInstall(workspace, listener);
+        BridgeInstall bridgeInstall = new BridgeInstall(workspace, listener, envVars);
 
         String bridgeDownloadUrl = bridgeDownloadParams.getBridgeDownloadUrl();
         String bridgeInstallationPath = bridgeDownloadParams.getBridgeInstallationPath();
+        int lastIndex = bridgeInstallationPath.lastIndexOf('/');
+        if (lastIndex != -1) {
+            bridgeInstallationPath = bridgeInstallationPath.substring(0, lastIndex);
+        }
 
         bridgeInstall.verifyAndCreateInstallationPath(bridgeInstallationPath);
 
         FilePath bridgeZipPath = bridgeDownload.downloadBridgeCLI(bridgeDownloadUrl, bridgeInstallationPath);
 
-        bridgeInstall.installBridgeCLI(bridgeZipPath, new FilePath(workspace.getChannel(), bridgeInstallationPath));
+        bridgeInstall.installBridgeCLI(bridgeZipPath, bridgeDownloadParams);
     }
 
     public boolean isBridgeDownloadRequired(BridgeDownloadParameters bridgeDownloadParameters) {
@@ -69,15 +73,12 @@ public class BridgeDownloadManager {
             FilePath installationDirectory = new FilePath(workspace.getChannel(), bridgeInstallationPath);
 
             if (installationDirectory.exists() && installationDirectory.isDirectory()) {
-                FilePath extensionsDir = installationDirectory.child(ApplicationConstants.EXTENSIONS_DIRECTORY);
                 FilePath bridgeBinaryFile = installationDirectory.child(ApplicationConstants.BRIDGE_CLI_EXECUTABLE);
                 FilePath bridgeBinaryFileWindows =
                         installationDirectory.child(ApplicationConstants.BRIDGE_CLI_EXECUTABLE_WINDOWS);
                 FilePath versionFile = installationDirectory.child(ApplicationConstants.VERSION_FILE);
 
-                return extensionsDir.isDirectory()
-                        && (bridgeBinaryFile.exists() || bridgeBinaryFileWindows.exists())
-                        && versionFile.exists();
+                return (bridgeBinaryFile.exists() || bridgeBinaryFileWindows.exists()) && versionFile.exists();
             }
         } catch (IOException | InterruptedException e) {
             logger.error(ApplicationConstants.EXCEPTION_WHILE_CHECKING_IF_THE_BRIDGE_IS_INSTALLED, e.getMessage());
@@ -91,7 +92,7 @@ public class BridgeDownloadManager {
             FilePath file = new FilePath(workspace.getChannel(), versionFilePath);
             if (file.exists()) {
                 String versionsFileContent = file.readToString();
-                Matcher matcher = Pattern.compile("Bridge CLI Package: (\\d+\\.\\d+\\.\\d+)")
+                Matcher matcher = Pattern.compile("bridge-cli-bundle: (\\d+\\.\\d+\\.\\d+)")
                         .matcher(versionsFileContent);
 
                 if (matcher.find()) {
@@ -109,7 +110,7 @@ public class BridgeDownloadManager {
     public String getLatestBridgeVersionFromArtifactory(String bridgeDownloadUrl) {
         if (Utility.isStringNullOrBlank(bridgeDownloadUrl)) return ApplicationConstants.NOT_AVAILABLE;
 
-        String extractedVersionNumber = extractVersionFromUrl(bridgeDownloadUrl);
+        String extractedVersionNumber = Utility.extractVersionFromUrl(bridgeDownloadUrl);
         if (extractedVersionNumber.equals(ApplicationConstants.NOT_AVAILABLE)) {
             String directoryUrl = getDirectoryUrl(bridgeDownloadUrl);
             if (isVersionFileAvailableInArtifactory(directoryUrl)) {
@@ -175,26 +176,11 @@ public class BridgeDownloadManager {
             }
 
             String directoryPath = path.substring(0, path.lastIndexOf('/'));
-            directoryUrl = uri.getScheme().concat("://").concat(uri.getHost()).concat(directoryPath);
+            directoryUrl =
+                    uri.getScheme().concat("://").concat(uri.getAuthority()).concat(directoryPath);
         } catch (URISyntaxException e) {
             logger.error(ApplicationConstants.EXCEPTION_WHILE_GETTING_DIRECTORY_URL_FROM_DOWNLOAD_URL, e.getMessage());
         }
         return directoryUrl;
-    }
-
-    public String extractVersionFromUrl(String url) {
-        String regex = "/(\\d+\\.\\d+\\.\\d+)/";
-        Pattern pattern = Pattern.compile(regex);
-        String version;
-
-        Matcher matcher = pattern.matcher(url);
-
-        if (matcher.find()) {
-            version = matcher.group(1);
-        } else {
-            version = ApplicationConstants.NOT_AVAILABLE;
-        }
-
-        return version;
     }
 }

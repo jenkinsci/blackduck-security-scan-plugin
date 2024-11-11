@@ -6,15 +6,15 @@ public class ApplicationConstants {
     public static final String DISPLAY_NAME_BLACKDUCK = "Black Duck Security Scan";
     public static final String PIPELINE_STEP_NAME = "security_scan";
     public static final String BRIDGE_ARTIFACTORY_URL =
-            "https://repo.blackduck.com/artifactory/bds-integrations-release/com/blackduck/integration/bridge-cli";
+            "https://artifactory.internal.synopsys.com/artifactory/clops-local/clops.sig.synopsys.com/bridge/binaries/bridge-cli-bundle";
     public static final String BRIDGE_CLI_LATEST_VERSION = "latest";
-    public static final String BRIDGE_ZIP_FILE_FORMAT = "bridge-cli.zip";
+    public static final String BRIDGE_ZIP_FILE_FORMAT = "bridge-cli-bundle.zip";
     public static final String PLATFORM_LINUX = "linux64";
     public static final String PLATFORM_WINDOWS = "win64";
     public static final String PLATFORM_MAC_ARM = "macos_arm";
     public static final String PLATFORM_MACOSX = "macosx";
     public static final String MAC_ARM_COMPATIBLE_BRIDGE_VERSION = "2.1.0";
-    public static final String DEFAULT_DIRECTORY_NAME = "bridge-cli";
+    public static final String DEFAULT_DIRECTORY_NAME = "bridge-cli-bundle";
     public static final String BRIDGE_REPORT_DIRECTORY = ".bridge";
     public static final String DEFAULT_BLACKDUCKSCA_SARIF_REPORT_FILE_PATH = ".bridge/Blackduck SCA SARIF Generator/";
     public static final String DEFAULT_POLARIS_SARIF_REPORT_FILE_PATH = ".bridge/Polaris SARIF Generator/";
@@ -24,9 +24,9 @@ public class ApplicationConstants {
     public static final String ALL_FILES_WILDCARD_SYMBOL = "**";
     public static final String BRIDGE_CLI_EXECUTABLE = "bridge-cli";
     public static final String BRIDGE_CLI_EXECUTABLE_WINDOWS = "bridge-cli.exe";
-    public static final String EXTENSIONS_DIRECTORY = "extensions";
     public static final String VERSION_FILE = "versions.txt";
     public static final String NOT_AVAILABLE = "NA";
+    public static final String BRIDGE_CACHE_DIR = "BRIDGE_CACHE_DIR";
 
     // Jenkins Environment Variables
     public static final String ENV_JOB_NAME_KEY = "JOB_NAME";
@@ -184,7 +184,7 @@ public class ApplicationConstants {
     public static final String PRCOMMENT_SET_TRUE_BUT_NO_SCM_TOKEN_FOUND =
             "PrComment is set true but no %s token found!";
     public static final String UNZIPPING_BRIDGE_CLI_ZIP_FILE =
-            "An exception occurred while unzipping Bridge CLI zip file: %s";
+            "An exception occurred while unzipping Bridge CLI Bundle zip file: %s";
     public static final String BRIDGE_DOWNLOAD_FAILED_AFTER_X_ATTEMPTS = "Bridge CLI download failed after %s attempts";
     public static final String ARCHIVING_REPORTS_IN_JENKINS_ARTIFACT =
             "An exception occurred while archiving %s in jenkins artifact: %s";
@@ -252,7 +252,7 @@ public class ApplicationConstants {
     public static final String BRIDGE_CLI_DOWNLOAD_FAILED_AND_ATTEMPT_TO_DOWNLOAD_AGAIN =
             "Bridge CLI download failed and attempt#%s to download again.";
     public static final String EXCEPTION_WHILE_DELETING_BRIDGE_CLI_ZIP_FILE =
-            "An exception occurred while deleting Bridge CLI zip file: %s";
+            "An exception occurred while deleting Bridge CLI Bundle zip file: %s";
     public static final String EMPTY_BRIDGE_CLI_URL = "Provided Bridge CLI URL cannot be empty";
     public static final String UNSUPPORTED_VALUE_FOR_MARK_BUILD_STATUS_AND_SUPPORTED_VALUES_FOR_BUILD_STATUS =
             "Unsupported value for %s: %s. Supported values are: %s";

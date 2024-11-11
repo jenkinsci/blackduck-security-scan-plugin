@@ -1,5 +1,6 @@
 package io.jenkins.plugins.security.scan.bridge;
 
+import hudson.EnvVars;
 import hudson.FilePath;
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
@@ -10,19 +11,74 @@ import jenkins.model.Jenkins;
 public class BridgeInstall {
     private final LoggerWrapper logger;
     private final FilePath workspace;
+    private final TaskListener listener;
+    private final EnvVars envVars;
 
-    public BridgeInstall(FilePath workspace, TaskListener listener) {
+    public BridgeInstall(FilePath workspace, TaskListener listener, EnvVars envVars) {
         this.workspace = workspace;
         this.logger = new LoggerWrapper(listener);
+        this.listener = listener;
+        this.envVars = envVars;
     }
 
-    public void installBridgeCLI(FilePath bridgeZipPath, FilePath bridgeInstallationPath)
+    public void installBridgeCLI(FilePath bridgeZipPath, BridgeDownloadParameters bridgeDownloadParameters)
             throws PluginExceptionHandler {
+
+        String bridgeInstallationPath = bridgeDownloadParameters.getBridgeInstallationPath();
+        int lastIndex = bridgeDownloadParameters.getBridgeInstallationPath().lastIndexOf('/');
+        String subFolderName = "";
+        if (lastIndex != -1) {
+            subFolderName = bridgeInstallationPath.substring(lastIndex + 1);
+            bridgeInstallationPath = bridgeInstallationPath.substring(0, lastIndex);
+        }
+        FilePath bridgeInstallationFilePath = new FilePath(workspace.getChannel(), bridgeInstallationPath);
+        String osType = subFolderName.substring(subFolderName.lastIndexOf("-") + 1);
+        String bridgeCLIDownloadVersion = bridgeDownloadParameters.getBridgeDownloadVersion();
+
         try {
-            if (bridgeZipPath != null && bridgeInstallationPath != null) {
+            if (bridgeZipPath != null && bridgeInstallationFilePath != null) {
+                FilePath targetFolder = new FilePath(bridgeInstallationFilePath, subFolderName);
+
+                if (targetFolder.exists()) {
+                    // Delete the last folder from targetFolder
+                    logger.info("Deleting previous Bridge CLI folder: %s", targetFolder.getRemote());
+                    targetFolder.deleteRecursive();
+                }
+
                 logger.info("Unzipping Bridge CLI zip file from: %s", bridgeZipPath.getRemote());
-                bridgeZipPath.unzip(bridgeInstallationPath);
-                logger.info("Bridge CLI installed successfully in: %s", bridgeInstallationPath.getRemote());
+                bridgeZipPath.unzip(bridgeInstallationFilePath);
+                logger.info("Bridge CLI installed successfully in: %s", bridgeInstallationFilePath.getRemote());
+
+                if (!bridgeCLIDownloadVersion.equals(ApplicationConstants.BRIDGE_CLI_LATEST_VERSION)) {
+                    // Define the expected unzipped folder name based on the download version
+                    String expectedFolderName =
+                            ApplicationConstants.DEFAULT_DIRECTORY_NAME + "-" + bridgeCLIDownloadVersion + "-" + osType;
+                    FilePath unzippedFolder = new FilePath(bridgeInstallationFilePath, expectedFolderName);
+
+                    if (unzippedFolder.exists()) {
+                        if (!targetFolder.exists()) {
+                            logger.info(
+                                    "Renaming folder %s to %s", unzippedFolder.getRemote(), targetFolder.getRemote());
+                            unzippedFolder.renameTo(targetFolder);
+                        }
+                    } else {
+                        logger.warn("Expected folder '%s' not found after unzipping.", expectedFolderName);
+                    }
+                } else {
+                    String installedBridgeVersionFilePath;
+                    if (osType.contains("win")) {
+                        installedBridgeVersionFilePath =
+                                String.join("\\", targetFolder.getRemote(), ApplicationConstants.VERSION_FILE);
+                    } else {
+                        installedBridgeVersionFilePath =
+                                String.join("/", targetFolder.getRemote(), ApplicationConstants.VERSION_FILE);
+                    }
+                    BridgeDownloadManager bridgeDownloadManager =
+                            new BridgeDownloadManager(workspace, listener, envVars);
+                    String installedBridgeVersion =
+                            bridgeDownloadManager.getBridgeVersionFromVersionFile(installedBridgeVersionFilePath);
+                    bridgeDownloadParameters.setBridgeDownloadVersion(installedBridgeVersion);
+                }
             }
         } catch (IOException | InterruptedException e) {
             logger.error(ApplicationConstants.UNZIPPING_BRIDGE_CLI_ZIP_FILE, e.getMessage());

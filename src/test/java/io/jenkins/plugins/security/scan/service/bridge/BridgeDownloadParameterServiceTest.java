@@ -2,6 +2,7 @@ package io.jenkins.plugins.security.scan.service.bridge;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import hudson.EnvVars;
 import hudson.FilePath;
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.bridge.BridgeDownloadParameters;
@@ -18,6 +19,7 @@ import org.mockito.Mockito;
 public class BridgeDownloadParameterServiceTest {
     private BridgeDownloadParametersService bridgeDownloadParametersService;
     private final TaskListener listenerMock = Mockito.mock(TaskListener.class);
+    private final EnvVars envVarsMock = Mockito.mock(EnvVars.class);
     private FilePath workspace;
 
     @BeforeEach
@@ -29,7 +31,8 @@ public class BridgeDownloadParameterServiceTest {
 
     @Test
     void performBridgeDownloadParameterValidationSuccessTest() throws PluginExceptionHandler {
-        BridgeDownloadParameters bridgeDownloadParameters = new BridgeDownloadParameters(workspace, listenerMock);
+        BridgeDownloadParameters bridgeDownloadParameters =
+                new BridgeDownloadParameters(workspace, listenerMock, envVarsMock);
         bridgeDownloadParameters.setBridgeDownloadUrl("https://fake.url.com");
         bridgeDownloadParameters.setBridgeDownloadVersion("1.2.3");
 
@@ -38,7 +41,8 @@ public class BridgeDownloadParameterServiceTest {
 
     @Test
     void performBridgeDownloadParameterValidationFailureTest() {
-        BridgeDownloadParameters bridgeDownloadParameters = new BridgeDownloadParameters(workspace, listenerMock);
+        BridgeDownloadParameters bridgeDownloadParameters =
+                new BridgeDownloadParameters(workspace, listenerMock, envVarsMock);
         bridgeDownloadParameters.setBridgeDownloadVersion("x.x.x");
 
         assertThrows(
@@ -98,7 +102,8 @@ public class BridgeDownloadParameterServiceTest {
         scanParams.put(ApplicationConstants.BRIDGECLI_INSTALL_DIRECTORY, "/path/to/bridge");
         scanParams.put(ApplicationConstants.BRIDGECLI_DOWNLOAD_URL, "https://fake.url.com");
 
-        BridgeDownloadParameters bridgeDownloadParameters = new BridgeDownloadParameters(workspace, listenerMock);
+        BridgeDownloadParameters bridgeDownloadParameters =
+                new BridgeDownloadParameters(workspace, listenerMock, envVarsMock);
 
         BridgeDownloadParameters result =
                 bridgeDownloadParametersService.getBridgeDownloadParams(scanParams, bridgeDownloadParameters);
@@ -114,7 +119,8 @@ public class BridgeDownloadParameterServiceTest {
         scanParams.put(ApplicationConstants.BRIDGECLI_INSTALL_DIRECTORY, "/path/to/bridge");
         scanParams.put(ApplicationConstants.NETWORK_AIRGAP_KEY, true);
 
-        BridgeDownloadParameters bridgeDownloadParameters = new BridgeDownloadParameters(workspace, listenerMock);
+        BridgeDownloadParameters bridgeDownloadParameters =
+                new BridgeDownloadParameters(workspace, listenerMock, envVarsMock);
 
         BridgeDownloadParameters result =
                 bridgeDownloadParametersService.getBridgeDownloadParams(scanParams, bridgeDownloadParameters);
@@ -129,7 +135,8 @@ public class BridgeDownloadParameterServiceTest {
         scanParams.put(ApplicationConstants.BRIDGECLI_INSTALL_DIRECTORY, "/path/to/bridge");
         scanParams.put(ApplicationConstants.NETWORK_AIRGAP_KEY, true);
 
-        BridgeDownloadParameters bridgeDownloadParameters = new BridgeDownloadParameters(workspace, listenerMock);
+        BridgeDownloadParameters bridgeDownloadParameters =
+                new BridgeDownloadParameters(workspace, listenerMock, envVarsMock);
 
         BridgeDownloadParameters result =
                 bridgeDownloadParametersService.getBridgeDownloadParams(scanParams, bridgeDownloadParameters);
@@ -145,7 +152,8 @@ public class BridgeDownloadParameterServiceTest {
         scanParams.put(ApplicationConstants.BRIDGECLI_INSTALL_DIRECTORY, "/path/to/bridge");
         scanParams.put(ApplicationConstants.BRIDGECLI_DOWNLOAD_URL, "https://bridge.fake.url.com/bridge-cli.zip");
 
-        BridgeDownloadParameters bridgeDownloadParameters = new BridgeDownloadParameters(workspace, listenerMock);
+        BridgeDownloadParameters bridgeDownloadParameters =
+                new BridgeDownloadParameters(workspace, listenerMock, envVarsMock);
 
         BridgeDownloadParameters result =
                 bridgeDownloadParametersService.getBridgeDownloadParams(scanParams, bridgeDownloadParameters);
@@ -158,7 +166,8 @@ public class BridgeDownloadParameterServiceTest {
     void getBridgeDownloadParamsNullTest() {
         Map<String, Object> scanParamsNull = new HashMap<>();
 
-        BridgeDownloadParameters bridgeDownloadParameters = new BridgeDownloadParameters(workspace, listenerMock);
+        BridgeDownloadParameters bridgeDownloadParameters =
+                new BridgeDownloadParameters(workspace, listenerMock, envVarsMock);
 
         BridgeDownloadParameters result =
                 bridgeDownloadParametersService.getBridgeDownloadParams(scanParamsNull, bridgeDownloadParameters);

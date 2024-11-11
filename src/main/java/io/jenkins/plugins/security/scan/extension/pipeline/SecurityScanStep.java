@@ -50,8 +50,8 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     private Boolean blackducksca_waitForScan;
     private Boolean blackducksca_waitForScan_actualValue;
     private String detect_install_directory;
-    private Boolean detect_scan_full;
-    private Boolean detectIntelligentScan;
+    private Boolean blackducksca_scan_full;
+    private Boolean blackduckscaIntelligentScan;
     private String detect_download_url;
     private Integer detect_search_depth;
     private String detect_config_path;
@@ -187,12 +187,12 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
         return detect_install_directory;
     }
 
-    public Boolean isDetect_scan_full() {
-        return detect_scan_full;
+    public Boolean isBlackducksca_scan_full() {
+        return blackducksca_scan_full;
     }
 
-    public Boolean isDetectIntelligentScan() {
-        return detectIntelligentScan;
+    public Boolean isBlackduckscaIntelligentScan() {
+        return blackduckscaIntelligentScan;
     }
 
     public String getBlackducksca_scan_failure_severities() {
@@ -688,14 +688,14 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     }
 
     @DataBoundSetter
-    public void setDetect_scan_full(Boolean detect_scan_full) {
-        if (detect_scan_full) {
-            this.detectIntelligentScan = true;
+    public void setBlackducksca_scan_full(Boolean blackducksca_scan_full) {
+        if (blackducksca_scan_full) {
+            this.blackduckscaIntelligentScan = true;
         }
-        if (!detect_scan_full) {
-            this.detectIntelligentScan = false;
+        if (!blackducksca_scan_full) {
+            this.blackduckscaIntelligentScan = false;
         }
-        this.detect_scan_full = detect_scan_full ? true : null;
+        this.blackducksca_scan_full = blackducksca_scan_full ? true : null;
     }
 
     @DataBoundSetter
