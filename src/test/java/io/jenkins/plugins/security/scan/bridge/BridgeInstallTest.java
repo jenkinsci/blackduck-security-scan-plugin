@@ -60,7 +60,7 @@ public class BridgeInstallTest {
             assertTrue(bridgeInstallationPath.child("demo-bridge-versions.txt").exists());
             assertTrue(bridgeInstallationPath.child("demo-bridge-LICENSE.txt").exists());
 
-            // cleanupBridgeInstallationPath(bridgeInstallationPath);
+            cleanupBridgeInstallationPath(bridgeInstallationPath);
         } catch (IOException | InterruptedException | PluginExceptionHandler e) {
             System.out.println("Exception occurred during testing for installBridgeCLI method. " + e.getMessage());
         }
