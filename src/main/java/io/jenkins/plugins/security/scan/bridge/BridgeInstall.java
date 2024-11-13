@@ -5,7 +5,6 @@ import hudson.FilePath;
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.global.*;
-import java.io.File;
 import java.io.IOException;
 import jenkins.model.Jenkins;
 
@@ -26,7 +25,8 @@ public class BridgeInstall {
             throws PluginExceptionHandler {
 
         String bridgeInstallationPath = bridgeDownloadParameters.getBridgeInstallationPath();
-        int lastIndex = bridgeDownloadParameters.getBridgeInstallationPath().lastIndexOf(File.separator);
+        String separator = Utility.getDirectorySeparator(workspace, listener);
+        int lastIndex = bridgeDownloadParameters.getBridgeInstallationPath().lastIndexOf(separator);
         String subFolderName = "";
         if (lastIndex != -1) {
             subFolderName = bridgeInstallationPath.substring(lastIndex + 1);

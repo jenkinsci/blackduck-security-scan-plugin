@@ -7,7 +7,6 @@ import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.global.Utility;
-import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -37,7 +36,8 @@ public class BridgeDownloadManager {
 
         String bridgeDownloadUrl = bridgeDownloadParams.getBridgeDownloadUrl();
         String bridgeInstallationPath = bridgeDownloadParams.getBridgeInstallationPath();
-        int lastIndex = bridgeInstallationPath.lastIndexOf(File.separator);
+        String separator = Utility.getDirectorySeparator(workspace, listener);
+        int lastIndex = bridgeInstallationPath.lastIndexOf(separator);
         if (lastIndex != -1) {
             bridgeInstallationPath = bridgeInstallationPath.substring(0, lastIndex);
         }
