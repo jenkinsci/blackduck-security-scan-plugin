@@ -50,7 +50,7 @@ public class BridgeInstallTest {
             BridgeDownloadParameters bridgeDownloadParameters =
                     new BridgeDownloadParameters(workspace, listenerMock, envVarsMock);
             bridgeDownloadParameters.setBridgeInstallationPath(
-                    bridgeInstallationPath.getRemote() + "/demo-bridge-bundle-linux64");
+                    bridgeInstallationPath.getRemote() + File.separator + "demo-bridge-bundle-linux64");
             bridgeDownloadParameters.setBridgeDownloadVersion("2.9.9");
             sourceBridge.copyTo(destinationBridge);
             bridgeInstall.installBridgeCLI(getFullZipPath(), bridgeDownloadParameters);
@@ -60,7 +60,7 @@ public class BridgeInstallTest {
             assertTrue(bridgeInstallationPath.child("demo-bridge-versions.txt").exists());
             assertTrue(bridgeInstallationPath.child("demo-bridge-LICENSE.txt").exists());
 
-            cleanupBridgeInstallationPath(bridgeInstallationPath);
+            // cleanupBridgeInstallationPath(bridgeInstallationPath);
         } catch (IOException | InterruptedException | PluginExceptionHandler e) {
             System.out.println("Exception occurred during testing for installBridgeCLI method. " + e.getMessage());
         }
