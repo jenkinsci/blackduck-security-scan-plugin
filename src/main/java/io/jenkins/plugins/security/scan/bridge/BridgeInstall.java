@@ -25,7 +25,8 @@ public class BridgeInstall {
             throws PluginExceptionHandler {
 
         String bridgeInstallationPath = bridgeDownloadParameters.getBridgeInstallationPath();
-        int lastIndex = bridgeDownloadParameters.getBridgeInstallationPath().lastIndexOf('/');
+        String separator = Utility.getDirectorySeparator(workspace, listener);
+        int lastIndex = bridgeDownloadParameters.getBridgeInstallationPath().lastIndexOf(separator);
         String subFolderName = "";
         if (lastIndex != -1) {
             subFolderName = bridgeInstallationPath.substring(lastIndex + 1);

@@ -36,7 +36,8 @@ public class BridgeDownloadManager {
 
         String bridgeDownloadUrl = bridgeDownloadParams.getBridgeDownloadUrl();
         String bridgeInstallationPath = bridgeDownloadParams.getBridgeInstallationPath();
-        int lastIndex = bridgeInstallationPath.lastIndexOf('/');
+        String separator = Utility.getDirectorySeparator(workspace, listener);
+        int lastIndex = bridgeInstallationPath.lastIndexOf(separator);
         if (lastIndex != -1) {
             bridgeInstallationPath = bridgeInstallationPath.substring(0, lastIndex);
         }

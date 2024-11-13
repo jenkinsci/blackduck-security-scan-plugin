@@ -50,7 +50,7 @@ public class BridgeInstallTest {
             BridgeDownloadParameters bridgeDownloadParameters =
                     new BridgeDownloadParameters(workspace, listenerMock, envVarsMock);
             bridgeDownloadParameters.setBridgeInstallationPath(
-                    bridgeInstallationPath.getRemote() + "/demo-bridge-bundle-linux64");
+                    bridgeInstallationPath.getRemote() + File.separator + "demo-bridge-bundle-linux64");
             bridgeDownloadParameters.setBridgeDownloadVersion("2.9.9");
             sourceBridge.copyTo(destinationBridge);
             bridgeInstall.installBridgeCLI(getFullZipPath(), bridgeDownloadParameters);
