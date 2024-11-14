@@ -5,7 +5,8 @@ import java.util.List;
 public class ApplicationConstants {
     public static final String DISPLAY_NAME_BLACKDUCK = "Black Duck Security Scan";
     public static final String PIPELINE_STEP_NAME = "security_scan";
-    public static final String BRIDGE_ARTIFACTORY_URL = "http://localhost:8000/bridge-cli-bundle";
+    public static final String BRIDGE_ARTIFACTORY_URL =
+            "https://artifactory.internal.synopsys.com/artifactory/clops-local/clops.sig.synopsys.com/bridge/binaries/bridge-cli-bundle";
     public static final String BRIDGE_CLI_LATEST_VERSION = "latest";
     public static final String BRIDGE_ZIP_FILE_FORMAT = "bridge-cli-bundle.zip";
     public static final String PLATFORM_LINUX = "linux64";
