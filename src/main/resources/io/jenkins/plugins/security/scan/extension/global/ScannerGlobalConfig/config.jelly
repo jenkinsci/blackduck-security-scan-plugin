@@ -85,10 +85,10 @@
             <f:entry field="srmCredentialsId" title="SRM API Key">
                 <c:select/>
             </f:entry>
-            <f:entry field="srmSCAInstallationPath" title="Detect Install Directory(Optional)">
+            <f:entry field="srmSCAInstallationPath" title="Detect Execution Path(Optional)">
                 <f:textbox name="srmSCAInstallationPath" />
             </f:entry>
-            <f:entry field="srmSASTInstallationPath" title="Coverity Install Directory(Optional)">
+            <f:entry field="srmSASTInstallationPath" title="Coverity Execution Path(Optional)">
                 <f:textbox name="srmSASTInstallationPath" />
             </f:entry>
             <div class="button-container">
