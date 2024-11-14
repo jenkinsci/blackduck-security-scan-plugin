@@ -945,7 +945,7 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
 
     @DataBoundSetter
     public void setBlackducksca_project_directory(String blackducksca_project_directory) {
-        if (getProduct().contentEquals(SecurityProduct.BLACKDUCK.name().toLowerCase()))
+        if (getProduct().contentEquals(SecurityProduct.BLACKDUCKSCA.name().toLowerCase()))
             this.blackducksca_project_directory =
                     this.project_directory = Util.fixEmptyAndTrim(blackducksca_project_directory);
     }
