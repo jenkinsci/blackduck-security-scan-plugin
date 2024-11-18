@@ -241,11 +241,11 @@
                 <f:textbox/>
                 <div id="error_srm_assessment_types" style="display: block;" class="error error-margin">SRM Assessment Types are missing</div>
             </f:entry>
-            <f:entry field="srm_project_name" title="SRM Project (Mandatory)">
+            <f:entry field="srm_project_name" title="SRM Project Name (Mandatory)">
                 <f:textbox/>
                 <div id="error_srm_project_name" style="display: block;" class="error error-margin">SRM Project Name is missing</div>
             </f:entry>
-            <f:entry field="srm_project_id" title="Project ID (Mandatory)">
+            <f:entry field="srm_project_id" title="SRM Project ID (Mandatory)">
                 <f:textbox/>
                 <div id="error_srm_project_id" style="display: block;" class="error error-margin">SRM Project ID is missing</div>
             </f:entry>

@@ -128,7 +128,7 @@
         </f:section>
 
         <f:advanced title="Scan Options">
-            <f:entry field="polaris_application_name" title="Application Name (Optional)">
+            <f:entry field="polaris_application_name" title="Polaris Application (Optional)">
                 <f:textbox/>
             </f:entry>
             <f:entry field="polaris_project_name" title="Polaris Project (Optional)">
@@ -184,13 +184,13 @@
                     <f:entry field="polaris_reports_sarif_groupSCAIssues" title="Group SCA Issues by Component (Optional)">
                         <f:checkbox/>
                     </f:entry>
-                    <f:entry field="polaris_reports_sarif_file_path" title="Polaris SARIF Report File Path (Optional)">
+                    <f:entry field="polaris_reports_sarif_file_path" title="SARIF Report File Path (Optional)">
                         <f:textbox/>
                     </f:entry>
-                    <f:entry field="polaris_reports_sarif_issue_types" title="Polaris SARIF Report Issue Types (Optional)">
+                    <f:entry field="polaris_reports_sarif_issue_types" title="SARIF Report Issue Types (Optional)">
                         <f:textbox/>
                     </f:entry>
-                    <f:entry field="polaris_reports_sarif_severities" title="Polaris SARIF Report Severities (Optional)">
+                    <f:entry field="polaris_reports_sarif_severities" title="SARIF Report Severities (Optional)">
                         <f:textbox/>
                     </f:entry>
                 </div>
@@ -218,16 +218,16 @@
         </f:section>
 
         <f:advanced title="Scan Options">
-            <f:entry field="srm_project_name" title="Project Name">
+            <f:entry field="srm_project_name" title="SRM Project Name">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="srm_project_id" title="Project ID (Optional)">
+            <f:entry field="srm_project_id" title="SRM Project ID (Optional)">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="srm_branch_name" title="Branch Name (Optional)">
+            <f:entry field="srm_branch_name" title="SRM Branch (Optional)">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="srm_branch_parent" title="Parent Branch Name (Optional)">
+            <f:entry field="srm_branch_parent" title="SRM Parent Branch (Optional)">
                 <f:textbox/>
             </f:entry>
         </f:advanced>

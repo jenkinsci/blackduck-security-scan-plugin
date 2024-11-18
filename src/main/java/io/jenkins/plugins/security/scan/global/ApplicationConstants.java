@@ -310,7 +310,7 @@ public class ApplicationConstants {
             "Polaris PR Comment is ignored for non pull request scan";
 
     public static final String BLACKDUCK_SECURITY_SCAN_PLUGIN_DOCS_URL =
-            "https://sig-product-docs.synopsys.com/bundle/bridge/page/documentation/c_using-synopsys-jenkins-plugin.html";
+            "https://documentation.blackduck.com/bundle/bridge/page/documentation/c_using-jenkins-plugin.html";
 
     public static final List<String> ARBITRARY_PARAM_KEYS = List.of(
             DETECT_SEARCH_DEPTH_KEY,
