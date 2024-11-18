@@ -6,10 +6,7 @@ import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.global.Utility;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
-import io.jenkins.plugins.security.scan.input.blackducksca.Automation;
-import io.jenkins.plugins.security.scan.input.blackducksca.BlackDuckSCA;
-import io.jenkins.plugins.security.scan.input.blackducksca.Failure;
-import io.jenkins.plugins.security.scan.input.blackducksca.Scan;
+import io.jenkins.plugins.security.scan.input.blackducksca.*;
 import io.jenkins.plugins.security.scan.input.project.Project;
 import io.jenkins.plugins.security.scan.input.report.File;
 import io.jenkins.plugins.security.scan.input.report.Reports;
@@ -90,12 +87,14 @@ public class BlackDuckSCAParametersService {
     public BlackDuckSCA prepareBlackDuckSCAObjectForBridge(Map<String, Object> blackDuckSCAParameters) {
         BlackDuckSCA blackDuckSCA = new BlackDuckSCA();
         Automation automation = new Automation();
+        FixPr fixPr = new FixPr();
 
         setUrl(blackDuckSCAParameters, blackDuckSCA);
         setToken(blackDuckSCAParameters, blackDuckSCA);
         setScanFull(blackDuckSCAParameters, blackDuckSCA);
         setScanFailureSeverities(blackDuckSCAParameters, blackDuckSCA);
         setAutomationPrComment(blackDuckSCAParameters, automation, blackDuckSCA);
+        setFixPr(blackDuckSCAParameters, fixPr, blackDuckSCA);
         setSarif(blackDuckSCAParameters, blackDuckSCA);
         setWaitForScan(blackDuckSCAParameters, blackDuckSCA);
 
@@ -158,6 +157,24 @@ public class BlackDuckSCAParametersService {
                     blackDuckSCA.setAutomation(automation);
                 } else {
                     logger.info(ApplicationConstants.BLACKDUCK_PRCOMMENT_INFO_FOR_NON_PR_SCANS);
+                }
+            }
+        }
+    }
+
+    private void setFixPr(Map<String, Object> blackDuckSCAParameters, FixPr fixPr, BlackDuckSCA blackDuckSCA) {
+        if (blackDuckSCAParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_FIXPR_ENABLED_KEY)) {
+            String value = blackDuckSCAParameters
+                    .get(ApplicationConstants.BLACKDUCKSCA_FIXPR_ENABLED_KEY)
+                    .toString()
+                    .trim();
+            if (value.equals("true")) {
+                boolean isPullRequestEvent = Utility.isPullRequestEvent(envVars);
+                if (isPullRequestEvent) {
+                    logger.info(ApplicationConstants.BLACKDUCK_FIXPR_INFO_FOR_NON_PR_SCANS);
+                } else {
+                    fixPr.setEnabled(true);
+                    blackDuckSCA.setFixPr(fixPr);
                 }
             }
         }

@@ -42,6 +42,14 @@
             </f:advanced>
         </div>
 
+        <div id="blackducksca_fixPr_sec">
+            <f:advanced title="Fix Pull Request Options">
+                <f:entry field="blackducksca_fixpr_enabled" title="Create Fix Pull Requests (Optional)">
+                    <f:checkbox/>
+                </f:entry>
+            </f:advanced>
+        </div>
+
         <div id="blackducksca_sarif_report_sec">
             <f:advanced title="SARIF Report Options">
                 <f:entry field="blackducksca_reports_sarif_create" title="Generate SARIF Report(Optional)">

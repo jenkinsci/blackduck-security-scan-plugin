@@ -32,7 +32,8 @@ import org.jenkinsci.plugins.workflow.steps.*;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 
-public class SecurityScanStep extends Step implements SecurityScan, PrCommentScan, ReturnStatusScan, Serializable {
+public class SecurityScanStep extends Step
+        implements SecurityScan, PrCommentScan, FixPrScan, ReturnStatusScan, Serializable {
     private static final long serialVersionUID = 6294070801130995534L;
 
     private String product;
@@ -42,6 +43,8 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     private String blackducksca_scan_failure_severities;
     private Boolean blackducksca_prComment_enabled;
     private Boolean blackducksca_prComment_enabled_actualValue;
+    private Boolean blackducksca_fixpr_enabled;
+    private Boolean blackducksca_fixpr_enabled_actualValue;
     private Boolean blackducksca_reports_sarif_create;
     private String blackducksca_reports_sarif_file_path;
     private Boolean blackducksca_reports_sarif_groupSCAIssues;
@@ -205,6 +208,14 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
 
     public Boolean isBlackducksca_prComment_enabled_actualValue() {
         return blackducksca_prComment_enabled_actualValue;
+    }
+
+    public Boolean isBlackducksca_fixpr_enabled() {
+        return blackducksca_fixpr_enabled;
+    }
+
+    public Boolean isBlackducksca_fixpr_enabled_actualValue() {
+        return blackducksca_fixpr_enabled_actualValue;
     }
 
     public String getDetect_download_url() {
@@ -707,6 +718,12 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     public void setBlackducksca_prComment_enabled(Boolean blackducksca_prComment_enabled) {
         this.blackducksca_prComment_enabled = blackducksca_prComment_enabled ? true : null;
         this.blackducksca_prComment_enabled_actualValue = blackducksca_prComment_enabled ? true : false;
+    }
+
+    @DataBoundSetter
+    public void setBlackducksca_fixpr_enabled(Boolean blackducksca_fixpr_enabled) {
+        this.blackducksca_fixpr_enabled = blackducksca_fixpr_enabled ? true : null;
+        this.blackducksca_fixpr_enabled_actualValue = blackducksca_fixpr_enabled ? true : false;
     }
 
     @DataBoundSetter

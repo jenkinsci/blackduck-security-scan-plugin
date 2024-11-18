@@ -178,14 +178,18 @@ function handlePostMergeWorkflowSectionsVisibility() {
     if (selectedOption === 'blackducksca') {
         var blackduckSCASarif_section = document.getElementById('blackducksca_sarif_report_sec');
         var blackduckSCAPRComment_section = document.getElementById('blackducksca_pr_comment_sec');
+        var blackduckSCAFixPr_section = document.getElementById('blackducksca_fixPr_sec');
         if (blackduckscaWaitForScanEnabled == false) {
             hideParticularDiv(blackduckSCASarif_section);
             hideParticularDiv(blackduckSCAPRComment_section);
+            hideParticularDiv(blackduckSCAFixPr_section);
             clearInputFields(blackduckSCASarif_section);
             clearInputFields(blackduckSCAPRComment_section);
+            clearInputFields(blackduckSCAFixPr_section);
         } else if (blackduckscaWaitForScanEnabled == true) {
             showParticularDiv(blackduckSCASarif_section);
             showParticularDiv(blackduckSCAPRComment_section);
+            showParticularDiv(blackduckSCAFixPr_section);
         }
     } else if (selectedOption === 'polaris') {
         var polarisSarif_section = document.getElementById('polaris_sarif_report_sec');
