@@ -87,14 +87,13 @@ public class BlackDuckSCAParametersService {
     public BlackDuckSCA prepareBlackDuckSCAObjectForBridge(Map<String, Object> blackDuckSCAParameters) {
         BlackDuckSCA blackDuckSCA = new BlackDuckSCA();
         Automation automation = new Automation();
-        FixPr fixPr = new FixPr();
 
         setUrl(blackDuckSCAParameters, blackDuckSCA);
         setToken(blackDuckSCAParameters, blackDuckSCA);
         setScanFull(blackDuckSCAParameters, blackDuckSCA);
         setScanFailureSeverities(blackDuckSCAParameters, blackDuckSCA);
         setAutomationPrComment(blackDuckSCAParameters, automation, blackDuckSCA);
-        setFixPr(blackDuckSCAParameters, fixPr, blackDuckSCA);
+        setFixPr(blackDuckSCAParameters, blackDuckSCA);
         setSarif(blackDuckSCAParameters, blackDuckSCA);
         setWaitForScan(blackDuckSCAParameters, blackDuckSCA);
 
@@ -162,7 +161,7 @@ public class BlackDuckSCAParametersService {
         }
     }
 
-    private void setFixPr(Map<String, Object> blackDuckSCAParameters, FixPr fixPr, BlackDuckSCA blackDuckSCA) {
+    private void setFixPr(Map<String, Object> blackDuckSCAParameters, BlackDuckSCA blackDuckSCA) {
         if (blackDuckSCAParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_FIXPR_ENABLED_KEY)) {
             String value = blackDuckSCAParameters
                     .get(ApplicationConstants.BLACKDUCKSCA_FIXPR_ENABLED_KEY)
@@ -173,7 +172,7 @@ public class BlackDuckSCAParametersService {
                 if (isPullRequestEvent) {
                     logger.info(ApplicationConstants.BLACKDUCK_FIXPR_INFO_FOR_NON_PR_SCANS);
                 } else {
-                    fixPr.setEnabled(true);
+                    FixPr fixPr = prepareFixPrObject(blackDuckSCAParameters);
                     blackDuckSCA.setFixPr(fixPr);
                 }
             }
@@ -272,5 +271,45 @@ public class BlackDuckSCAParametersService {
             sarif.setGroupSCAIssues(reports_sarif_groupSCAIssues);
         }
         return sarif;
+    }
+
+    public FixPr prepareFixPrObject(Map<String, Object> fixPrParameters) {
+        FixPr fixPr = new FixPr();
+        fixPr.setEnabled(true);
+
+        if (fixPrParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_FIXPR_MAXCOUNT_KEY)) {
+            Integer blackducksca_fixpr_maxCount =
+                    (Integer) fixPrParameters.get(ApplicationConstants.BLACKDUCKSCA_FIXPR_MAXCOUNT_KEY);
+            fixPr.setMaxCount(blackducksca_fixpr_maxCount);
+        }
+
+        if (fixPrParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_FIXPR_FILTER_SEVERITIES_KEY)) {
+            String fixPR_filter_severities =
+                    (String) fixPrParameters.get(ApplicationConstants.BLACKDUCKSCA_FIXPR_FILTER_SEVERITIES_KEY);
+            String[] fixPR_filter_severitiesInput =
+                    fixPR_filter_severities.toUpperCase().split(",");
+            List<String> severities = Arrays.stream(fixPR_filter_severitiesInput)
+                    .map(String::trim)
+                    .collect(Collectors.toList());
+            if (!severities.isEmpty()) {
+                Filter filter = new Filter();
+                filter.setSeverities(severities);
+                fixPr.setFilter(filter);
+            }
+        }
+
+        if (fixPrParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_FIXPR_USEUPGRADEGUIDANCE_KEY)) {
+            String fixPR_UseUpgradeGuidance =
+                    (String) fixPrParameters.get(ApplicationConstants.BLACKDUCKSCA_FIXPR_USEUPGRADEGUIDANCE_KEY);
+            String[] fixPR_UseUpgradeGuidanceInput =
+                    fixPR_UseUpgradeGuidance.toUpperCase().split(",");
+            List<String> guidance = Arrays.stream(fixPR_UseUpgradeGuidanceInput)
+                    .map(String::trim)
+                    .collect(Collectors.toList());
+            if (!guidance.isEmpty()) {
+                fixPr.setUseUpgradeGuidance(guidance);
+            }
+        }
+        return fixPr;
     }
 }

@@ -1,6 +1,7 @@
 /* Style for the nested div to be indented */
 #polaris_sarif_params,
 #blackducksca_sarif_params,
+#blackducksca_fixPr_params,
 #source_upload {
     margin-left: 10px;
     border-left: 2.23px solid #C3CCD1;
@@ -13,6 +14,7 @@
 
 /* Style for entries within the nested div */
 #polaris_sarif_params .f\:entry,
-#blackducksca_sarif_params .f\:entry {
+#blackducksca_sarif_params .f\:entry,
+#blackducksca_fixPr_params .f\:entry {
     margin-bottom: 10px;
 }

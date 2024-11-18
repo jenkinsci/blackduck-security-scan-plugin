@@ -95,6 +95,9 @@ public class ApplicationConstants {
     public static final String BLACKDUCKSCA_SCAN_FAILURE_SEVERITIES_KEY = "blackducksca_scan_failure_severities";
     public static final String BLACKDUCKSCA_PRCOMMENT_ENABLED_KEY = "blackducksca_prComment_enabled";
     public static final String BLACKDUCKSCA_FIXPR_ENABLED_KEY = "blackducksca_fixpr_enabled";
+    public static final String BLACKDUCKSCA_FIXPR_FILTER_SEVERITIES_KEY = "blackducksca_fixpr_filter_severities";
+    public static final String BLACKDUCKSCA_FIXPR_USEUPGRADEGUIDANCE_KEY = "blackducksca_fixpr_useUpgradeGuidance";
+    public static final String BLACKDUCKSCA_FIXPR_MAXCOUNT_KEY = "blackducksca_fixpr_maxcount";
     public static final String BLACKDUCKSCA_REPORTS_SARIF_CREATE_KEY = "blackducksca_reports_sarif_create";
     public static final String BLACKDUCKSCA_REPORTS_SARIF_FILE_PATH_KEY = "blackducksca_reports_sarif_file_path";
     public static final String BLACKDUCKSCA_REPORTS_SARIF_GROUPSCAISSUES_KEY =

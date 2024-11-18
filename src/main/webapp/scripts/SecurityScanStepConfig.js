@@ -120,6 +120,7 @@ document.addEventListener('change', function(event) {
 
     toggleSarifParamsDivs(event);
     togglePrCommentDivs();
+    toggleFixPrParamsDivs();
     handlePostMergeWorkflowSectionsVisibility();
 });
 
@@ -151,7 +152,6 @@ function toggleSarifParamsDivs(event) {
             setCheckboxToDefaultTrue(['_.polaris_reports_sarif_groupSCAIssues']);
         }
     }
-
 }
 
 function togglePrCommentDivs() {
@@ -166,7 +166,20 @@ function togglePrCommentDivs() {
             clearInputFields(polarisPrCommentSection);
         }
     }
+}
 
+function toggleFixPrParamsDivs() {
+    var selectedOption = securityProduct.value;
+    if (selectedOption == "blackducksca") {
+        var blackduckFixPrCheckbox = document.querySelector('input[name="_.blackducksca_fixpr_enabled"]')
+        var blackduckFixPrParamSection = document.getElementById('blackducksca_fixPr_params')
+        if (blackduckFixPrCheckbox.checked) {
+            blackduckFixPrParamSection.style.display = 'block';
+        } else {
+            blackduckFixPrParamSection.style.display = 'none';
+            clearInputFields(blackduckFixPrParamSection);
+        }
+    }
 }
 
 function handlePostMergeWorkflowSectionsVisibility() {

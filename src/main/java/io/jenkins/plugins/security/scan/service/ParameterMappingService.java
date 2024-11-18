@@ -285,6 +285,21 @@ public class ParameterMappingService {
                     blackDuckParameters,
                     ApplicationConstants.BLACKDUCKSCA_FIXPR_ENABLED_KEY,
                     fixPrScan.isBlackducksca_fixpr_enabled_actualValue());
+
+            addParameterIfNotBlank(
+                    blackDuckParameters,
+                    ApplicationConstants.BLACKDUCKSCA_FIXPR_MAXCOUNT_KEY,
+                    fixPrScan.getBlackducksca_fixpr_maxCount());
+
+            addParameterIfNotBlank(
+                    blackDuckParameters,
+                    ApplicationConstants.BLACKDUCKSCA_FIXPR_FILTER_SEVERITIES_KEY,
+                    fixPrScan.getBlackducksca_fixpr_filter_severities());
+
+            addParameterIfNotBlank(
+                    blackDuckParameters,
+                    ApplicationConstants.BLACKDUCKSCA_FIXPR_USEUPGRADEGUIDANCE_KEY,
+                    fixPrScan.getBlackducksca_fixpr_useUpgradeGuidance());
         }
 
         addDeprecatedParameterIfNotBlank(
