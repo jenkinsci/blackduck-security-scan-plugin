@@ -201,6 +201,9 @@ public class BridgeDownloadParametersService {
     }
 
     public boolean isVersionCompatibleForMacARM(String version) {
+        if (version.equals(ApplicationConstants.BRIDGE_CLI_LATEST_VERSION)) {
+            return true;
+        }
         String[] inputVersionSplits = version.split("\\.");
         String[] minCompatibleArmVersionSplits = ApplicationConstants.MAC_ARM_COMPATIBLE_BRIDGE_VERSION.split("\\.");
         if (inputVersionSplits.length != 3 && minCompatibleArmVersionSplits.length != 3) {
