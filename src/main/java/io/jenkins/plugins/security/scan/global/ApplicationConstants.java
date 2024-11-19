@@ -26,7 +26,6 @@ public class ApplicationConstants {
     public static final String BRIDGE_CLI_EXECUTABLE_WINDOWS = "bridge-cli.exe";
     public static final String VERSION_FILE = "versions.txt";
     public static final String NOT_AVAILABLE = "NA";
-    public static final String BRIDGE_CACHE_DIR = "BRIDGE_CACHE_DIR";
 
     // Jenkins Environment Variables
     public static final String ENV_JOB_NAME_KEY = "JOB_NAME";
