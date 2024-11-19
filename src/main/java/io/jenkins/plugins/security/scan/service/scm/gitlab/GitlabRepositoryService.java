@@ -44,11 +44,9 @@ public class GitlabRepositoryService {
         gitlab.getRepository().setName(repositoryName);
         gitlab.getRepository().getBranch().setName(branchName);
 
-        if (projectRepositoryPullNumber != null) {
-            Pull pull = new Pull();
-            pull.setNumber(projectRepositoryPullNumber);
-            gitlab.getRepository().setPull(pull);
-        }
+        Pull pull = new Pull();
+        pull.setNumber(projectRepositoryPullNumber);
+        gitlab.getRepository().setPull(pull);
 
         String gitlabHostUrl = extractGitlabHost(repositoryUrl);
 

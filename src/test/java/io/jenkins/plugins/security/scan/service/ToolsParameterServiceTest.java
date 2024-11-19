@@ -162,6 +162,44 @@ public class ToolsParameterServiceTest {
     }
 
     @Test
+    void bitbucket_blackDuckInputJson_withFixPrTest() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Mockito.doReturn(null).when(envVarsMock).get(ApplicationConstants.ENV_CHANGE_ID_KEY);
+        BlackDuckSCA blackDuckSCA = new BlackDuckSCA();
+        blackDuckSCA.setUrl("https://fake.blackduck.url");
+        blackDuckSCA.setToken(TOKEN);
+        Map<String, Object> scanParameters = new HashMap<>();
+        scanParameters.put(ApplicationConstants.BLACKDUCKSCA_FIXPR_ENABLED_KEY, true);
+
+        Bitbucket bitbucketObject = BitbucketRepositoryService.createBitbucketObject(
+                "https://bitbucket.org", TOKEN, null, "test", "abc", "fake-user");
+
+        try {
+            String jsonStringNonPrCommentOrFixPr =
+                    "{\"data\":{\"blackducksca\":{\"url\":\"https://fake.blackduck.url\",\"token\":\"MDJDSROSVC56FAKEKEY\"},\"bitbucket\":{\"api\":{\"user\":{\"name\":\"fake-user\"},\"token\":\"MDJDSROSVC56FAKEKEY\"},\"project\":{\"repository\":{\"pull\":{},\"name\":\"test\"},\"key\":\"abc\"}}}}";
+
+            String inputJsonPathForFixPr = toolsParameterService.prepareBridgeInputJson(
+                    scanParameters,
+                    blackDuckSCA,
+                    bitbucketObject,
+                    ApplicationConstants.BLACKDUCKSCA_INPUT_JSON_PREFIX,
+                    null);
+            Path filePath = Paths.get(inputJsonPathForFixPr);
+
+            String actualJsonString = new String(Files.readAllBytes(filePath));
+
+            JsonNode expectedJsonNode = objectMapper.readTree(jsonStringNonPrCommentOrFixPr);
+            JsonNode actualJsonNode = objectMapper.readTree(actualJsonString);
+
+            assertEquals(expectedJsonNode, actualJsonNode);
+            Utility.removeFile(filePath.toString(), workspace, listenerMock);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     void createPolarisInputJsonTest() {
         Polaris polaris = new Polaris();
         polaris.setServerUrl("https://fake.polaris.url");

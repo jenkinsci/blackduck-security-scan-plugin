@@ -86,17 +86,15 @@ public class BitbucketRepositoryService {
         Repository repository = new Repository();
         repository.setName(repositoryName);
 
-        if (projectRepositoryPullNumber != null) {
-            Pull pull = new Pull();
-            User user = new User();
+        Pull pull = new Pull();
+        User user = new User();
 
-            pull.setNumber(projectRepositoryPullNumber);
-            repository.setPull(pull);
+        pull.setNumber(projectRepositoryPullNumber);
+        repository.setPull(pull);
 
-            if (!Utility.isStringNullOrBlank(bitbucketUsername) && isBitbucketCloud) {
-                user.setName(bitbucketUsername);
-                bitbucket.getApi().setUser(user);
-            }
+        if (!Utility.isStringNullOrBlank(bitbucketUsername) && isBitbucketCloud) {
+            user.setName(bitbucketUsername);
+            bitbucket.getApi().setUser(user);
         }
 
         bitbucket.getProject().setKey(projectKey);

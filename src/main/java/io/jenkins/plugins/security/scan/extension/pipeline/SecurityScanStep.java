@@ -743,12 +743,12 @@ public class SecurityScanStep extends Step
 
     @DataBoundSetter
     public void setBlackducksca_fixpr_filter_severities(String blackducksca_fixpr_filter_severities) {
-        this.blackducksca_fixpr_filter_severities = blackducksca_fixpr_filter_severities;
+        this.blackducksca_fixpr_filter_severities = Util.fixEmptyAndTrim(blackducksca_fixpr_filter_severities);
     }
 
     @DataBoundSetter
     public void setBlackducksca_fixpr_useUpgradeGuidance(String blackducksca_fixpr_useUpgradeGuidance) {
-        this.blackducksca_fixpr_useUpgradeGuidance = blackducksca_fixpr_useUpgradeGuidance;
+        this.blackducksca_fixpr_useUpgradeGuidance = Util.fixEmptyAndTrim(blackducksca_fixpr_useUpgradeGuidance);
     }
 
     @DataBoundSetter

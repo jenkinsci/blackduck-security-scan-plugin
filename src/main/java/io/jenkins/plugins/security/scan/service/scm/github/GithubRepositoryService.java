@@ -45,11 +45,9 @@ public class GithubRepositoryService {
         github.getRepository().setName(repositoryName);
         github.getRepository().getOwner().setName(repositoryOwner);
 
-        if (projectRepositoryPullNumber != null) {
-            Pull pull = new Pull();
-            pull.setNumber(projectRepositoryPullNumber);
-            github.getRepository().setPull(pull);
-        }
+        Pull pull = new Pull();
+        pull.setNumber(projectRepositoryPullNumber);
+        github.getRepository().setPull(pull);
 
         github.getRepository().getBranch().setName(branchName);
 
