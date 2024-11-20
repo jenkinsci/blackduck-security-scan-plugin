@@ -36,9 +36,15 @@ public class BitbucketRepositoryService {
         String repositoryName = null;
         String projectKey = null;
         boolean isPrCommentSet = ToolsParameterService.isPrCommentValueSet(scanParameters);
+        boolean isFixPrValueSet = ToolsParameterService.isFixPrValueSet(scanParameters);
 
         if (isPrCommentSet && Utility.isStringNullOrBlank(bitbucketToken)) {
             logger.error(ApplicationConstants.PRCOMMENT_SET_TRUE_BUT_NO_SCM_TOKEN_FOUND, "Bitbucket");
+            throw new PluginExceptionHandler(ErrorCode.NO_BITBUCKET_TOKEN_FOUND);
+        }
+
+        if (isFixPrValueSet && Utility.isStringNullOrBlank(bitbucketToken)) {
+            logger.error(ApplicationConstants.FIXPR_SET_TRUE_BUT_NO_SCM_TOKEN_FOUND, "Bitbucket");
             throw new PluginExceptionHandler(ErrorCode.NO_BITBUCKET_TOKEN_FOUND);
         }
 

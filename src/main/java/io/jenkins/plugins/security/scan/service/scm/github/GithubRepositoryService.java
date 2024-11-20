@@ -33,9 +33,15 @@ public class GithubRepositoryService {
             throws PluginExceptionHandler {
         String githubToken = (String) scanParameters.get(ApplicationConstants.GITHUB_TOKEN_KEY);
         boolean isPrCommentSet = ToolsParameterService.isPrCommentValueSet(scanParameters);
+        boolean isFixPrValueSet = ToolsParameterService.isFixPrValueSet(scanParameters);
 
         if (isPrCommentSet && Utility.isStringNullOrBlank(githubToken)) {
             logger.error(ApplicationConstants.PRCOMMENT_SET_TRUE_BUT_NO_SCM_TOKEN_FOUND, "GitHub");
+            throw new PluginExceptionHandler(ErrorCode.NO_GITHUB_TOKEN_FOUND);
+        }
+
+        if (isFixPrValueSet && Utility.isStringNullOrBlank(githubToken)) {
+            logger.error(ApplicationConstants.FIXPR_SET_TRUE_BUT_NO_SCM_TOKEN_FOUND, "GitHub");
             throw new PluginExceptionHandler(ErrorCode.NO_GITHUB_TOKEN_FOUND);
         }
 

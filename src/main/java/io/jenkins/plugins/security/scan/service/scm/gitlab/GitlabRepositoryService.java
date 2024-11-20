@@ -32,9 +32,15 @@ public class GitlabRepositoryService {
             throws PluginExceptionHandler {
         String gitlabToken = (String) scanParameters.get(ApplicationConstants.GITLAB_TOKEN_KEY);
         boolean isPrCommentSet = ToolsParameterService.isPrCommentValueSet(scanParameters);
+        boolean isFixPrValueSet = ToolsParameterService.isFixPrValueSet(scanParameters);
 
         if (isPrCommentSet && Utility.isStringNullOrBlank(gitlabToken)) {
             logger.error(ApplicationConstants.PRCOMMENT_SET_TRUE_BUT_NO_SCM_TOKEN_FOUND, "GitLab");
+            throw new PluginExceptionHandler(ErrorCode.NO_GITLAB_TOKEN_FOUND);
+        }
+
+        if (isFixPrValueSet && Utility.isStringNullOrBlank(gitlabToken)) {
+            logger.error(ApplicationConstants.FIXPR_SET_TRUE_BUT_NO_SCM_TOKEN_FOUND, "GitLab");
             throw new PluginExceptionHandler(ErrorCode.NO_GITLAB_TOKEN_FOUND);
         }
 

@@ -187,6 +187,7 @@ public class ApplicationConstants {
             "Provided Bridge CLI version not found in artifactory: %s";
     public static final String PRCOMMENT_SET_TRUE_BUT_NO_SCM_TOKEN_FOUND =
             "PrComment is set true but no %s token found!";
+    public static final String FIXPR_SET_TRUE_BUT_NO_SCM_TOKEN_FOUND = "FixPr is set true but no %s token found!";
     public static final String UNZIPPING_BRIDGE_CLI_ZIP_FILE =
             "An exception occurred while unzipping Bridge CLI Bundle zip file: %s";
     public static final String BRIDGE_DOWNLOAD_FAILED_AFTER_X_ATTEMPTS = "Bridge CLI download failed after %s attempts";
