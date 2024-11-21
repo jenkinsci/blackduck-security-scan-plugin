@@ -62,8 +62,6 @@ public class ScanInitializer {
         FilePath bridgeInstallationPath =
                 new FilePath(workspace.getChannel(), bridgeDownloadParams.getBridgeInstallationPath());
 
-        envVars.put(ApplicationConstants.BRIDGE_CACHE_DIR, bridgeDownloadParams.getBridgeInstallationPath());
-
         logger.info("Bridge CLI version is - " + bridgeDownloadParams.getBridgeDownloadVersion());
 
         return scanner.runScanner(scanParameters, bridgeInstallationPath);
