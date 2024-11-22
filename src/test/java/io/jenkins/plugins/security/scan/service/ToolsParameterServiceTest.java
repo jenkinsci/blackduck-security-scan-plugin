@@ -96,7 +96,7 @@ public class ToolsParameterServiceTest {
         Map<String, Object> scanParameters = new HashMap<>();
 
         Bitbucket bitbucketObject = BitbucketRepositoryService.createBitbucketObject(
-                "https://bitbucket.org", TOKEN, 12, "test", "abc", "fake-user");
+                "https://bitbucket.org", TOKEN, 12, "test", "test-branch", "abc", "fake-user");
 
         try {
             String jsonStringNonPrCommentOrFixPr =
@@ -134,11 +134,11 @@ public class ToolsParameterServiceTest {
         scanParameters.put(ApplicationConstants.BLACKDUCKSCA_PRCOMMENT_ENABLED_KEY, true);
 
         Bitbucket bitbucketObject = BitbucketRepositoryService.createBitbucketObject(
-                "https://bitbucket.org", TOKEN, 12, "test", "abc", "fake-user");
+                "https://bitbucket.org", TOKEN, 12, "test", "test-branch", "abc", "fake-user");
 
         try {
             String jsonStringNonPrCommentOrFixPr =
-                    "{\"data\":{\"blackducksca\":{\"url\":\"https://fake.blackduck.url\",\"token\":\"MDJDSROSVC56FAKEKEY\"},\"bitbucket\":{\"api\":{\"user\":{\"name\":\"fake-user\"},\"token\":\"MDJDSROSVC56FAKEKEY\"},\"project\":{\"repository\":{\"pull\":{\"number\":12},\"name\":\"test\"},\"key\":\"abc\"}}}}";
+                    "{\"data\":{\"blackducksca\":{\"url\":\"https://fake.blackduck.url\",\"token\":\"MDJDSROSVC56FAKEKEY\"},\"bitbucket\":{\"api\":{\"user\":{\"name\":\"fake-user\"},\"token\":\"MDJDSROSVC56FAKEKEY\"},\"project\":{\"repository\":{\"pull\":{\"number\":12},\"branch\":{\"name\":\"test-branch\"},\"name\":\"test\"},\"key\":\"abc\"}}}}";
 
             String inputJsonPathForNonFixPr = toolsParameterService.prepareBridgeInputJson(
                     scanParameters,
@@ -172,11 +172,11 @@ public class ToolsParameterServiceTest {
         scanParameters.put(ApplicationConstants.BLACKDUCKSCA_FIXPR_ENABLED_KEY, true);
 
         Bitbucket bitbucketObject = BitbucketRepositoryService.createBitbucketObject(
-                "https://bitbucket.org", TOKEN, null, "test", "abc", "fake-user");
+                "https://bitbucket.org", TOKEN, null, "test", "test-branch", "abc", "fake-user");
 
         try {
             String jsonStringNonPrCommentOrFixPr =
-                    "{\"data\":{\"blackducksca\":{\"url\":\"https://fake.blackduck.url\",\"token\":\"MDJDSROSVC56FAKEKEY\"},\"bitbucket\":{\"api\":{\"user\":{\"name\":\"fake-user\"},\"token\":\"MDJDSROSVC56FAKEKEY\"},\"project\":{\"repository\":{\"pull\":{},\"name\":\"test\"},\"key\":\"abc\"}}}}";
+                    "{\"data\":{\"blackducksca\":{\"url\":\"https://fake.blackduck.url\",\"token\":\"MDJDSROSVC56FAKEKEY\"},\"bitbucket\":{\"api\":{\"user\":{\"name\":\"fake-user\"},\"token\":\"MDJDSROSVC56FAKEKEY\"},\"project\":{\"repository\":{\"branch\":{\"name\":\"test-branch\"},\"name\":\"test\"},\"key\":\"abc\"}}}}";
 
             String inputJsonPathForFixPr = toolsParameterService.prepareBridgeInputJson(
                     scanParameters,
@@ -237,7 +237,7 @@ public class ToolsParameterServiceTest {
         Map<String, Object> scanParameters = new HashMap<>();
 
         Bitbucket bitbucketObject = BitbucketRepositoryService.createBitbucketObject(
-                "https://bitbucket.org", TOKEN, 12, "test", "abc", "fake-username");
+                "https://bitbucket.org", TOKEN, 12, "test", "test-branch", "abc", "fake-username");
 
         try {
             String jsonStringNonPrCommentOrFixPr =
@@ -280,11 +280,11 @@ public class ToolsParameterServiceTest {
         scanParameters.put(ApplicationConstants.POLARIS_PRCOMMENT_ENABLED_KEY, true);
 
         Bitbucket bitbucketObject = BitbucketRepositoryService.createBitbucketObject(
-                "https://bitbucket.org", TOKEN, 12, "test", "abc", "fake-username");
+                "https://bitbucket.org", TOKEN, 12, "test", "test-branch", "abc", "fake-username");
 
         try {
             String jsonStringNonPrCommentOrFixPr =
-                    "{\"data\":{\"polaris\":{\"accesstoken\":\"MDJDSROSVC56FAKEKEY\",\"application\":{\"name\":\"test\"},\"project\":{\"name\":\"test\"},\"assessment\":{\"types\":[\"SCA\",\"SAST\"]},\"serverUrl\":\"https://fake.polaris.url\",\"branch\":{\"name\":\"fake-pr-branch\"}},\"bitbucket\":{\"api\":{\"user\":{\"name\":\"fake-username\"},\"token\":\"MDJDSROSVC56FAKEKEY\"},\"project\":{\"repository\":{\"pull\":{\"number\":12},\"name\":\"test\"},\"key\":\"abc\"}}}}";
+                    "{\"data\":{\"polaris\":{\"serverUrl\":\"https://fake.polaris.url\",\"accesstoken\":\"MDJDSROSVC56FAKEKEY\",\"application\":{\"name\":\"test\"},\"project\":{\"name\":\"test\"},\"assessment\":{\"types\":[\"SCA\",\"SAST\"]},\"branch\":{\"name\":\"fake-pr-branch\"}},\"bitbucket\":{\"api\":{\"user\":{\"name\":\"fake-username\"},\"token\":\"MDJDSROSVC56FAKEKEY\"},\"project\":{\"repository\":{\"pull\":{\"number\":12},\"branch\":{\"name\":\"test-branch\"},\"name\":\"test\"},\"key\":\"abc\"}}}}";
 
             String inputJsonPathForNonFixPr = toolsParameterService.prepareBridgeInputJson(
                     scanParameters, polaris, bitbucketObject, ApplicationConstants.POLARIS_INPUT_JSON_PREFIX, null);

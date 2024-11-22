@@ -35,6 +35,7 @@ public class SCMRepositoryService {
             throws PluginExceptionHandler {
         String pullRequestNumber = envVars.get(ApplicationConstants.ENV_CHANGE_ID_KEY);
         Integer projectRepositoryPullNumber = pullRequestNumber != null ? Integer.parseInt(pullRequestNumber) : null;
+        String branchName = envVars.get(ApplicationConstants.BRANCH_NAME);
         Object scmObject = null;
 
         SCMSource scmSource = findSCMSource();
@@ -44,7 +45,7 @@ public class SCMRepositoryService {
             BitbucketRepositoryService bitbucketRepositoryService = new BitbucketRepositoryService(listener);
             BitbucketSCMSource bitbucketSCMSource = (BitbucketSCMSource) scmSource;
             scmObject = bitbucketRepositoryService.fetchBitbucketRepositoryDetails(
-                    scanParameters, bitbucketSCMSource, projectRepositoryPullNumber);
+                    scanParameters, bitbucketSCMSource, projectRepositoryPullNumber, branchName);
         } else if (installedBranchSourceDependencies.getOrDefault(
                         ApplicationConstants.GITHUB_BRANCH_SOURCE_PLUGIN_NAME, false)
                 && scmSource instanceof GitHubSCMSource) {
@@ -53,7 +54,6 @@ public class SCMRepositoryService {
 
             String repositoryOwner = gitHubSCMSource.getRepoOwner();
             String repositoryName = gitHubSCMSource.getRepository();
-            String branchName = envVars.get(ApplicationConstants.BRANCH_NAME);
             String apiUri = gitHubSCMSource.getApiUri();
 
             scmObject = githubRepositoryService.createGithubObject(
@@ -65,7 +65,6 @@ public class SCMRepositoryService {
             GitLabSCMSource gitLabSCMSource = (GitLabSCMSource) scmSource;
 
             String repositoryUrl = gitLabSCMSource.getHttpRemote();
-            String branchName = envVars.get(ApplicationConstants.BRANCH_NAME);
             String repositoryName = gitLabSCMSource.getProjectPath();
 
             scmObject = gitlabRepositoryService.createGitlabObject(
