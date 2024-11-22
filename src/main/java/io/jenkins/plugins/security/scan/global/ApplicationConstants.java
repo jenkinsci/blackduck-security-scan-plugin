@@ -6,7 +6,7 @@ public class ApplicationConstants {
     public static final String DISPLAY_NAME_BLACKDUCK = "Black Duck Security Scan";
     public static final String PIPELINE_STEP_NAME = "security_scan";
     public static final String BRIDGE_ARTIFACTORY_URL =
-            "https://repo.blackduck.com/artifactory/bds-integrations-release/com/blackduck/integration/bridge-cli-bundle";
+            "https://repo.blackduck.com/bds-integrations-release/com/blackduck/integration/bridge/binaries/bridge-cli-bundle";
     public static final String BRIDGE_CLI_LATEST_VERSION = "latest";
     public static final String BRIDGE_ZIP_FILE_FORMAT = "bridge-cli-bundle.zip";
     public static final String PLATFORM_LINUX = "linux64";
@@ -95,6 +95,10 @@ public class ApplicationConstants {
     public static final String BLACKDUCKSCA_SCAN_FULL_KEY = "blackducksca_scan_full";
     public static final String BLACKDUCKSCA_SCAN_FAILURE_SEVERITIES_KEY = "blackducksca_scan_failure_severities";
     public static final String BLACKDUCKSCA_PRCOMMENT_ENABLED_KEY = "blackducksca_prComment_enabled";
+    public static final String BLACKDUCKSCA_FIXPR_ENABLED_KEY = "blackducksca_fixpr_enabled";
+    public static final String BLACKDUCKSCA_FIXPR_FILTER_SEVERITIES_KEY = "blackducksca_fixpr_filter_severities";
+    public static final String BLACKDUCKSCA_FIXPR_USEUPGRADEGUIDANCE_KEY = "blackducksca_fixpr_useUpgradeGuidance";
+    public static final String BLACKDUCKSCA_FIXPR_MAXCOUNT_KEY = "blackducksca_fixpr_maxcount";
     public static final String BLACKDUCKSCA_REPORTS_SARIF_CREATE_KEY = "blackducksca_reports_sarif_create";
     public static final String BLACKDUCKSCA_REPORTS_SARIF_FILE_PATH_KEY = "blackducksca_reports_sarif_file_path";
     public static final String BLACKDUCKSCA_REPORTS_SARIF_GROUPSCAISSUES_KEY =
@@ -183,6 +187,7 @@ public class ApplicationConstants {
             "Provided Bridge CLI version not found in artifactory: %s";
     public static final String PRCOMMENT_SET_TRUE_BUT_NO_SCM_TOKEN_FOUND =
             "PrComment is set true but no %s token found!";
+    public static final String FIXPR_SET_TRUE_BUT_NO_SCM_TOKEN_FOUND = "FixPr is set true but no %s token found!";
     public static final String UNZIPPING_BRIDGE_CLI_ZIP_FILE =
             "An exception occurred while unzipping Bridge CLI Bundle zip file: %s";
     public static final String BRIDGE_DOWNLOAD_FAILED_AFTER_X_ATTEMPTS = "Bridge CLI download failed after %s attempts";
@@ -303,14 +308,17 @@ public class ApplicationConstants {
     public static final String DEFAULT_DROPDOWN_OPTION_NAME = "Select";
 
     public static final String BLACKDUCK_PRCOMMENT_INFO_FOR_NON_PR_SCANS =
-            "Black Duck PR Comment is ignored for non pull request scan";
+            "Black Duck SCA PR Comment is ignored for non pull request scan";
     public static final String COVERITY_PRCOMMENT_INFO_FOR_NON_PR_SCANS =
             "Coverity PR Comment is ignored for non pull request scan";
     public static final String POLARIS_PRCOMMENT_INFO_FOR_NON_PR_SCANS =
             "Polaris PR Comment is ignored for non pull request scan";
 
+    public static final String BLACKDUCK_FIXPR_INFO_FOR_NON_PR_SCANS =
+            "Black Duck SCA Fix PR ignored for pull request scan";
+
     public static final String BLACKDUCK_SECURITY_SCAN_PLUGIN_DOCS_URL =
-            "https://sig-product-docs.synopsys.com/bundle/bridge/page/documentation/c_using-synopsys-jenkins-plugin.html";
+            "https://documentation.blackduck.com/bundle/bridge/page/documentation/c_using-jenkins-plugin.html";
 
     public static final List<String> ARBITRARY_PARAM_KEYS = List.of(
             DETECT_SEARCH_DEPTH_KEY,
