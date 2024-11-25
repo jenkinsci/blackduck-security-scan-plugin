@@ -269,8 +269,11 @@ public class PolarisParametersService {
                                 .toString()
                                 .trim();
                         if (!prCommentSeveritiesValue.isEmpty()) {
-                            List<String> prCommentSeverities = Arrays.asList(
-                                    prCommentSeveritiesValue.toUpperCase().split(","));
+                            List<String> prCommentSeverities = Arrays.stream(prCommentSeveritiesValue
+                                            .toUpperCase()
+                                            .split(","))
+                                    .map(String::trim)
+                                    .collect(Collectors.toList());
                             prcomment.setSeverities(prCommentSeverities);
                         }
                     }
