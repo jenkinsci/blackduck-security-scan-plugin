@@ -42,7 +42,7 @@ public class BridgeDownloadManagerTest {
         String installedVersion = bridgeDownloadManager.getBridgeVersionFromVersionFile(versionFilePath);
 
         assertNotNull(versionFilePath, "version.txt file not found");
-        assertEquals("0.3.1", installedVersion);
+        assertEquals("3.0.0", installedVersion);
     }
 
     @Test
@@ -85,9 +85,9 @@ public class BridgeDownloadManagerTest {
         BridgeDownloadManager bridgeDownloadManager = new BridgeDownloadManager(workspace, listenerMock, envVarsMock);
 
         String directoryUrlWithoutVersionFile =
-                "https://repo.blackduck.com/artifactory/bds-integrations-release/com/blackduck/integration/bridge-cli/0.3.1/";
+                "https://repo.blackduck.com/bds-integrations-release/com/blackduck/integration/bridge/binaries/bridge-cli-bundle/3.0.0/";
         String directoryUrlWithVersionFile =
-                "https://repo.blackduck.com/artifactory/bds-integrations-release/com/blackduck/integration/bridge-cli/latest/";
+                "https://repo.blackduck.com/bds-integrations-release/com/blackduck/integration/bridge/binaries/bridge-cli-bundle/latest/";
 
         assertFalse(bridgeDownloadManager.isVersionFileAvailableInArtifactory(directoryUrlWithoutVersionFile));
         assertTrue(bridgeDownloadManager.isVersionFileAvailableInArtifactory(directoryUrlWithVersionFile));
@@ -113,7 +113,7 @@ public class BridgeDownloadManagerTest {
         BridgeDownloadManager bridgeDownloadManager = new BridgeDownloadManager(workspace, listenerMock, envVarsMock);
 
         String directoryUrl =
-                "https://repo.blackduck.com/artifactory/bds-integrations-release/com/blackduck/integration/bridge-cli/latest";
+                "https://repo.blackduck.com/bds-integrations-release/com/blackduck/integration/bridge/binaries/bridge-cli-bundle/latest";
         String tempVersionFilePath = bridgeDownloadManager.downloadVersionFileFromArtifactory(directoryUrl);
         FilePath tempVersionFile = new FilePath(new File(tempVersionFilePath));
 
@@ -131,15 +131,15 @@ public class BridgeDownloadManagerTest {
         BridgeDownloadManager bridgeDownloadManager = new BridgeDownloadManager(workspace, listenerMock, envVarsMock);
 
         String urlWithVersion =
-                "https://repo.blackduck.com/artifactory/bds-integrations-release/com/blackduck/integration/bridge-cli/0.3.1/bridge-cli-0.3.1-linux64.zip ";
+                "https://repo.blackduck.com/bds-integrations-release/com/blackduck/integration/bridge/binaries/bridge-cli-bundle/3.0.0/bridge-cli-3.0.0-linux64.zip ";
         String resultWithVersion = bridgeDownloadManager.getLatestBridgeVersionFromArtifactory(urlWithVersion);
 
-        assertEquals("0.3.1", resultWithVersion);
+        assertEquals("3.0.0", resultWithVersion);
 
         String urlWithoutVersion =
-                "https://repo.blackduck.com/artifactory/bds-integrations-release/com/blackduck/integration/bridge-cli/latest/bridge-cli-linux64.zip";
+                "https://repo.blackduck.com/bds-integrations-release/com/blackduck/integration/bridge/binaries/bridge-cli-bundlelatest/bridge-cli-linux64.zip";
         BridgeDownloadManager mockedBridgeDownloadManager = Mockito.mock(BridgeDownloadManager.class);
-        String expectedVersion = "0.3.59";
+        String expectedVersion = "3.0.0";
         Mockito.when(mockedBridgeDownloadManager.getLatestBridgeVersionFromArtifactory(urlWithoutVersion))
                 .thenReturn(expectedVersion);
 
