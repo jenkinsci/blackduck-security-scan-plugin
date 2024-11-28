@@ -159,7 +159,7 @@ public class BridgeDownloadManager {
                 return (connection.getResponseCode() >= 200 && connection.getResponseCode() < 300);
             }
         } catch (IOException e) {
-            logger.error(
+            logger.warn(
                     ApplicationConstants.EXCEPTION_WHILE_CHECKING_VERSIONS_TXT_IS_AVAILABLE_OR_NOT_IN_THE_URL,
                     e.getMessage());
         }
@@ -180,7 +180,7 @@ public class BridgeDownloadManager {
             directoryUrl =
                     uri.getScheme().concat("://").concat(uri.getAuthority()).concat(directoryPath);
         } catch (URISyntaxException e) {
-            logger.error(ApplicationConstants.EXCEPTION_WHILE_GETTING_DIRECTORY_URL_FROM_DOWNLOAD_URL, e.getMessage());
+            logger.warn(ApplicationConstants.EXCEPTION_WHILE_GETTING_DIRECTORY_URL_FROM_DOWNLOAD_URL, e.getMessage());
         }
         return directoryUrl;
     }
