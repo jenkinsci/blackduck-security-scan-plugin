@@ -1,12 +1,16 @@
 package io.jenkins.plugins.security.scan.global;
 
 import com.cloudbees.hudson.plugins.folder.Folder;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hudson.EnvVars;
 import hudson.FilePath;
 import hudson.model.Result;
 import hudson.model.TaskListener;
 import hudson.model.TopLevelItem;
 import io.jenkins.plugins.security.scan.global.enums.BuildStatus;
+import io.jenkins.plugins.security.scan.global.enums.IssueSeverities;
+import io.jenkins.plugins.security.scan.global.enums.ScanType;
 import java.io.File;
 import java.io.IOException;
 import java.net.*;
@@ -293,6 +297,55 @@ public class Utility {
         }
 
         return version;
+    }
+
+    public static JsonNode parseJsonFile(File file) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.readTree(file);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static String getIssuesUrl(JsonNode rootNode, String product) {
+        JsonNode productNode = rootNode.path("data").path(product);
+        if (!productNode.isMissingNode()) {
+            JsonNode issuesUrlNode = productNode.path("project").path("issues").path("url");
+            if (!issuesUrlNode.isMissingNode()) {
+                return issuesUrlNode.asText();
+            }
+        }
+        return null;
+    }
+
+    public static int calculateTotalIssues(JsonNode rootNode, String product) {
+        int totalIssues = 0;
+
+        JsonNode productNode = rootNode.path("data").path(product);
+        if (!productNode.isMissingNode()) {
+            JsonNode testNode = productNode.path("test");
+
+            for (ScanType scanType : ScanType.values()) {
+                totalIssues += calculateIssues(testNode.path(scanType.name()));
+            }
+        }
+
+        return totalIssues;
+    }
+
+    public static int calculateIssues(JsonNode testNode) {
+        if (!testNode.isMissingNode()) {
+            JsonNode issuesNode = testNode.path("issues");
+            if (!issuesNode.isMissingNode()) {
+                int total = 0;
+                for (IssueSeverities severity : IssueSeverities.values()) {
+                    total += issuesNode.path(severity.name().toLowerCase()).asInt(0);
+                }
+                return total;
+            }
+        }
+        return 0;
     }
 
     public static boolean isBoolean(String value) {

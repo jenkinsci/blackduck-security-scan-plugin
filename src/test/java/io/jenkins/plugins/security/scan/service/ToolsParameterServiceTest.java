@@ -586,7 +586,7 @@ public class ToolsParameterServiceTest {
                 String.format(
                         "File %s does not exist at the specified path.",
                         ApplicationConstants.POLARIS_INPUT_JSON_PREFIX.concat(".json")));
-
+        assertEquals(commandLineArgs.get(5), BridgeParams.OUT_OPTION);
         Utility.removeFile(commandLineArgs.get(4), workspace, listenerMock);
     }
 
@@ -621,7 +621,7 @@ public class ToolsParameterServiceTest {
                 String.format(
                         "File %s does not exist at the specified path.",
                         ApplicationConstants.SRM_INPUT_JSON_PREFIX.concat(".json")));
-
+        assertEquals(commandLineArgs.get(5), BridgeParams.OUT_OPTION);
         Utility.removeFile(commandLineArgs.get(4), workspace, listenerMock);
     }
 

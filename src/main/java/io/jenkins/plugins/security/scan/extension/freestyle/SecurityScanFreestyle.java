@@ -8,6 +8,7 @@ import hudson.tasks.Builder;
 import hudson.util.ListBoxModel;
 import io.jenkins.plugins.security.scan.ScanInitializer;
 import io.jenkins.plugins.security.scan.SecurityScanner;
+import io.jenkins.plugins.security.scan.action.IssueActionItems;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.exception.ScannerException;
 import io.jenkins.plugins.security.scan.extension.SecurityScan;
@@ -1148,15 +1149,15 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
         String undefinedErrorMessage = null;
         Exception unknownException = new Exception();
         LoggerWrapper logger = new LoggerWrapper(listener);
-
+        Map<String, Object> scanparametersMap = null;
         logger.info(
                 "**************************** START EXECUTION OF BLACK DUCK SECURITY SCAN ****************************");
-
         try {
+            scanparametersMap = getParametersMap(workspace, listener);
             SecurityScanner securityScanner = new SecurityScanner(run, listener, launcher, workspace, envVars);
             ScanInitializer scanInitializer = new ScanInitializer(securityScanner, workspace, envVars, listener);
 
-            exitCode = scanInitializer.initializeScanner(getParametersMap(workspace, listener));
+            exitCode = scanInitializer.initializeScanner(scanparametersMap);
         } catch (Exception e) {
             if (e instanceof PluginExceptionHandler) {
                 exitCode = ((PluginExceptionHandler) e).getCode();
@@ -1166,6 +1167,9 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
                 unknownException = e;
             }
         } finally {
+            run.addAction(new IssueActionItems(
+                    scanparametersMap.get(ApplicationConstants.PRODUCT_KEY).toString(),
+                    workspace.child(ApplicationConstants.SCAN_INFO_OUT_FILE_NAME)));
             String exitMessage = ExceptionMessages.getErrorMessage(exitCode, undefinedErrorMessage);
             if (exitMessage != null) {
                 if (exitCode == 0) {
