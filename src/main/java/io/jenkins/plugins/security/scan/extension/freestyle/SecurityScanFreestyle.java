@@ -1150,6 +1150,7 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
         Exception unknownException = new Exception();
         LoggerWrapper logger = new LoggerWrapper(listener);
         Map<String, Object> scanparametersMap = null;
+        ;
         logger.info(
                 "**************************** START EXECUTION OF BLACK DUCK SECURITY SCAN ****************************");
         try {
@@ -1167,9 +1168,12 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
                 unknownException = e;
             }
         } finally {
-            run.addAction(new IssueActionItems(
-                    scanparametersMap.get(ApplicationConstants.PRODUCT_KEY).toString(),
-                    workspace.child(ApplicationConstants.SCAN_INFO_OUT_FILE_NAME)));
+            if (scanparametersMap != null && scanparametersMap.containsKey(ApplicationConstants.PRODUCT_KEY)) {
+                run.addAction(new IssueActionItems(
+                        scanparametersMap.get(ApplicationConstants.PRODUCT_KEY).toString(),
+                        workspace.child(ApplicationConstants.SCAN_INFO_OUT_FILE_NAME)));
+            }
+
             String exitMessage = ExceptionMessages.getErrorMessage(exitCode, undefinedErrorMessage);
             if (exitMessage != null) {
                 if (exitCode == 0) {

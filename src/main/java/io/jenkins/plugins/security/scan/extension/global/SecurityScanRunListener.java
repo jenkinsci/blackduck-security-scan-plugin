@@ -39,6 +39,8 @@ public class SecurityScanRunListener extends RunListener<Run<?, ?>> {
                 int totalIssues = Utility.calculateTotalIssues(rootNode, product.toLowerCase());
 
                 run.addAction(new IssueAction(product.toLowerCase(), totalIssues, issuesUrl != null ? issuesUrl : ""));
+            } catch (RuntimeException e) {
+                logger.error(ApplicationConstants.EXCEPTION_WHILE_PROCESS_SCAN_INFO_FILE);
             } catch (Exception e) {
                 logger.error(ApplicationConstants.EXCEPTION_WHILE_PROCESS_SCAN_INFO_FILE);
             }
