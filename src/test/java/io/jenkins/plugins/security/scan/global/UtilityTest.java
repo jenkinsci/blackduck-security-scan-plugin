@@ -3,12 +3,15 @@ package io.jenkins.plugins.security.scan.global;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hudson.EnvVars;
 import hudson.FilePath;
 import hudson.model.Result;
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.global.enums.BuildStatus;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.*;
@@ -263,6 +266,75 @@ public class UtilityTest {
         assertTrue(Utility.isBoolean("true"));
         assertTrue(Utility.isBoolean("false"));
         assertFalse(Utility.isBoolean("null"));
+    }
+
+    @Test
+    public void testParseJsonFile() throws IOException {
+        String jsonContent = "{"
+                + "\"data\": {\"product1\": {\"project\": {\"issues\": {\"url\": \"http://example.com/issues\"}}}}}";
+        File tempFile = File.createTempFile("test", ".json");
+        tempFile.deleteOnExit();
+
+        try (FileWriter writer = new FileWriter(tempFile)) {
+            writer.write(jsonContent);
+        }
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode expectedNode = objectMapper.readTree(tempFile);
+        JsonNode actualNode = Utility.parseJsonFile(tempFile);
+
+        assertEquals(expectedNode, actualNode);
+    }
+
+    @Test
+    public void testGetIssuesUrl_ValidProduct() throws IOException {
+        String jsonContent =
+                "{" + "\"data\": {\"polaris\": {\"project\": {\"issues\": {\"url\": \"http://example.com/issues\"}}}}}";
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(jsonContent);
+        String product = "polaris";
+
+        String issuesUrl = Utility.getIssuesUrl(rootNode, product);
+
+        assertEquals("http://example.com/issues", issuesUrl);
+    }
+
+    @Test
+    public void testGetIssuesUrl_InvalidProduct() throws IOException {
+        // Arrange
+        String jsonContent = "{"
+                + "\"data\": {\"product1\": {\"project\": {\"issues\": {\"url\": \"http://example.com/issues\"}}}}}";
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(jsonContent);
+        String product = "invalidProduct";
+
+        String issuesUrl = Utility.getIssuesUrl(rootNode, product);
+
+        assertNull(issuesUrl);
+    }
+
+    @Test
+    public void testCalculateTotalIssues() throws IOException {
+        String jsonContent = "{"
+                + "\"data\": {\"polaris\": {\"test\": {\"SAST\": {\"issues\": {\"critical\": 2, \"high\": 3}}, \"SCA\": {\"issues\": {\"medium\": 4, \"low\": 5}}}}}}}";
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(jsonContent);
+        String product = "polaris";
+
+        int totalIssues = Utility.calculateTotalIssues(rootNode, product);
+
+        assertEquals(14, totalIssues);
+    }
+
+    @Test
+    public void testCalculateIssues() throws IOException {
+        String jsonContent = "{" + "\"issues\": {\"critical\": 2, \"high\": 3, \"medium\": 4, \"low\": 5}}";
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode testNode = objectMapper.readTree(jsonContent);
+
+        int totalIssues = Utility.calculateIssues(testNode);
+
+        assertEquals(14, totalIssues);
     }
 
     public String getHomeDirectory() {
