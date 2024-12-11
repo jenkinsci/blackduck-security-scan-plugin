@@ -15,7 +15,7 @@ public class IssueAction implements Action {
 
     @Override
     public String getIconFileName() {
-        return "/plugin/blackduck-security-scan/icons/blackduck.png";
+        return "/plugin/black-duck-security-scan/icons/blackduck.png";
     }
 
     @Override
