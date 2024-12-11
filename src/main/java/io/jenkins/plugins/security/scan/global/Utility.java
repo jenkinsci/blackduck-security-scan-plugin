@@ -11,6 +11,7 @@ import hudson.model.TopLevelItem;
 import io.jenkins.plugins.security.scan.global.enums.BuildStatus;
 import io.jenkins.plugins.security.scan.global.enums.IssueSeverities;
 import io.jenkins.plugins.security.scan.global.enums.ScanType;
+import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import java.io.File;
 import java.io.IOException;
 import java.net.*;
@@ -323,12 +324,12 @@ public class Utility {
         int totalIssues = 0;
         JsonNode productNode = rootNode.path("data").path(product);
         if (!productNode.isMissingNode()) {
-            if ("srm".equals(product)) {
+            if (SecurityProduct.SRM.name().toLowerCase().equals(product)) {
                 JsonNode analysisNode = productNode.path("analysis");
                 if (!analysisNode.isMissingNode()) {
                     totalIssues = calculateIssues(analysisNode);
                 }
-            } else if ("polaris".equals(product)) {
+            } else if (SecurityProduct.POLARIS.name().toLowerCase().equals(product)) {
                 JsonNode testNode = productNode.path("test");
                 for (ScanType scanType : ScanType.values()) {
                     totalIssues += calculateIssues(testNode.path(scanType.name()));
