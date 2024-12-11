@@ -321,13 +321,18 @@ public class Utility {
 
     public static int calculateTotalIssues(JsonNode rootNode, String product) {
         int totalIssues = 0;
-
         JsonNode productNode = rootNode.path("data").path(product);
         if (!productNode.isMissingNode()) {
-            JsonNode testNode = productNode.path("test");
-
-            for (ScanType scanType : ScanType.values()) {
-                totalIssues += calculateIssues(testNode.path(scanType.name()));
+            if ("srm".equals(product)) {
+                JsonNode analysisNode = productNode.path("analysis");
+                if (!analysisNode.isMissingNode()) {
+                    totalIssues = calculateIssues(analysisNode);
+                }
+            } else if ("polaris".equals(product)) {
+                JsonNode testNode = productNode.path("test");
+                for (ScanType scanType : ScanType.values()) {
+                    totalIssues += calculateIssues(testNode.path(scanType.name()));
+                }
             }
         }
 
