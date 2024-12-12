@@ -1,6 +1,7 @@
 package io.jenkins.plugins.security.scan.action;
 
 import hudson.model.Action;
+import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 
 public class IssueAction implements Action {
     private final String product;
@@ -15,12 +16,12 @@ public class IssueAction implements Action {
 
     @Override
     public String getIconFileName() {
-        return "/plugin/black-duck-security-scan/icons/blackduck.png";
+        return ApplicationConstants.BLACK_DUCK_LOGO_FILE_NAME;
     }
 
     @Override
     public String getDisplayName() {
-        return "See issues in " + product + " (" + defectCount + " found)";
+        return String.format("See issues in %s (%d found)", product, defectCount);
     }
 
     @Override

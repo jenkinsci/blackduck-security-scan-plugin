@@ -27,6 +27,7 @@ public class ApplicationConstants {
     public static final String VERSION_FILE = "versions.txt";
     public static final String NOT_AVAILABLE = "NA";
     public static final String SCAN_INFO_OUT_FILE_NAME = ".bridge/output/scan_info_out.json";
+    public static final String BLACK_DUCK_LOGO_FILE_NAME = "/plugin/black-duck-security-scan/icons/blackduck.png";
 
     // Jenkins Environment Variables
     public static final String ENV_JOB_NAME_KEY = "JOB_NAME";

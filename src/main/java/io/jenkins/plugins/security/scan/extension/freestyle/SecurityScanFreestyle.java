@@ -1150,7 +1150,7 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
         Exception unknownException = new Exception();
         LoggerWrapper logger = new LoggerWrapper(listener);
         Map<String, Object> scanparametersMap = null;
-        ;
+
         logger.info(
                 "**************************** START EXECUTION OF BLACK DUCK SECURITY SCAN ****************************");
         try {

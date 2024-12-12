@@ -23,6 +23,13 @@ import jenkins.model.Jenkins;
 
 public class Utility {
 
+    public static final String DATA_PROPERTY = "data";
+    public static final String PROJECT_PROPERTY = "project";
+    public static final String ISSUES_PROPERTY = "issues";
+    public static final String URL_PROPERTY = "url";
+    public static final String TEST_PROPERTY = "test";
+    public static final String ANALYSIS_PROPERTY = "analysis";
+
     public static String getDirectorySeparator(FilePath workspace, TaskListener listener) {
         String os = getAgentOs(workspace, listener);
 
@@ -310,9 +317,10 @@ public class Utility {
     }
 
     public static String getIssuesUrl(JsonNode rootNode, String product) {
-        JsonNode productNode = rootNode.path("data").path(product);
+        JsonNode productNode = rootNode.path(DATA_PROPERTY).path(product);
         if (!productNode.isMissingNode()) {
-            JsonNode issuesUrlNode = productNode.path("project").path("issues").path("url");
+            JsonNode issuesUrlNode =
+                    productNode.path(PROJECT_PROPERTY).path(ISSUES_PROPERTY).path(URL_PROPERTY);
             if (!issuesUrlNode.isMissingNode()) {
                 return issuesUrlNode.asText();
             }
@@ -322,15 +330,15 @@ public class Utility {
 
     public static int calculateTotalIssues(JsonNode rootNode, String product) {
         int totalIssues = 0;
-        JsonNode productNode = rootNode.path("data").path(product);
+        JsonNode productNode = rootNode.path(DATA_PROPERTY).path(product);
         if (!productNode.isMissingNode()) {
-            if (SecurityProduct.SRM.name().toLowerCase().equals(product)) {
-                JsonNode analysisNode = productNode.path("analysis");
+            if (SecurityProduct.SRM.name().equalsIgnoreCase(product)) {
+                JsonNode analysisNode = productNode.path(ANALYSIS_PROPERTY);
                 if (!analysisNode.isMissingNode()) {
                     totalIssues = calculateIssues(analysisNode);
                 }
-            } else if (SecurityProduct.POLARIS.name().toLowerCase().equals(product)) {
-                JsonNode testNode = productNode.path("test");
+            } else if (SecurityProduct.POLARIS.name().equalsIgnoreCase(product)) {
+                JsonNode testNode = productNode.path(TEST_PROPERTY);
                 for (ScanType scanType : ScanType.values()) {
                     totalIssues += calculateIssues(testNode.path(scanType.name()));
                 }
@@ -342,7 +350,7 @@ public class Utility {
 
     public static int calculateIssues(JsonNode testNode) {
         if (!testNode.isMissingNode()) {
-            JsonNode issuesNode = testNode.path("issues");
+            JsonNode issuesNode = testNode.path(ISSUES_PROPERTY);
             if (!issuesNode.isMissingNode()) {
                 int total = 0;
                 for (IssueSeverities severity : IssueSeverities.values()) {
