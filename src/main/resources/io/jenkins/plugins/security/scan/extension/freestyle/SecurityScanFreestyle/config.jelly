@@ -259,7 +259,7 @@
                 <f:textbox/>
             </f:entry>
             <f:entry field="srm_include_diagnostics" title="Include Diagnostics (Optional)">
-                <f:checkbox/>
+                <f:checkbox checked="${instance.isInclude_diagnostics() == true}"/>
             </f:entry>
             <f:entry field="srm_mark_build_status" title="Mark Build Status (Optional)">
                 <f:select/>
