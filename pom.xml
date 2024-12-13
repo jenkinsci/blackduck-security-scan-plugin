@@ -8,7 +8,7 @@
     <relativePath />
   </parent>
   <groupId>io.jenkins.plugins</groupId>
-  <artifactId>black-duck-security-scan</artifactId>
+  <artifactId>blackduck-security-scan</artifactId>
   <version>${revision}${changelist}</version>
   <packaging>hpi</packaging>
   <name>Black Duck Security Scan</name>
