@@ -43,6 +43,7 @@ public class ScannerGlobalConfig extends GlobalConfiguration implements Serializ
     private String bridgeDownloadUrlForLinux;
     private String bridgeDownloadVersion;
     private String bridgeInstallationPath;
+    private Boolean networkAirGap;
     private String polarisServerUrl;
     private String polarisCredentialsId;
     private String srmUrl;
@@ -137,6 +138,12 @@ public class ScannerGlobalConfig extends GlobalConfiguration implements Serializ
     }
 
     @DataBoundSetter
+    public void setNetworkAirGap(Boolean networkAirGap) {
+        this.networkAirGap = networkAirGap;
+        save();
+    }
+
+    @DataBoundSetter
     public void setPolarisServerUrl(String polarisServerUrl) {
         this.polarisServerUrl = polarisServerUrl;
         save();
@@ -210,6 +217,10 @@ public class ScannerGlobalConfig extends GlobalConfiguration implements Serializ
 
     public String getBridgeInstallationPath() {
         return bridgeInstallationPath;
+    }
+
+    public Boolean isNetworkAirGap() {
+        return networkAirGap;
     }
 
     public String getPolarisServerUrl() {
