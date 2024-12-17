@@ -28,6 +28,7 @@ public class BitbucketRepositoryServiceTest {
     private final String TEST_BITBUCKET_TOKEN = "MSDFSGOIIEGWGWEGFAKEKEY";
     private final Integer TEST_REPOSITORY_PULL_NUMBER = 7;
     private final String TEST_REPOSITORY_NAME = "TEST_REPO";
+    private final String TEST_BRANCH_NAME = "TEST_BRANCH";
     private final String TEST_PROJECT_KEY = "my_key";
     private final String TEST_USERNAME_KEY = "my_user";
     Map<String, Object> bitbucketParametersMap = new HashMap<>();
@@ -41,6 +42,7 @@ public class BitbucketRepositoryServiceTest {
                 TEST_BITBUCKET_TOKEN,
                 TEST_REPOSITORY_PULL_NUMBER,
                 TEST_REPOSITORY_NAME,
+                TEST_BRANCH_NAME,
                 TEST_PROJECT_KEY,
                 TEST_USERNAME_KEY);
 
@@ -49,7 +51,7 @@ public class BitbucketRepositoryServiceTest {
         bitbucketSCMSourceMock = mock(BitbucketSCMSource.class);
 
         when(bitbucketRepositoryServiceMock.fetchBitbucketRepositoryDetails(
-                        bitbucketParametersMap, bitbucketSCMSourceMock, TEST_REPOSITORY_PULL_NUMBER))
+                        bitbucketParametersMap, bitbucketSCMSourceMock, TEST_REPOSITORY_PULL_NUMBER, TEST_BRANCH_NAME))
                 .thenReturn(bitbucket);
 
         listenerMock = Mockito.mock(TaskListener.class);
@@ -59,7 +61,7 @@ public class BitbucketRepositoryServiceTest {
     @Test
     void createBitbucketObjectTest() throws PluginExceptionHandler {
         Bitbucket bitbucket = bitbucketRepositoryServiceMock.fetchBitbucketRepositoryDetails(
-                bitbucketParametersMap, bitbucketSCMSourceMock, TEST_REPOSITORY_PULL_NUMBER);
+                bitbucketParametersMap, bitbucketSCMSourceMock, TEST_REPOSITORY_PULL_NUMBER, TEST_BRANCH_NAME);
 
         assertEquals(TEST_BITBUCKET_URL, bitbucket.getApi().getUrl());
         assertEquals(TEST_BITBUCKET_TOKEN, bitbucket.getApi().getToken());
@@ -69,6 +71,10 @@ public class BitbucketRepositoryServiceTest {
         assertEquals(
                 TEST_REPOSITORY_NAME, bitbucket.getProject().getRepository().getName());
         assertEquals(TEST_PROJECT_KEY, bitbucket.getProject().getKey());
+        assertEquals(TEST_PROJECT_KEY, bitbucket.getProject().getKey());
+        assertEquals(
+                TEST_BRANCH_NAME,
+                bitbucket.getProject().getRepository().getBranch().getName());
     }
 
     @Test
@@ -83,8 +89,8 @@ public class BitbucketRepositoryServiceTest {
         when(bitbucketApiFromSCMSource.getRepository()).thenReturn(bitbucketRepository);
 
         BitbucketRepositoryService bitbucketRepositoryService = new BitbucketRepositoryService(listenerMock);
-        Bitbucket result =
-                bitbucketRepositoryService.fetchBitbucketRepositoryDetails(scanParameters, bitbucketSCMSource, 1);
+        Bitbucket result = bitbucketRepositoryService.fetchBitbucketRepositoryDetails(
+                scanParameters, bitbucketSCMSource, 1, TEST_BRANCH_NAME);
 
         assertNotNull(result);
 
@@ -94,6 +100,6 @@ public class BitbucketRepositoryServiceTest {
         assertThrows(
                 PluginExceptionHandler.class,
                 () -> bitbucketRepositoryService.fetchBitbucketRepositoryDetails(
-                        scanParameters, bitbucketSCMSource, 1));
+                        scanParameters, bitbucketSCMSource, 1, TEST_BRANCH_NAME));
     }
 }

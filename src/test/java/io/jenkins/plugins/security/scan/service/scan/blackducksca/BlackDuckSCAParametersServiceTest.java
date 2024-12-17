@@ -6,6 +6,7 @@ import hudson.EnvVars;
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.input.blackducksca.BlackDuckSCA;
+import io.jenkins.plugins.security.scan.input.blackducksca.FixPr;
 import io.jenkins.plugins.security.scan.input.project.Project;
 import io.jenkins.plugins.security.scan.input.report.Sarif;
 import java.io.PrintStream;
@@ -177,5 +178,23 @@ public class BlackDuckSCAParametersServiceTest {
         assertEquals("/path/to/sarif/file", sarifObject.getFile().getPath());
         assertEquals(Arrays.asList("HIGH", "MEDIUM", "LOW"), sarifObject.getSeverities());
         assertTrue(sarifObject.getGroupSCAIssues());
+    }
+
+    @Test
+    public void prepareBlackduckFixPrObjectTest() {
+        Map<String, Object> fixPrParameters = new HashMap<>();
+
+        fixPrParameters.put(ApplicationConstants.BLACKDUCKSCA_FIXPR_ENABLED_KEY, true);
+        fixPrParameters.put(ApplicationConstants.BLACKDUCKSCA_FIXPR_FILTER_SEVERITIES_KEY, "CRITICAL");
+        fixPrParameters.put(ApplicationConstants.BLACKDUCKSCA_FIXPR_USEUPGRADEGUIDANCE_KEY, "SHORT_TERM");
+        fixPrParameters.put(ApplicationConstants.BLACKDUCKSCA_FIXPR_MAXCOUNT_KEY, 2);
+
+        FixPr fixPrObject = blackDuckSCAParametersService.prepareFixPrObject(fixPrParameters);
+
+        assertNotNull(fixPrObject);
+        assertTrue(fixPrObject.getEnabled());
+        assertEquals(Arrays.asList("CRITICAL"), fixPrObject.getFilter().getSeverities());
+        assertEquals(Arrays.asList("SHORT_TERM"), fixPrObject.getUseUpgradeGuidance());
+        assertEquals(2, fixPrObject.getMaxCount());
     }
 }

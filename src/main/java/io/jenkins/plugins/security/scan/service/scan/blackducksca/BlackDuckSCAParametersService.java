@@ -6,10 +6,7 @@ import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.global.Utility;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
-import io.jenkins.plugins.security.scan.input.blackducksca.Automation;
-import io.jenkins.plugins.security.scan.input.blackducksca.BlackDuckSCA;
-import io.jenkins.plugins.security.scan.input.blackducksca.Failure;
-import io.jenkins.plugins.security.scan.input.blackducksca.Scan;
+import io.jenkins.plugins.security.scan.input.blackducksca.*;
 import io.jenkins.plugins.security.scan.input.project.Project;
 import io.jenkins.plugins.security.scan.input.report.File;
 import io.jenkins.plugins.security.scan.input.report.Reports;
@@ -96,6 +93,7 @@ public class BlackDuckSCAParametersService {
         setScanFull(blackDuckSCAParameters, blackDuckSCA);
         setScanFailureSeverities(blackDuckSCAParameters, blackDuckSCA);
         setAutomationPrComment(blackDuckSCAParameters, automation, blackDuckSCA);
+        setFixPr(blackDuckSCAParameters, blackDuckSCA);
         setSarif(blackDuckSCAParameters, blackDuckSCA);
         setWaitForScan(blackDuckSCAParameters, blackDuckSCA);
 
@@ -158,6 +156,24 @@ public class BlackDuckSCAParametersService {
                     blackDuckSCA.setAutomation(automation);
                 } else {
                     logger.info(ApplicationConstants.BLACKDUCK_PRCOMMENT_INFO_FOR_NON_PR_SCANS);
+                }
+            }
+        }
+    }
+
+    private void setFixPr(Map<String, Object> blackDuckSCAParameters, BlackDuckSCA blackDuckSCA) {
+        if (blackDuckSCAParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_FIXPR_ENABLED_KEY)) {
+            String value = blackDuckSCAParameters
+                    .get(ApplicationConstants.BLACKDUCKSCA_FIXPR_ENABLED_KEY)
+                    .toString()
+                    .trim();
+            if (value.equals("true")) {
+                boolean isPullRequestEvent = Utility.isPullRequestEvent(envVars);
+                if (isPullRequestEvent) {
+                    logger.info(ApplicationConstants.BLACKDUCK_FIXPR_INFO_FOR_NON_PR_SCANS);
+                } else {
+                    FixPr fixPr = prepareFixPrObject(blackDuckSCAParameters);
+                    blackDuckSCA.setFixPr(fixPr);
                 }
             }
         }
@@ -255,5 +271,45 @@ public class BlackDuckSCAParametersService {
             sarif.setGroupSCAIssues(reports_sarif_groupSCAIssues);
         }
         return sarif;
+    }
+
+    public FixPr prepareFixPrObject(Map<String, Object> fixPrParameters) {
+        FixPr fixPr = new FixPr();
+        fixPr.setEnabled(true);
+
+        if (fixPrParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_FIXPR_MAXCOUNT_KEY)) {
+            Integer blackducksca_fixpr_maxCount =
+                    (Integer) fixPrParameters.get(ApplicationConstants.BLACKDUCKSCA_FIXPR_MAXCOUNT_KEY);
+            fixPr.setMaxCount(blackducksca_fixpr_maxCount);
+        }
+
+        if (fixPrParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_FIXPR_FILTER_SEVERITIES_KEY)) {
+            String fixPR_filter_severities =
+                    (String) fixPrParameters.get(ApplicationConstants.BLACKDUCKSCA_FIXPR_FILTER_SEVERITIES_KEY);
+            String[] fixPR_filter_severitiesInput =
+                    fixPR_filter_severities.toUpperCase().split(",");
+            List<String> severities = Arrays.stream(fixPR_filter_severitiesInput)
+                    .map(String::trim)
+                    .collect(Collectors.toList());
+            if (!severities.isEmpty()) {
+                Filter filter = new Filter();
+                filter.setSeverities(severities);
+                fixPr.setFilter(filter);
+            }
+        }
+
+        if (fixPrParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_FIXPR_USEUPGRADEGUIDANCE_KEY)) {
+            String fixPR_UseUpgradeGuidance =
+                    (String) fixPrParameters.get(ApplicationConstants.BLACKDUCKSCA_FIXPR_USEUPGRADEGUIDANCE_KEY);
+            String[] fixPR_UseUpgradeGuidanceInput =
+                    fixPR_UseUpgradeGuidance.toUpperCase().split(",");
+            List<String> guidance = Arrays.stream(fixPR_UseUpgradeGuidanceInput)
+                    .map(String::trim)
+                    .collect(Collectors.toList());
+            if (!guidance.isEmpty()) {
+                fixPr.setUseUpgradeGuidance(guidance);
+            }
+        }
+        return fixPr;
     }
 }
