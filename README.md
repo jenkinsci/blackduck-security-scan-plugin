@@ -1,6 +1,6 @@
 # Black Duck Security Scan Plugin
 
-This repository contains a Jenkins plugin implemented as a Maven project. The plugin provides functionality for performing Black Duck Security Scan with Black Duck SCA, Coverity and Polaris. This README.md file serves as a guide for the users of the plugin.
+**NOTE:** If you are currently using the old Synopsys Security Scan Plugin, please follow these <a href="https://community.blackduck.com/s/article/integrations-black-duck-migration-instructions">instructions</a> to migrate from Synopsys Security Scan Plugin to this new Black Duck Security Scan Plugin. 
 
 ## Build
 
