@@ -262,27 +262,28 @@ public class PolarisParametersService {
                 boolean isPullRequestEvent = Utility.isPullRequestEvent(envVars);
                 if (isPullRequestEvent) {
                     prcomment.setEnabled(true);
-
-                    if (polarisParameters.containsKey(ApplicationConstants.POLARIS_PRCOMMENT_SEVERITIES_KEY)) {
-                        String prCommentSeveritiesValue = polarisParameters
-                                .get(ApplicationConstants.POLARIS_PRCOMMENT_SEVERITIES_KEY)
-                                .toString()
-                                .trim();
-                        if (!prCommentSeveritiesValue.isEmpty()) {
-                            List<String> prCommentSeverities = Arrays.stream(prCommentSeveritiesValue
-                                            .toUpperCase()
-                                            .split(","))
-                                    .map(String::trim)
-                                    .collect(Collectors.toList());
-                            prcomment.setSeverities(prCommentSeverities);
-                        }
-                    }
-
+                    handlePrCommentSeverities(polarisParameters, prcomment);
                     polaris.setPrcomment(prcomment);
                     setBranchParent(polarisParameters, polaris);
                 } else {
                     logger.info(ApplicationConstants.POLARIS_PRCOMMENT_INFO_FOR_NON_PR_SCANS);
                 }
+            }
+        }
+    }
+
+    private static void handlePrCommentSeverities(Map<String, Object> polarisParameters, Prcomment prcomment) {
+        if (polarisParameters.containsKey(ApplicationConstants.POLARIS_PRCOMMENT_SEVERITIES_KEY)) {
+            String prCommentSeveritiesValue = polarisParameters
+                    .get(ApplicationConstants.POLARIS_PRCOMMENT_SEVERITIES_KEY)
+                    .toString()
+                    .trim();
+            if (!prCommentSeveritiesValue.isEmpty()) {
+                List<String> prCommentSeverities = Arrays.stream(
+                                prCommentSeveritiesValue.toUpperCase().split(","))
+                        .map(String::trim)
+                        .collect(Collectors.toList());
+                prcomment.setSeverities(prCommentSeverities);
             }
         }
     }

@@ -37,49 +37,20 @@ public class BridgeInstall {
         String bridgeCLIDownloadVersion = bridgeDownloadParameters.getBridgeDownloadVersion();
 
         try {
-            if (bridgeZipPath != null && bridgeInstallationFilePath != null) {
+            if (bridgeZipPath != null && bridgeInstallationFilePath.isDirectory()) {
                 FilePath targetFolder = new FilePath(bridgeInstallationFilePath, subFolderName);
-
-                if (targetFolder.exists()) {
-                    // Delete the last folder from targetFolder
-                    logger.info("Deleting previous Bridge CLI folder: %s", targetFolder.getRemote());
-                    targetFolder.deleteRecursive();
-                }
+                handleExistingFolder(targetFolder);
 
                 logger.info("Unzipping Bridge CLI zip file from: %s", bridgeZipPath.getRemote());
                 bridgeZipPath.unzip(bridgeInstallationFilePath);
                 logger.info("Bridge CLI installed successfully in: %s", bridgeInstallationFilePath.getRemote());
 
-                if (!bridgeCLIDownloadVersion.equals(ApplicationConstants.BRIDGE_CLI_LATEST_VERSION)) {
-                    // Define the expected unzipped folder name based on the download version
-                    String expectedFolderName =
-                            ApplicationConstants.DEFAULT_DIRECTORY_NAME + "-" + bridgeCLIDownloadVersion + "-" + osType;
-                    FilePath unzippedFolder = new FilePath(bridgeInstallationFilePath, expectedFolderName);
-
-                    if (unzippedFolder.exists()) {
-                        if (!targetFolder.exists()) {
-                            logger.info(
-                                    "Renaming folder %s to %s", unzippedFolder.getRemote(), targetFolder.getRemote());
-                            unzippedFolder.renameTo(targetFolder);
-                        }
-                    } else {
-                        logger.warn("Expected folder '%s' not found after unzipping.", expectedFolderName);
-                    }
-                } else {
-                    String installedBridgeVersionFilePath;
-                    if (osType.contains("win")) {
-                        installedBridgeVersionFilePath =
-                                String.join("\\", targetFolder.getRemote(), ApplicationConstants.VERSION_FILE);
-                    } else {
-                        installedBridgeVersionFilePath =
-                                String.join("/", targetFolder.getRemote(), ApplicationConstants.VERSION_FILE);
-                    }
-                    BridgeDownloadManager bridgeDownloadManager =
-                            new BridgeDownloadManager(workspace, listener, envVars);
-                    String installedBridgeVersion =
-                            bridgeDownloadManager.getBridgeVersionFromVersionFile(installedBridgeVersionFilePath);
-                    bridgeDownloadParameters.setBridgeDownloadVersion(installedBridgeVersion);
-                }
+                handlePostUnzipping(
+                        targetFolder,
+                        bridgeInstallationFilePath,
+                        osType,
+                        bridgeCLIDownloadVersion,
+                        bridgeDownloadParameters);
             }
         } catch (IOException | InterruptedException e) {
             logger.error(ApplicationConstants.UNZIPPING_BRIDGE_CLI_ZIP_FILE, e.getMessage());
@@ -95,6 +66,51 @@ public class BridgeInstall {
         } catch (IOException | InterruptedException e) {
             logger.warn(ApplicationConstants.EXCEPTION_WHILE_DELETING_BRIDGE_CLI_ZIP_FILE, e.getMessage());
             Thread.currentThread().interrupt();
+        }
+    }
+
+    private void handleExistingFolder(FilePath targetFolder) throws IOException, InterruptedException {
+        if (targetFolder.exists()) {
+            logger.info("Deleting previous Bridge CLI folder: %s", targetFolder.getRemote());
+            targetFolder.deleteRecursive();
+        }
+    }
+
+    private void handlePostUnzipping(
+            FilePath targetFolder,
+            FilePath bridgeInstallationFilePath,
+            String osType,
+            String bridgeCLIDownloadVersion,
+            BridgeDownloadParameters bridgeDownloadParameters)
+            throws IOException, InterruptedException {
+
+        if (!bridgeCLIDownloadVersion.equals(ApplicationConstants.BRIDGE_CLI_LATEST_VERSION)) {
+            // Define the expected unzipped folder name based on the download version
+            String expectedFolderName =
+                    ApplicationConstants.DEFAULT_DIRECTORY_NAME + "-" + bridgeCLIDownloadVersion + "-" + osType;
+            FilePath unzippedFolder = new FilePath(bridgeInstallationFilePath, expectedFolderName);
+
+            if (unzippedFolder.exists()) {
+                if (!targetFolder.exists()) {
+                    logger.info("Renaming folder %s to %s", unzippedFolder.getRemote(), targetFolder.getRemote());
+                    unzippedFolder.renameTo(targetFolder);
+                }
+            } else {
+                logger.warn("Expected folder '%s' not found after unzipping.", expectedFolderName);
+            }
+        } else {
+            String installedBridgeVersionFilePath;
+            if (osType.contains("win")) {
+                installedBridgeVersionFilePath =
+                        String.join("\\", targetFolder.getRemote(), ApplicationConstants.VERSION_FILE);
+            } else {
+                installedBridgeVersionFilePath =
+                        String.join("/", targetFolder.getRemote(), ApplicationConstants.VERSION_FILE);
+            }
+            BridgeDownloadManager bridgeDownloadManager = new BridgeDownloadManager(workspace, listener, envVars);
+            String installedBridgeVersion =
+                    bridgeDownloadManager.getBridgeVersionFromVersionFile(installedBridgeVersionFilePath);
+            bridgeDownloadParameters.setBridgeDownloadVersion(installedBridgeVersion);
         }
     }
 
