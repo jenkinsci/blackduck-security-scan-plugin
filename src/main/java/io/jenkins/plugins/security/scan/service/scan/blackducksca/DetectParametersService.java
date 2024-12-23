@@ -1,6 +1,7 @@
 package io.jenkins.plugins.security.scan.service.scan.blackducksca;
 
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
+import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import io.jenkins.plugins.security.scan.input.blackducksca.*;
 import io.jenkins.plugins.security.scan.input.detect.*;
 import java.util.Map;
@@ -9,13 +10,16 @@ public class DetectParametersService {
 
     public Detect prepareDetectObject(Map<String, Object> detectParameters) {
         Detect detect = null;
+        String securityPlatform = (String) detectParameters.get(ApplicationConstants.PRODUCT_KEY);
 
         detect = setInstallDirectory(detectParameters, detect);
         detect = setDownloadUrl(detectParameters, detect);
         detect = setSearchDepth(detectParameters, detect);
         detect = setConfigPath(detectParameters, detect);
         detect = setBlackDuckArgs(detectParameters, detect);
-        detect = setExecutionPath(detectParameters, detect);
+        if (SecurityProduct.SRM.name().equalsIgnoreCase(securityPlatform)) {
+            detect = setExecutionPath(detectParameters, detect);
+        }
 
         return detect;
     }
