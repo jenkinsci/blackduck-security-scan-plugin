@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import hudson.EnvVars;
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
+import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import io.jenkins.plugins.security.scan.input.coverity.Coverity;
 import io.jenkins.plugins.security.scan.input.detect.Detect;
 import io.jenkins.plugins.security.scan.input.srm.SRM;
@@ -69,7 +70,7 @@ public class SRMParametersServiceTest {
     @Test
     void prepareSrmObjectForBridge_arbitraryParamsTest() {
         Map<String, Object> srmParameters = new HashMap<>();
-
+        srmParameters.put(ApplicationConstants.PRODUCT_KEY, SecurityProduct.SRM.name());
         srmParameters.put(ApplicationConstants.SRM_URL_KEY, TEST_SRM_SERVER_URL);
         srmParameters.put(ApplicationConstants.SRM_APIKEY_KEY, TEST_SRM_API_KEY_TOKEN);
         srmParameters.put(ApplicationConstants.SRM_PROJECT_NAME_KEY, TEST_SRM_PROJECT_NAME);

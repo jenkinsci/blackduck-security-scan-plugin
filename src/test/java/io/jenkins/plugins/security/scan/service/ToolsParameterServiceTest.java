@@ -11,6 +11,7 @@ import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.global.BridgeParams;
 import io.jenkins.plugins.security.scan.global.Utility;
+import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import io.jenkins.plugins.security.scan.input.blackducksca.Automation;
 import io.jenkins.plugins.security.scan.input.blackducksca.BlackDuckSCA;
 import io.jenkins.plugins.security.scan.input.coverity.Connect;
@@ -72,7 +73,9 @@ public class ToolsParameterServiceTest {
         BlackDuckSCA blackDuckSCA = new BlackDuckSCA();
         blackDuckSCA.setUrl("https://fake.blackduck.url");
         blackDuckSCA.setToken(TOKEN);
+
         Map<String, Object> scanParameters = new HashMap<>();
+        scanParameters.put(ApplicationConstants.PRODUCT_KEY, SecurityProduct.BLACKDUCK.name());
 
         String inputJsonPath = toolsParameterService.prepareBridgeInputJson(
                 scanParameters, blackDuckSCA, bitBucket, ApplicationConstants.BLACKDUCKSCA_INPUT_JSON_PREFIX, null);
@@ -94,6 +97,7 @@ public class ToolsParameterServiceTest {
         blackDuckSCA.setUrl("https://fake.blackduck.url");
         blackDuckSCA.setToken(TOKEN);
         Map<String, Object> scanParameters = new HashMap<>();
+        scanParameters.put(ApplicationConstants.PRODUCT_KEY, SecurityProduct.BLACKDUCK.name());
 
         Bitbucket bitbucketObject = BitbucketRepositoryService.createBitbucketObject(
                 "https://bitbucket.org", TOKEN, 12, "test", "abc", "fake-user");
@@ -131,6 +135,7 @@ public class ToolsParameterServiceTest {
         blackDuckSCA.setUrl("https://fake.blackduck.url");
         blackDuckSCA.setToken(TOKEN);
         Map<String, Object> scanParameters = new HashMap<>();
+        scanParameters.put(ApplicationConstants.PRODUCT_KEY, SecurityProduct.BLACKDUCK.name());
         scanParameters.put(ApplicationConstants.BLACKDUCKSCA_PRCOMMENT_ENABLED_KEY, true);
 
         Bitbucket bitbucketObject = BitbucketRepositoryService.createBitbucketObject(
@@ -167,7 +172,7 @@ public class ToolsParameterServiceTest {
         polaris.setServerUrl("https://fake.polaris.url");
         polaris.setAccessToken(TOKEN);
         Map<String, Object> scanParameters = new HashMap<>();
-
+        scanParameters.put(ApplicationConstants.PRODUCT_KEY, SecurityProduct.POLARIS.name());
         String inputJsonPath = toolsParameterService.prepareBridgeInputJson(
                 scanParameters, polaris, bitBucket, ApplicationConstants.POLARIS_INPUT_JSON_PREFIX, null);
         Path filePath = Paths.get(inputJsonPath);
@@ -197,6 +202,7 @@ public class ToolsParameterServiceTest {
         polaris.getBranch().setName("fake-pr-branch");
 
         Map<String, Object> scanParameters = new HashMap<>();
+        scanParameters.put(ApplicationConstants.PRODUCT_KEY, SecurityProduct.BLACKDUCK.name());
 
         Bitbucket bitbucketObject = BitbucketRepositoryService.createBitbucketObject(
                 "https://bitbucket.org", TOKEN, 12, "test", "abc", "fake-username");
@@ -239,6 +245,7 @@ public class ToolsParameterServiceTest {
         polaris.getBranch().setName("fake-pr-branch");
 
         Map<String, Object> scanParameters = new HashMap<>();
+        scanParameters.put(ApplicationConstants.PRODUCT_KEY, SecurityProduct.POLARIS.name());
         scanParameters.put(ApplicationConstants.POLARIS_PRCOMMENT_ENABLED_KEY, true);
 
         Bitbucket bitbucketObject = BitbucketRepositoryService.createBitbucketObject(
@@ -272,6 +279,7 @@ public class ToolsParameterServiceTest {
         srm.setApikey(TOKEN);
         srm.getAssessmentTypes().setTypes(List.of("SCA"));
         Map<String, Object> scanParameters = new HashMap<>();
+        scanParameters.put(ApplicationConstants.PRODUCT_KEY, SecurityProduct.SRM.name());
 
         String inputJsonPath = toolsParameterService.prepareBridgeInputJson(
                 scanParameters, srm, bitBucket, ApplicationConstants.SRM_INPUT_JSON_PREFIX, null);
@@ -317,6 +325,7 @@ public class ToolsParameterServiceTest {
         coverity.getConnect().getUser().setName("fake-user");
         coverity.getConnect().getUser().setPassword("fakeUserPassword");
         Map<String, Object> scanParameters = new HashMap<>();
+        scanParameters.put(ApplicationConstants.PRODUCT_KEY, SecurityProduct.COVERITY.name());
 
         String inputJsonPath = toolsParameterService.prepareBridgeInputJson(
                 scanParameters, coverity, bitBucket, ApplicationConstants.COVERITY_INPUT_JSON_PREFIX, null);
@@ -336,6 +345,7 @@ public class ToolsParameterServiceTest {
         GithubRepositoryService githubRepositoryService = new GithubRepositoryService(listenerMock);
 
         Map<String, Object> scanParametersMap = new HashMap<>();
+        scanParametersMap.put(ApplicationConstants.PRODUCT_KEY, SecurityProduct.COVERITY.name());
         scanParametersMap.put(ApplicationConstants.GITHUB_TOKEN_KEY, TOKEN);
         scanParametersMap.put(ApplicationConstants.COVERITY_PRCOMMENT_ENABLED_KEY, true);
 
@@ -388,6 +398,7 @@ public class ToolsParameterServiceTest {
         ObjectMapper objectMapper = new ObjectMapper();
 
         Map<String, Object> scanParametersMap = new HashMap<>();
+        scanParametersMap.put(ApplicationConstants.PRODUCT_KEY, SecurityProduct.BLACKDUCK.name());
         scanParametersMap.put(ApplicationConstants.GITLAB_TOKEN_KEY, TOKEN);
         scanParametersMap.put(ApplicationConstants.BLACKDUCKSCA_PRCOMMENT_ENABLED_KEY, true);
 
@@ -431,7 +442,7 @@ public class ToolsParameterServiceTest {
     @Test
     public void createDetectInputJsonTest() {
         Map<String, Object> scanParameters = new HashMap<>();
-        scanParameters.put(ApplicationConstants.PRODUCT_KEY, "blackducksca");
+        scanParameters.put(ApplicationConstants.PRODUCT_KEY, SecurityProduct.BLACKDUCK.name());
         scanParameters.put(ApplicationConstants.DETECT_ARGS_KEY, "args");
         scanParameters.put(ApplicationConstants.BLACKDUCKSCA_SCAN_FULL_KEY, true);
         scanParameters.put(ApplicationConstants.DETECT_EXECUTION_PATH_KEY, "path/detect");
@@ -451,6 +462,7 @@ public class ToolsParameterServiceTest {
     @Test
     public void createNetworkAirGapInputJsonTest() {
         Map<String, Object> scanParameters = new HashMap<>();
+        scanParameters.put(ApplicationConstants.PRODUCT_KEY, SecurityProduct.BLACKDUCK.name());
         scanParameters.put(ApplicationConstants.NETWORK_AIRGAP_KEY, true);
 
         String inputJsonPath = toolsParameterService.prepareBridgeInputJson(
@@ -468,6 +480,7 @@ public class ToolsParameterServiceTest {
     @Test
     public void createProjectInputJsonTest() {
         Map<String, Object> scanParameters = new HashMap<>();
+        scanParameters.put(ApplicationConstants.PRODUCT_KEY, SecurityProduct.POLARIS.name());
         Project project = new Project();
         project.setDirectory("/tmp/dir");
         Source source = new Source();
@@ -489,7 +502,7 @@ public class ToolsParameterServiceTest {
     @Test
     public void getCommandLineArgsForBlackDuckTest() throws PluginExceptionHandler {
         Map<String, Object> blackDuckParametersMap = new HashMap<>();
-        blackDuckParametersMap.put(ApplicationConstants.PRODUCT_KEY, "blackduck");
+        blackDuckParametersMap.put(ApplicationConstants.PRODUCT_KEY, SecurityProduct.BLACKDUCK.name());
         blackDuckParametersMap.put(ApplicationConstants.BLACKDUCKSCA_URL_KEY, "https://fake.blackduck.url");
         blackDuckParametersMap.put(ApplicationConstants.BLACKDUCKSCA_TOKEN_KEY, TOKEN);
         blackDuckParametersMap.put(ApplicationConstants.BLACKDUCKSCA_PRCOMMENT_ENABLED_KEY, false);
@@ -524,7 +537,7 @@ public class ToolsParameterServiceTest {
     @Test
     public void getCommandLineArgsForCoverityTest() throws PluginExceptionHandler {
         Map<String, Object> coverityParameters = new HashMap<>();
-        coverityParameters.put(ApplicationConstants.PRODUCT_KEY, "coverity");
+        coverityParameters.put(ApplicationConstants.PRODUCT_KEY, SecurityProduct.COVERITY.name());
         coverityParameters.put(ApplicationConstants.COVERITY_URL_KEY, "https://fake.coverity.url");
         coverityParameters.put(ApplicationConstants.COVERITY_USER_KEY, "fake-user");
         coverityParameters.put(ApplicationConstants.COVERITY_PASSPHRASE_KEY, "fakeUserPassword");
@@ -559,7 +572,7 @@ public class ToolsParameterServiceTest {
     @Test
     public void getCommandLineArgsForPolarisTest() throws PluginExceptionHandler {
         Map<String, Object> polarisParameters = new HashMap<>();
-        polarisParameters.put(ApplicationConstants.PRODUCT_KEY, "polaris");
+        polarisParameters.put(ApplicationConstants.PRODUCT_KEY, SecurityProduct.POLARIS.name());
         polarisParameters.put(ApplicationConstants.POLARIS_SERVER_URL_KEY, "https://fake.polaris.url");
         polarisParameters.put(ApplicationConstants.POLARIS_ACCESS_TOKEN_KEY, "fake-token");
         polarisParameters.put(ApplicationConstants.POLARIS_APPLICATION_NAME_KEY, "Fake-application-name");
@@ -593,7 +606,7 @@ public class ToolsParameterServiceTest {
     @Test
     public void getCommandLineArgsForSrmTest() throws PluginExceptionHandler {
         Map<String, Object> srmParameters = new HashMap<>();
-        srmParameters.put(ApplicationConstants.PRODUCT_KEY, "srm");
+        srmParameters.put(ApplicationConstants.PRODUCT_KEY, SecurityProduct.SRM.name());
         srmParameters.put(ApplicationConstants.SRM_URL_KEY, "https://fake.srm.url");
         srmParameters.put(ApplicationConstants.SRM_APIKEY_KEY, "fake-api-key");
         srmParameters.put(ApplicationConstants.SRM_ASSESSMENT_TYPES_KEY, "SCA");
