@@ -120,6 +120,7 @@ document.addEventListener('change', function(event) {
 
     toggleSarifParamsDivs(event);
     togglePrCommentDivs();
+    toggleFixPrParamsDivs();
     handlePostMergeWorkflowSectionsVisibility();
 });
 
@@ -151,7 +152,6 @@ function toggleSarifParamsDivs(event) {
             setCheckboxToDefaultTrue(['_.polaris_reports_sarif_groupSCAIssues']);
         }
     }
-
 }
 
 function togglePrCommentDivs() {
@@ -166,7 +166,20 @@ function togglePrCommentDivs() {
             clearInputFields(polarisPrCommentSection);
         }
     }
+}
 
+function toggleFixPrParamsDivs() {
+    var selectedOption = securityProduct.value;
+    if (selectedOption == "blackducksca") {
+        var blackduckFixPrCheckbox = document.querySelector('input[name="_.blackducksca_fixpr_enabled"]')
+        var blackduckFixPrParamSection = document.getElementById('blackducksca_fixPr_params')
+        if (blackduckFixPrCheckbox.checked) {
+            blackduckFixPrParamSection.style.display = 'block';
+        } else {
+            blackduckFixPrParamSection.style.display = 'none';
+            clearInputFields(blackduckFixPrParamSection);
+        }
+    }
 }
 
 function handlePostMergeWorkflowSectionsVisibility() {
@@ -178,14 +191,18 @@ function handlePostMergeWorkflowSectionsVisibility() {
     if (selectedOption === 'blackducksca') {
         var blackduckSCASarif_section = document.getElementById('blackducksca_sarif_report_sec');
         var blackduckSCAPRComment_section = document.getElementById('blackducksca_pr_comment_sec');
+        var blackduckSCAFixPr_section = document.getElementById('blackducksca_fixPr_sec');
         if (blackduckscaWaitForScanEnabled == false) {
             hideParticularDiv(blackduckSCASarif_section);
             hideParticularDiv(blackduckSCAPRComment_section);
+            hideParticularDiv(blackduckSCAFixPr_section);
             clearInputFields(blackduckSCASarif_section);
             clearInputFields(blackduckSCAPRComment_section);
+            clearInputFields(blackduckSCAFixPr_section);
         } else if (blackduckscaWaitForScanEnabled == true) {
             showParticularDiv(blackduckSCASarif_section);
             showParticularDiv(blackduckSCAPRComment_section);
+            showParticularDiv(blackduckSCAFixPr_section);
         }
     } else if (selectedOption === 'polaris') {
         var polarisSarif_section = document.getElementById('polaris_sarif_report_sec');
