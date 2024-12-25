@@ -211,12 +211,15 @@ public class CoverityParametersService {
     }
 
     public Coverity setArbitaryInputs(Map<String, Object> coverityParameters, Coverity coverity) {
+        String securityPlatform = (String) coverityParameters.get(ApplicationConstants.PRODUCT_KEY);
+
         coverity = setBuildCommand(coverityParameters, coverity);
         coverity = setCleanCommand(coverityParameters, coverity);
         coverity = setConfigCommand(coverityParameters, coverity);
         coverity = setArgs(coverityParameters, coverity);
-        coverity = setExecutionPath(coverityParameters, coverity);
-
+        if (SecurityProduct.SRM.name().equalsIgnoreCase(securityPlatform)) {
+            coverity = setExecutionPath(coverityParameters, coverity);
+        }
         return coverity;
     }
 
