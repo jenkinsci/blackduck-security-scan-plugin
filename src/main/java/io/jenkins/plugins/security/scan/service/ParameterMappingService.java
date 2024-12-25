@@ -161,6 +161,7 @@ public class ParameterMappingService {
                     globalParameters,
                     ApplicationConstants.BRIDGECLI_DOWNLOAD_VERSION,
                     config.getBridgeDownloadVersion());
+            addParameterIfNotBlank(globalParameters, ApplicationConstants.NETWORK_AIRGAP_KEY, config.isNetworkAirGap());
             addParameterIfNotBlank(
                     globalParameters, ApplicationConstants.POLARIS_SERVER_URL_KEY, config.getPolarisServerUrl());
             addParameterIfNotBlank(

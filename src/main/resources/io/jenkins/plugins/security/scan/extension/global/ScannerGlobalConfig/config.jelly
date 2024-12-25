@@ -179,6 +179,9 @@
             <f:entry field="bridgeInstallationPath" title="Bridge CLI Installation Path (Optional)">
                 <f:textbox/>
             </f:entry>
+            <f:entry field="networkAirGap" title="Network Airgap (Optional)">
+                <f:checkbox checked="${instance.isNetworkAirGap() == true}"/>
+            </f:entry>
         </div>
     </f:section>
 
