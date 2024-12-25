@@ -42,6 +42,25 @@
             </f:advanced>
         </div>
 
+        <div id="blackducksca_fixPr_sec">
+            <f:advanced title="Fix Pull Request Options">
+                <f:entry field="blackducksca_fixpr_enabled" title="Create Fix Pull Requests (Optional)">
+                    <f:checkbox/>
+                </f:entry>
+                <div id="blackducksca_fixPr_params">
+                    <f:entry field="blackducksca_fixpr_maxCount" title="Maximum number of Pull Requests to be created (Optional)">
+                        <f:textbox/>
+                    </f:entry>
+                    <f:entry field="blackducksca_fixpr_useUpgradeGuidance" title="Configure Short Term or Long Term Guidance (Optional)">
+                        <f:textbox/>
+                    </f:entry>
+                    <f:entry field="blackducksca_fixpr_filter_severities" title="List of SEVERITIES to be filtered (Optional)">
+                        <f:textbox/>
+                    </f:entry>
+                </div>
+            </f:advanced>
+        </div>
+
         <div id="blackducksca_sarif_report_sec">
             <f:advanced title="SARIF Report Options">
                 <f:entry field="blackducksca_reports_sarif_create" title="Generate SARIF Report(Optional)">
