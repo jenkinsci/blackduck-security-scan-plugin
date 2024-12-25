@@ -1,12 +1,17 @@
 package io.jenkins.plugins.security.scan.global;
 
 import com.cloudbees.hudson.plugins.folder.Folder;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hudson.EnvVars;
 import hudson.FilePath;
 import hudson.model.Result;
 import hudson.model.TaskListener;
 import hudson.model.TopLevelItem;
 import io.jenkins.plugins.security.scan.global.enums.BuildStatus;
+import io.jenkins.plugins.security.scan.global.enums.IssueSeverities;
+import io.jenkins.plugins.security.scan.global.enums.ScanType;
+import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import java.io.File;
 import java.io.IOException;
 import java.net.*;
@@ -17,6 +22,13 @@ import java.util.regex.Pattern;
 import jenkins.model.Jenkins;
 
 public class Utility {
+
+    public static final String DATA_PROPERTY = "data";
+    public static final String PROJECT_PROPERTY = "project";
+    public static final String ISSUES_PROPERTY = "issues";
+    public static final String URL_PROPERTY = "url";
+    public static final String TEST_PROPERTY = "test";
+    public static final String ANALYSIS_PROPERTY = "analysis";
 
     public static String getDirectorySeparator(FilePath workspace, TaskListener listener) {
         String os = getAgentOs(workspace, listener);
@@ -293,6 +305,61 @@ public class Utility {
         }
 
         return version;
+    }
+
+    public static JsonNode parseJsonFile(File file) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.readTree(file);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static String getIssuesUrl(JsonNode rootNode, String product) {
+        JsonNode productNode = rootNode.path(DATA_PROPERTY).path(product);
+        if (!productNode.isMissingNode()) {
+            JsonNode issuesUrlNode =
+                    productNode.path(PROJECT_PROPERTY).path(ISSUES_PROPERTY).path(URL_PROPERTY);
+            if (!issuesUrlNode.isMissingNode()) {
+                return issuesUrlNode.asText();
+            }
+        }
+        return null;
+    }
+
+    public static int calculateTotalIssues(JsonNode rootNode, String product) {
+        int totalIssues = 0;
+        JsonNode productNode = rootNode.path(DATA_PROPERTY).path(product);
+        if (!productNode.isMissingNode()) {
+            if (SecurityProduct.SRM.name().equalsIgnoreCase(product)) {
+                JsonNode analysisNode = productNode.path(ANALYSIS_PROPERTY);
+                if (!analysisNode.isMissingNode()) {
+                    totalIssues = calculateIssues(analysisNode);
+                }
+            } else if (SecurityProduct.POLARIS.name().equalsIgnoreCase(product)) {
+                JsonNode testNode = productNode.path(TEST_PROPERTY);
+                for (ScanType scanType : ScanType.values()) {
+                    totalIssues += calculateIssues(testNode.path(scanType.name()));
+                }
+            }
+        }
+
+        return totalIssues;
+    }
+
+    public static int calculateIssues(JsonNode testNode) {
+        if (!testNode.isMissingNode()) {
+            JsonNode issuesNode = testNode.path(ISSUES_PROPERTY);
+            if (!issuesNode.isMissingNode()) {
+                int total = 0;
+                for (IssueSeverities severity : IssueSeverities.values()) {
+                    total += issuesNode.path(severity.name().toLowerCase()).asInt(0);
+                }
+                return total;
+            }
+        }
+        return 0;
     }
 
     public static boolean isBoolean(String value) {
