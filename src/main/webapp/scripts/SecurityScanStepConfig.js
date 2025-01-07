@@ -5,10 +5,8 @@ var polarisDiv = document.getElementById('polaris');
 var srmDiv = document.getElementById('srm');
 var blackduckscaToolConfigDiv = document.getElementById('blackducksca-tool-configuration');
 var coverityToolConfigDiv = document.getElementById('coverity-tool-configuration');
-var bridgeCliSecDiv = document.getElementById('bridge_cli_sec');
 
 function hideAllDivs() {
-    bridgeCliSecDiv.style.display = 'none';
     blackduckscaDiv.style.display = 'none';
     coverityDiv.style.display = 'none';
     polarisDiv.style.display = 'none';
@@ -71,7 +69,6 @@ securityProduct.addEventListener('change', function() {
         showParticularDiv(blackduckscaDiv);
         hideParticularDiv(coverityToolConfigDiv);
         showParticularDiv(blackduckscaToolConfigDiv);
-        showParticularDiv(bridgeCliSecDiv);
         setCheckboxToDefaultTrue(['_.blackducksca_reports_sarif_groupSCAIssues', '_.blackducksca_waitForScan']);
     } else if (selectedOption == 'coverity') {
         hideParticularDiv(blackduckscaDiv);
@@ -80,7 +77,6 @@ securityProduct.addEventListener('change', function() {
         showParticularDiv(coverityDiv);
         hideParticularDiv(blackduckscaToolConfigDiv);
         showParticularDiv(coverityToolConfigDiv);
-        showParticularDiv(bridgeCliSecDiv);
         setCheckboxToDefaultTrue(['_.coverity_waitForScan']);
     } else if (selectedOption == 'polaris') {
         hideParticularDiv(blackduckscaDiv);
@@ -89,7 +85,6 @@ securityProduct.addEventListener('change', function() {
         showParticularDiv(polarisDiv);
         showParticularDiv(blackduckscaToolConfigDiv);
         showParticularDiv(coverityToolConfigDiv);
-        showParticularDiv(bridgeCliSecDiv);
         setCheckboxToDefaultTrue(['_.polaris_reports_sarif_groupSCAIssues', '_.polaris_waitForScan']);
     } else if (selectedOption == 'srm') {
         hideParticularDiv(blackduckscaDiv);
@@ -98,7 +93,6 @@ securityProduct.addEventListener('change', function() {
         showParticularDiv(srmDiv);
         showParticularDiv(blackduckscaToolConfigDiv);
         showParticularDiv(coverityToolConfigDiv);
-        showParticularDiv(bridgeCliSecDiv);
         setCheckboxToDefaultTrue(['_.srm_waitForScan']);
     } else if (selectedOption == '') {
         hideAllDivs();

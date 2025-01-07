@@ -264,17 +264,6 @@
         </f:advanced>
     </div>
 
-<div id="bridge_cli_sec" style="display: none">
-    <f:advanced title="Bridge CLI Options">
-        <f:entry field="network_airgap" title="Network Airgap (Optional)">
-            <f:checkbox/>
-        </f:entry>
-        <!--        <f:entry field="return_status" title="Return Status Code (Optional)">-->
-        <!--            <f:checkbox/>-->
-        <!--        </f:entry>-->
-    </f:advanced>
-</div>
-
     <link rel="stylesheet" type="text/css" href="${rootURL}/plugin/blackduck-security-scan/styles/security-scan-pipeline-config.css" />
 
     <script type="text/javascript" src="${rootURL}/plugin/blackduck-security-scan/scripts/SecurityScanStepConfig.js" />
