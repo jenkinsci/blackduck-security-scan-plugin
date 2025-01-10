@@ -31,7 +31,7 @@ public class IssueAction implements Action {
 
     @Override
     public String getDisplayName() {
-        return String.format("See issues in %s (%d found)", getDisplayNameForProduct(product), defectCount);
+        return String.format("See %d issues in %s", defectCount, getDisplayNameForProduct(product));
     }
 
     @Override
