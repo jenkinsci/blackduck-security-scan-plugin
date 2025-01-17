@@ -6,5 +6,10 @@ public enum IssueSeverities {
     INFO,
     LOW,
     MEDIUM,
-    UNSPECIFIED;
+    UNSPECIFIED,
+    BLOCKER,
+    MAJOR,
+    MINOR,
+    OK,
+    TRIVIAL;
 }

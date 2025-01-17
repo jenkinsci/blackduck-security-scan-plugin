@@ -114,6 +114,8 @@ public class ToolsParameterService {
                     scmObject,
                     ApplicationConstants.BLACKDUCKSCA_INPUT_JSON_PREFIX,
                     project));
+            scanCommands.add(BridgeParams.OUT_OPTION);
+            scanCommands.add(ApplicationConstants.SCAN_INFO_OUT_FILE_NAME);
         }
     }
 
