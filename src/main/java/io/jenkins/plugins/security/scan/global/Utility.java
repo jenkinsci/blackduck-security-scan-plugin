@@ -29,7 +29,7 @@ public class Utility {
     public static final String URL_PROPERTY = "url";
     public static final String TEST_PROPERTY = "test";
     public static final String ANALYSIS_PROPERTY = "analysis";
-    public static final String PROJECT_BOM_URL_PROPERTY = "ProjectBOMUrl";
+    public static final String PROJECT_BOM_URL_PROPERTY = "projectBomUrl";
     public static final String POLICY_PROPERTY = "policy";
     public static final String STATUS_PROPERTY = "status";
 
