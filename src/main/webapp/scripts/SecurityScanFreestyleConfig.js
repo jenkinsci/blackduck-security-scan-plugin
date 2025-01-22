@@ -4,7 +4,6 @@ var sourceUploadDiv = document.getElementById('source_upload');
 
 if (selectedOption && selectedOption !== 'select') {
     document.getElementById(selectedOption).style.display = 'block';
-    document.getElementById('bridge_cli_sec').style.display = 'block';
 
     validateProductField();
     validateCoverityFields();
@@ -51,7 +50,6 @@ function clearInputFields(div) {
 document.addEventListener('change', function () {
     var selectedOption = document.querySelector('select[name="_.product"]')?.value;
     var polarisAssessmentModeOption = document.querySelector('select[name="_.polaris_assessment_mode"]')?.value;
-    var bridgeCliSecDiv = document.getElementById('bridge_cli_sec');
     var blackduckscaDiv = document.getElementById('blackducksca');
     var coverityDiv = document.getElementById('coverity');
     var polarisDiv = document.getElementById('polaris');
@@ -78,7 +76,6 @@ document.addEventListener('change', function () {
         validateProductField();
         toggleSarifParamsDivs();
         handleSarifReportSectionVisibility();
-        showParticularDiv(bridgeCliSecDiv);
     } else if (selectedOption === 'coverity') {
         clearInputFields(blackduckscaDiv);
         hideParticularDiv(blackduckscaDiv);
@@ -89,7 +86,6 @@ document.addEventListener('change', function () {
         showParticularDiv(coverityDiv);
         validateProductField();
         validateCoverityFields();
-        showParticularDiv(bridgeCliSecDiv);
     } else if (selectedOption === 'polaris') {
         clearInputFields(blackduckscaDiv);
         hideParticularDiv(blackduckscaDiv);
@@ -102,7 +98,6 @@ document.addEventListener('change', function () {
         validatePolarisFields();
         toggleSarifParamsDivs();
         handleSarifReportSectionVisibility();
-        showParticularDiv(bridgeCliSecDiv);
     } else if (selectedOption === 'srm') {
         clearInputFields(blackduckscaDiv);
         hideParticularDiv(blackduckscaDiv);
@@ -113,7 +108,6 @@ document.addEventListener('change', function () {
         showParticularDiv(srmDiv);
         validateProductField();
         validateSrmFields();
-        showParticularDiv(bridgeCliSecDiv);
     } else if (selectedOption === 'select') {
         clearInputFields(blackduckscaDiv);
         clearInputFields(coverityDiv);
@@ -123,7 +117,6 @@ document.addEventListener('change', function () {
         hideParticularDiv(coverityDiv);
         hideParticularDiv(polarisDiv);
         hideParticularDiv(srmDiv);
-        hideParticularDiv(bridgeCliSecDiv);
         validateProductField();
     }
 

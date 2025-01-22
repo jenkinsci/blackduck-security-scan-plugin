@@ -297,14 +297,6 @@
         </f:advanced>
     </div>
 
-    <div id="bridge_cli_sec" style="display: none">
-        <f:advanced title="Bridge CLI Options">
-            <f:entry field="network_airgap" title="Network Airgap (Optional)">
-                <f:checkbox checked="${instance.isNetwork_airgap() == true}"/>
-            </f:entry>
-        </f:advanced>
-    </div>
-
     <link rel="stylesheet" type="text/css" href="${rootURL}/plugin/blackduck-security-scan/styles/security-scan-freestyle-config.css" />
 
     <script type="text/javascript" src="${rootURL}/plugin/blackduck-security-scan/scripts/SecurityScanFreestyleConfig.js" />
