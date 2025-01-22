@@ -14,6 +14,7 @@ public class IssueAction implements Action {
 
     static {
         PRODUCT_NAME_MAP = new HashMap<>();
+        PRODUCT_NAME_MAP.put("blackducksca", "Black Duck SCA");
         PRODUCT_NAME_MAP.put("polaris", "Polaris");
         PRODUCT_NAME_MAP.put("srm", "SRM");
     }

@@ -29,6 +29,9 @@ public class Utility {
     public static final String URL_PROPERTY = "url";
     public static final String TEST_PROPERTY = "test";
     public static final String ANALYSIS_PROPERTY = "analysis";
+    public static final String PROJECT_BOM_URL_PROPERTY = "projectBomUrl";
+    public static final String POLICY_PROPERTY = "policy";
+    public static final String STATUS_PROPERTY = "status";
 
     public static String getDirectorySeparator(FilePath workspace, TaskListener listener) {
         String os = getAgentOs(workspace, listener);
@@ -318,13 +321,20 @@ public class Utility {
 
     public static String getIssuesUrl(JsonNode rootNode, String product) {
         JsonNode productNode = rootNode.path(DATA_PROPERTY).path(product);
-        if (!productNode.isMissingNode()) {
+        if (productNode.isMissingNode()) {
+            return null;
+        }
+
+        if (product.equals(SecurityProduct.BLACKDUCKSCA.name().toLowerCase())) {
+            return productNode.path(PROJECT_BOM_URL_PROPERTY).asText("null");
+        } else if (product.equals(SecurityProduct.POLARIS.name().toLowerCase())
+                || product.equals(SecurityProduct.SRM.name().toLowerCase())) {
+
             JsonNode issuesUrlNode =
                     productNode.path(PROJECT_PROPERTY).path(ISSUES_PROPERTY).path(URL_PROPERTY);
-            if (!issuesUrlNode.isMissingNode()) {
-                return issuesUrlNode.asText();
-            }
+            return issuesUrlNode.asText(null);
         }
+
         return null;
     }
 
@@ -332,15 +342,20 @@ public class Utility {
         int totalIssues = 0;
         JsonNode productNode = rootNode.path(DATA_PROPERTY).path(product);
         if (!productNode.isMissingNode()) {
-            if (SecurityProduct.SRM.name().equalsIgnoreCase(product)) {
-                JsonNode analysisNode = productNode.path(ANALYSIS_PROPERTY);
-                if (!analysisNode.isMissingNode()) {
-                    totalIssues = calculateIssues(analysisNode);
+            if (SecurityProduct.BLACKDUCKSCA.name().equalsIgnoreCase(product)) {
+                JsonNode statusNode = productNode.path(POLICY_PROPERTY).path(STATUS_PROPERTY);
+                if (!statusNode.isMissingNode()) {
+                    totalIssues = calculateIssues(statusNode);
                 }
             } else if (SecurityProduct.POLARIS.name().equalsIgnoreCase(product)) {
                 JsonNode testNode = productNode.path(TEST_PROPERTY);
                 for (ScanType scanType : ScanType.values()) {
                     totalIssues += calculateIssues(testNode.path(scanType.name()));
+                }
+            } else if (SecurityProduct.SRM.name().equalsIgnoreCase(product)) {
+                JsonNode analysisNode = productNode.path(ANALYSIS_PROPERTY);
+                if (!analysisNode.isMissingNode()) {
+                    totalIssues = calculateIssues(analysisNode);
                 }
             }
         }

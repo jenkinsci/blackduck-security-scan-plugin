@@ -25,7 +25,9 @@ public class SecurityScanRunListener extends RunListener<Run<?, ?>> {
         IssueActionItems issueActionItems = run.getAction(IssueActionItems.class);
         String product = issueActionItems != null ? issueActionItems.getProduct() : ApplicationConstants.NOT_AVAILABLE;
 
-        if (product.equals(SecurityProduct.POLARIS.name()) || product.equals(SecurityProduct.SRM.name())) {
+        if (product.equals(SecurityProduct.POLARIS.name())
+                || product.equals(SecurityProduct.SRM.name())
+                || product.equals(SecurityProduct.BLACKDUCKSCA.name())) {
             try {
                 FilePath filePath = issueActionItems != null ? issueActionItems.getFilePath() : null;
 
