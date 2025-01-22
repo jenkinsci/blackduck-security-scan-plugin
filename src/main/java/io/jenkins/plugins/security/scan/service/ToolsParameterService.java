@@ -255,8 +255,9 @@ public class ToolsParameterService {
 
     private void setScmObject(BridgeInput bridgeInput, Object scmObject, Map<String, Object> scanParameters) {
         boolean isPrCommentSet = isPrCommentValueSet(scanParameters);
+        boolean isFixPrSet = isFixPrValueSet(scanParameters);
         boolean isPullRequestEvent = Utility.isPullRequestEvent(envVars);
-        if (isPrCommentSet && isPullRequestEvent) {
+        if ((isPrCommentSet && isPullRequestEvent) || (isFixPrSet && !isPullRequestEvent)) {
             if (scmObject instanceof Bitbucket) {
                 bridgeInput.setBitbucket((Bitbucket) scmObject);
             } else if (scmObject instanceof Github) {
@@ -328,6 +329,14 @@ public class ToolsParameterService {
             return true;
         } else if (scanParameters.containsKey(ApplicationConstants.POLARIS_PRCOMMENT_ENABLED_KEY)
                 && Objects.equals(scanParameters.get(ApplicationConstants.POLARIS_PRCOMMENT_ENABLED_KEY), true)) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isFixPrValueSet(Map<String, Object> scanParameters) {
+        if (scanParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_FIXPR_ENABLED_KEY)
+                && Objects.equals(scanParameters.get(ApplicationConstants.BLACKDUCKSCA_FIXPR_ENABLED_KEY), true)) {
             return true;
         }
         return false;

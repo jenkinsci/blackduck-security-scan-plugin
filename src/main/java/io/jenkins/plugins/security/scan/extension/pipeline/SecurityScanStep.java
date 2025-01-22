@@ -33,7 +33,8 @@ import org.jenkinsci.plugins.workflow.steps.*;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 
-public class SecurityScanStep extends Step implements SecurityScan, PrCommentScan, ReturnStatusScan, Serializable {
+public class SecurityScanStep extends Step
+        implements SecurityScan, PrCommentScan, FixPrScan, ReturnStatusScan, Serializable {
     private static final long serialVersionUID = 6294070801130995534L;
 
     private String product;
@@ -43,6 +44,11 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     private String blackducksca_scan_failure_severities;
     private Boolean blackducksca_prComment_enabled;
     private Boolean blackducksca_prComment_enabled_actualValue;
+    private Boolean blackducksca_fixpr_enabled;
+    private Boolean blackducksca_fixpr_enabled_actualValue;
+    private String blackducksca_fixpr_filter_severities;
+    private String blackducksca_fixpr_useUpgradeGuidance;
+    private Integer blackducksca_fixpr_maxCount;
     private Boolean blackducksca_reports_sarif_create;
     private String blackducksca_reports_sarif_file_path;
     private Boolean blackducksca_reports_sarif_groupSCAIssues;
@@ -206,6 +212,26 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
 
     public Boolean isBlackducksca_prComment_enabled_actualValue() {
         return blackducksca_prComment_enabled_actualValue;
+    }
+
+    public Boolean isBlackducksca_fixpr_enabled() {
+        return blackducksca_fixpr_enabled;
+    }
+
+    public Boolean isBlackducksca_fixpr_enabled_actualValue() {
+        return blackducksca_fixpr_enabled_actualValue;
+    }
+
+    public String getBlackducksca_fixpr_filter_severities() {
+        return blackducksca_fixpr_filter_severities;
+    }
+
+    public String getBlackducksca_fixpr_useUpgradeGuidance() {
+        return blackducksca_fixpr_useUpgradeGuidance;
+    }
+
+    public Integer getBlackducksca_fixpr_maxCount() {
+        return blackducksca_fixpr_maxCount;
     }
 
     public String getDetect_download_url() {
@@ -708,6 +734,27 @@ public class SecurityScanStep extends Step implements SecurityScan, PrCommentSca
     public void setBlackducksca_prComment_enabled(Boolean blackducksca_prComment_enabled) {
         this.blackducksca_prComment_enabled = blackducksca_prComment_enabled ? true : null;
         this.blackducksca_prComment_enabled_actualValue = blackducksca_prComment_enabled ? true : false;
+    }
+
+    @DataBoundSetter
+    public void setBlackducksca_fixpr_enabled(Boolean blackducksca_fixpr_enabled) {
+        this.blackducksca_fixpr_enabled = blackducksca_fixpr_enabled ? true : null;
+        this.blackducksca_fixpr_enabled_actualValue = blackducksca_fixpr_enabled ? true : false;
+    }
+
+    @DataBoundSetter
+    public void setBlackducksca_fixpr_filter_severities(String blackducksca_fixpr_filter_severities) {
+        this.blackducksca_fixpr_filter_severities = Util.fixEmptyAndTrim(blackducksca_fixpr_filter_severities);
+    }
+
+    @DataBoundSetter
+    public void setBlackducksca_fixpr_useUpgradeGuidance(String blackducksca_fixpr_useUpgradeGuidance) {
+        this.blackducksca_fixpr_useUpgradeGuidance = Util.fixEmptyAndTrim(blackducksca_fixpr_useUpgradeGuidance);
+    }
+
+    @DataBoundSetter
+    public void setBlackducksca_fixpr_maxCount(Integer blackducksca_fixpr_maxCount) {
+        this.blackducksca_fixpr_maxCount = blackducksca_fixpr_maxCount;
     }
 
     @DataBoundSetter

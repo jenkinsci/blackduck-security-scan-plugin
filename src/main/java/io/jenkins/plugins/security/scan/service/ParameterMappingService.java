@@ -8,6 +8,7 @@ import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.extension.SecurityScan;
 import io.jenkins.plugins.security.scan.extension.freestyle.FreestyleScan;
 import io.jenkins.plugins.security.scan.extension.global.ScannerGlobalConfig;
+import io.jenkins.plugins.security.scan.extension.pipeline.FixPrScan;
 import io.jenkins.plugins.security.scan.extension.pipeline.PrCommentScan;
 import io.jenkins.plugins.security.scan.extension.pipeline.ReturnStatusScan;
 import io.jenkins.plugins.security.scan.global.*;
@@ -277,6 +278,29 @@ public class ParameterMappingService {
                     blackDuckParameters,
                     ApplicationConstants.BLACKDUCKSCA_PRCOMMENT_ENABLED_KEY,
                     prCommentScan.isBlackducksca_prComment_enabled_actualValue());
+        }
+
+        if (securityScan instanceof FixPrScan) {
+            FixPrScan fixPrScan = (FixPrScan) securityScan;
+            addParameterIfNotBlank(
+                    blackDuckParameters,
+                    ApplicationConstants.BLACKDUCKSCA_FIXPR_ENABLED_KEY,
+                    fixPrScan.isBlackducksca_fixpr_enabled_actualValue());
+
+            addParameterIfNotBlank(
+                    blackDuckParameters,
+                    ApplicationConstants.BLACKDUCKSCA_FIXPR_MAXCOUNT_KEY,
+                    fixPrScan.getBlackducksca_fixpr_maxCount());
+
+            addParameterIfNotBlank(
+                    blackDuckParameters,
+                    ApplicationConstants.BLACKDUCKSCA_FIXPR_FILTER_SEVERITIES_KEY,
+                    fixPrScan.getBlackducksca_fixpr_filter_severities());
+
+            addParameterIfNotBlank(
+                    blackDuckParameters,
+                    ApplicationConstants.BLACKDUCKSCA_FIXPR_USEUPGRADEGUIDANCE_KEY,
+                    fixPrScan.getBlackducksca_fixpr_useUpgradeGuidance());
         }
 
         addDeprecatedParameterIfNotBlank(

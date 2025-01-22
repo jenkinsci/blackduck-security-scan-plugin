@@ -12,6 +12,7 @@ import io.jenkins.plugins.security.scan.global.Utility;
 import io.jenkins.plugins.security.scan.input.scm.bitbucket.Bitbucket;
 import io.jenkins.plugins.security.scan.input.scm.bitbucket.Repository;
 import io.jenkins.plugins.security.scan.input.scm.bitbucket.User;
+import io.jenkins.plugins.security.scan.input.scm.common.Branch;
 import io.jenkins.plugins.security.scan.input.scm.common.Pull;
 import io.jenkins.plugins.security.scan.service.ToolsParameterService;
 import java.util.Map;
@@ -27,7 +28,8 @@ public class BitbucketRepositoryService {
     public Bitbucket fetchBitbucketRepositoryDetails(
             Map<String, Object> scanParameters,
             BitbucketSCMSource bitbucketSCMSource,
-            Integer projectRepositoryPullNumber)
+            Integer projectRepositoryPullNumber,
+            String branchName)
             throws PluginExceptionHandler {
 
         String bitbucketToken = (String) scanParameters.get(ApplicationConstants.BITBUCKET_TOKEN_KEY);
@@ -36,9 +38,15 @@ public class BitbucketRepositoryService {
         String repositoryName = null;
         String projectKey = null;
         boolean isPrCommentSet = ToolsParameterService.isPrCommentValueSet(scanParameters);
+        boolean isFixPrValueSet = ToolsParameterService.isFixPrValueSet(scanParameters);
 
         if (isPrCommentSet && Utility.isStringNullOrBlank(bitbucketToken)) {
             logger.error(ApplicationConstants.PRCOMMENT_SET_TRUE_BUT_NO_SCM_TOKEN_FOUND, "Bitbucket");
+            throw new PluginExceptionHandler(ErrorCode.NO_BITBUCKET_TOKEN_FOUND);
+        }
+
+        if (isFixPrValueSet && Utility.isStringNullOrBlank(bitbucketToken)) {
+            logger.error(ApplicationConstants.FIXPR_SET_TRUE_BUT_NO_SCM_TOKEN_FOUND, "Bitbucket");
             throw new PluginExceptionHandler(ErrorCode.NO_BITBUCKET_TOKEN_FOUND);
         }
 
@@ -65,11 +73,18 @@ public class BitbucketRepositoryService {
             logger.info("BitBucket repositoryName: " + repositoryName);
             logger.info("BitBucket projectKey: " + projectKey);
             logger.info("BitBucket projectRepositoryPullNumber: " + projectRepositoryPullNumber);
+            logger.info("BitBucket branchName: " + branchName);
             logger.info("BitBucket serverUrl: " + serverUrl);
         }
 
         return createBitbucketObject(
-                serverUrl, bitbucketToken, projectRepositoryPullNumber, repositoryName, projectKey, bitbucketUsername);
+                serverUrl,
+                bitbucketToken,
+                projectRepositoryPullNumber,
+                repositoryName,
+                branchName,
+                projectKey,
+                bitbucketUsername);
     }
 
     public static Bitbucket createBitbucketObject(
@@ -77,6 +92,7 @@ public class BitbucketRepositoryService {
             String bitbucketToken,
             Integer projectRepositoryPullNumber,
             String repositoryName,
+            String branchName,
             String projectKey,
             String bitbucketUsername) {
         boolean isBitbucketCloud = serverUrl != null && serverUrl.startsWith(BITBUCKET_CLOUD_HOST_URL);
@@ -84,19 +100,21 @@ public class BitbucketRepositoryService {
         bitbucket.getApi().setUrl(isBitbucketCloud ? "" : serverUrl);
         bitbucket.getApi().setToken(bitbucketToken);
         Repository repository = new Repository();
+        repository.setBranch(new Branch());
         repository.setName(repositoryName);
 
         if (projectRepositoryPullNumber != null) {
             Pull pull = new Pull();
-            User user = new User();
-
             pull.setNumber(projectRepositoryPullNumber);
             repository.setPull(pull);
+        }
 
-            if (!Utility.isStringNullOrBlank(bitbucketUsername) && isBitbucketCloud) {
-                user.setName(bitbucketUsername);
-                bitbucket.getApi().setUser(user);
-            }
+        repository.getBranch().setName(branchName);
+
+        if (!Utility.isStringNullOrBlank(bitbucketUsername) && isBitbucketCloud) {
+            User user = new User();
+            user.setName(bitbucketUsername);
+            bitbucket.getApi().setUser(user);
         }
 
         bitbucket.getProject().setKey(projectKey);

@@ -17,6 +17,9 @@ public class BlackDuckSCA {
     @JsonProperty("automation")
     private Automation automation;
 
+    @JsonProperty("fixPr")
+    private FixPr fixPr;
+
     @JsonProperty("reports")
     private Reports reports;
 
@@ -53,6 +56,14 @@ public class BlackDuckSCA {
 
     public void setAutomation(Automation automation) {
         this.automation = automation;
+    }
+
+    public FixPr getFixPr() {
+        return fixPr;
+    }
+
+    public void setFixPr(FixPr fixPr) {
+        this.fixPr = fixPr;
     }
 
     public Reports getReports() {
