@@ -27,7 +27,9 @@ public class SecurityScanRunListener extends RunListener<Run<?, ?>> {
 
         if (product.equals(SecurityProduct.POLARIS.name())
                 || product.equals(SecurityProduct.SRM.name())
-                || product.equals(SecurityProduct.BLACKDUCKSCA.name())) {
+                || product.equals(SecurityProduct.BLACKDUCKSCA.name())
+                || product.equals(SecurityProduct.COVERITY.name())
+                || product.equals(SecurityProduct.SRM.name())) {
             try {
                 FilePath filePath = issueActionItems != null ? issueActionItems.getFilePath() : null;
 
@@ -40,7 +42,10 @@ public class SecurityScanRunListener extends RunListener<Run<?, ?>> {
                 String issuesUrl = Utility.getIssuesUrl(rootNode, product.toLowerCase());
                 int totalIssues = Utility.calculateTotalIssues(rootNode, product.toLowerCase());
 
-                run.addAction(new IssueAction(product.toLowerCase(), totalIssues, issuesUrl != null ? issuesUrl : ""));
+                run.addAction(new IssueAction(
+                        product.toLowerCase(),
+                        totalIssues,
+                        Utility.isStringNullOrBlank(issuesUrl) ? issueActionItems.getProductUrl() : issuesUrl));
             } catch (RuntimeException e) {
                 logger.error(ApplicationConstants.EXCEPTION_WHILE_PROCESS_SCAN_INFO_FILE);
             } catch (Exception e) {

@@ -1408,6 +1408,7 @@ public class SecurityScanStep extends Step
             } finally {
                 run.addAction(new IssueActionItems(
                         scanparametersMap.get(ApplicationConstants.PRODUCT_KEY).toString(),
+                        Utility.getProductUrl(scanparametersMap),
                         workspace.child(ApplicationConstants.SCAN_INFO_OUT_FILE_NAME)));
                 String exitMessage = ExceptionMessages.getErrorMessage(exitCode, undefinedErrorMessage);
                 if (exitMessage != null) {
