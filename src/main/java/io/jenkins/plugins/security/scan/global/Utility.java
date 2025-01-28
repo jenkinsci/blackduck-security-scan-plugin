@@ -30,10 +30,11 @@ public class Utility {
     public static final String TEST_PROPERTY = "test";
     public static final String ANALYSIS_PROPERTY = "analysis";
     public static final String PROJECT_BOM_URL_PROPERTY = "projectBomUrl";
+    public static final String RESULT_URL_PROPERTY = "resultURL";
     public static final String POLICY_PROPERTY = "policy";
     public static final String STATUS_PROPERTY = "status";
     public static final String CONNECT_PROPERTY = "connect";
-    public static final String COUNT_PROPERTY = "count";
+    public static final String ISSUE_COUNT_PROPERTY = "issueCount";
 
     public static String getDirectorySeparator(FilePath workspace, TaskListener listener) {
         String os = getAgentOs(workspace, listener);
@@ -367,7 +368,7 @@ public class Utility {
             return productNode.path(PROJECT_BOM_URL_PROPERTY).asText(null);
         } else if (product.equals(SecurityProduct.COVERITY.name().toLowerCase())) {
             JsonNode issuesUrlNode =
-                    productNode.path(CONNECT_PROPERTY).path(ISSUES_PROPERTY).path(PROJECT_BOM_URL_PROPERTY);
+                    productNode.path(CONNECT_PROPERTY).path(POLICY_PROPERTY).path(RESULT_URL_PROPERTY);
             return issuesUrlNode.asText(null);
         } else if (product.equals(SecurityProduct.POLARIS.name().toLowerCase())
                 || product.equals(SecurityProduct.SRM.name().toLowerCase())) {
@@ -391,8 +392,8 @@ public class Utility {
             } else if (SecurityProduct.COVERITY.name().equalsIgnoreCase(product)) {
                 totalIssues = productNode
                         .path(CONNECT_PROPERTY)
-                        .path(ISSUES_PROPERTY)
-                        .path(COUNT_PROPERTY)
+                        .path(POLICY_PROPERTY)
+                        .path(ISSUE_COUNT_PROPERTY)
                         .asInt(0);
             } else if (SecurityProduct.POLARIS.name().equalsIgnoreCase(product)) {
                 JsonNode testNode = productNode.path(TEST_PROPERTY);
