@@ -143,7 +143,7 @@ public class ToolsParameterServiceTest {
 
         try {
             String jsonStringNonPrCommentOrFixPr =
-                    "{\"data\":{\"blackducksca\":{\"url\":\"https://fake.blackduck.url\",\"token\":\"MDJDSROSVC56FAKEKEY\"},\"bitbucket\":{\"api\":{\"user\":{\"name\":\"fake-user\"},\"token\":\"MDJDSROSVC56FAKEKEY\"},\"project\":{\"repository\":{\"pull\":{\"number\":12},\"branch\":{\"name\":\"test-branch\"},\"name\":\"test\"},\"key\":\"abc\"}}}}";
+                    "{\"data\":{\"blackducksca\":{\"url\":\"https://fake.blackduck.url\",\"token\":\"MDJDSROSVC56FAKEKEY\"},\"bitbucket\":{\"api\":{\"user\":{\"name\":\"fake-user\"},\"token\":\"MDJDSROSVC56FAKEKEY\"},\"project\":{\"repository\":{\"pull\":{\"number\":12},\"branch\":{\"name\":\"test-branch\"},\"name\":\"test\"}},\"workspace\":{\"id\":\"abc\"}}}}";
 
             String inputJsonPathForNonFixPr = toolsParameterService.prepareBridgeInputJson(
                     scanParameters,
@@ -181,7 +181,7 @@ public class ToolsParameterServiceTest {
 
         try {
             String jsonStringNonPrCommentOrFixPr =
-                    "{\"data\":{\"blackducksca\":{\"url\":\"https://fake.blackduck.url\",\"token\":\"MDJDSROSVC56FAKEKEY\"},\"bitbucket\":{\"api\":{\"user\":{\"name\":\"fake-user\"},\"token\":\"MDJDSROSVC56FAKEKEY\"},\"project\":{\"repository\":{\"branch\":{\"name\":\"test-branch\"},\"name\":\"test\"},\"key\":\"abc\"}}}}";
+                    "{\"data\":{\"blackducksca\":{\"url\":\"https://fake.blackduck.url\",\"token\":\"MDJDSROSVC56FAKEKEY\"},\"bitbucket\":{\"api\":{\"user\":{\"name\":\"fake-user\"},\"token\":\"MDJDSROSVC56FAKEKEY\"},\"project\":{\"repository\":{\"branch\":{\"name\":\"test-branch\"},\"name\":\"test\"}},\"workspace\":{\"id\":\"abc\"}}}}";
 
             String inputJsonPathForFixPr = toolsParameterService.prepareBridgeInputJson(
                     scanParameters,
@@ -291,7 +291,7 @@ public class ToolsParameterServiceTest {
 
         try {
             String jsonStringNonPrCommentOrFixPr =
-                    "{\"data\":{\"polaris\":{\"serverUrl\":\"https://fake.polaris.url\",\"accesstoken\":\"MDJDSROSVC56FAKEKEY\",\"application\":{\"name\":\"test\"},\"project\":{\"name\":\"test\"},\"assessment\":{\"types\":[\"SCA\",\"SAST\"]},\"branch\":{\"name\":\"fake-pr-branch\"}},\"bitbucket\":{\"api\":{\"user\":{\"name\":\"fake-username\"},\"token\":\"MDJDSROSVC56FAKEKEY\"},\"project\":{\"repository\":{\"pull\":{\"number\":12},\"branch\":{\"name\":\"test-branch\"},\"name\":\"test\"},\"key\":\"abc\"}}}}";
+                    "{\"data\":{\"polaris\":{\"serverUrl\":\"https://fake.polaris.url\",\"accesstoken\":\"MDJDSROSVC56FAKEKEY\",\"application\":{\"name\":\"test\"},\"project\":{\"name\":\"test\"},\"assessment\":{\"types\":[\"SCA\",\"SAST\"]},\"branch\":{\"name\":\"fake-pr-branch\"}},\"bitbucket\":{\"api\":{\"user\":{\"name\":\"fake-username\"},\"token\":\"MDJDSROSVC56FAKEKEY\"},\"project\":{\"repository\":{\"pull\":{\"number\":12},\"branch\":{\"name\":\"test-branch\"},\"name\":\"test\"}},\"workspace\":{\"id\":\"abc\"}}}}";
 
             String inputJsonPathForNonFixPr = toolsParameterService.prepareBridgeInputJson(
                     scanParameters, polaris, bitbucketObject, ApplicationConstants.POLARIS_INPUT_JSON_PREFIX, null);
