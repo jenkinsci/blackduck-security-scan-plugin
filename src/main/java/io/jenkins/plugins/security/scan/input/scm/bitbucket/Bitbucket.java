@@ -9,6 +9,9 @@ public class Bitbucket {
     @JsonProperty("project")
     private Project project;
 
+    @JsonProperty("workspace")
+    private Workspace workspace;
+
     public Bitbucket() {
         api = new Api();
         project = new Project();
@@ -28,5 +31,13 @@ public class Bitbucket {
 
     public void setProject(Project project) {
         this.project = project;
+    }
+
+    public Workspace getWorkspace() {
+        return workspace;
+    }
+
+    public void setWorkspace(Workspace workspace) {
+        this.workspace = workspace;
     }
 }
