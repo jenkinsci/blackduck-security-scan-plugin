@@ -71,11 +71,13 @@ public class BitbucketRepositoryService {
 
         boolean isBitbucketCloud = serverUrl != null && serverUrl.startsWith(BITBUCKET_CLOUD_HOST_URL);
 
-        if (projectRepositoryPullNumber != null) {
+        if (projectRepositoryPullNumber != null || isFixPrValueSet) {
             logger.info("BitBucket bitbucketUsername: " + bitbucketUsername);
             logger.info("BitBucket repositoryName: " + repositoryName);
             logger.info("BitBucket " + (isBitbucketCloud ? "workspaceId: " : "projectKey: ") + projectKey);
-            logger.info("BitBucket projectRepositoryPullNumber: " + projectRepositoryPullNumber);
+            if (projectRepositoryPullNumber != null) {
+                logger.info("BitBucket projectRepositoryPullNumber: " + projectRepositoryPullNumber);
+            }
             logger.info("BitBucket branchName: " + branchName);
             logger.info("BitBucket serverUrl: " + serverUrl);
         }
