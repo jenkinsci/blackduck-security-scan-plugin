@@ -59,10 +59,12 @@ public class GithubRepositoryService {
 
         String githubHostUrl = extractGitHubHost(githubApiUri);
 
-        if (projectRepositoryPullNumber != null) {
+        if (projectRepositoryPullNumber != null || isFixPrValueSet) {
             logger.info("Github repositoryName: " + repositoryName);
             logger.info("Github repositoryOwner: " + repositoryOwner);
-            logger.info("Github projectRepositoryPullNumber: " + projectRepositoryPullNumber);
+            if (projectRepositoryPullNumber != null) {
+                logger.info("Github projectRepositoryPullNumber: " + projectRepositoryPullNumber);
+            }
             logger.info("Github branchName: " + branchName);
             logger.info("Github githubHostUrl: " + githubHostUrl);
         }

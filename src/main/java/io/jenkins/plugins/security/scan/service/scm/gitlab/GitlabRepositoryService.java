@@ -56,9 +56,11 @@ public class GitlabRepositoryService {
 
         String gitlabHostUrl = extractGitlabHost(repositoryUrl);
 
-        if (projectRepositoryPullNumber != null) {
+        if (projectRepositoryPullNumber != null || isFixPrValueSet) {
             logger.info("Gitlab repositoryName: " + repositoryName);
-            logger.info("Gitlab projectRepositoryPullNumber: " + projectRepositoryPullNumber);
+            if (projectRepositoryPullNumber != null) {
+                logger.info("Gitlab projectRepositoryPullNumber: " + projectRepositoryPullNumber);
+            }
             logger.info("Gitlab branchName: " + branchName);
             logger.info("Gitlab gitlabHostUrl: " + gitlabHostUrl);
         }
