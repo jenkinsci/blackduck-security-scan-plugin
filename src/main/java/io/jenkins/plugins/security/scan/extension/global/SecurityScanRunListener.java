@@ -23,34 +23,45 @@ public class SecurityScanRunListener extends RunListener<Run<?, ?>> {
         this.logger = new LoggerWrapper(listener);
 
         IssueActionItems issueActionItems = run.getAction(IssueActionItems.class);
-        String product = issueActionItems != null ? issueActionItems.getProduct() : ApplicationConstants.NOT_AVAILABLE;
+        String product = getProduct(issueActionItems);
 
         if (product.equals(SecurityProduct.POLARIS.name())
                 || product.equals(SecurityProduct.SRM.name())
                 || product.equals(SecurityProduct.BLACKDUCKSCA.name())
                 || product.equals(SecurityProduct.COVERITY.name())
                 || product.equals(SecurityProduct.SRM.name())) {
-            try {
-                FilePath filePath = issueActionItems != null ? issueActionItems.getFilePath() : null;
+            processScanInfo(run, issueActionItems, product);
+        }
+    }
 
-                if (filePath == null || !filePath.exists()) {
-                    logger.error(ApplicationConstants.SCAN_INFO_FILE_NOT_FOUND);
-                }
+    private String getProduct(IssueActionItems issueActionItems) {
+        return (issueActionItems != null) ? issueActionItems.getProduct() : ApplicationConstants.NOT_AVAILABLE;
+    }
 
-                File localFile = new File(filePath.getRemote());
-                JsonNode rootNode = Utility.parseJsonFile(localFile);
-                String issuesUrl = Utility.getIssuesUrl(rootNode, product.toLowerCase());
-                int totalIssues = Utility.calculateTotalIssues(rootNode, product.toLowerCase());
+    private void processScanInfo(Run<?, ?> run, IssueActionItems issueActionItems, String product) {
+        try {
+            FilePath filePath = (issueActionItems != null) ? issueActionItems.getFilePath() : null;
+            if (filePath == null || !filePath.exists()) {
+                logger.info(ApplicationConstants.SCAN_INFO_FILE_NOT_FOUND);
+                return;
+            }
 
+            JsonNode rootNode = Utility.parseJsonFile(new File(filePath.getRemote()));
+            String issuesUrl = Utility.getIssuesUrl(rootNode, product.toLowerCase());
+            int totalIssues = Utility.calculateTotalIssues(rootNode, product.toLowerCase());
+
+            if (totalIssues != -1) {
                 run.addAction(new IssueAction(
                         product.toLowerCase(),
                         totalIssues,
                         Utility.isStringNullOrBlank(issuesUrl) ? issueActionItems.getProductUrl() : issuesUrl));
-            } catch (RuntimeException e) {
-                logger.error(ApplicationConstants.EXCEPTION_WHILE_PROCESS_SCAN_INFO_FILE);
-            } catch (Exception e) {
-                logger.error(ApplicationConstants.EXCEPTION_WHILE_PROCESS_SCAN_INFO_FILE);
+            } else {
+                logger.info(ApplicationConstants.SCAN_INFO_ISSUE_COUNT_NOT_FOUND);
             }
+        } catch (RuntimeException e) {
+            logger.error(ApplicationConstants.EXCEPTION_WHILE_PROCESS_SCAN_INFO_FILE);
+        } catch (Exception e) {
+            logger.info(ApplicationConstants.EXCEPTION_WHILE_PROCESS_SCAN_INFO_FILE);
         }
     }
 }

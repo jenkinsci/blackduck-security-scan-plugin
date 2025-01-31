@@ -381,7 +381,7 @@ public class Utility {
     }
 
     public static int calculateTotalIssues(JsonNode rootNode, String product) {
-        int totalIssues = 0;
+        int totalIssues = -1;
         JsonNode productNode = rootNode.path(DATA_PROPERTY).path(product);
         if (!productNode.isMissingNode()) {
             if (SecurityProduct.BLACKDUCKSCA.name().equalsIgnoreCase(product)) {
@@ -394,11 +394,14 @@ public class Utility {
                         .path(CONNECT_PROPERTY)
                         .path(POLICY_PROPERTY)
                         .path(ISSUE_COUNT_PROPERTY)
-                        .asInt(0);
+                        .asInt(-1);
             } else if (SecurityProduct.POLARIS.name().equalsIgnoreCase(product)) {
                 JsonNode testNode = productNode.path(TEST_PROPERTY);
-                for (ScanType scanType : ScanType.values()) {
-                    totalIssues += calculateIssues(testNode.path(scanType.name()));
+                if (!testNode.isMissingNode()) {
+                    totalIssues = 0;
+                    for (ScanType scanType : ScanType.values()) {
+                        totalIssues += calculateIssues(testNode.path(scanType.name()));
+                    }
                 }
             } else if (SecurityProduct.SRM.name().equalsIgnoreCase(product)) {
                 JsonNode analysisNode = productNode.path(ANALYSIS_PROPERTY);
