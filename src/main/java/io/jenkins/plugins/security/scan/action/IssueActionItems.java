@@ -5,10 +5,12 @@ import hudson.model.Action;
 
 public class IssueActionItems implements Action {
     private final String product;
+    private final String productUrl;
     private final FilePath filePath;
 
-    public IssueActionItems(String product, FilePath filePath) {
+    public IssueActionItems(String product, String productUrl, FilePath filePath) {
         this.product = product;
+        this.productUrl = productUrl;
         this.filePath = filePath;
     }
 
@@ -18,6 +20,10 @@ public class IssueActionItems implements Action {
 
     public FilePath getFilePath() {
         return filePath;
+    }
+
+    public String getProductUrl() {
+        return productUrl;
     }
 
     @Override

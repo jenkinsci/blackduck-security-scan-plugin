@@ -17,6 +17,7 @@ public class IssueAction implements Action {
         PRODUCT_NAME_MAP.put("blackducksca", "Black Duck SCA");
         PRODUCT_NAME_MAP.put("polaris", "Polaris");
         PRODUCT_NAME_MAP.put("srm", "SRM");
+        PRODUCT_NAME_MAP.put("coverity", "Coverity");
     }
 
     public IssueAction(final String product, final int defectCount, final String issueViewUrl) {

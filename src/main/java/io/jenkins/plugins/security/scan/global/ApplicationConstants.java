@@ -269,10 +269,11 @@ public class ApplicationConstants {
             DEPRECATED_PRODUCT_WILL_BE_REMOVED_IN_FUTURE_AND_RECOMMENDING_TO_USE_NEW_PRODUCT_AND_ITS_PARAMETERS =
                     "%s product is deprecated and will be removed in future. Please use %s and its corresponding parameters instead.";
 
-    // Warn Log Related Issue Count
+    // Info Log Related Issue Count
     public static final String SCAN_INFO_FILE_NOT_FOUND = "File for issue count does not exist";
     public static final String EXCEPTION_WHILE_PROCESS_SCAN_INFO_FILE =
             "An exception occurred while processing JSON file for Issue count";
+    public static final String SCAN_INFO_ISSUE_COUNT_NOT_FOUND = "Issue count not not found in output file";
 
     // Bridge Download Parameters
     @Deprecated

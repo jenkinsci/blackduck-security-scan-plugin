@@ -1171,6 +1171,7 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
             if (scanparametersMap != null && scanparametersMap.containsKey(ApplicationConstants.PRODUCT_KEY)) {
                 run.addAction(new IssueActionItems(
                         scanparametersMap.get(ApplicationConstants.PRODUCT_KEY).toString(),
+                        Utility.getProductUrl(scanparametersMap),
                         workspace.child(ApplicationConstants.SCAN_INFO_OUT_FILE_NAME)));
             }
 
