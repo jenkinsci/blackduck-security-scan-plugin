@@ -12,6 +12,7 @@ import io.jenkins.plugins.security.scan.global.Utility;
 import io.jenkins.plugins.security.scan.input.scm.bitbucket.Bitbucket;
 import io.jenkins.plugins.security.scan.input.scm.bitbucket.Repository;
 import io.jenkins.plugins.security.scan.input.scm.bitbucket.User;
+import io.jenkins.plugins.security.scan.input.scm.bitbucket.Workspace;
 import io.jenkins.plugins.security.scan.input.scm.common.Branch;
 import io.jenkins.plugins.security.scan.input.scm.common.Pull;
 import io.jenkins.plugins.security.scan.service.ToolsParameterService;
@@ -68,11 +69,15 @@ public class BitbucketRepositoryService {
             projectKey = bitbucketRepository.getOwnerName();
         }
 
-        if (projectRepositoryPullNumber != null) {
+        boolean isBitbucketCloud = serverUrl != null && serverUrl.startsWith(BITBUCKET_CLOUD_HOST_URL);
+
+        if (projectRepositoryPullNumber != null || isFixPrValueSet) {
             logger.info("BitBucket bitbucketUsername: " + bitbucketUsername);
             logger.info("BitBucket repositoryName: " + repositoryName);
-            logger.info("BitBucket projectKey: " + projectKey);
-            logger.info("BitBucket projectRepositoryPullNumber: " + projectRepositoryPullNumber);
+            logger.info("BitBucket " + (isBitbucketCloud ? "workspaceId: " : "projectKey: ") + projectKey);
+            if (projectRepositoryPullNumber != null) {
+                logger.info("BitBucket projectRepositoryPullNumber: " + projectRepositoryPullNumber);
+            }
             logger.info("BitBucket branchName: " + branchName);
             logger.info("BitBucket serverUrl: " + serverUrl);
         }
@@ -117,7 +122,14 @@ public class BitbucketRepositoryService {
             bitbucket.getApi().setUser(user);
         }
 
-        bitbucket.getProject().setKey(projectKey);
+        if (isBitbucketCloud) {
+            Workspace workspace = new Workspace();
+            workspace.setId(projectKey);
+            bitbucket.setWorkspace(workspace);
+        } else {
+            bitbucket.getProject().setKey(projectKey);
+        }
+
         bitbucket.getProject().setRepository(repository);
 
         return bitbucket;
