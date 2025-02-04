@@ -603,7 +603,8 @@ public class ToolsParameterServiceTest {
                 String.format(
                         "File %s does not exist at the specified path.",
                         ApplicationConstants.COVERITY_INPUT_JSON_PREFIX.concat(".json")));
-        assertEquals(commandLineArgs.get(5), BridgeParams.DIAGNOSTICS_OPTION);
+        assertEquals(commandLineArgs.get(5), BridgeParams.OUT_OPTION);
+        assertEquals(commandLineArgs.get(7), BridgeParams.DIAGNOSTICS_OPTION);
 
         Utility.removeFile(commandLineArgs.get(4), workspace, listenerMock);
     }
