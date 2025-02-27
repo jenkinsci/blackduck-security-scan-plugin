@@ -9,7 +9,7 @@
   </parent>
   <groupId>io.jenkins.plugins</groupId>
   <artifactId>blackduck-security-scan</artifactId>
-  <version>${revision}${changelist}</version>
+  <version>2.1.0</version>
   <packaging>hpi</packaging>
   <name>Black Duck Security Scan</name>
   <url>https://github.com/jenkinsci/${project.artifactId}-plugin</url>
