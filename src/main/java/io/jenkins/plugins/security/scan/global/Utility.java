@@ -367,8 +367,7 @@ public class Utility {
         if (product.equals(SecurityProduct.BLACKDUCKSCA.name().toLowerCase())) {
             return productNode.path(PROJECT_BOM_URL_PROPERTY).asText(null);
         } else if (product.equals(SecurityProduct.COVERITY.name().toLowerCase())) {
-            JsonNode issuesUrlNode =
-                    productNode.path(CONNECT_PROPERTY).path(POLICY_PROPERTY).path(RESULT_URL_PROPERTY);
+            JsonNode issuesUrlNode = productNode.path(CONNECT_PROPERTY).path(RESULT_URL_PROPERTY);
             return issuesUrlNode.asText(null);
         } else if (product.equals(SecurityProduct.POLARIS.name().toLowerCase())
                 || product.equals(SecurityProduct.SRM.name().toLowerCase())) {

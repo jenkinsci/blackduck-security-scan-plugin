@@ -50,7 +50,7 @@ public class SecurityScanRunListener extends RunListener<Run<?, ?>> {
             String issuesUrl = Utility.getIssuesUrl(rootNode, product.toLowerCase());
             int totalIssues = Utility.calculateTotalIssues(rootNode, product.toLowerCase());
 
-            if (totalIssues != -1) {
+            if (totalIssues != -1 && !issueActionItems.isPrEvent()) {
                 run.addAction(new IssueAction(
                         product.toLowerCase(),
                         totalIssues,

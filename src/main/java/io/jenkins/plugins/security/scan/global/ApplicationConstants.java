@@ -27,7 +27,7 @@ public class ApplicationConstants {
     public static final String VERSION_FILE = "versions.txt";
     public static final String NOT_AVAILABLE = "NA";
     public static final String SCAN_INFO_OUT_FILE_NAME = ".bridge/output/scan_info_out.json";
-    public static final String BLACK_DUCK_LOGO_FILE_NAME = "/plugin/black-duck-security-scan/icons/blackduck.png";
+    public static final String BLACK_DUCK_LOGO_FILE_NAME = "/plugin/blackduck-security-scan/icons/blackduck.png";
 
     // Jenkins Environment Variables
     public static final String ENV_JOB_NAME_KEY = "JOB_NAME";
@@ -273,7 +273,7 @@ public class ApplicationConstants {
     public static final String SCAN_INFO_FILE_NOT_FOUND = "File for issue count does not exist";
     public static final String EXCEPTION_WHILE_PROCESS_SCAN_INFO_FILE =
             "An exception occurred while processing JSON file for Issue count";
-    public static final String SCAN_INFO_ISSUE_COUNT_NOT_FOUND = "Issue count not not found in output file";
+    public static final String SCAN_INFO_ISSUE_COUNT_NOT_FOUND = "Issue count not found in output file";
 
     // Bridge Download Parameters
     @Deprecated

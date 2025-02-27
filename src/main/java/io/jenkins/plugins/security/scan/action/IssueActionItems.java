@@ -7,11 +7,13 @@ public class IssueActionItems implements Action {
     private final String product;
     private final String productUrl;
     private final FilePath filePath;
+    private final boolean isPrEvent;
 
-    public IssueActionItems(String product, String productUrl, FilePath filePath) {
+    public IssueActionItems(String product, String productUrl, FilePath filePath, boolean isPrEvent) {
         this.product = product;
         this.productUrl = productUrl;
         this.filePath = filePath;
+        this.isPrEvent = isPrEvent;
     }
 
     public String getProduct() {
@@ -24,6 +26,10 @@ public class IssueActionItems implements Action {
 
     public String getProductUrl() {
         return productUrl;
+    }
+
+    public boolean isPrEvent() {
+        return isPrEvent;
     }
 
     @Override
