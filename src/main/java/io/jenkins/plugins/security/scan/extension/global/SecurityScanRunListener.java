@@ -13,6 +13,7 @@ import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.global.Utility;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import java.io.File;
+import java.io.IOException;
 
 @Extension
 public class SecurityScanRunListener extends RunListener<Run<?, ?>> {
@@ -28,8 +29,7 @@ public class SecurityScanRunListener extends RunListener<Run<?, ?>> {
         if (product.equals(SecurityProduct.POLARIS.name())
                 || product.equals(SecurityProduct.SRM.name())
                 || product.equals(SecurityProduct.BLACKDUCKSCA.name())
-                || product.equals(SecurityProduct.COVERITY.name())
-                || product.equals(SecurityProduct.SRM.name())) {
+                || product.equals(SecurityProduct.COVERITY.name())) {
             processScanInfo(run, issueActionItems, product);
         }
     }
@@ -58,10 +58,9 @@ public class SecurityScanRunListener extends RunListener<Run<?, ?>> {
             } else {
                 logger.info(ApplicationConstants.SCAN_INFO_ISSUE_COUNT_NOT_FOUND);
             }
-        } catch (RuntimeException e) {
-            logger.error(ApplicationConstants.EXCEPTION_WHILE_PROCESS_SCAN_INFO_FILE);
-        } catch (Exception e) {
-            logger.info(ApplicationConstants.EXCEPTION_WHILE_PROCESS_SCAN_INFO_FILE);
+        } catch (IOException | InterruptedException | RuntimeException e) {
+            logger.info(ApplicationConstants.EXCEPTION_WHILE_PROCESS_SCAN_INFO_FILE, e.getMessage());
+            Thread.currentThread().interrupt();
         }
     }
 }
