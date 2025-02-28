@@ -58,7 +58,7 @@ public class SecurityScanRunListener extends RunListener<Run<?, ?>> {
             } else {
                 logger.info(ApplicationConstants.SCAN_INFO_ISSUE_COUNT_NOT_FOUND);
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException | InterruptedException | RuntimeException e) {
             logger.info(ApplicationConstants.EXCEPTION_WHILE_PROCESS_SCAN_INFO_FILE, e.getMessage());
             Thread.currentThread().interrupt();
         }
