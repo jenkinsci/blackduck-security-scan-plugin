@@ -14,22 +14,22 @@ public class LoggerWrapper {
     }
 
     public void info(String format, Object... args) {
-        String message = String.format(format, args);
+        String message = (args.length == 0) ? format : String.format(format, args);
         printMessage("INFO: " + message);
     }
 
     public void warn(String format, Object... args) {
-        String message = String.format(format, args);
+        String message = (args.length == 0) ? format : String.format(format, args);
         printMessage("WARN: " + message);
     }
 
     public void error(String format, Object... args) {
-        String message = String.format(format, args);
+        String message = (args.length == 0) ? format : String.format(format, args);
         printMessage("ERROR: " + message);
     }
 
     public void println(String format, Object... args) {
-        String message = String.format(format, args);
+        String message = (args.length == 0) ? format : String.format(format, args);
         listener.getLogger().println(message);
     }
 
