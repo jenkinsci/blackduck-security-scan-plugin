@@ -27,7 +27,7 @@
   </scm>
   <properties>
     <!-- https://www.jenkins.io/doc/developer/plugin-development/choosing-jenkins-baseline/ -->
-    <revision>2.2.0</revision>
+    <revision>2.1.1</revision>
     <changelist>-SNAPSHOT</changelist>
     <jenkins.version>2.440.3</jenkins.version>
     <gitHubRepo>jenkinsci/${project.artifactId}-plugin</gitHubRepo>
