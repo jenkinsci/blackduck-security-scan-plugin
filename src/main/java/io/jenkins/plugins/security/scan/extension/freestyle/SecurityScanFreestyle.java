@@ -1170,11 +1170,15 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
         } finally {
             if (scanparametersMap != null && scanparametersMap.containsKey(ApplicationConstants.PRODUCT_KEY)) {
                 boolean isPullRequestEvent = Utility.isPullRequestEvent(envVars);
-                run.addAction(new IssueActionItems(
-                        scanparametersMap.get(ApplicationConstants.PRODUCT_KEY).toString(),
-                        Utility.getProductUrl(scanparametersMap),
-                        workspace.child(ApplicationConstants.SCAN_INFO_OUT_FILE_NAME),
-                        isPullRequestEvent));
+                if (scanparametersMap.containsKey(ApplicationConstants.PRODUCT_KEY)) {
+                    run.addAction(new IssueActionItems(
+                            scanparametersMap
+                                    .get(ApplicationConstants.PRODUCT_KEY)
+                                    .toString(),
+                            Utility.getProductUrl(scanparametersMap),
+                            workspace.child(ApplicationConstants.SCAN_INFO_OUT_FILE_NAME),
+                            isPullRequestEvent));
+                }
             }
 
             String exitMessage = ExceptionMessages.getErrorMessage(exitCode, undefinedErrorMessage);

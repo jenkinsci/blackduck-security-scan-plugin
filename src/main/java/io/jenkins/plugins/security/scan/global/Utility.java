@@ -332,26 +332,24 @@ public class Utility {
         switch (SecurityProduct.valueOf(product)) {
             case BLACKDUCK:
             case BLACKDUCKSCA:
-                urlKey = scanParametersMap.containsKey(ApplicationConstants.BLACKDUCKSCA_URL_KEY)
-                        ? scanParametersMap
-                                .get(ApplicationConstants.BLACKDUCKSCA_URL_KEY)
-                                .toString()
-                        : scanParametersMap
-                                .getOrDefault(ApplicationConstants.BLACKDUCK_URL_KEY, "")
-                                .toString();
+                urlKey = scanParametersMap
+                        .getOrDefault(ApplicationConstants.BLACKDUCKSCA_URL_KEY, "")
+                        .toString();
                 break;
             case COVERITY:
                 urlKey = scanParametersMap
-                        .get(ApplicationConstants.COVERITY_URL_KEY)
+                        .getOrDefault(ApplicationConstants.COVERITY_URL_KEY, "")
                         .toString();
                 break;
             case POLARIS:
                 urlKey = scanParametersMap
-                        .get(ApplicationConstants.POLARIS_SERVER_URL_KEY)
+                        .getOrDefault(ApplicationConstants.POLARIS_SERVER_URL_KEY, "")
                         .toString();
                 break;
             case SRM:
-                urlKey = scanParametersMap.get(ApplicationConstants.SRM_URL_KEY).toString();
+                urlKey = scanParametersMap
+                        .getOrDefault(ApplicationConstants.SRM_URL_KEY, "")
+                        .toString();
                 break;
         }
 
