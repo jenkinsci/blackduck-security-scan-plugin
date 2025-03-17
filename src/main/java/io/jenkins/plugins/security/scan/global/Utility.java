@@ -332,26 +332,24 @@ public class Utility {
         switch (SecurityProduct.valueOf(product)) {
             case BLACKDUCK:
             case BLACKDUCKSCA:
-                urlKey = scanParametersMap.containsKey(ApplicationConstants.BLACKDUCKSCA_URL_KEY)
-                        ? scanParametersMap
-                                .get(ApplicationConstants.BLACKDUCKSCA_URL_KEY)
-                                .toString()
-                        : scanParametersMap
-                                .getOrDefault(ApplicationConstants.BLACKDUCK_URL_KEY, "")
-                                .toString();
+                urlKey = scanParametersMap
+                        .getOrDefault(ApplicationConstants.BLACKDUCKSCA_URL_KEY, "")
+                        .toString();
                 break;
             case COVERITY:
                 urlKey = scanParametersMap
-                        .get(ApplicationConstants.COVERITY_URL_KEY)
+                        .getOrDefault(ApplicationConstants.COVERITY_URL_KEY, "")
                         .toString();
                 break;
             case POLARIS:
                 urlKey = scanParametersMap
-                        .get(ApplicationConstants.POLARIS_SERVER_URL_KEY)
+                        .getOrDefault(ApplicationConstants.POLARIS_SERVER_URL_KEY, "")
                         .toString();
                 break;
             case SRM:
-                urlKey = scanParametersMap.get(ApplicationConstants.SRM_URL_KEY).toString();
+                urlKey = scanParametersMap
+                        .getOrDefault(ApplicationConstants.SRM_URL_KEY, "")
+                        .toString();
                 break;
         }
 
@@ -380,37 +378,54 @@ public class Utility {
     }
 
     public static int calculateTotalIssues(JsonNode rootNode, String product) {
-        int totalIssues = -1;
         JsonNode productNode = rootNode.path(DATA_PROPERTY).path(product);
-        if (!productNode.isMissingNode()) {
-            if (SecurityProduct.BLACKDUCKSCA.name().equalsIgnoreCase(product)) {
-                JsonNode statusNode = productNode.path(POLICY_PROPERTY).path(STATUS_PROPERTY);
-                if (!statusNode.isMissingNode()) {
-                    totalIssues = calculateIssues(statusNode);
-                }
-            } else if (SecurityProduct.COVERITY.name().equalsIgnoreCase(product)) {
-                totalIssues = productNode
-                        .path(CONNECT_PROPERTY)
-                        .path(POLICY_PROPERTY)
-                        .path(ISSUE_COUNT_PROPERTY)
-                        .asInt(-1);
-            } else if (SecurityProduct.POLARIS.name().equalsIgnoreCase(product)) {
-                JsonNode testNode = productNode.path(TEST_PROPERTY);
-                if (!testNode.isMissingNode()) {
-                    totalIssues = 0;
-                    for (ScanType scanType : ScanType.values()) {
-                        totalIssues += calculateIssues(testNode.path(scanType.name()));
-                    }
-                }
-            } else if (SecurityProduct.SRM.name().equalsIgnoreCase(product)) {
-                JsonNode analysisNode = productNode.path(ANALYSIS_PROPERTY);
-                if (!analysisNode.isMissingNode()) {
-                    totalIssues = calculateIssues(analysisNode);
-                }
-            }
+        if (productNode.isMissingNode()) {
+            return -1;
         }
 
+        switch (SecurityProduct.valueOf(product.toUpperCase())) {
+            case BLACKDUCKSCA:
+                return calculateBlackDuckIssues(productNode);
+            case COVERITY:
+                return calculateCoverityIssues(productNode);
+            case POLARIS:
+                return calculatePolarisIssues(productNode);
+            case SRM:
+                return calculateSrmIssues(productNode);
+            default:
+                return -1;
+        }
+    }
+
+    private static int calculateBlackDuckIssues(JsonNode productNode) {
+        JsonNode statusNode = productNode.path(POLICY_PROPERTY).path(STATUS_PROPERTY);
+        return statusNode.isMissingNode() ? -1 : calculateIssues(statusNode);
+    }
+
+    private static int calculateCoverityIssues(JsonNode productNode) {
+        return productNode
+                .path(CONNECT_PROPERTY)
+                .path(POLICY_PROPERTY)
+                .path(ISSUE_COUNT_PROPERTY)
+                .asInt(-1);
+    }
+
+    private static int calculatePolarisIssues(JsonNode productNode) {
+        JsonNode testNode = productNode.path(TEST_PROPERTY);
+        if (testNode.isMissingNode()) {
+            return -1;
+        }
+
+        int totalIssues = 0;
+        for (ScanType scanType : ScanType.values()) {
+            totalIssues += calculateIssues(testNode.path(scanType.name()));
+        }
         return totalIssues;
+    }
+
+    private static int calculateSrmIssues(JsonNode productNode) {
+        JsonNode analysisNode = productNode.path(ANALYSIS_PROPERTY);
+        return analysisNode.isMissingNode() ? -1 : calculateIssues(analysisNode);
     }
 
     public static int calculateIssues(JsonNode testNode) {

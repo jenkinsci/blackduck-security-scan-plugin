@@ -1407,11 +1407,15 @@ public class SecurityScanStep extends Step
                 }
             } finally {
                 boolean isPullRequestEvent = Utility.isPullRequestEvent(envVars);
-                run.addAction(new IssueActionItems(
-                        scanparametersMap.get(ApplicationConstants.PRODUCT_KEY).toString(),
-                        Utility.getProductUrl(scanparametersMap),
-                        workspace.child(ApplicationConstants.SCAN_INFO_OUT_FILE_NAME),
-                        isPullRequestEvent));
+                if (scanparametersMap.containsKey(ApplicationConstants.PRODUCT_KEY)) {
+                    run.addAction(new IssueActionItems(
+                            scanparametersMap
+                                    .get(ApplicationConstants.PRODUCT_KEY)
+                                    .toString(),
+                            Utility.getProductUrl(scanparametersMap),
+                            workspace.child(ApplicationConstants.SCAN_INFO_OUT_FILE_NAME),
+                            isPullRequestEvent));
+                }
                 String exitMessage = ExceptionMessages.getErrorMessage(exitCode, undefinedErrorMessage);
                 if (exitMessage != null) {
                     if (exitCode == 0) {
