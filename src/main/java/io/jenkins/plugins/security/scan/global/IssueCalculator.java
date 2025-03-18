@@ -7,18 +7,18 @@ import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 
 public class IssueCalculator {
 
-    private final String DATA_PROPERTY = "data";
-    private final String PROJECT_PROPERTY = "project";
-    private final String ISSUES_PROPERTY = "issues";
-    private final String URL_PROPERTY = "url";
-    private final String TEST_PROPERTY = "test";
-    private final String ANALYSIS_PROPERTY = "analysis";
-    private final String PROJECT_BOM_URL_PROPERTY = "projectBomUrl";
-    private final String RESULT_URL_PROPERTY = "resultURL";
-    private final String POLICY_PROPERTY = "policy";
-    private final String STATUS_PROPERTY = "status";
-    private final String CONNECT_PROPERTY = "connect";
-    private final String ISSUE_COUNT_PROPERTY = "issueCount";
+    private static final String DATA_PROPERTY = "data";
+    private static final String PROJECT_PROPERTY = "project";
+    private static final String ISSUES_PROPERTY = "issues";
+    private static final String URL_PROPERTY = "url";
+    private static final String TEST_PROPERTY = "test";
+    private static final String ANALYSIS_PROPERTY = "analysis";
+    private static final String PROJECT_BOM_URL_PROPERTY = "projectBomUrl";
+    private static final String RESULT_URL_PROPERTY = "resultURL";
+    private static final String POLICY_PROPERTY = "policy";
+    private static final String STATUS_PROPERTY = "status";
+    private static final String CONNECT_PROPERTY = "connect";
+    private static final String ISSUE_COUNT_PROPERTY = "issueCount";
 
     public String getIssuesUrl(JsonNode rootNode, String product) {
         JsonNode productNode = rootNode.path(DATA_PROPERTY).path(product);
