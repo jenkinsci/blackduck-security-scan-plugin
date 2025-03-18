@@ -1,5 +1,8 @@
 package io.jenkins.plugins.security.scan.global;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hudson.EnvVars;
@@ -7,10 +10,6 @@ import hudson.FilePath;
 import hudson.model.Result;
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.global.enums.BuildStatus;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -19,9 +18,9 @@ import java.net.*;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 public class UtilityTest {
     private FilePath workspace;

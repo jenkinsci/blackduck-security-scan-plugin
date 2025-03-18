@@ -1,11 +1,10 @@
 package io.jenkins.plugins.security.scan.action;
 
-import hudson.FilePath;
-import org.junit.jupiter.api.Test;
-
-import java.io.File;
-
 import static org.junit.jupiter.api.Assertions.*;
+
+import hudson.FilePath;
+import java.io.File;
+import org.junit.jupiter.api.Test;
 
 public class IssueActionItemsTest {
     FilePath filePath = new FilePath(new File("dummyPath"));
