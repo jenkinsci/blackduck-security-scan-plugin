@@ -41,7 +41,7 @@ public class IssueCalculatorTest {
     @Test
     public void testCalculateTotalIssues() throws IOException {
         String jsonContent = "{"
-                + "\"data\": {\"polaris\": {\"test\": {\"SAST\": {\"issues\": {\"critical\": 2, \"high\": 3}}, \"SCA\": {\"issues\": {\"medium\": 4, \"low\": 5}}}}}}}";
+                + "\"data\": {\"polaris\": {\"test\": {\"SAST\": {\"tests\": {\"full\": {\"issues\": {\"critical\": 2, \"high\": 3}}}}, \"SCA\": {\"tests\": {\"scaPackage\": {\"issues\": {\"medium\": 4, \"low\": 5}}}}}}}}}";
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode = objectMapper.readTree(jsonContent);
         String product = "polaris";

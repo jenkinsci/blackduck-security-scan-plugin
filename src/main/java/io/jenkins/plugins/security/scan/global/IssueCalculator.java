@@ -12,6 +12,10 @@ public class IssueCalculator {
     private static final String ISSUES_PROPERTY = "issues";
     private static final String URL_PROPERTY = "url";
     private static final String TEST_PROPERTY = "test";
+    private static final String TESTS_PROPERTY = "tests";
+    private static final String FULL_PROPERTY = "full";
+    private static final String SCA_PACKAGE_PROPERTY = "scaPackage";
+    private static final String SCA_SIGNATURE_PROPERTY = "scaSignature";
     private static final String ANALYSIS_PROPERTY = "analysis";
     private static final String PROJECT_BOM_URL_PROPERTY = "projectBomUrl";
     private static final String RESULT_URL_PROPERTY = "resultURL";
@@ -82,7 +86,24 @@ public class IssueCalculator {
 
         int totalIssues = 0;
         for (AssessmentType assessmentType : AssessmentType.values()) {
-            totalIssues += calculateIssues(testNode.path(assessmentType.name()));
+            JsonNode assessmentTypeNode = testNode.path(assessmentType.name());
+            if (assessmentTypeNode.isMissingNode()) {
+                assessmentTypeNode = testNode.path(assessmentType.name().toLowerCase());
+            }
+            JsonNode testsNode = assessmentTypeNode.path(TESTS_PROPERTY);
+            JsonNode fullNode = testsNode.path(FULL_PROPERTY);
+            if (!fullNode.isMissingNode()) {
+                totalIssues += calculateIssues(fullNode);
+            } else {
+                JsonNode scaPackageNode = testsNode.path(SCA_PACKAGE_PROPERTY);
+                JsonNode scaSignatureNode = testsNode.path(SCA_SIGNATURE_PROPERTY);
+                if (!scaSignatureNode.isMissingNode()) {
+                    totalIssues += calculateIssues(scaSignatureNode);
+                }
+                if (!scaPackageNode.isMissingNode()) {
+                    totalIssues += calculateIssues(scaPackageNode);
+                }
+            }
         }
         return totalIssues;
     }
