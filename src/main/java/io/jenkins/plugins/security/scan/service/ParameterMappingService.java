@@ -800,4 +800,38 @@ public class ParameterMappingService {
         items.add(BuildStatus.SUCCESS.name(), BuildStatus.SUCCESS.name());
         return items;
     }
+
+    public static String getProductUrl(Map<String, Object> scanParametersMap) {
+        String product = scanParametersMap
+                .get(ApplicationConstants.PRODUCT_KEY)
+                .toString()
+                .toUpperCase();
+        String url = "";
+
+        switch (SecurityProduct.valueOf(product)) {
+            case BLACKDUCK:
+            case BLACKDUCKSCA:
+                url = scanParametersMap
+                        .getOrDefault(ApplicationConstants.BLACKDUCKSCA_URL_KEY, "")
+                        .toString();
+                break;
+            case COVERITY:
+                url = scanParametersMap
+                        .getOrDefault(ApplicationConstants.COVERITY_URL_KEY, "")
+                        .toString();
+                break;
+            case POLARIS:
+                url = scanParametersMap
+                        .getOrDefault(ApplicationConstants.POLARIS_SERVER_URL_KEY, "")
+                        .toString();
+                break;
+            case SRM:
+                url = scanParametersMap
+                        .getOrDefault(ApplicationConstants.SRM_URL_KEY, "")
+                        .toString();
+                break;
+        }
+
+        return url;
+    }
 }

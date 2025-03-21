@@ -9,6 +9,7 @@ import hudson.model.listeners.RunListener;
 import io.jenkins.plugins.security.scan.action.IssueAction;
 import io.jenkins.plugins.security.scan.action.IssueActionItems;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
+import io.jenkins.plugins.security.scan.global.IssueCalculator;
 import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.global.Utility;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
@@ -47,8 +48,10 @@ public class SecurityScanRunListener extends RunListener<Run<?, ?>> {
             }
 
             JsonNode rootNode = Utility.parseJsonFile(new File(filePath.getRemote()));
-            String issuesUrl = Utility.getIssuesUrl(rootNode, product.toLowerCase());
-            int totalIssues = Utility.calculateTotalIssues(rootNode, product.toLowerCase());
+
+            IssueCalculator issueCalculator = new IssueCalculator();
+            String issuesUrl = issueCalculator.getIssuesUrl(rootNode, product.toLowerCase());
+            int totalIssues = issueCalculator.calculateTotalIssues(rootNode, product.toLowerCase());
 
             if (totalIssues != -1 && !issueActionItems.isPrEvent()) {
                 run.addAction(new IssueAction(

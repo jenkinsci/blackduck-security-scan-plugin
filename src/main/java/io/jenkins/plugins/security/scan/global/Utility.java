@@ -9,9 +9,6 @@ import hudson.model.Result;
 import hudson.model.TaskListener;
 import hudson.model.TopLevelItem;
 import io.jenkins.plugins.security.scan.global.enums.BuildStatus;
-import io.jenkins.plugins.security.scan.global.enums.IssueSeverities;
-import io.jenkins.plugins.security.scan.global.enums.ScanType;
-import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import java.io.File;
 import java.io.IOException;
 import java.net.*;
@@ -22,19 +19,6 @@ import java.util.regex.Pattern;
 import jenkins.model.Jenkins;
 
 public class Utility {
-
-    public static final String DATA_PROPERTY = "data";
-    public static final String PROJECT_PROPERTY = "project";
-    public static final String ISSUES_PROPERTY = "issues";
-    public static final String URL_PROPERTY = "url";
-    public static final String TEST_PROPERTY = "test";
-    public static final String ANALYSIS_PROPERTY = "analysis";
-    public static final String PROJECT_BOM_URL_PROPERTY = "projectBomUrl";
-    public static final String RESULT_URL_PROPERTY = "resultURL";
-    public static final String POLICY_PROPERTY = "policy";
-    public static final String STATUS_PROPERTY = "status";
-    public static final String CONNECT_PROPERTY = "connect";
-    public static final String ISSUE_COUNT_PROPERTY = "issueCount";
 
     public static String getDirectorySeparator(FilePath workspace, TaskListener listener) {
         String os = getAgentOs(workspace, listener);
@@ -320,126 +304,6 @@ public class Utility {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public static String getProductUrl(Map<String, Object> scanParametersMap) {
-        String product = scanParametersMap
-                .get(ApplicationConstants.PRODUCT_KEY)
-                .toString()
-                .toUpperCase();
-        String urlKey = "";
-
-        switch (SecurityProduct.valueOf(product)) {
-            case BLACKDUCK:
-            case BLACKDUCKSCA:
-                urlKey = scanParametersMap
-                        .getOrDefault(ApplicationConstants.BLACKDUCKSCA_URL_KEY, "")
-                        .toString();
-                break;
-            case COVERITY:
-                urlKey = scanParametersMap
-                        .getOrDefault(ApplicationConstants.COVERITY_URL_KEY, "")
-                        .toString();
-                break;
-            case POLARIS:
-                urlKey = scanParametersMap
-                        .getOrDefault(ApplicationConstants.POLARIS_SERVER_URL_KEY, "")
-                        .toString();
-                break;
-            case SRM:
-                urlKey = scanParametersMap
-                        .getOrDefault(ApplicationConstants.SRM_URL_KEY, "")
-                        .toString();
-                break;
-        }
-
-        return urlKey;
-    }
-
-    public static String getIssuesUrl(JsonNode rootNode, String product) {
-        JsonNode productNode = rootNode.path(DATA_PROPERTY).path(product);
-        if (productNode.isMissingNode()) {
-            return null;
-        }
-
-        if (product.equals(SecurityProduct.BLACKDUCKSCA.name().toLowerCase())) {
-            return productNode.path(PROJECT_BOM_URL_PROPERTY).asText(null);
-        } else if (product.equals(SecurityProduct.COVERITY.name().toLowerCase())) {
-            JsonNode issuesUrlNode = productNode.path(CONNECT_PROPERTY).path(RESULT_URL_PROPERTY);
-            return issuesUrlNode.asText(null);
-        } else if (product.equals(SecurityProduct.POLARIS.name().toLowerCase())
-                || product.equals(SecurityProduct.SRM.name().toLowerCase())) {
-            JsonNode issuesUrlNode =
-                    productNode.path(PROJECT_PROPERTY).path(ISSUES_PROPERTY).path(URL_PROPERTY);
-            return issuesUrlNode.asText(null);
-        }
-
-        return null;
-    }
-
-    public static int calculateTotalIssues(JsonNode rootNode, String product) {
-        JsonNode productNode = rootNode.path(DATA_PROPERTY).path(product);
-        if (productNode.isMissingNode()) {
-            return -1;
-        }
-
-        switch (SecurityProduct.valueOf(product.toUpperCase())) {
-            case BLACKDUCKSCA:
-                return calculateBlackDuckIssues(productNode);
-            case COVERITY:
-                return calculateCoverityIssues(productNode);
-            case POLARIS:
-                return calculatePolarisIssues(productNode);
-            case SRM:
-                return calculateSrmIssues(productNode);
-            default:
-                return -1;
-        }
-    }
-
-    private static int calculateBlackDuckIssues(JsonNode productNode) {
-        JsonNode statusNode = productNode.path(POLICY_PROPERTY).path(STATUS_PROPERTY);
-        return statusNode.isMissingNode() ? -1 : calculateIssues(statusNode);
-    }
-
-    private static int calculateCoverityIssues(JsonNode productNode) {
-        return productNode
-                .path(CONNECT_PROPERTY)
-                .path(POLICY_PROPERTY)
-                .path(ISSUE_COUNT_PROPERTY)
-                .asInt(-1);
-    }
-
-    private static int calculatePolarisIssues(JsonNode productNode) {
-        JsonNode testNode = productNode.path(TEST_PROPERTY);
-        if (testNode.isMissingNode()) {
-            return -1;
-        }
-
-        int totalIssues = 0;
-        for (ScanType scanType : ScanType.values()) {
-            totalIssues += calculateIssues(testNode.path(scanType.name()));
-        }
-        return totalIssues;
-    }
-
-    private static int calculateSrmIssues(JsonNode productNode) {
-        JsonNode analysisNode = productNode.path(ANALYSIS_PROPERTY);
-        return analysisNode.isMissingNode() ? -1 : calculateIssues(analysisNode);
-    }
-
-    public static int calculateIssues(JsonNode testNode) {
-        if (!testNode.isMissingNode()) {
-            JsonNode issuesNode = testNode.path(ISSUES_PROPERTY);
-            if (!issuesNode.isMissingNode()) {
-                int total = 0;
-                for (IssueSeverities severity : IssueSeverities.values()) {
-                    total += issuesNode.path(severity.name().toLowerCase()).asInt(0);
-                }
-                return total;
-            }
-        }
-        return 0;
     }
 
     public static boolean isBoolean(String value) {
