@@ -39,7 +39,7 @@ public class IssueCalculatorTest {
     }
 
     @Test
-    public void testCalculateTotalIssues() throws IOException {
+    public void testCalculatePolarisIssues() throws IOException {
         String jsonContent = "{"
                 + "\"data\": {\"polaris\": {\"test\": {\"SAST\": {\"tests\": {\"full\": {\"issues\": {\"critical\": 2, \"high\": 3}}}}, \"SCA\": {\"tests\": {\"scaPackage\": {\"issues\": {\"medium\": 4, \"low\": 5}}}}}}}}}";
         ObjectMapper objectMapper = new ObjectMapper();
@@ -49,6 +49,44 @@ public class IssueCalculatorTest {
         int totalIssues = issueCalculator.calculateTotalIssues(rootNode, product);
 
         assertEquals(14, totalIssues);
+    }
+
+    @Test
+    public void testCalculateSrmIssues() throws IOException {
+        String jsonContent = "{"
+                + "\"data\": {\"srm\": {\"analysis\": {\"issues\": {\"critical\": 10, \"high\": 5, \"medium\": 20, \"low\": 15}}}}}";
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(jsonContent);
+        String product = "srm";
+
+        int totalIssues = issueCalculator.calculateTotalIssues(rootNode, product);
+
+        assertEquals(50, totalIssues);
+    }
+
+    @Test
+    public void testCalculateBlackduckIssues() throws IOException {
+        String jsonContent = "{"
+                + "\"data\": {\"blackducksca\": {\"policy\": {\"status\": {\"issues\": {\"critical\": 5, \"high\": 20, \"medium\": 10, \"low\": 15}}}}}}";
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(jsonContent);
+        String product = "blackducksca";
+
+        int totalIssues = issueCalculator.calculateTotalIssues(rootNode, product);
+
+        assertEquals(50, totalIssues);
+    }
+
+    @Test
+    public void testCalculateCoverityIssues() throws IOException {
+        String jsonContent = "{" + "\"data\": {\"coverity\": {\"connect\": {\"policy\": {\"issueCount\": 20}}}}}";
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(jsonContent);
+        String product = "coverity";
+
+        int totalIssues = issueCalculator.calculateTotalIssues(rootNode, product);
+
+        assertEquals(20, totalIssues);
     }
 
     @Test
