@@ -156,7 +156,7 @@
     </repository>
     <repository>
       <id>bds-artifactory</id>
-      <url>${repoReleaseArtifactoryUrl}</url>
+      <url>https://${repoReleaseArtifactoryUrl}</url>
     </repository>
   </repositories>
   <pluginRepositories>
@@ -214,7 +214,7 @@
       <distributionManagement>
         <snapshotRepository>
           <id>bds-artifactory</id>
-          <url>${snapshotArtifactoryUrl}</url>
+          <url>https://${snapshotArtifactoryUrl}</url>
         </snapshotRepository>
       </distributionManagement>
     </profile>
@@ -226,7 +226,7 @@
       <distributionManagement>
         <repository>
           <id>bds-artifactory</id>
-          <url>${releaseArtifactoryUrl}</url>
+          <url>https://${releaseArtifactoryUrl}</url>
         </repository>
       </distributionManagement>
     </profile>
@@ -238,11 +238,11 @@
       <distributionManagement>
         <repository>
           <id>bds-artifactory</id>
-          <url>${qaArtifactoryUrl}</url>
+          <url>https://${qaArtifactoryUrl}</url>
         </repository>
         <snapshotRepository>
           <id>bds-artifactory</id>
-          <url>${snapshotArtifactoryUrl}</url>
+          <url>https://${snapshotArtifactoryUrl}</url>
         </snapshotRepository>
       </distributionManagement>
     </profile>
