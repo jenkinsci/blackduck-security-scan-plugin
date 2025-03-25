@@ -297,6 +297,19 @@ public class ParameterMappingServiceTest {
     }
 
     @Test
+    public void getproductUrlTest() {
+
+        Map<String, Object> scanParametersMap = Map.of(
+                ApplicationConstants.PRODUCT_KEY, "blackducksca",
+                ApplicationConstants.BLACKDUCKSCA_URL_KEY, "https://test.blackduck.com",
+                ApplicationConstants.BLACKDUCKSCA_TOKEN_KEY, "TEST_BLACKDUCKSCA_TOKEN");
+
+        String productUrl = ParameterMappingService.getProductUrl(scanParametersMap);
+
+        assertEquals(productUrl, scanParametersMap.get(ApplicationConstants.BLACKDUCKSCA_URL_KEY));
+    }
+
+    @Test
     public void preparePolarisParametersMapForMultibranchTest() {
         securityScanStep.setPolaris_server_url("https://fake.polaris-server.url");
         securityScanStep.setPolaris_access_token("fake-access-token");
