@@ -8,17 +8,17 @@ import hudson.tasks.Builder;
 import hudson.util.ListBoxModel;
 import io.jenkins.plugins.security.scan.ScanInitializer;
 import io.jenkins.plugins.security.scan.SecurityScanner;
-import io.jenkins.plugins.security.scan.action.IssueActionItems;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.exception.ScannerException;
 import io.jenkins.plugins.security.scan.extension.SecurityScan;
 import io.jenkins.plugins.security.scan.global.*;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import io.jenkins.plugins.security.scan.service.ParameterMappingService;
-import java.util.Map;
 import jenkins.tasks.SimpleBuildStep;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
+
+import java.util.Map;
 
 public class SecurityScanFreestyle extends Builder implements SecurityScan, FreestyleScan, SimpleBuildStep {
     private final Boolean NULL = null;
@@ -1168,19 +1168,6 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
                 unknownException = e;
             }
         } finally {
-            if (scanparametersMap != null && scanparametersMap.containsKey(ApplicationConstants.PRODUCT_KEY)) {
-                boolean isPullRequestEvent = Utility.isPullRequestEvent(envVars);
-                if (scanparametersMap.containsKey(ApplicationConstants.PRODUCT_KEY)) {
-                    run.addAction(new IssueActionItems(
-                            scanparametersMap
-                                    .get(ApplicationConstants.PRODUCT_KEY)
-                                    .toString(),
-                            ParameterMappingService.getProductUrl(scanparametersMap),
-                            workspace.child(ApplicationConstants.SCAN_INFO_OUT_FILE_NAME),
-                            isPullRequestEvent));
-                }
-            }
-
             String exitMessage = ExceptionMessages.getErrorMessage(exitCode, undefinedErrorMessage);
             if (exitMessage != null) {
                 if (exitCode == 0) {
