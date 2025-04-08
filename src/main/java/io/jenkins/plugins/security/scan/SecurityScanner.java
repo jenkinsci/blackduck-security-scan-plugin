@@ -151,6 +151,8 @@ public class SecurityScanner {
                 return;
             }
 
+            logger.info("Retrieving the issue count from the scan results");
+
             String product = scanParams.get(ApplicationConstants.PRODUCT_KEY).toString();
             String productUrl = ParameterMappingService.getProductUrl(scanParams);
             JsonNode rootNode = Utility.parseJsonFile(filePath.readToString());
@@ -161,6 +163,7 @@ public class SecurityScanner {
 
             boolean isPullRequestEvent = Utility.isPullRequestEvent(envVars);
             if (totalIssues != -1 && !isPullRequestEvent) {
+                logger.info("Total issues found: " + totalIssues);
                 run.addAction(new IssueAction(
                         product.toLowerCase(),
                         totalIssues,
