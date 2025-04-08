@@ -19,7 +19,6 @@ import io.jenkins.plugins.security.scan.service.ParameterMappingService;
 import io.jenkins.plugins.security.scan.service.ToolsParameterService;
 import io.jenkins.plugins.security.scan.service.diagnostics.UploadReportService;
 import io.jenkins.plugins.security.scan.service.scan.ScanParametersService;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -154,7 +153,7 @@ public class SecurityScanner {
 
             String product = scanParams.get(ApplicationConstants.PRODUCT_KEY).toString();
             String productUrl = ParameterMappingService.getProductUrl(scanParams);
-            JsonNode rootNode = Utility.parseJsonFile(new File(filePath.getRemote()));
+            JsonNode rootNode = Utility.parseJsonFile(filePath.readToString());
 
             IssueCalculator issueCalculator = new IssueCalculator();
             String issuesUrl = issueCalculator.getIssuesUrl(rootNode, product.toLowerCase());
