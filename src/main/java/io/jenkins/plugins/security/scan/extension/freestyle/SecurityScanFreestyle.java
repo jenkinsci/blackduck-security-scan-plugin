@@ -16,6 +16,7 @@ import io.jenkins.plugins.security.scan.global.*;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import io.jenkins.plugins.security.scan.service.ParameterMappingService;
 import java.util.Map;
+import java.util.Objects;
 import jenkins.tasks.SimpleBuildStep;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
@@ -1157,6 +1158,10 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
             scanparametersMap = getParametersMap(workspace, listener);
             SecurityScanner securityScanner = new SecurityScanner(run, listener, launcher, workspace, envVars);
             ScanInitializer scanInitializer = new ScanInitializer(securityScanner, workspace, envVars, listener);
+
+            scanparametersMap.replaceAll((key, value) -> value instanceof String
+                    ? (Objects.nonNull(envVars.expand((String) value)) ? envVars.expand((String) value) : value)
+                    : value);
 
             exitCode = scanInitializer.initializeScanner(scanparametersMap);
         } catch (Exception e) {
