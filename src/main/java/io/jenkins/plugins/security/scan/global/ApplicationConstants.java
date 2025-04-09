@@ -272,7 +272,7 @@ public class ApplicationConstants {
     // Info Log Related Issue Count
     public static final String SCAN_INFO_FILE_NOT_FOUND = "File for issue count does not exist";
     public static final String EXCEPTION_WHILE_PROCESS_SCAN_INFO_FILE =
-            "An exception occurred while processing JSON file for Issue count";
+            "An exception occurred while processing JSON file for Issue count: %s";
     public static final String SCAN_INFO_ISSUE_COUNT_NOT_FOUND = "Issue count not found in output file";
 
     // Bridge Download Parameters
