@@ -11,7 +11,6 @@ import hudson.model.Result;
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.global.enums.BuildStatus;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.*;
@@ -272,16 +271,10 @@ public class UtilityTest {
     public void testParseJsonFile() throws IOException {
         String jsonContent = "{"
                 + "\"data\": {\"product1\": {\"project\": {\"issues\": {\"url\": \"http://example.com/issues\"}}}}}";
-        File tempFile = File.createTempFile("test", ".json");
-        tempFile.deleteOnExit();
-
-        try (FileWriter writer = new FileWriter(tempFile)) {
-            writer.write(jsonContent);
-        }
 
         ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode expectedNode = objectMapper.readTree(tempFile);
-        JsonNode actualNode = Utility.parseJsonFile(tempFile);
+        JsonNode expectedNode = objectMapper.readTree(jsonContent);
+        JsonNode actualNode = Utility.parseJsonFile(jsonContent);
 
         assertEquals(expectedNode, actualNode);
     }

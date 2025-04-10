@@ -297,10 +297,10 @@ public class Utility {
         return version;
     }
 
-    public static JsonNode parseJsonFile(File file) {
+    public static JsonNode parseJsonFile(String jsonString) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            return objectMapper.readTree(file);
+            return objectMapper.readTree(jsonString);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

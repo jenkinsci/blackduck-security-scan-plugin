@@ -12,7 +12,6 @@ import hudson.util.ListBoxModel.Option;
 import io.jenkins.plugins.gitlabbranchsource.GitLabSCMSource;
 import io.jenkins.plugins.security.scan.ScanInitializer;
 import io.jenkins.plugins.security.scan.SecurityScanner;
-import io.jenkins.plugins.security.scan.action.IssueActionItems;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.exception.ScannerException;
 import io.jenkins.plugins.security.scan.extension.SecurityScan;
@@ -1406,16 +1405,6 @@ public class SecurityScanStep extends Step
                     unknownException = e;
                 }
             } finally {
-                boolean isPullRequestEvent = Utility.isPullRequestEvent(envVars);
-                if (scanparametersMap.containsKey(ApplicationConstants.PRODUCT_KEY)) {
-                    run.addAction(new IssueActionItems(
-                            scanparametersMap
-                                    .get(ApplicationConstants.PRODUCT_KEY)
-                                    .toString(),
-                            ParameterMappingService.getProductUrl(scanparametersMap),
-                            workspace.child(ApplicationConstants.SCAN_INFO_OUT_FILE_NAME),
-                            isPullRequestEvent));
-                }
                 String exitMessage = ExceptionMessages.getErrorMessage(exitCode, undefinedErrorMessage);
                 if (exitMessage != null) {
                     if (exitCode == 0) {
