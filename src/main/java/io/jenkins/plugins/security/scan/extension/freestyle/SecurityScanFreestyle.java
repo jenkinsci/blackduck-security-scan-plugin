@@ -1158,9 +1158,7 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
             SecurityScanner securityScanner = new SecurityScanner(run, listener, launcher, workspace, envVars);
             ScanInitializer scanInitializer = new ScanInitializer(securityScanner, workspace, envVars, listener);
 
-            scanparametersMap.replaceAll((key, value) -> value instanceof String
-                    ? (Objects.nonNull(envVars.expand((String) value)) ? envVars.expand((String) value) : value)
-                    : value);
+            handleScanParametersEnvVarsResolution(scanparametersMap, envVars);
 
             exitCode = scanInitializer.initializeScanner(scanparametersMap);
         } catch (Exception e) {
@@ -1183,6 +1181,12 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
 
             handleExitCode(run, logger, exitCode, exitMessage, unknownException);
         }
+    }
+
+    public void handleScanParametersEnvVarsResolution(Map<String, Object> scanparametersMap, EnvVars envVars) {
+        scanparametersMap.replaceAll((key, value) -> value instanceof String
+                ? (Objects.nonNull(envVars.expand((String) value)) ? envVars.expand((String) value) : value)
+                : value);
     }
 
     private void handleExitCode(Run<?, ?> run, LoggerWrapper logger, int exitCode, String exitMessage, Exception e) {

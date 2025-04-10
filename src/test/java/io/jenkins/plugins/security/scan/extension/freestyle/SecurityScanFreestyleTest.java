@@ -46,14 +46,12 @@ public class SecurityScanFreestyleTest {
         Map<String, Object> scanparametersMap = new HashMap<>();
         scanparametersMap.put("key1", "value1");
         scanparametersMap.put("key2", "${ENV_VAR}");
-        scanparametersMap.put("key3", 123); // Non-string value
+        scanparametersMap.put("key3", 123);
 
-        EnvVars envVarsMock = Mockito.mock(EnvVars.class);
-        Mockito.when(envVarsMock.expand("${ENV_VAR}")).thenReturn("expandedValue");
+        EnvVars envVars = new EnvVars();
+        envVars.put("ENV_VAR", "expandedValue");
 
-        scanparametersMap.replaceAll((key, value) -> value instanceof String
-                ? (envVarsMock.expand((String) value) != null ? envVarsMock.expand((String) value) : value)
-                : value);
+        securityScanFreestyle.handleScanParametersEnvVarsResolution(scanparametersMap, envVars);
 
         assertEquals("value1", scanparametersMap.get("key1"));
         assertEquals("expandedValue", scanparametersMap.get("key2"));
