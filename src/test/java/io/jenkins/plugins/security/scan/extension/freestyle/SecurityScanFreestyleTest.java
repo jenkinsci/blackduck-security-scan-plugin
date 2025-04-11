@@ -47,6 +47,7 @@ public class SecurityScanFreestyleTest {
         scanparametersMap.put("key1", "value1");
         scanparametersMap.put("key2", "${ENV_VAR}");
         scanparametersMap.put("key3", 123);
+        scanparametersMap.put("key4", "${NON_ENV_VAR}");
 
         EnvVars envVars = new EnvVars();
         envVars.put("ENV_VAR", "expandedValue");
@@ -56,5 +57,6 @@ public class SecurityScanFreestyleTest {
         assertEquals("value1", scanparametersMap.get("key1"));
         assertEquals("expandedValue", scanparametersMap.get("key2"));
         assertEquals(123, scanparametersMap.get("key3"));
+        assertEquals("${NON_ENV_VAR}", scanparametersMap.get("key4"));
     }
 }
