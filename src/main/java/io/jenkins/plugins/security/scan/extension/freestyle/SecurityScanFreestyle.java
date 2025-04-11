@@ -14,6 +14,8 @@ import io.jenkins.plugins.security.scan.extension.SecurityScan;
 import io.jenkins.plugins.security.scan.global.*;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import io.jenkins.plugins.security.scan.service.ParameterMappingService;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import jenkins.tasks.SimpleBuildStep;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -1157,9 +1159,9 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
             SecurityScanner securityScanner = new SecurityScanner(run, listener, launcher, workspace, envVars);
             ScanInitializer scanInitializer = new ScanInitializer(securityScanner, workspace, envVars, listener);
 
-            handleScanParametersEnvVarsResolution(scanparametersMap, envVars);
+            Map<String, Object> scanParamMapExp = handleScanParametersEnvVarsResolution(scanparametersMap, envVars);
 
-            exitCode = scanInitializer.initializeScanner(scanparametersMap);
+            exitCode = scanInitializer.initializeScanner(scanParamMapExp);
         } catch (Exception e) {
             if (e instanceof PluginExceptionHandler) {
                 exitCode = ((PluginExceptionHandler) e).getCode();
@@ -1182,8 +1184,20 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
         }
     }
 
-    public void handleScanParametersEnvVarsResolution(Map<String, Object> scanparametersMap, EnvVars envVars) {
-        scanparametersMap.replaceAll((key, value) -> value instanceof String ? envVars.expand((String) value) : value);
+    public Map<String, Object> handleScanParametersEnvVarsResolution(
+            Map<String, Object> scanparametersMap, EnvVars envVars) {
+        if (scanparametersMap.isEmpty() || envVars.isEmpty()) {
+            return Collections.emptyMap();
+        }
+        Map<String, Object> updatedMap = new HashMap<>();
+        scanparametersMap.forEach((key, value) -> {
+            if (value instanceof String) {
+                updatedMap.put(key, envVars.expand((String) value));
+            } else {
+                updatedMap.put(key, value);
+            }
+        });
+        return updatedMap;
     }
 
     private void handleExitCode(Run<?, ?> run, LoggerWrapper logger, int exitCode, String exitMessage, Exception e) {
