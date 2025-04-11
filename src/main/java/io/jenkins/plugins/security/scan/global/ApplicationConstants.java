@@ -10,10 +10,12 @@ public class ApplicationConstants {
     public static final String BRIDGE_CLI_LATEST_VERSION = "latest";
     public static final String BRIDGE_ZIP_FILE_FORMAT = "bridge-cli-bundle.zip";
     public static final String PLATFORM_LINUX = "linux64";
+    public static final String PLATFORM_LINUX_ARM = "linux-arm";
     public static final String PLATFORM_WINDOWS = "win64";
     public static final String PLATFORM_MAC_ARM = "macos_arm";
     public static final String PLATFORM_MACOSX = "macosx";
     public static final String MAC_ARM_COMPATIBLE_BRIDGE_VERSION = "2.1.0";
+    public static final String LINUX_ARM_COMPATIBLE_BRIDGE_VERSION = "2.5.0";
     public static final String DEFAULT_DIRECTORY_NAME = "bridge-cli-bundle";
     public static final String BRIDGE_REPORT_DIRECTORY = ".bridge";
     public static final String DEFAULT_BLACKDUCKSCA_SARIF_REPORT_FILE_PATH = ".bridge/Blackduck SCA SARIF Generator/";
