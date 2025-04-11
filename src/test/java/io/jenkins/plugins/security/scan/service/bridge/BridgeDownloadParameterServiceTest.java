@@ -182,19 +182,23 @@ public class BridgeDownloadParameterServiceTest {
     void getPlatformTest() {
         String osName = System.getProperty("os.name").toLowerCase();
         String osArch = System.getProperty("os.arch").toLowerCase();
-
         String platform = bridgeDownloadParametersService.getPlatform(null);
 
         assertNotNull(platform);
 
-        if (osName.contains("win")) {
+        boolean isWindows = osName.contains("win");
+        boolean isMac = osName.contains("mac");
+        boolean isLinux = osName.contains("linux");
+        boolean isArm = osArch.startsWith("arm") || osArch.startsWith("aarch");
+
+        if (isWindows) {
             assertEquals(ApplicationConstants.PLATFORM_WINDOWS, platform);
-        } else if (osName.contains("mac")) {
-            if (osArch.startsWith("arm") || osArch.startsWith("aarch")) {
-                assertEquals(ApplicationConstants.PLATFORM_MAC_ARM, platform);
-            } else {
-                assertEquals(ApplicationConstants.PLATFORM_MACOSX, platform);
-            }
+        } else if (isMac) {
+            assertEquals(
+                    isArm ? ApplicationConstants.PLATFORM_MAC_ARM : ApplicationConstants.PLATFORM_MACOSX, platform);
+        } else if (isLinux) {
+            assertEquals(
+                    isArm ? ApplicationConstants.PLATFORM_LINUX_ARM : ApplicationConstants.PLATFORM_LINUX, platform);
         } else {
             assertEquals(ApplicationConstants.PLATFORM_LINUX, platform);
         }
@@ -202,10 +206,26 @@ public class BridgeDownloadParameterServiceTest {
 
     @Test
     public void isVersionCompatibleForMacARMTest() {
-        assertTrue(bridgeDownloadParametersService.isVersionCompatibleForMacARM("2.1.0"));
-        assertTrue(bridgeDownloadParametersService.isVersionCompatibleForMacARM("2.2.38"));
-        assertFalse(bridgeDownloadParametersService.isVersionCompatibleForMacARM("2.0.0"));
-        assertFalse(bridgeDownloadParametersService.isVersionCompatibleForMacARM("1.2.12"));
+        assertTrue(bridgeDownloadParametersService.isVersionCompatibleForARMChips(
+                "2.1.0", ApplicationConstants.MAC_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertTrue(bridgeDownloadParametersService.isVersionCompatibleForARMChips(
+                "2.2.38", ApplicationConstants.MAC_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertFalse(bridgeDownloadParametersService.isVersionCompatibleForARMChips(
+                "2.0.0", ApplicationConstants.MAC_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertFalse(bridgeDownloadParametersService.isVersionCompatibleForARMChips(
+                "1.2.12", ApplicationConstants.MAC_ARM_COMPATIBLE_BRIDGE_VERSION));
+    }
+
+    @Test
+    public void isVersionCompatibleForLinuxARMTest() {
+        assertTrue(bridgeDownloadParametersService.isVersionCompatibleForARMChips(
+                "2.5.0", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertTrue(bridgeDownloadParametersService.isVersionCompatibleForARMChips(
+                "2.5.38", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertFalse(bridgeDownloadParametersService.isVersionCompatibleForARMChips(
+                "2.0.0", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertFalse(bridgeDownloadParametersService.isVersionCompatibleForARMChips(
+                "1.2.12", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
     }
 
     public String getHomeDirectory() {

@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -168,20 +169,32 @@ public class BridgeDownloadParametersService {
         String os = Utility.getAgentOs(workspace, listener);
         if (os.contains("win")) {
             return ApplicationConstants.PLATFORM_WINDOWS;
-        } else if (os.contains("mac")) {
-            String arch = Utility.getAgentOsArch(workspace, listener);
-            if (version != null && !isVersionCompatibleForMacARM(version)) {
-                return ApplicationConstants.PLATFORM_MACOSX;
-            } else {
-                if (arch.startsWith("arm") || arch.startsWith("aarch")) {
-                    return ApplicationConstants.PLATFORM_MAC_ARM;
-                } else {
-                    return ApplicationConstants.PLATFORM_MACOSX;
-                }
-            }
-        } else {
-            return ApplicationConstants.PLATFORM_LINUX;
         }
+
+        String arch = Utility.getAgentOsArch(workspace, listener);
+        boolean isMac = os.contains("mac");
+        boolean isLinux = os.contains("linux");
+        boolean isArm = arch.startsWith("arm") || arch.startsWith("aarch");
+
+        if (isMac) {
+            if (Objects.nonNull(version)
+                    && !isVersionCompatibleForARMChips(
+                            version, ApplicationConstants.MAC_ARM_COMPATIBLE_BRIDGE_VERSION)) {
+                return ApplicationConstants.PLATFORM_MACOSX;
+            }
+            return isArm ? ApplicationConstants.PLATFORM_MAC_ARM : ApplicationConstants.PLATFORM_MACOSX;
+        }
+
+        if (isLinux) {
+            if (Objects.nonNull(version)
+                    && !isVersionCompatibleForARMChips(
+                            version, ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION)) {
+                return ApplicationConstants.PLATFORM_LINUX;
+            }
+            return isArm ? ApplicationConstants.PLATFORM_LINUX_ARM : ApplicationConstants.PLATFORM_LINUX;
+        }
+
+        return ApplicationConstants.PLATFORM_LINUX;
     }
 
     public String getBridgeZipFileName() {
@@ -200,15 +213,17 @@ public class BridgeDownloadParametersService {
                 .concat(".zip");
     }
 
-    public boolean isVersionCompatibleForMacARM(String version) {
+    public boolean isVersionCompatibleForARMChips(String version, String minCompatibleBridgeVersion) {
         if (version.equals(ApplicationConstants.BRIDGE_CLI_LATEST_VERSION)) {
             return true;
         }
         String[] inputVersionSplits = version.split("\\.");
-        String[] minCompatibleArmVersionSplits = ApplicationConstants.MAC_ARM_COMPATIBLE_BRIDGE_VERSION.split("\\.");
+        String[] minCompatibleArmVersionSplits = minCompatibleBridgeVersion.split("\\.");
+
         if (inputVersionSplits.length != 3 && minCompatibleArmVersionSplits.length != 3) {
             return false;
         }
+
         Version inputVersion = new Version(
                 Integer.parseInt(inputVersionSplits[0]),
                 Integer.parseInt(inputVersionSplits[1]),
