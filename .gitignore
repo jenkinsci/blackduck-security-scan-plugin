@@ -8,8 +8,6 @@
 .settings
 .classpath
 .project
-pom.xml.releaseBackup
-release.properties
 # build tool
 .gradle/
 build/
