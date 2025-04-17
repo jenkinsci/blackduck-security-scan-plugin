@@ -170,7 +170,6 @@ public class BridgeDownloadParametersService {
         if (os.contains("win")) {
             return ApplicationConstants.PLATFORM_WINDOWS;
         }
-
         String arch = Utility.getAgentOsArch(workspace, listener);
         boolean isMac = os.contains("mac");
         boolean isLinux = os.contains("linux");
