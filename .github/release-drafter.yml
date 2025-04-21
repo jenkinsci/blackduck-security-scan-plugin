@@ -1,2 +1,0 @@
-_extends: .github
-tag-template: blackduck-security-scan-plugin-$NEXT_MINOR_VERSION
