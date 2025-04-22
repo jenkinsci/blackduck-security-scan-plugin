@@ -104,7 +104,7 @@ public class ToolsParameterServiceTest {
 
         try {
             String jsonStringNonPrCommentOrFixPr =
-                    "{\"data\":{\"blackducksca\":{\"url\":\"https://fake.blackduck.url\",\"token\":\"MDJDSROSVC56FAKEKEY\"}}}";
+                    "{\"data\":{\"blackducksca\":{\"url\":\"https://fake.blackduck.url\",\"token\":\"MDJDSROSVC56FAKEKEY\"},\"invoked\":{\"from\":\"Integrations-Jenkins-pipeline\"}}}";
 
             String inputJsonPathForNonFixPr = toolsParameterService.prepareBridgeInputJson(
                     scanParameters,
@@ -143,7 +143,7 @@ public class ToolsParameterServiceTest {
 
         try {
             String jsonStringNonPrCommentOrFixPr =
-                    "{\"data\":{\"blackducksca\":{\"url\":\"https://fake.blackduck.url\",\"token\":\"MDJDSROSVC56FAKEKEY\"},\"bitbucket\":{\"api\":{\"user\":{\"name\":\"fake-user\"},\"token\":\"MDJDSROSVC56FAKEKEY\"},\"project\":{\"repository\":{\"pull\":{\"number\":12},\"branch\":{\"name\":\"test-branch\"},\"name\":\"test\"}},\"workspace\":{\"id\":\"abc\"}}}}";
+                    "{\"data\":{\"blackducksca\":{\"url\":\"https://fake.blackduck.url\",\"token\":\"MDJDSROSVC56FAKEKEY\"},\"bitbucket\":{\"api\":{\"user\":{\"name\":\"fake-user\"},\"token\":\"MDJDSROSVC56FAKEKEY\"},\"project\":{\"repository\":{\"pull\":{\"number\":12},\"branch\":{\"name\":\"test-branch\"},\"name\":\"test\"}},\"workspace\":{\"id\":\"abc\"}},\"invoked\":{\"from\":\"Integrations-Jenkins-pipeline\"}}}";
 
             String inputJsonPathForNonFixPr = toolsParameterService.prepareBridgeInputJson(
                     scanParameters,
@@ -181,7 +181,7 @@ public class ToolsParameterServiceTest {
 
         try {
             String jsonStringNonPrCommentOrFixPr =
-                    "{\"data\":{\"blackducksca\":{\"url\":\"https://fake.blackduck.url\",\"token\":\"MDJDSROSVC56FAKEKEY\"},\"bitbucket\":{\"api\":{\"user\":{\"name\":\"fake-user\"},\"token\":\"MDJDSROSVC56FAKEKEY\"},\"project\":{\"repository\":{\"branch\":{\"name\":\"test-branch\"},\"name\":\"test\"}},\"workspace\":{\"id\":\"abc\"}}}}";
+                    "{\"data\":{\"blackducksca\":{\"url\":\"https://fake.blackduck.url\",\"token\":\"MDJDSROSVC56FAKEKEY\"},\"bitbucket\":{\"api\":{\"user\":{\"name\":\"fake-user\"},\"token\":\"MDJDSROSVC56FAKEKEY\"},\"project\":{\"repository\":{\"branch\":{\"name\":\"test-branch\"},\"name\":\"test\"}},\"workspace\":{\"id\":\"abc\"}},\"invoked\":{\"from\":\"Integrations-Jenkins-pipeline\"}}}";
 
             String inputJsonPathForFixPr = toolsParameterService.prepareBridgeInputJson(
                     scanParameters,
@@ -247,7 +247,7 @@ public class ToolsParameterServiceTest {
 
         try {
             String jsonStringNonPrCommentOrFixPr =
-                    "{\"data\":{\"polaris\":{\"accesstoken\":\"MDJDSROSVC56FAKEKEY\",\"application\":{\"name\":\"test\"},\"project\":{\"name\":\"test\"},\"assessment\":{\"types\":[\"SCA\",\"SAST\"]},\"serverUrl\":\"https://fake.polaris.url\",\"branch\":{\"name\":\"fake-pr-branch\"}}}}";
+                    "{\"data\":{\"polaris\":{\"serverUrl\":\"https://fake.polaris.url\",\"accesstoken\":\"MDJDSROSVC56FAKEKEY\",\"application\":{\"name\":\"test\"},\"project\":{\"name\":\"test\"},\"assessment\":{\"types\":[\"SCA\",\"SAST\"]},\"branch\":{\"name\":\"fake-pr-branch\"}},\"invoked\":{\"from\":\"Integrations-Jenkins-pipeline\"}}}";
 
             String inputJsonPathForNonFixPr = toolsParameterService.prepareBridgeInputJson(
                     scanParameters, polaris, bitbucketObject, ApplicationConstants.POLARIS_INPUT_JSON_PREFIX, null);
@@ -291,7 +291,7 @@ public class ToolsParameterServiceTest {
 
         try {
             String jsonStringNonPrCommentOrFixPr =
-                    "{\"data\":{\"polaris\":{\"serverUrl\":\"https://fake.polaris.url\",\"accesstoken\":\"MDJDSROSVC56FAKEKEY\",\"application\":{\"name\":\"test\"},\"project\":{\"name\":\"test\"},\"assessment\":{\"types\":[\"SCA\",\"SAST\"]},\"branch\":{\"name\":\"fake-pr-branch\"}},\"bitbucket\":{\"api\":{\"user\":{\"name\":\"fake-username\"},\"token\":\"MDJDSROSVC56FAKEKEY\"},\"project\":{\"repository\":{\"pull\":{\"number\":12},\"branch\":{\"name\":\"test-branch\"},\"name\":\"test\"}},\"workspace\":{\"id\":\"abc\"}}}}";
+                    "{\"data\":{\"polaris\":{\"serverUrl\":\"https://fake.polaris.url\",\"accesstoken\":\"MDJDSROSVC56FAKEKEY\",\"application\":{\"name\":\"test\"},\"project\":{\"name\":\"test\"},\"assessment\":{\"types\":[\"SCA\",\"SAST\"]},\"branch\":{\"name\":\"fake-pr-branch\"}},\"bitbucket\":{\"api\":{\"user\":{\"name\":\"fake-username\"},\"token\":\"MDJDSROSVC56FAKEKEY\"},\"project\":{\"repository\":{\"pull\":{\"number\":12},\"branch\":{\"name\":\"test-branch\"},\"name\":\"test\"}},\"workspace\":{\"id\":\"abc\"}},\"invoked\":{\"from\":\"Integrations-Jenkins-pipeline\"}}}";
 
             String inputJsonPathForNonFixPr = toolsParameterService.prepareBridgeInputJson(
                     scanParameters, polaris, bitbucketObject, ApplicationConstants.POLARIS_INPUT_JSON_PREFIX, null);
@@ -387,13 +387,8 @@ public class ToolsParameterServiceTest {
         scanParametersMap.put(ApplicationConstants.GITHUB_TOKEN_KEY, TOKEN);
         scanParametersMap.put(ApplicationConstants.COVERITY_PRCOMMENT_ENABLED_KEY, true);
 
-        String jsonStringForPrComment = "{\"data\":{\"coverity\":{\"connect\":{\"url\":\"https://fake.coverity.url\","
-                + "\"user\":{\"name\":\"fake-user\",\"password\":\"fakeUserPassword\"},"
-                + "\"project\":{\"name\":\"fake-repo\"},\"stream\":{\"name\":\"fake-repo-fake-main\"}"
-                + "}},"
-                + "\"github\":{\"user\":{\"token\":\"MDJDSROSVC56FAKEKEY\"},\"repository\":{\"name\":\"fake-repo\""
-                + ",\"owner\":{\"name\":\"fake-owner\"},\"pull\":{\"number\":1},\"branch\":{\"name\":"
-                + "\"fake-branch\"}}}}}";
+        String jsonStringForPrComment =
+                "{\"data\":{\"coverity\":{\"connect\":{\"url\":\"https://fake.coverity.url\",\"user\":{\"name\":\"fake-user\",\"password\":\"fakeUserPassword\"},\"project\":{\"name\":\"fake-repo\"},\"stream\":{\"name\":\"fake-repo-fake-main\"}}},\"github\":{\"user\":{\"token\":\"MDJDSROSVC56FAKEKEY\"},\"repository\":{\"name\":\"fake-repo\",\"owner\":{\"name\":\"fake-owner\"},\"pull\":{\"number\":1},\"branch\":{\"name\":\"fake-branch\"}}},\"invoked\":{\"from\":\"Integrations-Jenkins-pipeline\"}}}";
 
         Coverity coverity = new Coverity();
         coverity.setConnect(new Connect());
@@ -447,7 +442,7 @@ public class ToolsParameterServiceTest {
         blackDuckSCA.getAutomation().setPrComment(true);
 
         String jsonStringForPrComment =
-                "{\"data\":{\"blackducksca\":{\"url\":\"https://fake.blackduck.url\",\"token\":\"MDJDSROSVC56FAKEKEY\",\"automation\":{\"prComment\":true}},\"gitlab\":{\"user\":{\"token\":\"MDJDSROSVC56FAKEKEY\"},\"repository\":{\"branch\":{\"name\":\"fake-gitlab-branch\"},\"pull\":{\"number\":12},\"name\":\"fake-group/fake-gitlab-repo\"}}}}";
+                "{\"data\":{\"blackducksca\":{\"url\":\"https://fake.blackduck.url\",\"token\":\"MDJDSROSVC56FAKEKEY\",\"automation\":{\"prComment\":true}},\"gitlab\":{\"user\":{\"token\":\"MDJDSROSVC56FAKEKEY\"},\"repository\":{\"branch\":{\"name\":\"fake-gitlab-branch\"},\"pull\":{\"number\":12},\"name\":\"fake-group/fake-gitlab-repo\"}},\"invoked\":{\"from\":\"Integrations-Jenkins-pipeline\"}}}";
 
         try {
             Gitlab gitlabObject = gitlabRepositoryService.createGitlabObject(
