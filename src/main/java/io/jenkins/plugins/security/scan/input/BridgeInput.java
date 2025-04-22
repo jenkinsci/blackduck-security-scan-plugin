@@ -46,6 +46,9 @@ public class BridgeInput {
     @JsonProperty("reports")
     private Reports reports;
 
+    @JsonProperty("invoked")
+    private Invoked invoked;
+
     public Reports getReports() {
         return reports;
     }
@@ -132,5 +135,13 @@ public class BridgeInput {
 
     public void setProject(Project project) {
         this.project = project;
+    }
+
+    public Invoked getInvoked() {
+        return invoked;
+    }
+
+    public void setInvoked(Invoked invoked) {
+        this.invoked = invoked;
     }
 }
