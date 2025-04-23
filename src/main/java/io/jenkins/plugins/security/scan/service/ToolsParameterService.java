@@ -12,6 +12,7 @@ import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.global.Utility;
 import io.jenkins.plugins.security.scan.global.enums.InvokedFrom;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
+import io.jenkins.plugins.security.scan.input.Bridge;
 import io.jenkins.plugins.security.scan.input.BridgeInput;
 import io.jenkins.plugins.security.scan.input.Invoked;
 import io.jenkins.plugins.security.scan.input.NetworkAirGap;
@@ -281,9 +282,15 @@ public class ToolsParameterService {
                 Utility.jenkinsJobType(envVars),
                 scmRepositoryService.findSCMSource());
         if (invokedFrom != null) {
-            Invoked invoked = new Invoked();
-            invoked.setFrom(invokedFrom.getValue());
-            bridgeInput.setInvoked(invoked);
+            bridgeInput.setBridge(new Bridge() {
+                {
+                    setInvoked(new Invoked() {
+                        {
+                            setFrom(invokedFrom.getValue());
+                        }
+                    });
+                }
+            });
         }
     }
 
