@@ -46,6 +46,9 @@ public class BridgeInput {
     @JsonProperty("reports")
     private Reports reports;
 
+    @JsonProperty("bridge")
+    private Bridge bridge;
+
     public Reports getReports() {
         return reports;
     }
@@ -132,5 +135,13 @@ public class BridgeInput {
 
     public void setProject(Project project) {
         this.project = project;
+    }
+
+    public Bridge getBridge() {
+        return bridge;
+    }
+
+    public void setBridge(Bridge bridge) {
+        this.bridge = bridge;
     }
 }

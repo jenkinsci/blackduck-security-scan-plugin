@@ -20,7 +20,7 @@ import java.util.Map;
 
 public class BitbucketRepositoryService {
     private final LoggerWrapper logger;
-    private static String BITBUCKET_CLOUD_HOST_URL = "https://bitbucket.org";
+    public static final String BITBUCKET_CLOUD_HOST_URL = "https://bitbucket.org";
 
     public BitbucketRepositoryService(TaskListener listener) {
         this.logger = new LoggerWrapper(listener);
