@@ -15,4 +15,3 @@ Documentation for Black Duck Security Scan for Jenkins can be found [**here**](h
 
 # Developers Guide
 Please follow the steps described [**here**](DeveloperGuide.md)
-
