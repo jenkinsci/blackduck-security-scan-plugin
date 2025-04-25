@@ -41,16 +41,14 @@ public class SCMRepositoryService {
         SCMSource scmSource = findSCMSource();
         if (installedBranchSourceDependencies.getOrDefault(
                         ApplicationConstants.BITBUCKET_BRANCH_SOURCE_PLUGIN_NAME, false)
-                && scmSource instanceof BitbucketSCMSource) {
+                && scmSource instanceof BitbucketSCMSource bitbucketSCMSource) {
             BitbucketRepositoryService bitbucketRepositoryService = new BitbucketRepositoryService(listener);
-            BitbucketSCMSource bitbucketSCMSource = (BitbucketSCMSource) scmSource;
             scmObject = bitbucketRepositoryService.fetchBitbucketRepositoryDetails(
                     scanParameters, bitbucketSCMSource, projectRepositoryPullNumber, branchName);
         } else if (installedBranchSourceDependencies.getOrDefault(
                         ApplicationConstants.GITHUB_BRANCH_SOURCE_PLUGIN_NAME, false)
-                && scmSource instanceof GitHubSCMSource) {
+                && scmSource instanceof GitHubSCMSource gitHubSCMSource) {
             GithubRepositoryService githubRepositoryService = new GithubRepositoryService(listener);
-            GitHubSCMSource gitHubSCMSource = (GitHubSCMSource) scmSource;
 
             String repositoryOwner = gitHubSCMSource.getRepoOwner();
             String repositoryName = gitHubSCMSource.getRepository();
@@ -60,9 +58,8 @@ public class SCMRepositoryService {
                     scanParameters, repositoryName, repositoryOwner, projectRepositoryPullNumber, branchName, apiUri);
         } else if (installedBranchSourceDependencies.getOrDefault(
                         ApplicationConstants.GITLAB_BRANCH_SOURCE_PLUGIN_NAME, false)
-                && scmSource instanceof GitLabSCMSource) {
+                && scmSource instanceof GitLabSCMSource gitLabSCMSource) {
             GitlabRepositoryService gitlabRepositoryService = new GitlabRepositoryService(listener);
-            GitLabSCMSource gitLabSCMSource = (GitLabSCMSource) scmSource;
 
             String repositoryUrl = gitLabSCMSource.getHttpRemote();
             String repositoryName = gitLabSCMSource.getProjectPath();
@@ -95,14 +92,11 @@ public class SCMRepositoryService {
 
     public void setRepositoryName(Object scmObject) {
         String repositoryName = null;
-        if (scmObject instanceof Bitbucket) {
-            Bitbucket bitbucket = (Bitbucket) scmObject;
+        if (scmObject instanceof Bitbucket bitbucket) {
             repositoryName = bitbucket.getProject().getRepository().getName();
-        } else if (scmObject instanceof Github) {
-            Github github = (Github) scmObject;
+        } else if (scmObject instanceof Github github) {
             repositoryName = github.getRepository().getName();
-        } else if (scmObject instanceof Gitlab) {
-            Gitlab gitlab = (Gitlab) scmObject;
+        } else if (scmObject instanceof Gitlab gitlab) {
             String fullName = gitlab.getRepository().getName();
             repositoryName = extractLastPart(fullName);
         }

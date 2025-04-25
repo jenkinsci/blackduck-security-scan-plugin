@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>plugin</artifactId>
-    <version>4.85</version>
+    <version>5.12</version>
     <relativePath />
   </parent>
   <groupId>io.jenkins.plugins</groupId>
@@ -16,7 +16,7 @@
   <licenses>
     <license>
       <name>Apache License</name>
-      <url>http://www.apache.org/licenses/</url>
+      <url>https://www.apache.org/licenses/</url>
     </license>
   </licenses>
   <scm child.scm.connection.inherit.append.path="false" child.scm.developerConnection.inherit.append.path="false" child.scm.url.inherit.append.path="false">
@@ -29,7 +29,9 @@
     <!-- https://www.jenkins.io/doc/developer/plugin-development/choosing-jenkins-baseline/ -->
     <revision>2.2.0</revision>
     <changelist>-SNAPSHOT</changelist>
-    <jenkins.version>2.440.3</jenkins.version>
+    <!-- https://www.jenkins.io/doc/developer/plugin-development/choosing-jenkins-baseline/ -->
+    <jenkins.baseline>2.479</jenkins.baseline>
+    <jenkins.version>${jenkins.baseline}.3</jenkins.version>
     <gitHubRepo>jenkinsci/${project.artifactId}-plugin</gitHubRepo>
     <spotless.check.skip>false</spotless.check.skip>
   </properties>
@@ -39,8 +41,8 @@
       <dependency>
         <!-- Pick up common dependencies for the selected LTS line: https://github.com/jenkinsci/bom#usage -->
         <groupId>io.jenkins.tools.bom</groupId>
-        <artifactId>bom-2.440.x</artifactId>
-        <version>3387.v0f2773fa_3200</version>
+        <artifactId>bom-${jenkins.baseline}.x</artifactId>
+        <version>4628.v2b_234a_1a_20d0</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -51,7 +53,6 @@
     <dependency>
       <groupId>io.jenkins.plugins</groupId>
       <artifactId>apache-httpcomponents-client-5-api</artifactId>
-      <version>5.4-118.v199115451c4d</version>
     </dependency>
     <dependency>
       <groupId>io.jenkins.plugins</groupId>
@@ -82,7 +83,6 @@
     <dependency>
       <groupId>org.jenkins-ci.plugins</groupId>
       <artifactId>cloudbees-folder</artifactId>
-      <version>6.901.vb_4c7a_da_75da_3</version>
     </dependency>
     <dependency>
       <groupId>org.jenkins-ci.plugins</groupId>
@@ -132,19 +132,16 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.6.2</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
-      <version>5.6.2</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>2.23.4</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
