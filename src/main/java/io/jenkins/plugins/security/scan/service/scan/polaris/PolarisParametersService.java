@@ -229,7 +229,7 @@ public class PolarisParametersService {
 
         if (polarisParameters.containsKey(ApplicationConstants.POLARIS_TEST_SAST_TYPE_KEY)) {
             Sast sast = new Sast();
-            
+
             String testSastTypeValue = polarisParameters
                     .get(ApplicationConstants.POLARIS_TEST_SAST_TYPE_KEY)
                     .toString()

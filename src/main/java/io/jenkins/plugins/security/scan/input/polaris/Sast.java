@@ -1,7 +1,6 @@
 package io.jenkins.plugins.security.scan.input.polaris;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 public class Sast {

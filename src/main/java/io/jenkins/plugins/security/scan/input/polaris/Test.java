@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Test {
     @JsonProperty("sca")
     private Sca sca;
-    private Sast sast;
 
+    private Sast sast;
 
     public Sca getSca() {
         return sca;
