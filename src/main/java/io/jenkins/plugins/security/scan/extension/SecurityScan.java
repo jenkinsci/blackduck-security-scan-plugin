@@ -143,6 +143,8 @@ public interface SecurityScan {
 
     public String getPolaris_test_sca_type();
 
+    public String getPolaris_test_sast_type();
+
     public String getBitbucket_username();
 
     public Boolean isPolaris_reports_sarif_create();

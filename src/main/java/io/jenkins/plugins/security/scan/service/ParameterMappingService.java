@@ -423,6 +423,10 @@ public class ParameterMappingService {
                 securityScan.getPolaris_test_sca_type());
         addParameterIfNotBlank(
                 polarisParametersMap,
+                ApplicationConstants.POLARIS_TEST_SAST_TYPE_KEY,
+                securityScan.getPolaris_test_sast_type());
+        addParameterIfNotBlank(
+                polarisParametersMap,
                 ApplicationConstants.POLARIS_ASSESSMENT_MODE_KEY,
                 securityScan.getPolaris_assessment_mode());
         addParameterIfNotBlank(
