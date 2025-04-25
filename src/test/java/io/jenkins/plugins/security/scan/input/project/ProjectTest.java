@@ -56,13 +56,16 @@ public class ProjectTest {
     void testDeserialization() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
 
-        String json = "{\n" + "  \"directory\" : \"test_directory\",\n"
-                + "  \"source\" : {\n"
-                + "    \"archive\" : \"test_archive\",\n"
-                + "    \"preserveSymLinks\" : true,\n"
-                + "    \"excludes\" : [ \"exclude1\", \"exclude2\" ]\n"
-                + "  }\n"
-                + "}";
+        String json =
+                """
+                {
+                  "directory" : "test_directory",
+                  "source" : {
+                    "archive" : "test_archive",
+                    "preserveSymLinks" : true,
+                    "excludes" : [ "exclude1", "exclude2" ]
+                  }
+                }""";
 
         Project project = mapper.readValue(json, Project.class);
 

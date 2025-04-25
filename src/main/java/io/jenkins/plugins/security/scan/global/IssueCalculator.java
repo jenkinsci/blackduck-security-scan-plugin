@@ -51,18 +51,13 @@ public class IssueCalculator {
             return -1;
         }
 
-        switch (SecurityProduct.valueOf(product.toUpperCase())) {
-            case BLACKDUCKSCA:
-                return calculateBlackDuckScaIssues(productNode);
-            case COVERITY:
-                return calculateCoverityIssues(productNode);
-            case POLARIS:
-                return calculatePolarisIssues(productNode);
-            case SRM:
-                return calculateSrmIssues(productNode);
-            default:
-                return -1;
-        }
+        return switch (SecurityProduct.valueOf(product.toUpperCase())) {
+            case BLACKDUCKSCA -> calculateBlackDuckScaIssues(productNode);
+            case COVERITY -> calculateCoverityIssues(productNode);
+            case POLARIS -> calculatePolarisIssues(productNode);
+            case SRM -> calculateSrmIssues(productNode);
+            default -> -1;
+        };
     }
 
     private int calculateBlackDuckScaIssues(JsonNode productNode) {

@@ -20,6 +20,7 @@ import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import io.jenkins.plugins.security.scan.service.ParameterMappingService;
 import io.jenkins.plugins.security.scan.service.scm.SCMRepositoryService;
 import java.io.IOException;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 import javax.annotation.Nonnull;
@@ -34,6 +35,7 @@ import org.kohsuke.stapler.DataBoundSetter;
 
 public class SecurityScanStep extends Step
         implements SecurityScan, PrCommentScan, FixPrScan, ReturnStatusScan, Serializable {
+    @Serial
     private static final long serialVersionUID = 6294070801130995534L;
 
     private String product;
@@ -1353,7 +1355,9 @@ public class SecurityScanStep extends Step
     }
 
     public class Execution extends SynchronousNonBlockingStepExecution<Integer> {
+        @Serial
         private static final long serialVersionUID = -2514079516220990421L;
+
         private final transient Run<?, ?> run;
         private final transient Launcher launcher;
         private final transient FlowNode flowNode;

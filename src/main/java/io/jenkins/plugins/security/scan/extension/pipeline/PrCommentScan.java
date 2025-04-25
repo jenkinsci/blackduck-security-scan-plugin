@@ -1,21 +1,21 @@
 package io.jenkins.plugins.security.scan.extension.pipeline;
 
 public interface PrCommentScan {
-    public Boolean isBlackducksca_prComment_enabled();
+    Boolean isBlackducksca_prComment_enabled();
 
-    public Boolean isBlackducksca_prComment_enabled_actualValue();
-
-    @Deprecated
-    public Boolean isBlackduck_prComment_enabled();
+    Boolean isBlackducksca_prComment_enabled_actualValue();
 
     @Deprecated
-    public Boolean isBlackduck_prComment_enabled_actualValue();
+    Boolean isBlackduck_prComment_enabled();
 
-    public Boolean isCoverity_prComment_enabled();
+    @Deprecated
+    Boolean isBlackduck_prComment_enabled_actualValue();
 
-    public Boolean isCoverity_prComment_enabled_actualValue();
+    Boolean isCoverity_prComment_enabled();
 
-    public Boolean isPolaris_prComment_enabled();
+    Boolean isCoverity_prComment_enabled_actualValue();
 
-    public Boolean isPolaris_prComment_enabled_actualValue();
+    Boolean isPolaris_prComment_enabled();
+
+    Boolean isPolaris_prComment_enabled_actualValue();
 }
