@@ -89,6 +89,8 @@ public class PolarisParametersServiceTest {
         polarisParameters.put(ApplicationConstants.POLARIS_PRCOMMENT_ENABLED_KEY, true);
         polarisParameters.put(ApplicationConstants.POLARIS_PRCOMMENT_SEVERITIES_KEY, "HIGH");
         polarisParameters.put(ApplicationConstants.POLARIS_TEST_SCA_TYPE_KEY, "SCA-PACKAGE");
+        polarisParameters.put(ApplicationConstants.POLARIS_TEST_SAST_TYPE_KEY, "SAST_RAPID");
+
         polarisParameters.put(ApplicationConstants.POLARIS_WAITFORSCAN_KEY, true);
 
         Polaris polaris = polarisParametersService.preparePolarisObjectForBridge(polarisParameters);
@@ -100,6 +102,7 @@ public class PolarisParametersServiceTest {
         assertEquals(polaris.getAssessmentTypes().getTypes(), List.of("SAST"));
         assertEquals(polaris.getBranch().getName(), "test-branch");
         assertEquals(polaris.getTest().getSca().getType(), "SCA-PACKAGE");
+        assertEquals(polaris.getTest().getSast().getType(), List.of("SAST_RAPID"));
         assertNull(polaris.getBranch().getParent());
         assertNull(polaris.getPrcomment());
         assertEquals(polaris.isWaitForScan(), true);
@@ -119,6 +122,7 @@ public class PolarisParametersServiceTest {
         polarisParameters.put(ApplicationConstants.POLARIS_PRCOMMENT_ENABLED_KEY, true);
         polarisParameters.put(ApplicationConstants.POLARIS_PRCOMMENT_SEVERITIES_KEY, "HIGH");
         polarisParameters.put(ApplicationConstants.POLARIS_TEST_SCA_TYPE_KEY, "SCA-PACKAGE");
+        polarisParameters.put(ApplicationConstants.POLARIS_TEST_SAST_TYPE_KEY, "SAST_RAPID");
         polarisParameters.put(ApplicationConstants.POLARIS_REPORTS_SARIF_CREATE_KEY, true);
         polarisParameters.put(ApplicationConstants.POLARIS_REPORTS_SARIF_FILE_PATH_KEY, "/path/to/sarif/file");
         polarisParameters.put(ApplicationConstants.POLARIS_REPORTS_SARIF_SEVERITIES_KEY, "HIGH,MEDIUM,LOW");
@@ -134,6 +138,7 @@ public class PolarisParametersServiceTest {
         assertEquals(polaris.getAssessmentTypes().getTypes(), List.of("SAST"));
         assertEquals(polaris.getBranch().getName(), "test-branch");
         assertEquals(polaris.getTest().getSca().getType(), "SCA-PACKAGE");
+        assertEquals(polaris.getTest().getSast().getType(), List.of("SAST_RAPID"));
         assertNull(polaris.getBranch().getParent());
         assertNull(polaris.getPrcomment());
         assertTrue(polaris.getReports().getSarif().getCreate());
@@ -160,6 +165,7 @@ public class PolarisParametersServiceTest {
         polarisParameters.put(ApplicationConstants.POLARIS_PRCOMMENT_ENABLED_KEY, true);
         polarisParameters.put(ApplicationConstants.POLARIS_PRCOMMENT_SEVERITIES_KEY, "CRITICAL, HIGH, MEDIUM");
         polarisParameters.put(ApplicationConstants.POLARIS_TEST_SCA_TYPE_KEY, "SCA-SIGNATURE");
+        polarisParameters.put(ApplicationConstants.POLARIS_TEST_SAST_TYPE_KEY, "SAST_RAPID");
         polarisParameters.put(ApplicationConstants.POLARIS_WAITFORSCAN_KEY, true);
 
         Mockito.when(envVarsMock.get(ApplicationConstants.ENV_CHANGE_ID_KEY)).thenReturn("1");
@@ -176,6 +182,7 @@ public class PolarisParametersServiceTest {
         assertEquals(polaris.getPrcomment().getEnabled(), true);
         assertEquals(polaris.getPrcomment().getSeverities(), List.of("CRITICAL", "HIGH", "MEDIUM"));
         assertEquals(polaris.getTest().getSca().getType(), "SCA-SIGNATURE");
+        assertEquals(polaris.getTest().getSast().getType(), List.of("SAST_RAPID"));
         assertEquals(polaris.isWaitForScan(), true);
     }
 

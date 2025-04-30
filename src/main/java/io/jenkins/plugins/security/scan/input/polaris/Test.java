@@ -6,9 +6,7 @@ public class Test {
     @JsonProperty("sca")
     private Sca sca;
 
-    public Test() {
-        sca = new Sca();
-    }
+    private Sast sast;
 
     public Sca getSca() {
         return sca;
@@ -16,5 +14,13 @@ public class Test {
 
     public void setSca(Sca sca) {
         this.sca = sca;
+    }
+
+    public Sast getSast() {
+        return sast;
+    }
+
+    public void setSast(Sast sast) {
+        this.sast = sast;
     }
 }
