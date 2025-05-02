@@ -4,9 +4,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import hudson.EnvVars;
 import hudson.FilePath;
 import hudson.Launcher;
+import hudson.model.AbstractBuild;
+import hudson.model.BuildListener;
 import hudson.model.Run;
 import hudson.model.TaskListener;
 import hudson.tasks.ArtifactArchiver;
+import io.jenkins.plugins.analysis.core.steps.IssuesRecorder;
+import io.jenkins.plugins.analysis.warnings.Sarif;
 import io.jenkins.plugins.security.scan.action.IssueAction;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
@@ -64,13 +68,13 @@ public class SecurityScanner {
                     "******************************* %s *******************************",
                     "START EXECUTION OF BRIDGE CLI");
 
-            scanner = launcher.launch()
-                    .cmds(commandLineArgs)
-                    .envs(envVars)
-                    .pwd(workspace)
-                    .stdout(listener)
-                    .quiet(true)
-                    .join();
+            //            scanner = launcher.launch()
+            //                    .cmds(commandLineArgs)
+            //                    .envs(envVars)
+            //                    .pwd(workspace)
+            //                    .stdout(listener)
+            //                    .quiet(true)
+            //                    .join();
         } catch (Exception e) {
             logger.error(ApplicationConstants.EXCEPTION_WHILE_INVOKING_BRIDGE_CLI, e.getMessage());
             Thread.currentThread().interrupt();
@@ -139,6 +143,17 @@ public class SecurityScanner {
                 UploadReportService uploadReportService =
                         new UploadReportService(run, listener, launcher, envVars, new ArtifactArchiver(reportFileName));
                 uploadReportService.archiveReports(workspace.child(reportFilePath), ReportType.SARIF);
+
+                Sarif sarif = new Sarif();
+                sarif.setPattern(".bridge/Polaris Sarif Generator/".concat(reportFileName));
+                sarif.setName("Security Scan Report");
+                IssuesRecorder recorder = new IssuesRecorder();
+                recorder.setTools(sarif);
+                try {
+                    recorder.perform((AbstractBuild<?, ?>) run, launcher, (BuildListener) listener);
+                } catch (Exception e) {
+                    logger.error(e.getMessage());
+                }
             }
         }
     }
