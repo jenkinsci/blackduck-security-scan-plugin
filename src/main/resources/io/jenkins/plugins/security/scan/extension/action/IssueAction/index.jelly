@@ -1,7 +1,0 @@
-<?jelly escape-by-default='true'?>
-<j:jelly xmlns:j="jelly:core" xmlns:l="/lib/layout">
-    <l:layout title="${my.displayName}" permission="${it.READ}">
-        <h1>${my.displayName}</h1>
-        <img src="${rootURL}${my.iconFileName}" alt="Black Duck Logo" />
-    </l:layout>
-</j:jelly>

@@ -4,14 +4,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import hudson.EnvVars;
 import hudson.FilePath;
 import hudson.Launcher;
-import hudson.model.AbstractBuild;
-import hudson.model.BuildListener;
 import hudson.model.Run;
 import hudson.model.TaskListener;
 import hudson.tasks.ArtifactArchiver;
-import io.jenkins.plugins.analysis.core.steps.IssuesRecorder;
-import io.jenkins.plugins.analysis.warnings.Sarif;
 import io.jenkins.plugins.security.scan.action.IssueAction;
+import io.jenkins.plugins.security.scan.action.ReportAction;
+import io.jenkins.plugins.security.scan.action.SecurityIssue;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.global.IssueCalculator;
@@ -23,6 +21,7 @@ import io.jenkins.plugins.security.scan.service.ParameterMappingService;
 import io.jenkins.plugins.security.scan.service.ToolsParameterService;
 import io.jenkins.plugins.security.scan.service.diagnostics.UploadReportService;
 import io.jenkins.plugins.security.scan.service.scan.ScanParametersService;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -68,13 +67,13 @@ public class SecurityScanner {
                     "******************************* %s *******************************",
                     "START EXECUTION OF BRIDGE CLI");
 
-            //            scanner = launcher.launch()
-            //                    .cmds(commandLineArgs)
-            //                    .envs(envVars)
-            //                    .pwd(workspace)
-            //                    .stdout(listener)
-            //                    .quiet(true)
-            //                    .join();
+//                    scanner = launcher.launch()
+//                            .cmds(commandLineArgs)
+//                            .envs(envVars)
+//                            .pwd(workspace)
+//                            .stdout(listener)
+//                            .quiet(true)
+//                            .join();
         } catch (Exception e) {
             logger.error(ApplicationConstants.EXCEPTION_WHILE_INVOKING_BRIDGE_CLI, e.getMessage());
             Thread.currentThread().interrupt();
@@ -144,15 +143,12 @@ public class SecurityScanner {
                         new UploadReportService(run, listener, launcher, envVars, new ArtifactArchiver(reportFileName));
                 uploadReportService.archiveReports(workspace.child(reportFilePath), ReportType.SARIF);
 
-                Sarif sarif = new Sarif();
-                sarif.setPattern(".bridge/Polaris Sarif Generator/".concat(reportFileName));
-                sarif.setName("Security Scan Report");
-                IssuesRecorder recorder = new IssuesRecorder();
-                recorder.setTools(sarif);
                 try {
-                    recorder.perform((AbstractBuild<?, ?>) run, launcher, (BuildListener) listener);
-                } catch (Exception e) {
-                    logger.error(e.getMessage());
+                    logger.info("Parsing the SARIF report file: " + reportFilePath);
+                    List<SecurityIssue> issues = Utility.parseSarifReport(workspace, reportFilePath);
+                    run.addAction(new ReportAction(run, issues));
+                } catch (IOException | InterruptedException e) {
+                    logger.error("Error while parsing the SARIF report file: " + e.getMessage());
                 }
             }
         }

@@ -8,15 +8,17 @@ import hudson.FilePath;
 import hudson.model.Result;
 import hudson.model.TaskListener;
 import hudson.model.TopLevelItem;
+import io.jenkins.plugins.security.scan.action.SarifReport;
+import io.jenkins.plugins.security.scan.action.SecurityIssue;
 import io.jenkins.plugins.security.scan.global.enums.BuildStatus;
+import jenkins.model.Jenkins;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import jenkins.model.Jenkins;
 
 public class Utility {
 
@@ -304,6 +306,41 @@ public class Utility {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static List<SecurityIssue> parseSarifReport(FilePath workspace, String reportPath) throws IOException, InterruptedException {
+        FilePath reportFile = workspace.child(reportPath);
+        if (!reportFile.exists()) {
+            return Collections.emptyList();
+        }
+
+        ObjectMapper mapper = new ObjectMapper();
+        SarifReport report = mapper.readValue(reportFile.read(), SarifReport.class);
+
+        List<SecurityIssue> issues = new ArrayList<>();
+
+        for (SarifReport.Run run : report.getRuns()) {
+            String toolName = run.getTool().getDriver().getName();
+
+            for (SarifReport.Result result : run.getResults()) {
+                for (SarifReport.Location location : result.getLocations()) {
+                    SarifReport.PhysicalLocation physicalLocation = location.getPhysicalLocation();
+                    String filePath = physicalLocation.getArtifactLocation().getUri();
+                    int line = physicalLocation.getRegion().getStartLine();
+
+                    issues.add(new SecurityIssue(
+                            result.getRuleId(),
+                            result.getMessage().getText(),
+                            filePath,
+                            line,
+                            result.getLevel(),
+                            toolName
+                    ));
+                }
+            }
+        }
+
+        return issues;
     }
 
     public static boolean isBoolean(String value) {
