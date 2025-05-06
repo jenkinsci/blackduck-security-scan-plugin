@@ -1,0 +1,61 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:l="/lib/layout">
+    <l:layout title="Black Duck Security Scan Report">
+        <st:include it="${it.run}" page="sidepanel.jelly" />
+        <l:main-panel>
+            <style>
+                .clickable-row {
+                    cursor: pointer;
+                }
+                .clickable-row:hover {
+                    background-color: #f5f5f5;
+                }
+                .warning-content {
+                    padding: 16px;
+                    background-color: #fff3cd;
+                    border: 1px solid #e1e4e8;
+                    border-radius: 6px;
+                    margin-top: 20px;
+                }
+            </style>
+
+            <h1>Black Duck Security Scan Report</h1>
+
+            <j:if test="${it.issueCount == 0}">
+                <div class="info">
+                    No security issues found.
+                </div>
+            </j:if>
+
+            <j:if test="${it.issueCount > 0}">
+                <div class="warning-content" style="margin-bottom: 20px;">
+                    <div class="warning">
+                        <b>Found ${it.issueCount} security issues.</b>
+                    </div>
+                </div>
+
+                <table class="pane sortable bigtable">
+                    <tr>
+                        <th class="pane-header">Tool</th>
+                        <th class="pane-header">Severity</th>
+                        <th class="pane-header">Type</th>
+                        <th class="pane-header">File</th>
+                        <th class="pane-header">Line</th>
+<!--                        <th class="pane-header">Message</th>-->
+                    </tr>
+
+                    <j:forEach var="issue" items="${it.issues}" varStatus="status">
+                        <tr class="clickable-row" onclick="window.location='${rootURL}/${it.run.url}${it.urlName}/issue${status.index}'">
+                            <td class="pane">${issue.toolName}</td>
+                            <td class="pane">${issue.severity}</td>
+                            <td class="pane">${issue.ruleId}</td>
+                            <td class="pane">${issue.filePath}</td>
+                            <td class="pane">${issue.line}</td>
+<!--                            <td class="pane">${issue.message}</td>-->
+                        </tr>
+                    </j:forEach>
+                </table>
+            </j:if>
+        </l:main-panel>
+    </l:layout>
+</j:jelly>
