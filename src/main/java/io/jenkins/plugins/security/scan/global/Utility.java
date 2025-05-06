@@ -11,14 +11,16 @@ import hudson.model.TopLevelItem;
 import io.jenkins.plugins.security.scan.action.SarifReport;
 import io.jenkins.plugins.security.scan.action.SecurityIssue;
 import io.jenkins.plugins.security.scan.global.enums.BuildStatus;
-import jenkins.model.Jenkins;
-
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import jenkins.model.Jenkins;
 
 public class Utility {
 
@@ -308,7 +310,8 @@ public class Utility {
         }
     }
 
-    public static List<SecurityIssue> parseSarifReport(FilePath workspace, String reportPath) throws IOException, InterruptedException {
+    public static List<SecurityIssue> parseSarifReport(FilePath workspace, String reportPath)
+            throws IOException, InterruptedException {
         FilePath reportFile = workspace.child(reportPath);
         if (!reportFile.exists()) {
             return Collections.emptyList();
@@ -322,25 +325,124 @@ public class Utility {
         for (SarifReport.Run run : report.getRuns()) {
             String toolName = run.getTool().getDriver().getName();
 
+            // Map for rule definitions that contain severity ratings
+            Map<String, String> ruleSeverityMap = new HashMap<>();
+            Map<String, String> ruleHelpMap = new HashMap<>();
+            Map<String, String> ruleShortDescMap = new HashMap<>();
+
+            if (run.getTool().getDriver().getRules() != null) {
+                for (SarifReport.Rule rule : run.getTool().getDriver().getRules()) {
+                    // Map severity
+                    if (rule.getProperties() != null && rule.getProperties().getSecuritySeverity() != null) {
+                        String severity =
+                                mapSecuritySeverityRating(rule.getProperties().getSecuritySeverity());
+                        ruleSeverityMap.put(rule.getId(), severity);
+                    }
+                    // Map help content
+                    if (rule.getHelp() != null && rule.getHelp().getMarkdown() != null) {
+                        ruleHelpMap.put(rule.getId(), rule.getHelp().getMarkdown());
+                    }
+                    // Map short description
+                    if (rule.getShortDescription() != null
+                            && rule.getShortDescription().getText() != null) {
+                        ruleShortDescMap.put(
+                                rule.getId(), rule.getShortDescription().getText());
+                    }
+                }
+            }
+
             for (SarifReport.Result result : run.getResults()) {
+                // Use the mapped severity if available, otherwise use the level
+                String severity = ruleSeverityMap.getOrDefault(
+                        result.getRuleId(),
+                        result.getLevel() != null ? mapLevelToSeverity(result.getLevel()) : "Unknown");
+                String helpMarkdown = ruleHelpMap.getOrDefault(result.getRuleId(), "");
+                String shortDesc = ruleShortDescMap.getOrDefault(result.getRuleId(), ""); // Get short description
+
                 for (SarifReport.Location location : result.getLocations()) {
                     SarifReport.PhysicalLocation physicalLocation = location.getPhysicalLocation();
                     String filePath = physicalLocation.getArtifactLocation().getUri();
                     int line = physicalLocation.getRegion().getStartLine();
+
+                    // Load code snippet
+                    List<String> codeSnippet = new ArrayList<>();
+                    int contextLines = 3; // You can make this configurable
+                    int startLineNumber = Math.max(1, line - contextLines);
+                    int highlightedLineIndex = line - startLineNumber;
+
+                    try {
+                        FilePath sourceFile = workspace.child(filePath);
+                        if (sourceFile.exists()) {
+                            try (BufferedReader reader = new BufferedReader(
+                                    new InputStreamReader(sourceFile.read(), StandardCharsets.UTF_8))) {
+
+                                // Skip lines before our context
+                                for (int i = 1; i < startLineNumber; i++) {
+                                    reader.readLine();
+                                }
+
+                                // Read the lines we want to display
+                                int endLine = line + contextLines;
+                                String codeLine;
+                                int currentLine = startLineNumber;
+
+                                while ((codeLine = reader.readLine()) != null && currentLine <= endLine) {
+                                    codeSnippet.add(codeLine);
+                                    currentLine++;
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                        // If we can't read the file, use a placeholder
+                        codeSnippet = Collections.singletonList("// Could not read source file: " + e.getMessage());
+                    }
 
                     issues.add(new SecurityIssue(
                             result.getRuleId(),
                             result.getMessage().getText(),
                             filePath,
                             line,
-                            result.getLevel(),
-                            toolName
-                    ));
+                            severity,
+                            toolName,
+                            helpMarkdown,
+                            shortDesc,
+                            codeSnippet,
+                            startLineNumber,
+                            highlightedLineIndex));
                 }
             }
         }
 
         return issues;
+    }
+
+    private static String mapSecuritySeverityRating(String securitySeverity) {
+        try {
+            double value = Double.parseDouble(securitySeverity);
+            if (value >= 9.0) return "Critical";
+            if (value >= 7.0) return "High";
+            if (value >= 4.0) return "Medium";
+            if (value >= 0.1) return "Low";
+            return "None";
+        } catch (NumberFormatException e) {
+            return "Unknown";
+        }
+    }
+
+    private static String mapLevelToSeverity(String level) {
+        if (level == null) return "Unknown";
+        switch (level.toLowerCase()) {
+            case "error":
+                return "High";
+            case "warning":
+                return "Medium";
+            case "note":
+                return "Low";
+            case "none":
+                return "None";
+            default:
+                return "Unknown";
+        }
     }
 
     public static boolean isBoolean(String value) {

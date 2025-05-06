@@ -21,7 +21,6 @@ import io.jenkins.plugins.security.scan.service.ParameterMappingService;
 import io.jenkins.plugins.security.scan.service.ToolsParameterService;
 import io.jenkins.plugins.security.scan.service.diagnostics.UploadReportService;
 import io.jenkins.plugins.security.scan.service.scan.ScanParametersService;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -67,13 +66,13 @@ public class SecurityScanner {
                     "******************************* %s *******************************",
                     "START EXECUTION OF BRIDGE CLI");
 
-//                    scanner = launcher.launch()
-//                            .cmds(commandLineArgs)
-//                            .envs(envVars)
-//                            .pwd(workspace)
-//                            .stdout(listener)
-//                            .quiet(true)
-//                            .join();
+            scanner = launcher.launch()
+                    .cmds(commandLineArgs)
+                    .envs(envVars)
+                    .pwd(workspace)
+                    .stdout(listener)
+                    .quiet(true)
+                    .join();
         } catch (Exception e) {
             logger.error(ApplicationConstants.EXCEPTION_WHILE_INVOKING_BRIDGE_CLI, e.getMessage());
             Thread.currentThread().interrupt();

@@ -1,0 +1,91 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:l="/lib/layout">
+    <l:layout title="${it.displayName}">
+        <st:include it="${it.parent.run}" page="sidepanel.jelly" />
+        <l:main-panel>
+            <style>
+                .markdown-content {
+                    padding: 16px;
+                    background-color: #f8f8f8;
+                    border: 1px solid #e1e4e8;
+                    border-radius: 6px;
+                    margin-top: 20px;
+                }
+                .severity-badge {
+                    padding: 2px 8px;
+                    border-radius: 4px;
+                    color: white;
+                    font-weight: bold;
+                }
+                .severity-critical { background-color: #d50000; }
+                .severity-high { background-color: #ff6d00; }
+                .severity-medium { background-color: #ffab00; }
+                .severity-low { background-color: #1e88e5; }
+                .severity-unknown { background-color: #9e9e9e; }
+                .location-content {
+                    padding: 16px;
+                    background-color: #f8f8f8;
+                    border: 1px solid #e1e4e8;
+                    border-radius: 6px;
+                    margin-top: 20px;
+                }
+                .code-snippet {
+                    background-color: #f6fad0;
+                    border: 1px solid #e1e4e8;
+                    border-radius: 6px;
+                    padding: 16px;
+                    font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
+                    font-size: 14px;
+                    line-height: 1.45;
+                    overflow-x: auto;
+                    margin-top: 10px;
+                }
+                .highlight-line {
+                    background-color: #ffd6a9;
+                    display: block;
+                    margin: 0 -16px;
+                    padding: 0 16px;
+                    border-left: 3px solid #f9c513;
+                }
+                .line-number {
+                    color: #6a737d;
+                    margin-right: 10px;
+                    -webkit-user-select: none;
+                    user-select: none;
+                }
+            </style>
+
+            <div style="margin-bottom: 20px;">
+                <a href="${rootURL}/${it.parent.run.url}${it.parent.urlName}">← Back to Issues</a>
+            </div>
+
+            <j:set var="issue" value="${it.issue}"/>
+
+            <h1>
+                ${issue.shortDescription} (${issue.ruleId})
+                <span class="severity-badge severity-${issue.severity.toLowerCase()}">${issue.severity}</span>
+            </h1>
+
+            <j:if test="${!empty issue.codeSnippet}">
+                <div class="location-content">
+                    <h2>Location</h2>
+                    <b>${issue.filePath}:${issue.line}</b>
+                    <div class="code-snippet">
+                        <j:forEach var="line" items="${issue.codeSnippet}" varStatus="status">
+                            <div class="${status.index == issue.highlightedLineIndex ? 'highlight-line' : ''}">
+                                <span class="line-number">${issue.startLineNumber + status.index}</span>
+                                <code style="white-space: pre;">${line}</code>
+                            </div>
+                        </j:forEach>
+                    </div>
+                </div>
+            </j:if>
+
+            <j:if test="${!empty issue.helpMarkdown}">
+                <div class="markdown-content">
+                    <j:out value="${it.renderedHelpMarkdown}"/>
+                </div>
+            </j:if>
+        </l:main-panel>
+    </l:layout>
+</j:jelly>

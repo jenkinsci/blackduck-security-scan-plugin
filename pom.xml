@@ -65,8 +65,9 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>io.jenkins.plugins</groupId>
-      <artifactId>warnings-ng</artifactId>
+      <groupId>org.commonmark</groupId>
+      <artifactId>commonmark</artifactId>
+      <version>0.24.0</version>
     </dependency>
     <dependency>
       <groupId>org.jenkins-ci.plugins</groupId>

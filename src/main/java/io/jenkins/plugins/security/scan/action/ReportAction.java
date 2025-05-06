@@ -3,8 +3,10 @@ package io.jenkins.plugins.security.scan.action;
 import hudson.model.Action;
 import hudson.model.Run;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
-
 import java.util.List;
+import jenkins.security.stapler.StaplerDispatchable;
+import org.kohsuke.stapler.StaplerRequest;
+import org.kohsuke.stapler.StaplerResponse;
 
 public class ReportAction implements Action {
     private final Run<?, ?> run;
@@ -40,5 +42,28 @@ public class ReportAction implements Action {
 
     public int getIssueCount() {
         return issues.size();
+    }
+
+    @StaplerDispatchable
+    public SecurityIssue getIssue(int index) {
+        if (index >= 0 && index < issues.size()) {
+            return issues.get(index);
+        }
+        return null;
+    }
+
+    public Object getDynamic(String token, StaplerRequest req, StaplerResponse rsp) {
+        if (token.startsWith("issue")) {
+            String indexStr = token.substring(5); // "issue" prefix is 5 characters
+            try {
+                int index = Integer.parseInt(indexStr);
+                if (index >= 0 && index < issues.size()) {
+                    return new IssueDetailAction(this, index);
+                }
+            } catch (NumberFormatException e) {
+                // Invalid index
+            }
+        }
+        return null;
     }
 }

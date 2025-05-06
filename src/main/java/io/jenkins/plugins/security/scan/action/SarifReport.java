@@ -45,8 +45,83 @@ public class SarifReport {
         @JsonProperty("name")
         private String name;
 
+        @JsonProperty("rules")
+        private List<Rule> rules;
+
         public String getName() {
             return name;
+        }
+
+        public List<Rule> getRules() {
+            return rules;
+        }
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class Rule {
+        @JsonProperty("id")
+        private String id;
+
+        @JsonProperty("properties")
+        private Properties properties;
+
+        @JsonProperty("help")
+        private Help help;
+
+        @JsonProperty("shortDescription")
+        private ShortDescription shortDescription;
+
+        public String getId() {
+            return id;
+        }
+
+        public Properties getProperties() {
+            return properties;
+        }
+
+        public Help getHelp() {
+            return help;
+        }
+
+        public ShortDescription getShortDescription() {
+            return shortDescription;
+        }
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class ShortDescription {
+        @JsonProperty("text")
+        private String text;
+
+        public String getText() {
+            return text;
+        }
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class Properties {
+        @JsonProperty("security-severity")
+        private String securitySeverity;
+
+        public String getSecuritySeverity() {
+            return securitySeverity;
+        }
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class Help {
+        @JsonProperty("text")
+        private String text;
+
+        @JsonProperty("markdown")
+        private String markdown;
+
+        public String getText() {
+            return text;
+        }
+
+        public String getMarkdown() {
+            return markdown;
         }
     }
 
