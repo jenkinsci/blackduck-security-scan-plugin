@@ -119,7 +119,8 @@ public class BlackDuckSCAParametersService {
         }
     }
 
-    private void setScanFailureSeverities(Map<String, Object> blackDuckSCAParameters, BlackDuckSCA blackDuckSCA, Scan scan) {
+    private void setScanFailureSeverities(
+            Map<String, Object> blackDuckSCAParameters, BlackDuckSCA blackDuckSCA, Scan scan) {
         if (blackDuckSCAParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_SCAN_FAILURE_SEVERITIES_KEY)) {
             String value = blackDuckSCAParameters
                     .get(ApplicationConstants.BLACKDUCKSCA_SCAN_FAILURE_SEVERITIES_KEY)
