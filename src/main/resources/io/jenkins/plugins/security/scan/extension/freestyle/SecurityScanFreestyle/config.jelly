@@ -93,7 +93,7 @@
             <f:entry field="coverity_mark_build_status" title="Mark Build Status (Optional)">
                 <f:select/>
             </f:entry>
-            <f:entry field="coverity_local" title="Using Coverity Connect? (Optional)">
+            <f:entry field="coverity_local" title="Run Coverity Analysis locally (Optional)">
                 <f:checkbox checked="${instance.isCoverity_local() == true}"/>
             </f:entry>
             <f:entry field="coverity_include_diagnostics" title="Include Diagnostics (Optional)">
