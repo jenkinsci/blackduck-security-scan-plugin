@@ -283,8 +283,7 @@ public class UtilityTest {
 
     @Test
     public void testGetSarifReportFilePathFromScanInfo_BlackDuck() {
-        String json =
-            "{ \"" + ApplicationConstants.BLACKDUCKSCA_SCAN_INFO_SARIF_REPORT_FILE_PATH_SOURCE_KEY
+        String json = "{ \"" + ApplicationConstants.BLACKDUCKSCA_SCAN_INFO_SARIF_REPORT_FILE_PATH_SOURCE_KEY
                 + "\": \"blackduck/path/report.sarif.json\" }";
         JsonNode node = Utility.parseJsonFile(json);
         String result = Utility.getSarifReportFilePathFromScanInfo(node, true, false);
@@ -293,8 +292,7 @@ public class UtilityTest {
 
     @Test
     public void testGetSarifReportFilePathFromScanInfo_Polaris() {
-        String json =
-            "{ \"" + ApplicationConstants.POLARIS_SCAN_INFO_SARIF_REPORT_FILE_PATH_SOURCE_KEY
+        String json = "{ \"" + ApplicationConstants.POLARIS_SCAN_INFO_SARIF_REPORT_FILE_PATH_SOURCE_KEY
                 + "\": \"polaris/path/report.sarif.json\" }";
         JsonNode node = Utility.parseJsonFile(json);
         String result = Utility.getSarifReportFilePathFromScanInfo(node, false, true);
@@ -312,25 +310,20 @@ public class UtilityTest {
 
     @Test
     public void testLegacySarifReportFilePaths() {
-        String expectedBlackDuckLegacy =
-            ApplicationConstants.DEFAULT_BLACKDUCKSCA_SARIF_REPORT_LEGACY_FILE_PATH
+        String expectedBlackDuckLegacy = ApplicationConstants.DEFAULT_BLACKDUCKSCA_SARIF_REPORT_LEGACY_FILE_PATH
                 + ApplicationConstants.SARIF_REPORT_FILENAME;
-        String expectedPolarisLegacy =
-            ApplicationConstants.DEFAULT_POLARIS_SARIF_REPORT_LEGACY_FILE_PATH
+        String expectedPolarisLegacy = ApplicationConstants.DEFAULT_POLARIS_SARIF_REPORT_LEGACY_FILE_PATH
                 + ApplicationConstants.SARIF_REPORT_FILENAME;
-        assertEquals(".bridge/Blackduck SCA SARIF Generator/report.sarif.json",
-            expectedBlackDuckLegacy);
+        assertEquals(".bridge/Blackduck SCA SARIF Generator/report.sarif.json", expectedBlackDuckLegacy);
         assertEquals(".bridge/Polaris SARIF Generator/report.sarif.json", expectedPolarisLegacy);
     }
 
     @Test
     public void testResolveSarifReportFilePath_CustomTakesPrecedence() throws Exception {
         Map<String, Object> scanParams = new HashMap<>();
-        scanParams.put(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_FILE_PATH_KEY,
-            "custom/path/report.sarif.json");
+        scanParams.put(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_FILE_PATH_KEY, "custom/path/report.sarif.json");
         FilePath workspace = new FilePath(new java.io.File("."));
-        String result = Utility.resolveSarifReportFilePath(scanParams, workspace, true, false,
-            null);
+        String result = Utility.resolveSarifReportFilePath(scanParams, workspace, true, false, null);
         assertEquals("custom/path/report.sarif.json", result);
     }
 

@@ -310,66 +310,64 @@ public class Utility {
         return value.equals("true") || value.equals("false");
     }
 
-	public static String getSarifReportFilePathFromScanInfo(JsonNode rootNode,
-		boolean isBlackDuckScan, boolean isPolarisDuckScan) {
-		if (rootNode == null) {
-			return null;
-		}
+    public static String getSarifReportFilePathFromScanInfo(
+            JsonNode rootNode, boolean isBlackDuckScan, boolean isPolarisDuckScan) {
+        if (rootNode == null) {
+            return null;
+        }
 
-		if (isBlackDuckScan && rootNode.has(
-			ApplicationConstants.BLACKDUCKSCA_SCAN_INFO_SARIF_REPORT_FILE_PATH_SOURCE_KEY)) {
-			return rootNode.get(
-					ApplicationConstants.BLACKDUCKSCA_SCAN_INFO_SARIF_REPORT_FILE_PATH_SOURCE_KEY)
-				.asText();
-		}
-		if (isPolarisDuckScan && rootNode.has(
-			ApplicationConstants.POLARIS_SCAN_INFO_SARIF_REPORT_FILE_PATH_SOURCE_KEY)) {
-			return rootNode.get(
-				ApplicationConstants.POLARIS_SCAN_INFO_SARIF_REPORT_FILE_PATH_SOURCE_KEY).asText();
-		}
-		return null;
-	}
+        if (isBlackDuckScan
+                && rootNode.has(ApplicationConstants.BLACKDUCKSCA_SCAN_INFO_SARIF_REPORT_FILE_PATH_SOURCE_KEY)) {
+            return rootNode.get(ApplicationConstants.BLACKDUCKSCA_SCAN_INFO_SARIF_REPORT_FILE_PATH_SOURCE_KEY)
+                    .asText();
+        }
+        if (isPolarisDuckScan
+                && rootNode.has(ApplicationConstants.POLARIS_SCAN_INFO_SARIF_REPORT_FILE_PATH_SOURCE_KEY)) {
+            return rootNode.get(ApplicationConstants.POLARIS_SCAN_INFO_SARIF_REPORT_FILE_PATH_SOURCE_KEY)
+                    .asText();
+        }
+        return null;
+    }
 
-	public static String resolveSarifReportFilePath(Map<String, Object> scanParams,
-		FilePath workspace, boolean isBlackDuckScan, boolean isPolarisDuckScan,
-		LoggerWrapper logger) {
-		// Custom path
-		String customPath = getCustomSarifReportFilePath(scanParams, isBlackDuckScan,
-			isPolarisDuckScan);
-		if (!isStringNullOrBlank(customPath)) {
-			return customPath;
-		}
+    public static String resolveSarifReportFilePath(
+            Map<String, Object> scanParams,
+            FilePath workspace,
+            boolean isBlackDuckScan,
+            boolean isPolarisDuckScan,
+            LoggerWrapper logger) {
+        // Custom path
+        String customPath = getCustomSarifReportFilePath(scanParams, isBlackDuckScan, isPolarisDuckScan);
+        if (!isStringNullOrBlank(customPath)) {
+            return customPath;
+        }
 
-		// scan_info_out.json
-		try {
-			FilePath filePath = workspace.child(ApplicationConstants.SCAN_INFO_OUT_FILE_NAME);
-			if (filePath.exists()) {
-				JsonNode rootNode = parseJsonFile(filePath.readToString());
-				String scanInfoPath = getSarifReportFilePathFromScanInfo(rootNode, isBlackDuckScan,
-					isPolarisDuckScan);
-				if (!isStringNullOrBlank(scanInfoPath)) {
-					return scanInfoPath;
-				}
-			}
-		} catch (Exception e) {
-			logger.info(ApplicationConstants.EXCEPTION_WHILE_PROCESS_SCAN_INFO_FILE,
-				e.getMessage());
-		}
+        // scan_info_out.json
+        try {
+            FilePath filePath = workspace.child(ApplicationConstants.SCAN_INFO_OUT_FILE_NAME);
+            if (filePath.exists()) {
+                JsonNode rootNode = parseJsonFile(filePath.readToString());
+                String scanInfoPath = getSarifReportFilePathFromScanInfo(rootNode, isBlackDuckScan, isPolarisDuckScan);
+                if (!isStringNullOrBlank(scanInfoPath)) {
+                    return scanInfoPath;
+                }
+            }
+        } catch (Exception e) {
+            logger.info(ApplicationConstants.EXCEPTION_WHILE_PROCESS_SCAN_INFO_FILE, e.getMessage());
+        }
 
-		// Default path
-		String defaultPath = getDefaultSarifReportFilePath(isBlackDuckScan, isPolarisDuckScan);
-		if (!isStringNullOrBlank(defaultPath)) {
-			return defaultPath;
-		}
+        // Default path
+        String defaultPath = getDefaultSarifReportFilePath(isBlackDuckScan, isPolarisDuckScan);
+        if (!isStringNullOrBlank(defaultPath)) {
+            return defaultPath;
+        }
 
-		// Legacy path
-		return isBlackDuckScan
-			? ApplicationConstants.DEFAULT_BLACKDUCKSCA_SARIF_REPORT_LEGACY_FILE_PATH
-			+ ApplicationConstants.SARIF_REPORT_FILENAME
-			: isPolarisDuckScan
-				? ApplicationConstants.DEFAULT_POLARIS_SARIF_REPORT_LEGACY_FILE_PATH
-				+ ApplicationConstants.SARIF_REPORT_FILENAME
-				: "";
-	}
-
+        // Legacy path
+        return isBlackDuckScan
+                ? ApplicationConstants.DEFAULT_BLACKDUCKSCA_SARIF_REPORT_LEGACY_FILE_PATH
+                        + ApplicationConstants.SARIF_REPORT_FILENAME
+                : isPolarisDuckScan
+                        ? ApplicationConstants.DEFAULT_POLARIS_SARIF_REPORT_LEGACY_FILE_PATH
+                                + ApplicationConstants.SARIF_REPORT_FILENAME
+                        : "";
+    }
 }
