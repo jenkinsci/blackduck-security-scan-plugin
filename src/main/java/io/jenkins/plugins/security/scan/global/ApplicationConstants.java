@@ -16,8 +16,12 @@ public class ApplicationConstants {
     public static final String MAC_ARM_COMPATIBLE_BRIDGE_VERSION = "2.1.0";
     public static final String DEFAULT_DIRECTORY_NAME = "bridge-cli-bundle";
     public static final String BRIDGE_REPORT_DIRECTORY = ".bridge";
-    public static final String DEFAULT_BLACKDUCKSCA_SARIF_REPORT_FILE_PATH = ".bridge/Blackduck SCA SARIF Generator/";
-    public static final String DEFAULT_POLARIS_SARIF_REPORT_FILE_PATH = ".bridge/Polaris SARIF Generator/";
+    public static final String DEFAULT_BLACKDUCKSCA_SARIF_REPORT_LEGACY_FILE_PATH = ".bridge/Blackduck SCA SARIF Generator/";
+    public static final String DEFAULT_POLARIS_SARIF_REPORT_LEGACY_FILE_PATH = ".bridge/Polaris SARIF Generator/";
+    public static final String DEFAULT_BLACKDUCKSCA_SARIF_REPORT_FILE_PATH = ".blackduck/integrations/BlackduckGenerator/";
+    public static final String DEFAULT_POLARIS_SARIF_REPORT_FILE_PATH = ".blackduck/integrations/PolarisSARIFGenerator/";
+    public static final String POLARIS_SCAN_INFO_SARIF_REPORT_FILE_PATH_SOURCE_KEY = "polaris.reports.sarif.file.output";
+    public static final String BLACKDUCKSCA_SCAN_INFO_SARIF_REPORT_FILE_PATH_SOURCE_KEY = "blackducksca.reports.sarif.file.output";
     public static final String SARIF_REPORT_FILENAME = "report.sarif.json";
     public static final int BRIDGE_DOWNLOAD_MAX_RETRIES = 3;
     public static final int INTERVAL_BETWEEN_CONSECUTIVE_RETRY_ATTEMPTS = 10000;

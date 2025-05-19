@@ -103,45 +103,52 @@ public class SecurityScanner {
         }
     }
 
-    public void handleSarifReports(Map<String, Object> scanParams) {
-        if (Objects.equals(scanParams.get(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_CREATE_KEY), true)
-                || Objects.equals(scanParams.get(ApplicationConstants.POLARIS_REPORTS_SARIF_CREATE_KEY), true)) {
+	public void handleSarifReports(Map<String, Object> scanParams) {
+		boolean createBlackDuckSarif = Objects.equals(
+			scanParams.get(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_CREATE_KEY), true);
+		boolean createPolarisSarif = Objects.equals(
+			scanParams.get(ApplicationConstants.POLARIS_REPORTS_SARIF_CREATE_KEY), true);
+		if (!createBlackDuckSarif && !createPolarisSarif) {
+			return;
+		}
 
-            String changeId = envVars.get(ApplicationConstants.ENV_CHANGE_ID_KEY);
-            boolean isPullRequest = changeId != null;
+		String changeId = envVars.get(ApplicationConstants.ENV_CHANGE_ID_KEY);
+		boolean isPullRequest = changeId != null;
+		logger.info((isPullRequest ? "This is a (PR/MR) event" : "This is not a (PR/MR) event")
+			+ (isPullRequest ? " (PR/MR Number: " + changeId + ")" : ""));
 
-            logger.info((isPullRequest ? "This is a (PR/MR) event" : "This is not a (PR/MR) event")
-                    + (isPullRequest ? " (PR/MR Number: " + changeId + ")" : ""));
+		ScanParametersService scanParametersService = new ScanParametersService(listener);
+		Set<String> scanType = scanParametersService.getSecurityProducts(scanParams);
+		boolean isBlackDuckScan = scanType.contains(SecurityProduct.BLACKDUCK.name())
+			|| scanType.contains(SecurityProduct.BLACKDUCKSCA.name());
+		boolean isPolarisDuckScan = scanType.contains(SecurityProduct.POLARIS.name());
 
-            boolean waitForScan = true;
-            ScanParametersService scanParametersService = new ScanParametersService(listener);
-            Set<String> scanType = scanParametersService.getSecurityProducts(scanParams);
-            boolean isBlackDuckScan = scanType.contains(SecurityProduct.BLACKDUCK.name())
-                    || scanType.contains(SecurityProduct.BLACKDUCKSCA.name());
-            boolean isPolarisDuckScan = scanType.contains(SecurityProduct.POLARIS.name());
+		boolean waitForScan = true;
+		if (isBlackDuckScan && scanParams.containsKey(
+			ApplicationConstants.BLACKDUCKSCA_WAITFORSCAN_KEY)) {
+			waitForScan = (Boolean) scanParams.get(
+				ApplicationConstants.BLACKDUCKSCA_WAITFORSCAN_KEY);
+		} else if (isPolarisDuckScan && scanParams.containsKey(
+			ApplicationConstants.POLARIS_WAITFORSCAN_KEY)
+		) {
+			waitForScan = (Boolean) scanParams.get(
+				ApplicationConstants.POLARIS_WAITFORSCAN_KEY);
+		}
 
-            if (scanParams.containsKey(ApplicationConstants.BLACKDUCKSCA_WAITFORSCAN_KEY) && isBlackDuckScan) {
-                waitForScan = (Boolean) scanParams.get(ApplicationConstants.BLACKDUCKSCA_WAITFORSCAN_KEY);
-            } else if (scanParams.containsKey(ApplicationConstants.POLARIS_WAITFORSCAN_KEY) && isPolarisDuckScan) {
-                waitForScan = (Boolean) scanParams.get(ApplicationConstants.POLARIS_WAITFORSCAN_KEY);
-            }
+		if (isPullRequest || !waitForScan) {
+			return;
+		}
 
-            // Sarif upload is not applicable when blackduck_waitForScan or polaris_waitForScan param is false
-            if (!isPullRequest && waitForScan) {
-                String defaultSarifReportFilePath =
-                        Utility.getDefaultSarifReportFilePath(isBlackDuckScan, isPolarisDuckScan);
-                String customSarifReportFilePath =
-                        Utility.getCustomSarifReportFilePath(scanParams, isBlackDuckScan, isPolarisDuckScan);
-                String reportFilePath =
-                        Utility.determineSARIFReportFilePath(customSarifReportFilePath, defaultSarifReportFilePath);
-                String reportFileName = Utility.determineSARIFReportFileName(customSarifReportFilePath);
+		String reportFilePath = Utility.resolveSarifReportFilePath(scanParams, workspace,
+			isBlackDuckScan, isPolarisDuckScan, logger);
+		String reportFileName = Utility.determineSARIFReportFileName(reportFilePath);
 
-                UploadReportService uploadReportService =
-                        new UploadReportService(run, listener, launcher, envVars, new ArtifactArchiver(reportFileName));
-                uploadReportService.archiveReports(workspace.child(reportFilePath), ReportType.SARIF);
-            }
-        }
-    }
+		UploadReportService uploadReportService =
+			new UploadReportService(run, listener, launcher, envVars,
+				new ArtifactArchiver(reportFileName));
+		uploadReportService.archiveReports(workspace.child(reportFilePath),
+			ReportType.SARIF);
+	}
 
     public void handleIssueCount(Map<String, Object> scanParams) {
         try {
