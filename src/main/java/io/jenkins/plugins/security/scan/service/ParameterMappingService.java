@@ -15,7 +15,6 @@ import io.jenkins.plugins.security.scan.global.*;
 import io.jenkins.plugins.security.scan.global.enums.BuildStatus;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import java.util.*;
-import java.util.stream.Collectors;
 import jenkins.model.GlobalConfiguration;
 
 public class ParameterMappingService {
@@ -56,8 +55,7 @@ public class ParameterMappingService {
 
             parametersMap.putAll(prepareAddtionalParametersMap(securityScan));
 
-            if (securityScan instanceof ReturnStatusScan) {
-                ReturnStatusScan returnStatusScan = (ReturnStatusScan) securityScan;
+            if (securityScan instanceof ReturnStatusScan returnStatusScan) {
                 addParameterIfNotBlank(
                         parametersMap, ApplicationConstants.RETURN_STATUS_KEY, returnStatusScan.isReturn_status());
             }
@@ -267,8 +265,7 @@ public class ParameterMappingService {
                 ApplicationConstants.BLACKDUCKSCA_SCAN_FULL_KEY,
                 securityScan.isBlackduckscaIntelligentScan());
 
-        if (securityScan instanceof PrCommentScan) {
-            PrCommentScan prCommentScan = (PrCommentScan) securityScan;
+        if (securityScan instanceof PrCommentScan prCommentScan) {
             addDeprecatedParameterIfNotBlank(
                     blackDuckParameters,
                     ApplicationConstants.BLACKDUCKSCA_PRCOMMENT_ENABLED_KEY,
@@ -280,8 +277,7 @@ public class ParameterMappingService {
                     prCommentScan.isBlackducksca_prComment_enabled_actualValue());
         }
 
-        if (securityScan instanceof FixPrScan) {
-            FixPrScan fixPrScan = (FixPrScan) securityScan;
+        if (securityScan instanceof FixPrScan fixPrScan) {
             addParameterIfNotBlank(
                     blackDuckParameters,
                     ApplicationConstants.BLACKDUCKSCA_FIXPR_ENABLED_KEY,
@@ -369,8 +365,7 @@ public class ParameterMappingService {
                 ApplicationConstants.COVERITY_WAITFORSCAN_KEY,
                 securityScan.isCoverity_waitForScan_actualValue());
 
-        if (securityScan instanceof PrCommentScan) {
-            PrCommentScan prCommentScan = (PrCommentScan) securityScan;
+        if (securityScan instanceof PrCommentScan prCommentScan) {
             addParameterIfNotBlank(
                     coverityParameters,
                     ApplicationConstants.COVERITY_PRCOMMENT_ENABLED_KEY,
@@ -446,8 +441,7 @@ public class ParameterMappingService {
                     securityScan.isProject_source_preserveSymLinks_actualValue());
         }
 
-        if (securityScan instanceof PrCommentScan) {
-            PrCommentScan prCommentScan = (PrCommentScan) securityScan;
+        if (securityScan instanceof PrCommentScan prCommentScan) {
             if (prCommentScan.isPolaris_prComment_enabled_actualValue() != null) {
                 polarisParametersMap.put(
                         ApplicationConstants.POLARIS_PRCOMMENT_ENABLED_KEY,
@@ -455,8 +449,7 @@ public class ParameterMappingService {
             }
         }
 
-        if (securityScan instanceof FreestyleScan) {
-            FreestyleScan freestyleScan = (FreestyleScan) securityScan;
+        if (securityScan instanceof FreestyleScan freestyleScan) {
             preparePolarisToolConfigurationParametersMap(polarisParametersMap, freestyleScan);
         }
 
@@ -500,8 +493,7 @@ public class ParameterMappingService {
                 ApplicationConstants.SRM_WAITFORSCAN_KEY,
                 securityScan.isSrm_waitForScan_actualValue());
 
-        if (securityScan instanceof FreestyleScan) {
-            FreestyleScan freestyleScan = (FreestyleScan) securityScan;
+        if (securityScan instanceof FreestyleScan freestyleScan) {
             prepareSrmToolConfigurationParametersMap(srmParametersMap, freestyleScan);
         }
 
@@ -747,7 +739,7 @@ public class ParameterMappingService {
             logger.info("Supported values for security products: "
                     + Arrays.stream(SecurityProduct.values())
                             .filter(p -> p != SecurityProduct.BLACKDUCK)
-                            .collect(Collectors.toList()));
+                            .toList());
         }
 
         return isValid;
@@ -806,31 +798,25 @@ public class ParameterMappingService {
                 .get(ApplicationConstants.PRODUCT_KEY)
                 .toString()
                 .toUpperCase();
-        String url = "";
-
-        switch (SecurityProduct.valueOf(product)) {
-            case BLACKDUCK:
-            case BLACKDUCKSCA:
-                url = scanParametersMap
-                        .getOrDefault(ApplicationConstants.BLACKDUCKSCA_URL_KEY, "")
-                        .toString();
-                break;
-            case COVERITY:
-                url = scanParametersMap
-                        .getOrDefault(ApplicationConstants.COVERITY_URL_KEY, "")
-                        .toString();
-                break;
-            case POLARIS:
-                url = scanParametersMap
-                        .getOrDefault(ApplicationConstants.POLARIS_SERVER_URL_KEY, "")
-                        .toString();
-                break;
-            case SRM:
-                url = scanParametersMap
-                        .getOrDefault(ApplicationConstants.SRM_URL_KEY, "")
-                        .toString();
-                break;
-        }
+        String url =
+                switch (SecurityProduct.valueOf(product)) {
+                    case BLACKDUCK, BLACKDUCKSCA ->
+                        scanParametersMap
+                                .getOrDefault(ApplicationConstants.BLACKDUCKSCA_URL_KEY, "")
+                                .toString();
+                    case COVERITY ->
+                        scanParametersMap
+                                .getOrDefault(ApplicationConstants.COVERITY_URL_KEY, "")
+                                .toString();
+                    case POLARIS ->
+                        scanParametersMap
+                                .getOrDefault(ApplicationConstants.POLARIS_SERVER_URL_KEY, "")
+                                .toString();
+                    case SRM ->
+                        scanParametersMap
+                                .getOrDefault(ApplicationConstants.SRM_URL_KEY, "")
+                                .toString();
+                };
 
         return url;
     }

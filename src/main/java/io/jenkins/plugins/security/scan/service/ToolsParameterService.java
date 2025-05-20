@@ -271,18 +271,14 @@ public class ToolsParameterService {
     }
 
     private void setScanObject(BridgeInput bridgeInput, Object scanObject, Map<String, Object> scanParameters) {
-        if (scanObject instanceof BlackDuckSCA) {
-            BlackDuckSCA blackDuckSCA = (BlackDuckSCA) scanObject;
+        if (scanObject instanceof BlackDuckSCA blackDuckSCA) {
             bridgeInput.setBlackDuckSCA(blackDuckSCA);
-        } else if (scanObject instanceof Coverity) {
-            Coverity coverity = (Coverity) scanObject;
+        } else if (scanObject instanceof Coverity coverity) {
             bridgeInput.setCoverity(coverity);
-        } else if (scanObject instanceof Polaris) {
-            Polaris polaris = (Polaris) scanObject;
+        } else if (scanObject instanceof Polaris polaris) {
             bridgeInput.setPolaris(polaris);
             setSastArbitaryInputs(bridgeInput, scanParameters);
-        } else if (scanObject instanceof SRM) {
-            SRM srm = (SRM) scanObject;
+        } else if (scanObject instanceof SRM srm) {
             bridgeInput.setSrm(srm);
             setSastArbitaryInputs(bridgeInput, scanParameters);
         }
