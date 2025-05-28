@@ -19,10 +19,6 @@ public class ApplicationConstants {
     public static final String DEFAULT_BLACKDUCKSCA_SARIF_REPORT_LEGACY_FILE_PATH =
             ".bridge/Blackduck SCA SARIF Generator/";
     public static final String DEFAULT_POLARIS_SARIF_REPORT_LEGACY_FILE_PATH = ".bridge/Polaris SARIF Generator/";
-    public static final String DEFAULT_BLACKDUCKSCA_SARIF_REPORT_FILE_PATH =
-            ".blackduck/integrations/BlackduckGenerator/";
-    public static final String DEFAULT_POLARIS_SARIF_REPORT_FILE_PATH =
-            ".blackduck/integrations/PolarisSARIFGenerator/";
     public static final String POLARIS_SCAN_INFO_SARIF_REPORT_FILE_PATH_SOURCE_KEY =
             "polaris.reports.sarif.file.output";
     public static final String BLACKDUCKSCA_SCAN_INFO_SARIF_REPORT_FILE_PATH_SOURCE_KEY =

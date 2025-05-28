@@ -182,26 +182,6 @@ public class UtilityTest {
     }
 
     @Test
-    public void testGetDefaultSarifReportFilePath_BlackDuckScan() {
-        boolean isBlackDuckScan = true;
-        boolean isPolarisDuckScan = false;
-        String expected = ApplicationConstants.DEFAULT_BLACKDUCKSCA_SARIF_REPORT_FILE_PATH.concat(
-                ApplicationConstants.SARIF_REPORT_FILENAME);
-        String result = Utility.getDefaultSarifReportFilePath(isBlackDuckScan, isPolarisDuckScan);
-        assertEquals(expected, result);
-    }
-
-    @Test
-    public void testGetDefaultSarifReportFilePath_PolarisDuckScan() {
-        boolean isBlackDuckScan = false;
-        boolean isPolarisDuckScan = true;
-        String expected = ApplicationConstants.DEFAULT_POLARIS_SARIF_REPORT_FILE_PATH.concat(
-                ApplicationConstants.SARIF_REPORT_FILENAME);
-        String result = Utility.getDefaultSarifReportFilePath(isBlackDuckScan, isPolarisDuckScan);
-        assertEquals(expected, result);
-    }
-
-    @Test
     public void testGetCustomSarifReportFilePath_BlackDuckScan() {
         Map<String, Object> scanParams = new HashMap<>();
         scanParams.put(

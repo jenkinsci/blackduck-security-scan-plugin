@@ -234,16 +234,6 @@ public class Utility {
         return "UnknownJobType";
     }
 
-    public static String getDefaultSarifReportFilePath(boolean isBlackDuckScan, boolean isPolarisDuckScan) {
-        return isBlackDuckScan
-                ? ApplicationConstants.DEFAULT_BLACKDUCKSCA_SARIF_REPORT_FILE_PATH.concat(
-                        ApplicationConstants.SARIF_REPORT_FILENAME)
-                : isPolarisDuckScan
-                        ? ApplicationConstants.DEFAULT_POLARIS_SARIF_REPORT_FILE_PATH.concat(
-                                ApplicationConstants.SARIF_REPORT_FILENAME)
-                        : "";
-    }
-
     public static String getCustomSarifReportFilePath(
             Map<String, Object> scanParams, boolean isBlackDuckScan, boolean isPolarisDuckScan) {
         return isBlackDuckScan
@@ -353,12 +343,6 @@ public class Utility {
             }
         } catch (Exception e) {
             logger.info(ApplicationConstants.EXCEPTION_WHILE_PROCESS_SCAN_INFO_FILE, e.getMessage());
-        }
-
-        // Default path
-        String defaultPath = getDefaultSarifReportFilePath(isBlackDuckScan, isPolarisDuckScan);
-        if (!isStringNullOrBlank(defaultPath)) {
-            return defaultPath;
         }
 
         // Legacy path
