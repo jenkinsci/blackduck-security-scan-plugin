@@ -176,48 +176,44 @@ public class BridgeDownloadParametersService {
         boolean isArm = arch.startsWith("arm") || arch.startsWith("aarch");
 
         if (isMac) {
-            boolean isValidVersionForARM = Objects.isNull(version) ||
-                isVersionCompatibleForARMChips(version,
-                    ApplicationConstants.MAC_ARM_COMPATIBLE_BRIDGE_VERSION);
+            boolean isValidVersionForARM = Objects.isNull(version)
+                    || isVersionCompatibleForARMChips(version, ApplicationConstants.MAC_ARM_COMPATIBLE_BRIDGE_VERSION);
             return selectPlatform(
-                version,
-                isArm,
-                isValidVersionForARM,
-                ApplicationConstants.PLATFORM_MAC_ARM,
-                ApplicationConstants.PLATFORM_MACOSX,
-                ApplicationConstants.MAC_ARM_COMPATIBLE_BRIDGE_VERSION
-            );
+                    version,
+                    isArm,
+                    isValidVersionForARM,
+                    ApplicationConstants.PLATFORM_MAC_ARM,
+                    ApplicationConstants.PLATFORM_MACOSX,
+                    ApplicationConstants.MAC_ARM_COMPATIBLE_BRIDGE_VERSION);
         }
 
         if (isLinux) {
-            boolean isValidVersionForARM = Objects.isNull(version) ||
-                isVersionCompatibleForARMChips(version,
-                    ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION);
+            boolean isValidVersionForARM = Objects.isNull(version)
+                    || isVersionCompatibleForARMChips(
+                            version, ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION);
             return selectPlatform(
-                version,
-                isArm,
-                isValidVersionForARM,
-                ApplicationConstants.PLATFORM_LINUX_ARM,
-                ApplicationConstants.PLATFORM_LINUX,
-                ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION
-            );
+                    version,
+                    isArm,
+                    isValidVersionForARM,
+                    ApplicationConstants.PLATFORM_LINUX_ARM,
+                    ApplicationConstants.PLATFORM_LINUX,
+                    ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION);
         }
 
         return ApplicationConstants.PLATFORM_LINUX;
     }
 
     private String selectPlatform(
-        String version,
-        boolean isArm,
-        boolean isValidVersionForARM,
-        String armPlatform,
-        String defaultPlatform,
-        String minVersion
-    ) {
+            String version,
+            boolean isArm,
+            boolean isValidVersionForARM,
+            String armPlatform,
+            String defaultPlatform,
+            String minVersion) {
         if (isArm && !isValidVersionForARM) {
             logger.info(String.format(
-                "Detected Bridge CLI version (%s) below the minimum ARM support requirement (%s). Defaulting to %s platform.",
-                version, minVersion, defaultPlatform));
+                    "Detected Bridge CLI version (%s) below the minimum ARM support requirement (%s). Defaulting to %s platform.",
+                    version, minVersion, defaultPlatform));
             return defaultPlatform;
         }
         return (isArm && isValidVersionForARM) ? armPlatform : defaultPlatform;
