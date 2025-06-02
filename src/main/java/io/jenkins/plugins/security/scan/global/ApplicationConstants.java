@@ -15,7 +15,7 @@ public class ApplicationConstants {
     public static final String PLATFORM_MAC_ARM = "macos_arm";
     public static final String PLATFORM_MACOSX = "macosx";
     public static final String MAC_ARM_COMPATIBLE_BRIDGE_VERSION = "2.1.0";
-    public static final String LINUX_ARM_COMPATIBLE_BRIDGE_VERSION = "3.4.4";
+    public static final String LINUX_ARM_COMPATIBLE_BRIDGE_VERSION = "3.5.1";
     public static final String DEFAULT_DIRECTORY_NAME = "bridge-cli-bundle";
     public static final String BRIDGE_REPORT_DIRECTORY = ".bridge";
     public static final String DEFAULT_BLACKDUCKSCA_SARIF_REPORT_FILE_PATH = ".bridge/Blackduck SCA SARIF Generator/";
