@@ -219,7 +219,7 @@ public class BridgeDownloadParameterServiceTest {
     @Test
     public void isVersionCompatibleForLinuxARMTest() {
         assertTrue(bridgeDownloadParametersService.isVersionCompatibleForARMChips(
-                "3.4.4", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
+                "3.5.1", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
         assertTrue(bridgeDownloadParametersService.isVersionCompatibleForARMChips(
                 "3.5.38", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
         assertFalse(bridgeDownloadParametersService.isVersionCompatibleForARMChips(
