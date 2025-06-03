@@ -1,7 +1,11 @@
 package io.jenkins.plugins.security.scan.exception;
 
+import java.io.Serial;
+
 public class PluginExceptionHandler extends Exception {
+    @Serial
     private static final long serialVersionUID = 3172941819259598261L;
+
     private int code;
 
     public PluginExceptionHandler() {

@@ -193,8 +193,8 @@ public class BlackDuckSCAParametersServiceTest {
 
         assertNotNull(fixPrObject);
         assertTrue(fixPrObject.getEnabled());
-        assertEquals(Arrays.asList("CRITICAL"), fixPrObject.getFilter().getSeverities());
-        assertEquals(Arrays.asList("SHORT_TERM"), fixPrObject.getUseUpgradeGuidance());
+        assertEquals(List.of("CRITICAL"), fixPrObject.getFilter().getSeverities());
+        assertEquals(List.of("SHORT_TERM"), fixPrObject.getUseUpgradeGuidance());
         assertEquals(2, fixPrObject.getMaxCount());
     }
 }
