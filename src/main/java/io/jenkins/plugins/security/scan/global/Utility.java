@@ -235,10 +235,10 @@ public class Utility {
     }
 
     public static String getCustomSarifReportFilePath(
-            Map<String, Object> scanParams, boolean isBlackDuckScan, boolean isPolarisDuckScan) {
+            Map<String, Object> scanParams, boolean isBlackDuckScan, boolean isPolarisScan) {
         return isBlackDuckScan
                 ? (String) scanParams.get(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_FILE_PATH_KEY)
-                : isPolarisDuckScan
+                : isPolarisScan
                         ? (String) scanParams.get(ApplicationConstants.POLARIS_REPORTS_SARIF_FILE_PATH_KEY)
                         : "";
     }
@@ -301,7 +301,7 @@ public class Utility {
     }
 
     public static String getSarifReportFilePathFromScanInfo(
-            JsonNode rootNode, boolean isBlackDuckScan, boolean isPolarisDuckScan) {
+            JsonNode rootNode, boolean isBlackDuckScan, boolean isPolarisScan) {
         if (rootNode == null) {
             return null;
         }
@@ -311,7 +311,7 @@ public class Utility {
             return rootNode.get(ApplicationConstants.BLACKDUCKSCA_SCAN_INFO_SARIF_REPORT_FILE_PATH_SOURCE_KEY)
                     .asText();
         }
-        if (isPolarisDuckScan
+        if (isPolarisScan
                 && rootNode.has(ApplicationConstants.POLARIS_SCAN_INFO_SARIF_REPORT_FILE_PATH_SOURCE_KEY)) {
             return rootNode.get(ApplicationConstants.POLARIS_SCAN_INFO_SARIF_REPORT_FILE_PATH_SOURCE_KEY)
                     .asText();
@@ -323,10 +323,10 @@ public class Utility {
             Map<String, Object> scanParams,
             FilePath workspace,
             boolean isBlackDuckScan,
-            boolean isPolarisDuckScan,
+            boolean isPolarisScan,
             LoggerWrapper logger) {
         // Custom path
-        String customPath = getCustomSarifReportFilePath(scanParams, isBlackDuckScan, isPolarisDuckScan);
+        String customPath = getCustomSarifReportFilePath(scanParams, isBlackDuckScan, isPolarisScan);
         if (!isStringNullOrBlank(customPath)) {
             return customPath;
         }
@@ -336,7 +336,7 @@ public class Utility {
             FilePath filePath = workspace.child(ApplicationConstants.SCAN_INFO_OUT_FILE_NAME);
             if (filePath.exists()) {
                 JsonNode rootNode = parseJsonFile(filePath.readToString());
-                String scanInfoPath = getSarifReportFilePathFromScanInfo(rootNode, isBlackDuckScan, isPolarisDuckScan);
+                String scanInfoPath = getSarifReportFilePathFromScanInfo(rootNode, isBlackDuckScan, isPolarisScan);
                 if (!isStringNullOrBlank(scanInfoPath)) {
                     return scanInfoPath;
                 }
@@ -349,7 +349,7 @@ public class Utility {
         return isBlackDuckScan
                 ? ApplicationConstants.DEFAULT_BLACKDUCKSCA_SARIF_REPORT_LEGACY_FILE_PATH
                         + ApplicationConstants.SARIF_REPORT_FILENAME
-                : isPolarisDuckScan
+                : isPolarisScan
                         ? ApplicationConstants.DEFAULT_POLARIS_SARIF_REPORT_LEGACY_FILE_PATH
                                 + ApplicationConstants.SARIF_REPORT_FILENAME
                         : "";

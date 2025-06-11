@@ -187,8 +187,8 @@ public class UtilityTest {
         scanParams.put(
                 ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_FILE_PATH_KEY, "customPath/report_blackduck.json");
         boolean isBlackDuckScan = true;
-        boolean isPolarisDuckScan = false;
-        String result = Utility.getCustomSarifReportFilePath(scanParams, isBlackDuckScan, isPolarisDuckScan);
+        boolean isPolarisScan = false;
+        String result = Utility.getCustomSarifReportFilePath(scanParams, isBlackDuckScan, isPolarisScan);
         assertEquals("customPath/report_blackduck.json", result);
     }
 
@@ -197,8 +197,8 @@ public class UtilityTest {
         Map<String, Object> scanParams = new HashMap<>();
         scanParams.put(ApplicationConstants.POLARIS_REPORTS_SARIF_FILE_PATH_KEY, "customPath/report_polaris.json");
         boolean isBlackDuckScan = false;
-        boolean isPolarisDuckScan = true;
-        String result = Utility.getCustomSarifReportFilePath(scanParams, isBlackDuckScan, isPolarisDuckScan);
+        boolean isPolarisScan = true;
+        String result = Utility.getCustomSarifReportFilePath(scanParams, isBlackDuckScan, isPolarisScan);
         assertEquals("customPath/report_polaris.json", result);
     }
 

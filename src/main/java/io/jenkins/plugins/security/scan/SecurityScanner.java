@@ -121,12 +121,12 @@ public class SecurityScanner {
         Set<String> scanType = scanParametersService.getSecurityProducts(scanParams);
         boolean isBlackDuckScan = scanType.contains(SecurityProduct.BLACKDUCK.name())
                 || scanType.contains(SecurityProduct.BLACKDUCKSCA.name());
-        boolean isPolarisDuckScan = scanType.contains(SecurityProduct.POLARIS.name());
+        boolean isPolarisScan = scanType.contains(SecurityProduct.POLARIS.name());
 
         boolean waitForScan = true;
         if (isBlackDuckScan && scanParams.containsKey(ApplicationConstants.BLACKDUCKSCA_WAITFORSCAN_KEY)) {
             waitForScan = (Boolean) scanParams.get(ApplicationConstants.BLACKDUCKSCA_WAITFORSCAN_KEY);
-        } else if (isPolarisDuckScan && scanParams.containsKey(ApplicationConstants.POLARIS_WAITFORSCAN_KEY)) {
+        } else if (isPolarisScan && scanParams.containsKey(ApplicationConstants.POLARIS_WAITFORSCAN_KEY)) {
             waitForScan = (Boolean) scanParams.get(ApplicationConstants.POLARIS_WAITFORSCAN_KEY);
         }
 
@@ -135,7 +135,7 @@ public class SecurityScanner {
         }
 
         String reportFilePath =
-                Utility.resolveSarifReportFilePath(scanParams, workspace, isBlackDuckScan, isPolarisDuckScan, logger);
+                Utility.resolveSarifReportFilePath(scanParams, workspace, isBlackDuckScan, isPolarisScan, logger);
         String reportFileName = Utility.determineSARIFReportFileName(reportFilePath);
 
         UploadReportService uploadReportService =
