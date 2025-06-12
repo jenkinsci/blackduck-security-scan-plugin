@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jenkins.plugins.security.scan.input.blackducksca.BlackDuckSCA;
 import io.jenkins.plugins.security.scan.input.coverity.Coverity;
 import io.jenkins.plugins.security.scan.input.detect.Detect;
+import io.jenkins.plugins.security.scan.input.network.Network;
 import io.jenkins.plugins.security.scan.input.polaris.Polaris;
 import io.jenkins.plugins.security.scan.input.project.Project;
 import io.jenkins.plugins.security.scan.input.report.Reports;
@@ -41,7 +42,7 @@ public class BridgeInput {
     private Gitlab gitlab;
 
     @JsonProperty("network")
-    private NetworkAirGap networkAirGap;
+    private Network network;
 
     @JsonProperty("reports")
     private Reports reports;
@@ -102,12 +103,12 @@ public class BridgeInput {
         this.bitbucket = bitbucket;
     }
 
-    public NetworkAirGap getNetworkAirGap() {
-        return networkAirGap;
+    public Network getNetwork() {
+        return network;
     }
 
-    public void setNetworkAirGap(final NetworkAirGap networkAirGap) {
-        this.networkAirGap = networkAirGap;
+    public void setNetwork(Network network) {
+        this.network = network;
     }
 
     public Github getGithub() {

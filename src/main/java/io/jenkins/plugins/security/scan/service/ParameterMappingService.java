@@ -9,6 +9,7 @@ import io.jenkins.plugins.security.scan.extension.SecurityScan;
 import io.jenkins.plugins.security.scan.extension.freestyle.FreestyleScan;
 import io.jenkins.plugins.security.scan.extension.global.ScannerGlobalConfig;
 import io.jenkins.plugins.security.scan.extension.pipeline.FixPrScan;
+import io.jenkins.plugins.security.scan.extension.pipeline.NetworkParams;
 import io.jenkins.plugins.security.scan.extension.pipeline.PrCommentScan;
 import io.jenkins.plugins.security.scan.extension.pipeline.ReturnStatusScan;
 import io.jenkins.plugins.security.scan.global.*;
@@ -163,6 +164,8 @@ public class ParameterMappingService {
                     ApplicationConstants.BRIDGECLI_DOWNLOAD_VERSION,
                     config.getBridgeDownloadVersion());
             addParameterIfNotBlank(globalParameters, ApplicationConstants.NETWORK_AIRGAP_KEY, config.isNetworkAirGap());
+            addParameterIfNotBlank(globalParameters, ApplicationConstants.NETWORK_SSL_CERT_FILE_KEY, config.getNetworkSslCertFile());
+            addParameterIfNotBlank(globalParameters, ApplicationConstants.NETWORK_SSL_TRUSTALL_KEY, config.isNetworkSslTrustAll());
             addParameterIfNotBlank(
                     globalParameters, ApplicationConstants.POLARIS_SERVER_URL_KEY, config.getPolarisServerUrl());
             addParameterIfNotBlank(
@@ -645,6 +648,14 @@ public class ParameterMappingService {
                 bridgeParameters, ApplicationConstants.NETWORK_AIRGAP_KEY, securityScan.isNetwork_airgap());
         addParameterIfNotBlank(
                 bridgeParameters, ApplicationConstants.MARK_BUILD_STATUS, securityScan.getMark_build_status());
+
+        if (securityScan instanceof NetworkParams) {
+            NetworkParams networkParams = (NetworkParams) securityScan;
+            addParameterIfNotBlank(
+                    bridgeParameters, ApplicationConstants.NETWORK_SSL_CERT_FILE_KEY, networkParams.getNetwork_ssl_cert_file());
+            addParameterIfNotBlank(
+                    bridgeParameters, ApplicationConstants.NETWORK_SSL_TRUSTALL_KEY, networkParams.isNetwork_ssl_trustAll());
+        }
 
         return bridgeParameters;
     }

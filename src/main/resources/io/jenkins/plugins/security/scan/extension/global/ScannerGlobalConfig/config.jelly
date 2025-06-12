@@ -146,7 +146,17 @@
                 </f:entry>
             </div>
 
-
+            <div>
+                <div class="tab-info-os">SSL Certificate Configuration</div>
+                <div class="ssl-config-section">
+                    <f:entry field="networkSslCertFile" title="Network SSL Cert File (Optional)">
+                        <f:textbox name="networkSslCertFile" />
+                    </f:entry>
+                    <f:entry field="networkSslTrustAll" title="Network SSL TrustAll (Optional)">
+                        <f:checkbox checked="${instance.networkSslTrustAll() == true}"/>
+                    </f:entry>
+                </div>
+            </div>
 
             <!-- Place a single info line above the tabs -->
             <div class="tab-info-os">Configure Bridge CLI download URL for different platforms</div>
