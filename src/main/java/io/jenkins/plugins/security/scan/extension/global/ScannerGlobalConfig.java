@@ -53,6 +53,8 @@ public class ScannerGlobalConfig extends GlobalConfiguration implements Serializ
     private String bitbucketCredentialsId;
     private String githubCredentialsId;
     private String gitlabCredentialsId;
+    private String networkSslCertFile;
+    private Boolean networkSslTrustAll;
 
     @DataBoundConstructor
     public ScannerGlobalConfig() {
@@ -183,6 +185,18 @@ public class ScannerGlobalConfig extends GlobalConfiguration implements Serializ
         this.srmSASTInstallationPath = srmSASTInstallationPath;
     }
 
+    @DataBoundSetter
+    public void setNetworkSslCertFile(String networkSslCertFile) {
+        this.networkSslCertFile = networkSslCertFile;
+        save();
+    }
+
+    @DataBoundSetter
+    public void setNetworkSslTrustAll(Boolean networkSslTrustAll) {
+        this.networkSslTrustAll = networkSslTrustAll;
+        save();
+    }
+
     public String getBlackDuckSCAUrl() {
         return blackDuckSCAUrl;
     }
@@ -221,6 +235,14 @@ public class ScannerGlobalConfig extends GlobalConfiguration implements Serializ
 
     public Boolean isNetworkAirGap() {
         return networkAirGap;
+    }
+
+    public String getNetworkSslCertFile() {
+        return networkSslCertFile;
+    }
+
+    public Boolean isNetworkSslTrustAll() {
+        return networkSslTrustAll;
     }
 
     public String getPolarisServerUrl() {

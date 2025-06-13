@@ -12,10 +12,12 @@ import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.global.Utility;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import io.jenkins.plugins.security.scan.input.BridgeInput;
-import io.jenkins.plugins.security.scan.input.NetworkAirGap;
+import io.jenkins.plugins.security.scan.input.network.Cert;
+import io.jenkins.plugins.security.scan.input.network.Network;
 import io.jenkins.plugins.security.scan.input.blackducksca.BlackDuckSCA;
 import io.jenkins.plugins.security.scan.input.coverity.Coverity;
 import io.jenkins.plugins.security.scan.input.detect.Detect;
+import io.jenkins.plugins.security.scan.input.network.SSL;
 import io.jenkins.plugins.security.scan.input.polaris.Parent;
 import io.jenkins.plugins.security.scan.input.polaris.Polaris;
 import io.jenkins.plugins.security.scan.input.project.Project;
@@ -203,7 +205,7 @@ public class ToolsParameterService {
 
         setScmObject(bridgeInput, scmObject, scanParameters);
 
-        setNetworkAirGapObject(bridgeInput, scanParameters);
+        setNetworkObject(bridgeInput, scanParameters);
 
         setDetectObject(scanParameters, bridgeInput);
 
@@ -235,12 +237,27 @@ public class ToolsParameterService {
         }
     }
 
-    private void setNetworkAirGapObject(BridgeInput bridgeInput, Map<String, Object> scanParameters) {
+    private void setNetworkObject(BridgeInput bridgeInput, Map<String, Object> scanParameters) {
+        Network network = new Network();
+        SSL ssl = new SSL();
         if (scanParameters.containsKey(ApplicationConstants.NETWORK_AIRGAP_KEY)) {
             Boolean isNetworkAirGap = (Boolean) scanParameters.get(ApplicationConstants.NETWORK_AIRGAP_KEY);
-            NetworkAirGap networkAirGap = new NetworkAirGap();
-            networkAirGap.setAirgap(isNetworkAirGap);
-            bridgeInput.setNetworkAirGap(networkAirGap);
+            network.setAirgap(isNetworkAirGap);
+            bridgeInput.setNetwork(network);
+        }
+        if (scanParameters.containsKey(ApplicationConstants.NETWORK_SSL_CERT_FILE_KEY)) {
+            String sslCertFile = (String) scanParameters.get(ApplicationConstants.NETWORK_SSL_CERT_FILE_KEY);
+            Cert cert = new Cert();
+            cert.setFile(sslCertFile);
+            ssl.setCert(cert);
+            network.setSsl(ssl);
+            bridgeInput.setNetwork(network);
+        }
+        if (scanParameters.containsKey(ApplicationConstants.NETWORK_SSL_TRUSTALL_KEY)) {
+            Boolean isSslTrustAll = (Boolean) scanParameters.get(ApplicationConstants.NETWORK_SSL_TRUSTALL_KEY);
+            ssl.setTrustAll(isSslTrustAll);
+            network.setSsl(ssl);
+            bridgeInput.setNetwork(network);
         }
     }
 
