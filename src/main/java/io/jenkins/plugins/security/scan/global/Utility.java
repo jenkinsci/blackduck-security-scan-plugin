@@ -243,6 +243,13 @@ public class Utility {
                         : "";
     }
 
+    public static String getDefaultSarifReportFilePath(boolean isBlackDuckScan, boolean isPolarisScan) {
+        String filePath = isBlackDuckScan
+                ? ApplicationConstants.DEFAULT_BLACKDUCKSCA_SARIF_REPORT_FILE_PATH
+                : isPolarisScan ? ApplicationConstants.DEFAULT_POLARIS_SARIF_REPORT_FILE_PATH : "";
+        return filePath + ApplicationConstants.SARIF_REPORT_FILENAME;
+    }
+
     public static String determineSARIFReportFilePath(
             String customSarifReportFilePath, String defaultSarifReportFilePath) {
         return customSarifReportFilePath != null ? customSarifReportFilePath : defaultSarifReportFilePath;
@@ -313,12 +320,6 @@ public class Utility {
         }
 
         // Default path
-        return isBlackDuckScan
-                ? ApplicationConstants.DEFAULT_BLACKDUCKSCA_SARIF_REPORT_FILE_PATH
-                        + ApplicationConstants.SARIF_REPORT_FILENAME
-                : isPolarisScan
-                        ? ApplicationConstants.DEFAULT_POLARIS_SARIF_REPORT_FILE_PATH
-                                + ApplicationConstants.SARIF_REPORT_FILENAME
-                        : "";
+        return getDefaultSarifReportFilePath(isBlackDuckScan, isPolarisScan);
     }
 }
