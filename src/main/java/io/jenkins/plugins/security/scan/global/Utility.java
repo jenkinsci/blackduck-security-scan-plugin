@@ -300,25 +300,6 @@ public class Utility {
         return value.equals("true") || value.equals("false");
     }
 
-    public static String getSarifReportFilePathFromScanInfo(
-            JsonNode rootNode, boolean isBlackDuckScan, boolean isPolarisScan) {
-        if (rootNode == null) {
-            return null;
-        }
-
-        if (isBlackDuckScan
-                && rootNode.has(ApplicationConstants.BLACKDUCKSCA_SCAN_INFO_SARIF_REPORT_FILE_PATH_SOURCE_KEY)) {
-            return rootNode.get(ApplicationConstants.BLACKDUCKSCA_SCAN_INFO_SARIF_REPORT_FILE_PATH_SOURCE_KEY)
-                    .asText();
-        }
-        if (isPolarisScan
-                && rootNode.has(ApplicationConstants.POLARIS_SCAN_INFO_SARIF_REPORT_FILE_PATH_SOURCE_KEY)) {
-            return rootNode.get(ApplicationConstants.POLARIS_SCAN_INFO_SARIF_REPORT_FILE_PATH_SOURCE_KEY)
-                    .asText();
-        }
-        return null;
-    }
-
     public static String resolveSarifReportFilePath(
             Map<String, Object> scanParams,
             FilePath workspace,
@@ -331,26 +312,12 @@ public class Utility {
             return customPath;
         }
 
-        // scan_info_out.json
-        try {
-            FilePath filePath = workspace.child(ApplicationConstants.SCAN_INFO_OUT_FILE_NAME);
-            if (filePath.exists()) {
-                JsonNode rootNode = parseJsonFile(filePath.readToString());
-                String scanInfoPath = getSarifReportFilePathFromScanInfo(rootNode, isBlackDuckScan, isPolarisScan);
-                if (!isStringNullOrBlank(scanInfoPath)) {
-                    return scanInfoPath;
-                }
-            }
-        } catch (Exception e) {
-            logger.info(ApplicationConstants.EXCEPTION_WHILE_PROCESS_SCAN_INFO_FILE, e.getMessage());
-        }
-
-        // Legacy path
+        // Default path
         return isBlackDuckScan
-                ? ApplicationConstants.DEFAULT_BLACKDUCKSCA_SARIF_REPORT_LEGACY_FILE_PATH
+                ? ApplicationConstants.DEFAULT_BLACKDUCKSCA_SARIF_REPORT_FILE_PATH
                         + ApplicationConstants.SARIF_REPORT_FILENAME
                 : isPolarisScan
-                        ? ApplicationConstants.DEFAULT_POLARIS_SARIF_REPORT_LEGACY_FILE_PATH
+                        ? ApplicationConstants.DEFAULT_POLARIS_SARIF_REPORT_FILE_PATH
                                 + ApplicationConstants.SARIF_REPORT_FILENAME
                         : "";
     }
