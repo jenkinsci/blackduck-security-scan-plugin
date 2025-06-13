@@ -109,7 +109,7 @@
                     <f:checkbox checked="${instance.isNetworkAirGap() == true}"/>
                 </f:entry>
                 <f:entry field="networkSslTrustAll" title="Network SSL Trust All (Optional)">
-                    <f:checkbox checked="${instance.networkSslTrustAll() == true}"/>
+                    <f:checkbox checked="${instance.isNetworkSslTrustAll() == true}"/>
                 </f:entry>
                 <f:entry field="networkSslCertFile" title="Network SSL Certificate File Path (Optional)">
                     <f:textbox name="networkSslCertFile" />

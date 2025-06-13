@@ -202,8 +202,8 @@ public class ScanInitializer {
         for (Map.Entry<String, Object> entry : scanParameters.entrySet()) {
             String key = entry.getKey();
             if (key.startsWith("bridgecli_")
+                    || key.startsWith("network_")
                     || key.equals(ApplicationConstants.INCLUDE_DIAGNOSTICS_KEY)
-                    || key.equals(ApplicationConstants.NETWORK_AIRGAP_KEY)
                     || key.equals(ApplicationConstants.MARK_BUILD_STATUS)) {
                 if (!additionalParamsFound) {
                     logger.info("Parameters for additional configuration:");
