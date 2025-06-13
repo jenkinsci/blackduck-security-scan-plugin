@@ -15,7 +15,7 @@
     background-color: #f1f1f1;
 }
 
-.product-type-section, .os-section, .scm-token-section, .airgap-section, .ssl-config-section {
+.product-type-section, .os-section, .scm-token-section, .network-section {
     border: 2px dashed var(--input-border);
     border-radius: 10px;
     padding: 10px 10px 0px 10px;

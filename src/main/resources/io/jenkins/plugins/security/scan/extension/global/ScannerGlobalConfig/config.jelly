@@ -103,10 +103,16 @@
 
         <div>
 
-        <div class="tab-info-os">Airgap Configuration</div>
-            <div class="airgap-section">
+        <div class="tab-info-os">Network Configuration</div>
+            <div class="network-section">
                 <f:entry field="networkAirGap" title="Network Airgap (Optional)">
                     <f:checkbox checked="${instance.isNetworkAirGap() == true}"/>
+                </f:entry>
+                <f:entry field="networkSslTrustAll" title="Network SSL Trust All (Optional)">
+                    <f:checkbox checked="${instance.networkSslTrustAll() == true}"/>
+                </f:entry>
+                <f:entry field="networkSslCertFile" title="Network SSL Certificate File Path (Optional)">
+                    <f:textbox name="networkSslCertFile" />
                 </f:entry>
             </div>
         </div>
@@ -144,18 +150,6 @@
                 <f:entry field="gitlabCredentialsId" title="GitLab Token (Optional)">
                     <c:select/>
                 </f:entry>
-            </div>
-
-            <div>
-                <div class="tab-info-os">SSL Certificate Configuration</div>
-                <div class="ssl-config-section">
-                    <f:entry field="networkSslCertFile" title="Network SSL Cert File (Optional)">
-                        <f:textbox name="networkSslCertFile" />
-                    </f:entry>
-                    <f:entry field="networkSslTrustAll" title="Network SSL TrustAll (Optional)">
-                        <f:checkbox checked="${instance.networkSslTrustAll() == true}"/>
-                    </f:entry>
-                </div>
             </div>
 
             <!-- Place a single info line above the tabs -->
