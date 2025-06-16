@@ -181,6 +181,27 @@ public class BlackDuckSCAParametersServiceTest {
     }
 
     @Test
+    public void prepareBlackduckSarifObjectWithDefaultPathTest() {
+        Map<String, Object> scanParameters = new HashMap<>();
+        scanParameters.put(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_CREATE_KEY, true);
+        // Do not set BLACKDUCKSCA_REPORTS_SARIF_FILE_PATH_KEY to test default path
+        scanParameters.put(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_SEVERITIES_KEY, "HIGH,LOW");
+        scanParameters.put(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_GROUPSCAISSUES_KEY, false);
+
+        Sarif sarifObject = blackDuckSCAParametersService.prepareSarifObject(scanParameters);
+
+        assertNotNull(sarifObject);
+        assertTrue(sarifObject.getCreate());
+        assertNotNull(sarifObject.getFile());
+        assertEquals(
+                ApplicationConstants.DEFAULT_BLACKDUCKSCA_SARIF_REPORT_FILE_PATH
+                        + ApplicationConstants.SARIF_REPORT_FILENAME,
+                sarifObject.getFile().getPath());
+        assertEquals(Arrays.asList("HIGH", "LOW"), sarifObject.getSeverities());
+        assertFalse(sarifObject.getGroupSCAIssues());
+    }
+
+    @Test
     public void prepareBlackduckFixPrObjectTest() {
         Map<String, Object> fixPrParameters = new HashMap<>();
 

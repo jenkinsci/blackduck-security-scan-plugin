@@ -234,23 +234,20 @@ public class Utility {
         return "UnknownJobType";
     }
 
-    public static String getDefaultSarifReportFilePath(boolean isBlackDuckScan, boolean isPolarisDuckScan) {
+    public static String getCustomSarifReportFilePath(
+            Map<String, Object> scanParams, boolean isBlackDuckScan, boolean isPolarisScan) {
         return isBlackDuckScan
-                ? ApplicationConstants.DEFAULT_BLACKDUCKSCA_SARIF_REPORT_FILE_PATH.concat(
-                        ApplicationConstants.SARIF_REPORT_FILENAME)
-                : isPolarisDuckScan
-                        ? ApplicationConstants.DEFAULT_POLARIS_SARIF_REPORT_FILE_PATH.concat(
-                                ApplicationConstants.SARIF_REPORT_FILENAME)
+                ? (String) scanParams.get(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_FILE_PATH_KEY)
+                : isPolarisScan
+                        ? (String) scanParams.get(ApplicationConstants.POLARIS_REPORTS_SARIF_FILE_PATH_KEY)
                         : "";
     }
 
-    public static String getCustomSarifReportFilePath(
-            Map<String, Object> scanParams, boolean isBlackDuckScan, boolean isPolarisDuckScan) {
-        return isBlackDuckScan
-                ? (String) scanParams.get(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_FILE_PATH_KEY)
-                : isPolarisDuckScan
-                        ? (String) scanParams.get(ApplicationConstants.POLARIS_REPORTS_SARIF_FILE_PATH_KEY)
-                        : "";
+    public static String getDefaultSarifReportFilePath(boolean isBlackDuckScan, boolean isPolarisScan) {
+        String filePath = isBlackDuckScan
+                ? ApplicationConstants.DEFAULT_BLACKDUCKSCA_SARIF_REPORT_FILE_PATH
+                : isPolarisScan ? ApplicationConstants.DEFAULT_POLARIS_SARIF_REPORT_FILE_PATH : "";
+        return filePath + ApplicationConstants.SARIF_REPORT_FILENAME;
     }
 
     public static String determineSARIFReportFilePath(
@@ -308,5 +305,21 @@ public class Utility {
 
     public static boolean isBoolean(String value) {
         return value.equals("true") || value.equals("false");
+    }
+
+    public static String resolveSarifReportFilePath(
+            Map<String, Object> scanParams,
+            FilePath workspace,
+            boolean isBlackDuckScan,
+            boolean isPolarisScan,
+            LoggerWrapper logger) {
+        // Custom path
+        String customPath = getCustomSarifReportFilePath(scanParams, isBlackDuckScan, isPolarisScan);
+        if (!isStringNullOrBlank(customPath)) {
+            return customPath;
+        }
+
+        // Default path
+        return getDefaultSarifReportFilePath(isBlackDuckScan, isPolarisScan);
     }
 }
