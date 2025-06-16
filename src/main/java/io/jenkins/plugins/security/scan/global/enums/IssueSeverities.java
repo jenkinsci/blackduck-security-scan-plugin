@@ -11,5 +11,5 @@ public enum IssueSeverities {
     MAJOR,
     MINOR,
     OK,
-    TRIVIAL;
+    TRIVIAL
 }

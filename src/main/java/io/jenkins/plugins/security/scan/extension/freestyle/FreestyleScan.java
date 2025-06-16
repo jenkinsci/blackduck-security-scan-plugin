@@ -1,31 +1,31 @@
 package io.jenkins.plugins.security.scan.extension.freestyle;
 
 public interface FreestyleScan {
-    public Integer getPolaris_sca_search_depth();
+    Integer getPolaris_sca_search_depth();
 
-    public String getPolaris_sca_config_path();
+    String getPolaris_sca_config_path();
 
-    public String getPolaris_sca_args();
+    String getPolaris_sca_args();
 
-    public String getPolaris_sast_build_command();
+    String getPolaris_sast_build_command();
 
-    public String getPolaris_sast_clean_command();
+    String getPolaris_sast_clean_command();
 
-    public String getPolaris_sast_config_path();
+    String getPolaris_sast_config_path();
 
-    public String getPolaris_sast_args();
+    String getPolaris_sast_args();
 
-    public Integer getSrm_sca_search_depth();
+    Integer getSrm_sca_search_depth();
 
-    public String getSrm_sca_config_path();
+    String getSrm_sca_config_path();
 
-    public String getSrm_sca_args();
+    String getSrm_sca_args();
 
-    public String getSrm_sast_build_command();
+    String getSrm_sast_build_command();
 
-    public String getSrm_sast_clean_command();
+    String getSrm_sast_clean_command();
 
-    public String getSrm_sast_config_path();
+    String getSrm_sast_config_path();
 
-    public String getSrm_sast_args();
+    String getSrm_sast_args();
 }
