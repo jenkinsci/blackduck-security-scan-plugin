@@ -2,7 +2,6 @@ package io.jenkins.plugins.security.scan.global;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import io.jenkins.plugins.security.scan.global.enums.AssessmentType;
-import io.jenkins.plugins.security.scan.global.enums.IssueSeverities;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import java.util.Iterator;
 
@@ -122,8 +121,10 @@ public class IssueCalculator {
             JsonNode issuesNode = getCaseInsensitiveNode(testNode, ISSUES_PROPERTY);
             if (!issuesNode.isMissingNode()) {
                 int total = 0;
-                for (IssueSeverities severity : IssueSeverities.values()) {
-                    total += getCaseInsensitiveNode(issuesNode, severity.name()).asInt(0);
+                Iterator<String> fieldNames = issuesNode.fieldNames();
+                while (fieldNames.hasNext()) {
+                    String field = fieldNames.next();
+                    total += issuesNode.path(field).asInt(0);
                 }
                 return total;
             }
