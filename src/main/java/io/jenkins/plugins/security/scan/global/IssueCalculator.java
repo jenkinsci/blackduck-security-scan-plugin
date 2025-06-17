@@ -139,7 +139,8 @@ public class IssueCalculator {
                 }
             }
             if (!found) {
-                current = current.path(key); // fallback
+                // Fallback to a case-sensitive lookup if no case-insensitive match is found.
+                current = current.path(key);
             }
         }
         return current;
