@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.jenkins.plugins.security.scan.global.enums.AssessmentType;
 import io.jenkins.plugins.security.scan.global.enums.IssueSeverities;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
+import java.util.Iterator;
 
 public class IssueCalculator {
 
