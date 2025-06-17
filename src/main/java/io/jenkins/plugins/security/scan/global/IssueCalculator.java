@@ -133,7 +133,9 @@ public class IssueCalculator {
     // Helper method for case-insensitive key lookup
     private JsonNode getCaseInsensitiveNode(JsonNode node, String key) {
         if (node == null || node.isMissingNode()) return node;
-        for (String fieldName : (Iterable<String>) node::fieldNames) {
+        Iterator<String> fieldNamesIterator = node.fieldNames();
+        while (fieldNamesIterator.hasNext()) {
+            String fieldName = fieldNamesIterator.next();
             if (fieldName.equalsIgnoreCase(key)) {
                 return node.get(fieldName);
             }
