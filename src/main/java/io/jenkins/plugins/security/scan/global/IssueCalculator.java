@@ -139,7 +139,7 @@ public class IssueCalculator {
         while (fieldNamesIterator.hasNext()) {
             String fieldName = fieldNamesIterator.next();
             if (fieldName.equalsIgnoreCase(key)) {
-                return node.get(fieldName);
+                return node.path(fieldName);
             }
         }
         return node.path(key); // fallback to default
