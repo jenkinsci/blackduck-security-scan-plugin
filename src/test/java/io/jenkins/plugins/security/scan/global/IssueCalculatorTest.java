@@ -25,6 +25,49 @@ public class IssueCalculatorTest {
     }
 
     @Test
+    public void testGetIssuesUrl_CaseInsensitive_BlackDuckSca() throws IOException {
+        String jsonContent = "{" + "\"data\": {\"BLACKDUCKSCA\": {\"projectBomUrl\": \"http://bd.example.com/bom\"}}}";
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(jsonContent);
+        String product = "blackducksca";
+        String issuesUrl = issueCalculator.getIssuesUrl(rootNode, product);
+        assertEquals("http://bd.example.com/bom", issuesUrl);
+    }
+
+    @Test
+    public void testGetIssuesUrl_CaseInsensitive_Coverity() throws IOException {
+        String jsonContent = "{"
+                + "\"data\": {\"COVERITY\": {\"CONNECT\": {\"resultURL\": \"http://coverity.example.com/result\"}}}}";
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(jsonContent);
+        String product = "coverity";
+        String issuesUrl = issueCalculator.getIssuesUrl(rootNode, product);
+        assertEquals("http://coverity.example.com/result", issuesUrl);
+    }
+
+    @Test
+    public void testGetIssuesUrl_CaseInsensitive_Polaris() throws IOException {
+        String jsonContent = "{"
+                + "\"data\": {\"POLARIS\": {\"project\": {\"issues\": {\"URL\": \"http://polaris.example.com/issues\"}}}}}";
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(jsonContent);
+        String product = "polaris";
+        String issuesUrl = issueCalculator.getIssuesUrl(rootNode, product);
+        assertEquals("http://polaris.example.com/issues", issuesUrl);
+    }
+
+    @Test
+    public void testGetIssuesUrl_CaseInsensitive_Srm() throws IOException {
+        String jsonContent =
+                "{" + "\"data\": {\"SRM\": {\"project\": {\"issues\": {\"URL\": \"http://srm.example.com/issues\"}}}}}";
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(jsonContent);
+        String product = "srm";
+        String issuesUrl = issueCalculator.getIssuesUrl(rootNode, product);
+        assertEquals("http://srm.example.com/issues", issuesUrl);
+    }
+
+    @Test
     public void testGetIssuesUrl_InvalidProduct() throws IOException {
         // Arrange
         String jsonContent = "{"

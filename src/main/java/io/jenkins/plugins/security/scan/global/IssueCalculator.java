@@ -24,17 +24,6 @@ public class IssueCalculator {
     private static final String CONNECT_PROPERTY = "connect";
     private static final String ISSUE_COUNT_PROPERTY = "issueCount";
 
-    // Helper method for case-insensitive key lookup
-    private JsonNode getCaseInsensitiveNode(JsonNode node, String key) {
-        if (node == null || node.isMissingNode()) return node;
-        for (String fieldName : (Iterable<String>) node::fieldNames) {
-            if (fieldName.equalsIgnoreCase(key)) {
-                return node.get(fieldName);
-            }
-        }
-        return node.path(key); // fallback to default
-    }
-
     public String getIssuesUrl(JsonNode rootNode, String product) {
         JsonNode productNode = getCaseInsensitiveNode(rootNode.path(DATA_PROPERTY), product);
         if (productNode.isMissingNode()) {
@@ -42,14 +31,16 @@ public class IssueCalculator {
         }
 
         if (product.equals(SecurityProduct.BLACKDUCKSCA.name().toLowerCase())) {
-            return productNode.path(PROJECT_BOM_URL_PROPERTY).asText(null);
+            return getCaseInsensitiveNode(productNode, PROJECT_BOM_URL_PROPERTY).asText(null);
         } else if (product.equals(SecurityProduct.COVERITY.name().toLowerCase())) {
-            JsonNode issuesUrlNode = productNode.path(CONNECT_PROPERTY).path(RESULT_URL_PROPERTY);
-            return issuesUrlNode.asText(null);
+            JsonNode connectNode = getCaseInsensitiveNode(productNode, CONNECT_PROPERTY);
+            JsonNode resultUrlNode = getCaseInsensitiveNode(connectNode, RESULT_URL_PROPERTY);
+            return resultUrlNode.asText(null);
         } else if (product.equals(SecurityProduct.POLARIS.name().toLowerCase())
                 || product.equals(SecurityProduct.SRM.name().toLowerCase())) {
-            JsonNode issuesUrlNode =
-                    productNode.path(PROJECT_PROPERTY).path(ISSUES_PROPERTY).path(URL_PROPERTY);
+            JsonNode projectNode = getCaseInsensitiveNode(productNode, PROJECT_PROPERTY);
+            JsonNode issuesNode = getCaseInsensitiveNode(projectNode, ISSUES_PROPERTY);
+            JsonNode issuesUrlNode = getCaseInsensitiveNode(issuesNode, URL_PROPERTY);
             return issuesUrlNode.asText(null);
         }
 
@@ -137,5 +128,16 @@ public class IssueCalculator {
             }
         }
         return 0;
+    }
+
+    // Helper method for case-insensitive key lookup
+    private JsonNode getCaseInsensitiveNode(JsonNode node, String key) {
+        if (node == null || node.isMissingNode()) return node;
+        for (String fieldName : (Iterable<String>) node::fieldNames) {
+            if (fieldName.equalsIgnoreCase(key)) {
+                return node.get(fieldName);
+            }
+        }
+        return node.path(key); // fallback to default
     }
 }
