@@ -123,13 +123,16 @@ document.addEventListener('change', function () {
 });
 
 function validateProductField() {
-    var errorProductDiv = document.getElementById("error_product_name");
-    var selectedOption = document.querySelector('select[name="_.product"]')?.value;
-    if (selectedOption === 'select') {
-        errorProductDiv.style.display = "block";
-    } else {
-        errorProductDiv.style.display = "none";
-    }
+    const errorProductDivs = document.querySelectorAll('.error_product_name');
+    errorProductDivs.forEach(function (div) {
+        const select = div.parentElement.querySelector('select[name="_.product"]');
+        const selectedOption = select?.value;
+        if (selectedOption === 'select') {
+            div.style.display = "block";
+        } else {
+            div.style.display = "none";
+        }
+    });
 }
 
 function validateCoverityFields() {

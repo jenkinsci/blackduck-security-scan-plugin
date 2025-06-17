@@ -1,14 +1,14 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form">
 
-    <div id="product">
+    <div id="product" class="product">
         <f:entry field="product" title="Select Product">
             <f:select/>
-            <div id="error_product_name" style="display: block;" class="error error-margin" >No Product is selected!</div>
+            <div id="error_product_name" style="display: block;" class="error_product_name error error-margin">No Product is selected!</div>
         </f:entry>
     </div>
 
-    <div id="blackducksca" style="display: none;">
+    <div id="blackducksca" style="display: none;" class="blackducksca">
         <f:section title="Scan Configuration">
             <f:entry field="blackducksca_project_directory" title="Project Directory (Optional)">
                 <f:textbox/>
@@ -36,12 +36,12 @@
             </f:entry>
         </f:advanced>
 
-        <div id="blackducksca_sarif_report_sec">
+        <div id="blackducksca_sarif_report_sec" class="blackducksca_sarif_report_sec">
             <f:advanced title="SARIF Report Options">
                 <f:entry field="blackducksca_reports_sarif_create" title="Generate SARIF Report (Optional)">
                     <f:checkbox checked="${instance.isBlackducksca_reports_sarif_create() == true}"/>
                 </f:entry>
-                <div id="blackducksca_sarif_params">
+                <div id="blackducksca_sarif_params" class="blackducksca_sarif_params">
                     <f:entry field="blackducksca_reports_sarif_groupSCAIssues" title="Group SCA Issues by Component (Optional)">
                         <f:checkbox checked="${instance.isBlackducksca_reports_sarif_groupSCAIssues() == null || instance.isBlackducksca_reports_sarif_groupSCAIssues() == true}"/>
                     </f:entry>
@@ -55,7 +55,7 @@
             </f:advanced>
         </div>
 
-        <div id="blackducksca_tool_configuration_sec">
+        <div id="blackducksca_tool_configuration_sec" class="blackducksca_tool_configuration_sec">
             <f:advanced title="Detect (SCA) Tool Options">
                 <f:entry field="detect_search_depth" title="Search Depth (Optional)">
                     <f:textbox/>
@@ -71,15 +71,15 @@
 
     </div>
 
-    <div id="coverity" style="display: none;">
+    <div id="coverity" style="display: none;" class="coverity">
         <f:section title="Scan Configuration">
             <f:entry field="coverity_project_name" title="Coverity Project (Mandatory)">
                 <f:textbox/>
-                <div id="error_coverity_project_name" style="display: block;" class="error error-margin">Coverity Project Name is missing</div>
+                <div id="error_coverity_project_name" style="display: block;" class="error error-margin error_coverity_project_name">Coverity Project Name is missing</div>
             </f:entry>
             <f:entry field="coverity_stream_name" title="Coverity Stream (Mandatory)">
                 <f:textbox/>
-                <div id="error_coverity_stream_name" style="display: block;" class="error error-margin">Coverity Stream Name is missing</div>
+                <div id="error_coverity_stream_name" style="display: block;" class="error error-margin error_coverity_stream_name">Coverity Stream Name is missing</div>
             </f:entry>
             <f:entry field="coverity_policy_view" title="Coverity Policy View (Optional)">
                 <f:textbox/>
@@ -123,23 +123,23 @@
 
     </div>
 
-    <div id="polaris" style="display: none;">
+    <div id="polaris" style="display: none;" class="polaris">
         <f:section title="Scan Configuration">
             <f:entry field="polaris_assessment_types" title="Assessment Types (Mandatory)">
                 <f:textbox/>
-                <div id="error_polaris_assessment_types" style="display: block;" class="error error-margin">Polaris Assessment Types are missing</div>
+                <div id="error_polaris_assessment_types" style="display: block;" class="error error-margin error_polaris_assessment_types">Polaris Assessment Types are missing</div>
             </f:entry>
             <f:entry field="polaris_application_name" title="Polaris Application (Mandatory)">
                 <f:textbox/>
-                <div id="error_polaris_application_name" style="display: block;" class="error error-margin">Polaris Application Name is missing</div>
+                <div id="error_polaris_application_name" style="display: block;" class="error error-margin error_polaris_application_name">Polaris Application Name is missing</div>
             </f:entry>
             <f:entry field="polaris_project_name" title="Polaris Project (Mandatory)">
                 <f:textbox/>
-                <div id="error_polaris_project_name" style="display: block;" class="error error-margin">Polaris Project Name is missing</div>
+                <div id="error_polaris_project_name" style="display: block;" class="error error-margin error_polaris_project_name">Polaris Project Name is missing</div>
             </f:entry>
             <f:entry field="polaris_branch_name" title="Polaris Branch (Mandatory)">
                 <f:textbox/>
-                <div id="error_polaris_branch_name" style="display: block;" class="error error-margin">Polaris Branch Name is missing</div>
+                <div id="error_polaris_branch_name" style="display: block;" class="error error-margin error_polaris_branch_name">Polaris Branch Name is missing</div>
             </f:entry>
             <f:entry field="polaris_test_sca_type" title="SCA Test Type (Optional)">
                 <f:textbox/>
@@ -158,15 +158,15 @@
             </f:entry>
         </f:section>
 
-        <div id="polaris_assessment_mode_sec">
+        <div id="polaris_assessment_mode_sec" class="polaris_assessment_mode_sec">
             <f:advanced title="Scan Options">
-                <div id="polaris_assessment_mode">
+                <div id="polaris_assessment_mode" class="polaris_assessment_mode">
                     <f:entry field="polaris_assessment_mode" title="Assessment Mode (Optional)">
                         <f:select/>
                     </f:entry>
                 </div>
 
-                <div id="source_upload" style="display: none;">
+                <div id="source_upload" style="display: none;" class="source_upload">
                     <f:section title="Source Code Upload Options">
                         <f:entry field="project_source_archive" title="Upload Archive Instead Of Project Directory (Optional)">
                             <f:textbox/>
@@ -182,12 +182,12 @@
             </f:advanced>
         </div>
 
-        <div id="polaris_sarif_report_sec">
+        <div id="polaris_sarif_report_sec" class="polaris_sarif_report_sec">
             <f:advanced title="SARIF Report Options">
                 <f:entry field="polaris_reports_sarif_create" title="Generate SARIF Report(Optional)">
                     <f:checkbox checked="${instance.isPolaris_reports_sarif_create() == true}"/>
                 </f:entry>
-                <div id="polaris_sarif_params">
+                <div id="polaris_sarif_params" class="polaris_sarif_params">
                     <f:entry field="polaris_reports_sarif_groupSCAIssues" title="Group SCA Issues by Component (Optional)">
                         <f:checkbox checked="${instance.isPolaris_reports_sarif_groupSCAIssues() == null || instance.isPolaris_reports_sarif_groupSCAIssues() == true}"/>
                     </f:entry>
@@ -204,7 +204,7 @@
             </f:advanced>
         </div>
 
-        <div id="polaris_tool_configuration_sec">
+        <div id="polaris_tool_configuration_sec" class="polaris_tool_configuration_sec">
             <f:advanced title="Coverity (SAST) Tool Options">
                 <f:entry field="polaris_sast_build_command" title="Coverity Build Command (Optional)">
                     <f:textbox/>
@@ -235,19 +235,19 @@
 
     </div>
 
-    <div id="srm" style="display: none;">
+    <div id="srm" style="display: none;" class="srm">
         <f:section title="Scan Configuration">
             <f:entry field="srm_assessment_types" title="Assessment Types (Mandatory)">
                 <f:textbox/>
-                <div id="error_srm_assessment_types" style="display: block;" class="error error-margin">SRM Assessment Types are missing</div>
+                <div id="error_srm_assessment_types" style="display: block;" class="error error-margin error_srm_assessment_types">SRM Assessment Types are missing</div>
             </f:entry>
             <f:entry field="srm_project_name" title="SRM Project Name (Mandatory)">
                 <f:textbox/>
-                <div id="error_srm_project_name" style="display: block;" class="error error-margin">SRM Project Name is missing</div>
+                <div id="error_srm_project_name" style="display: block;" class="error error-margin error_srm_project_name">SRM Project Name is missing</div>
             </f:entry>
             <f:entry field="srm_project_id" title="SRM Project ID (Mandatory)">
                 <f:textbox/>
-                <div id="error_srm_project_id" style="display: block;" class="error error-margin">SRM Project ID is missing</div>
+                <div id="error_srm_project_id" style="display: block;" class="error error-margin error_srm_project_id">SRM Project ID is missing</div>
             </f:entry>
             <f:entry field="srm_branch_name" title="SRM Branch (Optional)">
                 <f:textbox/>
