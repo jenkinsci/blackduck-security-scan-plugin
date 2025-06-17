@@ -99,4 +99,47 @@ public class IssueCalculatorTest {
 
         assertEquals(14, totalIssues);
     }
+
+    @Test
+    public void testCalculateBlackDuckScaIssues_CaseInsensitive() throws IOException {
+        String jsonContent = "{"
+                + "\"data\": {\"BLACKDUCKSCA\": {\"policy\": {\"status\": {\"issues\": {\"CRITICAL\": 1, \"high\": 2}}}}}}";
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(jsonContent);
+        String product = "blackducksca";
+        int totalIssues = issueCalculator.calculateTotalIssues(rootNode, product);
+        assertEquals(3, totalIssues);
+    }
+
+    @Test
+    public void testCalculateCoverityIssues_CaseInsensitive() throws IOException {
+        String jsonContent = "{" + "\"data\": {\"COVERITY\": {\"CONNECT\": {\"policy\": {\"issueCount\": 7}}}}}";
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(jsonContent);
+        String product = "coverity";
+        int totalIssues = issueCalculator.calculateTotalIssues(rootNode, product);
+        assertEquals(7, totalIssues);
+    }
+
+    @Test
+    public void testCalculatePolarisIssues_CaseInsensitive() throws IOException {
+        String jsonContent = "{"
+                + "\"data\": {\"POLARIS\": {\"test\": {\"SAST\": {\"TESTS\": {\"FULL\": {\"issues\": {\"CRITICAL\": 2, \"high\": 3}}}}, \"SCA\": {\"tests\": {\"SCAPACKAGE\": {\"IsSuEs\": {\"medium\": 4, \"LOW\": 5}}}}}}}}}";
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(jsonContent);
+        String product = "polaris";
+        int totalIssues = issueCalculator.calculateTotalIssues(rootNode, product);
+        assertEquals(14, totalIssues);
+    }
+
+    @Test
+    public void testCalculateSrmIssues_CaseInsensitive() throws IOException {
+        String jsonContent = "{"
+                + "\"data\": {\"SRM\": {\"analysis\": {\"issues\": {\"CRITICAL\": 1, \"HIGH\": 2, \"medium\": 3, \"LOW\": 4}}}}}";
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(jsonContent);
+        String product = "srm";
+        int totalIssues = issueCalculator.calculateTotalIssues(rootNode, product);
+        assertEquals(10, totalIssues);
+    }
 }
