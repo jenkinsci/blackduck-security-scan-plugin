@@ -277,6 +277,8 @@ public class ParameterMappingServiceTest {
         securityScanStep.setBridgecli_install_directory("/fake/path");
         securityScanStep.setInclude_diagnostics(true);
         securityScanStep.setNetwork_airgap(true);
+        securityScanStep.setNetwork_ssl_trustAll(true);
+        securityScanStep.setNetwork_ssl_cert_file("/fake/cert/file");
 
         Map<String, Object> bridgeParametersMap =
                 ParameterMappingService.prepareAddtionalParametersMap(securityScanStep);
