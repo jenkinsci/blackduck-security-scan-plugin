@@ -9,7 +9,6 @@ public class SSL {
     @JsonProperty("cert")
     private Cert cert;
 
-
     public Boolean getTrustAll() {
         return trustAll;
     }

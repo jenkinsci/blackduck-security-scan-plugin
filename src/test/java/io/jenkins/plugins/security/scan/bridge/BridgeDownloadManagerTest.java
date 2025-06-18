@@ -10,6 +10,8 @@ import io.jenkins.plugins.security.scan.global.Utility;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -19,12 +21,13 @@ public class BridgeDownloadManagerTest {
     private FilePath workspace;
     private final TaskListener listenerMock = Mockito.mock(TaskListener.class);
     private final EnvVars envVarsMock = Mockito.mock(EnvVars.class);
+    private final Map<String, Object> scanParameters = new HashMap<>();
 
     @BeforeEach
     void setup() {
         workspace = new FilePath(new File(getHomeDirectory()));
         Mockito.when(listenerMock.getLogger()).thenReturn(Mockito.mock(PrintStream.class));
-        bridgeDownloadManager = new BridgeDownloadManager(workspace, listenerMock, envVarsMock);
+        bridgeDownloadManager = new BridgeDownloadManager(workspace, listenerMock, envVarsMock, scanParameters);
     }
 
     @Test
@@ -48,13 +51,14 @@ public class BridgeDownloadManagerTest {
     @Test
     void isBridgeDownloadRequiredTest() {
         BridgeDownloadParameters bridgeDownloadParameters =
-                new BridgeDownloadParameters(workspace, listenerMock, envVarsMock);
+                new BridgeDownloadParameters(workspace, listenerMock, envVarsMock, scanParameters);
         bridgeDownloadParameters.setBridgeDownloadUrl("https://fake.url.com/bridge");
         bridgeDownloadParameters.setBridgeInstallationPath("/path/to/bridge");
 
         BridgeDownloadManager mockedBridgeDownloadManager = Mockito.mock(BridgeDownloadManager.class);
 
-        BridgeDownloadManager bridgeDownloadManager = new BridgeDownloadManager(workspace, listenerMock, envVarsMock);
+        BridgeDownloadManager bridgeDownloadManager =
+                new BridgeDownloadManager(workspace, listenerMock, envVarsMock, scanParameters);
 
         Mockito.when(mockedBridgeDownloadManager.checkIfBridgeInstalled(anyString()))
                 .thenReturn(true);
@@ -65,7 +69,8 @@ public class BridgeDownloadManagerTest {
 
     @Test
     public void getDirectoryUrlTest() {
-        BridgeDownloadManager bridgeDownloadManager = new BridgeDownloadManager(workspace, listenerMock, envVarsMock);
+        BridgeDownloadManager bridgeDownloadManager =
+                new BridgeDownloadManager(workspace, listenerMock, envVarsMock, scanParameters);
 
         String downloadUrlWithoutTrailingSlash =
                 "https://myown.artifactory.com/release/bridge-cli/0.3.59/bridge-cli-0.3.59-linux64.zip";
@@ -82,7 +87,8 @@ public class BridgeDownloadManagerTest {
 
     @Test
     public void versionFileAvailableTest() {
-        BridgeDownloadManager bridgeDownloadManager = new BridgeDownloadManager(workspace, listenerMock, envVarsMock);
+        BridgeDownloadManager bridgeDownloadManager =
+                new BridgeDownloadManager(workspace, listenerMock, envVarsMock, scanParameters);
 
         String directoryUrlWithoutVersionFile =
                 "https://repo.blackduck.com/bds-integrations-release/com/blackduck/integration/bridge/binaries/bridge-cli-bundle/3.0.0/";
@@ -95,7 +101,8 @@ public class BridgeDownloadManagerTest {
 
     @Test
     public void extractVersionFromUrlTest() {
-        BridgeDownloadManager bridgeDownloadManager = new BridgeDownloadManager(workspace, listenerMock, envVarsMock);
+        BridgeDownloadManager bridgeDownloadManager =
+                new BridgeDownloadManager(workspace, listenerMock, envVarsMock, scanParameters);
 
         String urlWithVersion = "https://myown.artifactory.com/bridge-cli/0.3.59/bridge-cli-0.3.59-linux64.zip";
         String expectedVersionWithVersion = "0.3.59";
@@ -110,7 +117,8 @@ public class BridgeDownloadManagerTest {
 
     @Test
     public void downloadVersionFileTest() {
-        BridgeDownloadManager bridgeDownloadManager = new BridgeDownloadManager(workspace, listenerMock, envVarsMock);
+        BridgeDownloadManager bridgeDownloadManager =
+                new BridgeDownloadManager(workspace, listenerMock, envVarsMock, scanParameters);
 
         String directoryUrl =
                 "https://repo.blackduck.com/bds-integrations-release/com/blackduck/integration/bridge/binaries/bridge-cli-bundle/latest";
@@ -128,7 +136,8 @@ public class BridgeDownloadManagerTest {
 
     @Test
     void getLatestBridgeVersionFromArtifactoryTest() {
-        BridgeDownloadManager bridgeDownloadManager = new BridgeDownloadManager(workspace, listenerMock, envVarsMock);
+        BridgeDownloadManager bridgeDownloadManager =
+                new BridgeDownloadManager(workspace, listenerMock, envVarsMock, scanParameters);
 
         String urlWithVersion =
                 "https://repo.blackduck.com/bds-integrations-release/com/blackduck/integration/bridge/binaries/bridge-cli-bundle/3.0.0/bridge-cli-3.0.0-linux64.zip ";

@@ -12,6 +12,7 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,18 +22,21 @@ public class BridgeDownloadManager {
     private final FilePath workspace;
     private final LoggerWrapper logger;
     private final EnvVars envVars;
+    private final Map<String, Object> scanParameters;
 
-    public BridgeDownloadManager(FilePath workspace, TaskListener listener, EnvVars envVars) {
+    public BridgeDownloadManager(
+            FilePath workspace, TaskListener listener, EnvVars envVars, Map<String, Object> scanParameters) {
         this.workspace = workspace;
         this.listener = listener;
         this.logger = new LoggerWrapper(listener);
         this.envVars = envVars;
+        this.scanParameters = scanParameters;
     }
 
     public void initiateBridgeDownloadAndUnzip(BridgeDownloadParameters bridgeDownloadParams)
             throws PluginExceptionHandler {
-        BridgeDownload bridgeDownload = new BridgeDownload(workspace, listener, envVars);
-        BridgeInstall bridgeInstall = new BridgeInstall(workspace, listener, envVars);
+        BridgeDownload bridgeDownload = new BridgeDownload(workspace, listener, envVars, scanParameters);
+        BridgeInstall bridgeInstall = new BridgeInstall(workspace, listener, envVars, scanParameters);
 
         String bridgeDownloadUrl = bridgeDownloadParams.getBridgeDownloadUrl();
         String bridgeInstallationPath = bridgeDownloadParams.getBridgeInstallationPath();
@@ -46,7 +50,7 @@ public class BridgeDownloadManager {
 
         FilePath bridgeZipPath = bridgeDownload.downloadBridgeCLI(bridgeDownloadUrl, bridgeInstallationPath);
 
-        bridgeInstall.installBridgeCLI(bridgeZipPath, bridgeDownloadParams);
+        bridgeInstall.installBridgeCLI(bridgeZipPath, bridgeDownloadParams, scanParameters);
     }
 
     public boolean isBridgeDownloadRequired(BridgeDownloadParameters bridgeDownloadParameters) {
@@ -137,7 +141,7 @@ public class BridgeDownloadManager {
             FilePath tempFilePath = workspace.createTempFile("versions", ".txt");
             URL url = new URL(versionFileUrl);
 
-            HttpURLConnection connection = Utility.getHttpURLConnection(url, envVars, logger);
+            HttpURLConnection connection = Utility.getHttpURLConnection(url, envVars, logger, scanParameters);
             if (connection != null) {
                 tempFilePath.copyFrom(connection.getURL());
                 tempVersionFilePath = tempFilePath.getRemote();
@@ -153,7 +157,7 @@ public class BridgeDownloadManager {
         try {
             URL url = new URL(String.join("/", directoryUrl, ApplicationConstants.VERSION_FILE));
 
-            HttpURLConnection connection = Utility.getHttpURLConnection(url, envVars, logger);
+            HttpURLConnection connection = Utility.getHttpURLConnection(url, envVars, logger, scanParameters);
             if (connection != null) {
                 connection.setRequestMethod("HEAD");
                 return (connection.getResponseCode() >= 200 && connection.getResponseCode() < 300);

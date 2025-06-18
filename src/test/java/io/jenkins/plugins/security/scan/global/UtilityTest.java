@@ -97,14 +97,16 @@ public class UtilityTest {
         EnvVars envVars = new EnvVars();
         envVars.put("HTTP_PROXY", "http://fake-proxy.com:1010");
 
-        HttpURLConnection httpProxyConnection = Utility.getHttpURLConnection(url, envVars, logger);
+        Map<String, Object> scanParameters = new HashMap<>();
+
+        HttpURLConnection httpProxyConnection = Utility.getHttpURLConnection(url, envVars, logger, scanParameters);
 
         assertNotNull(httpProxyConnection);
         assertEquals(url, httpProxyConnection.getURL());
 
         envVars.put("NO_PROXY", "https://test-url.com, https://fake-url.com");
 
-        HttpURLConnection noProxyConnection = Utility.getHttpURLConnection(url, envVars, logger);
+        HttpURLConnection noProxyConnection = Utility.getHttpURLConnection(url, envVars, logger, scanParameters);
 
         assertNotNull(noProxyConnection);
         assertEquals(url, noProxyConnection.getURL());

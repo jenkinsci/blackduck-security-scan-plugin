@@ -10,12 +10,19 @@ import hudson.model.TaskListener;
 import hudson.model.TopLevelItem;
 import io.jenkins.plugins.security.scan.global.enums.BuildStatus;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.*;
+import java.security.KeyStore;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.net.ssl.*;
 import jenkins.model.Jenkins;
 
 public class Utility {
@@ -87,24 +94,96 @@ public class Utility {
         return str == null || str.isBlank() || str.equals("null");
     }
 
-    public static HttpURLConnection getHttpURLConnection(URL url, EnvVars envVars, LoggerWrapper logger) {
+    public static HttpURLConnection getHttpURLConnection(
+            URL url, EnvVars envVars, LoggerWrapper logger, Map<String, Object> scanParameters) {
         try {
-            String proxy = getProxy(url, envVars, logger);
-            if (proxy.equals(ApplicationConstants.NO_PROXY)) {
-                return (HttpURLConnection) url.openConnection(Proxy.NO_PROXY);
+            if (scanParameters.containsKey(ApplicationConstants.NETWORK_SSL_TRUSTALL_KEY)) {
+                boolean trustAll = (Boolean) scanParameters.get(ApplicationConstants.NETWORK_SSL_TRUSTALL_KEY);
+                if (trustAll) {
+                    TrustManager[] trustAllCerts = new TrustManager[] {
+                        new X509TrustManager() {
+                            @Override
+                            public X509Certificate[] getAcceptedIssuers() {
+                                return null;
+                            }
+
+                            @Override
+                            public void checkClientTrusted(X509Certificate[] certs, String authType)
+                                    throws CertificateException {}
+
+                            @Override
+                            public void checkServerTrusted(X509Certificate[] certs, String authType)
+                                    throws CertificateException {}
+                        }
+                    };
+
+                    SSLContext sc = SSLContext.getInstance("TLS");
+
+                    sc.init(null, trustAllCerts, new java.security.SecureRandom());
+
+                    HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+
+                    String proxy = getProxy(url, envVars, logger);
+                    if (proxy.equals(ApplicationConstants.NO_PROXY)) {
+                        return (HttpsURLConnection) url.openConnection(Proxy.NO_PROXY);
+                    } else {
+                        URL proxyURL = new URL(proxy);
+                        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection(new Proxy(
+                                Proxy.Type.HTTP, new InetSocketAddress(proxyURL.getHost(), proxyURL.getPort())));
+                        setDefaultProxyAuthenticator(proxyURL.getUserInfo());
+
+                        return connection;
+                    }
+                }
+            } else if (scanParameters.containsKey(ApplicationConstants.NETWORK_SSL_CERT_FILE_KEY)) {
+                String certFilePath = (String) scanParameters.get(ApplicationConstants.NETWORK_SSL_CERT_FILE_KEY);
+                if (!isStringNullOrBlank(certFilePath)) {
+                    File crtFile = new File(certFilePath);
+                    Certificate certificate =
+                            CertificateFactory.getInstance("X.509").generateCertificate(new FileInputStream(crtFile));
+
+                    KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+                    keyStore.load(null, null);
+                    keyStore.setCertificateEntry("certificate_pem", certificate);
+
+                    TrustManagerFactory trustManagerFactory =
+                            TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+                    trustManagerFactory.init(keyStore);
+
+                    SSLContext sslContext = SSLContext.getInstance("TLS");
+                    sslContext.init(null, trustManagerFactory.getTrustManagers(), null);
+
+                    String proxy = getProxy(url, envVars, logger);
+                    if (proxy.equals(ApplicationConstants.NO_PROXY)) {
+                        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection(Proxy.NO_PROXY);
+                        connection.setSSLSocketFactory(sslContext.getSocketFactory());
+                        return connection;
+                    } else {
+                        URL proxyURL = new URL(proxy);
+                        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection(new Proxy(
+                                Proxy.Type.HTTP, new InetSocketAddress(proxyURL.getHost(), proxyURL.getPort())));
+                        connection.setSSLSocketFactory(sslContext.getSocketFactory());
+                        setDefaultProxyAuthenticator(proxyURL.getUserInfo());
+                        return connection;
+                    }
+                }
             } else {
-                URL proxyURL = new URL(proxy);
+                String proxy = getProxy(url, envVars, logger);
+                if (proxy.equals(ApplicationConstants.NO_PROXY)) {
+                    return (HttpURLConnection) url.openConnection(Proxy.NO_PROXY);
+                } else {
+                    URL proxyURL = new URL(proxy);
 
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection(
-                        new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyURL.getHost(), proxyURL.getPort())));
-                setDefaultProxyAuthenticator(proxyURL.getUserInfo());
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection(
+                            new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyURL.getHost(), proxyURL.getPort())));
+                    setDefaultProxyAuthenticator(proxyURL.getUserInfo());
 
-                return connection;
+                    return connection;
+                }
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.error(ApplicationConstants.HTTP_URL_CONNECTION_EXCEPTION, e.getMessage());
         }
-
         return null;
     }
 

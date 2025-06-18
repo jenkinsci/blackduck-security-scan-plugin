@@ -164,8 +164,10 @@ public class ParameterMappingService {
                     ApplicationConstants.BRIDGECLI_DOWNLOAD_VERSION,
                     config.getBridgeDownloadVersion());
             addParameterIfNotBlank(globalParameters, ApplicationConstants.NETWORK_AIRGAP_KEY, config.isNetworkAirGap());
-            addParameterIfNotBlank(globalParameters, ApplicationConstants.NETWORK_SSL_CERT_FILE_KEY, config.getNetworkSslCertFile());
-            addParameterIfNotBlank(globalParameters, ApplicationConstants.NETWORK_SSL_TRUSTALL_KEY, config.isNetworkSslTrustAll());
+            addParameterIfNotBlank(
+                    globalParameters, ApplicationConstants.NETWORK_SSL_CERT_FILE_KEY, config.getNetworkSslCertFile());
+            addParameterIfNotBlank(
+                    globalParameters, ApplicationConstants.NETWORK_SSL_TRUSTALL_KEY, config.isNetworkSslTrustAll());
             addParameterIfNotBlank(
                     globalParameters, ApplicationConstants.POLARIS_SERVER_URL_KEY, config.getPolarisServerUrl());
             addParameterIfNotBlank(
@@ -652,9 +654,13 @@ public class ParameterMappingService {
         if (securityScan instanceof NetworkParams) {
             NetworkParams networkParams = (NetworkParams) securityScan;
             addParameterIfNotBlank(
-                    bridgeParameters, ApplicationConstants.NETWORK_SSL_CERT_FILE_KEY, networkParams.getNetwork_ssl_cert_file());
+                    bridgeParameters,
+                    ApplicationConstants.NETWORK_SSL_CERT_FILE_KEY,
+                    networkParams.getNetwork_ssl_cert_file());
             addParameterIfNotBlank(
-                    bridgeParameters, ApplicationConstants.NETWORK_SSL_TRUSTALL_KEY, networkParams.isNetwork_ssl_trustAll());
+                    bridgeParameters,
+                    ApplicationConstants.NETWORK_SSL_TRUSTALL_KEY,
+                    networkParams.isNetwork_ssl_trustAll());
         }
 
         return bridgeParameters;
