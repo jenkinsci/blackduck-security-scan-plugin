@@ -96,51 +96,52 @@ public class Utility {
 
     public static HttpURLConnection getHttpURLConnection(
             URL url, EnvVars envVars, LoggerWrapper logger, Map<String, Object> scanParameters) {
+        FileInputStream fileInputStream = null;
         try {
-            if (scanParameters.containsKey(ApplicationConstants.NETWORK_SSL_TRUSTALL_KEY)) {
-                boolean trustAll = (Boolean) scanParameters.get(ApplicationConstants.NETWORK_SSL_TRUSTALL_KEY);
-                if (trustAll) {
-                    TrustManager[] trustAllCerts = new TrustManager[] {
-                        new X509TrustManager() {
-                            @Override
-                            public X509Certificate[] getAcceptedIssuers() {
-                                return null;
-                            }
-
-                            @Override
-                            public void checkClientTrusted(X509Certificate[] certs, String authType)
-                                    throws CertificateException {}
-
-                            @Override
-                            public void checkServerTrusted(X509Certificate[] certs, String authType)
-                                    throws CertificateException {}
+            if (scanParameters.containsKey(ApplicationConstants.NETWORK_SSL_TRUSTALL_KEY)
+                    && (Boolean) scanParameters.get(ApplicationConstants.NETWORK_SSL_TRUSTALL_KEY)) {
+                TrustManager[] trustAllCerts = new TrustManager[] {
+                    new X509TrustManager() {
+                        @Override
+                        public X509Certificate[] getAcceptedIssuers() {
+                            return null;
                         }
-                    };
 
-                    SSLContext sc = SSLContext.getInstance("TLS");
+                        @Override
+                        public void checkClientTrusted(X509Certificate[] certs, String authType)
+                                throws CertificateException {}
 
-                    sc.init(null, trustAllCerts, new java.security.SecureRandom());
-
-                    HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-
-                    String proxy = getProxy(url, envVars, logger);
-                    if (proxy.equals(ApplicationConstants.NO_PROXY)) {
-                        return (HttpsURLConnection) url.openConnection(Proxy.NO_PROXY);
-                    } else {
-                        URL proxyURL = new URL(proxy);
-                        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection(new Proxy(
-                                Proxy.Type.HTTP, new InetSocketAddress(proxyURL.getHost(), proxyURL.getPort())));
-                        setDefaultProxyAuthenticator(proxyURL.getUserInfo());
-
-                        return connection;
+                        @Override
+                        public void checkServerTrusted(X509Certificate[] certs, String authType)
+                                throws CertificateException {}
                     }
+                };
+
+                SSLContext sc = SSLContext.getInstance("TLS");
+
+                sc.init(null, trustAllCerts, new java.security.SecureRandom());
+
+                HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+
+                String proxy = getProxy(url, envVars, logger);
+                if (proxy.equals(ApplicationConstants.NO_PROXY)) {
+                    return (HttpsURLConnection) url.openConnection(Proxy.NO_PROXY);
+                } else {
+                    URL proxyURL = new URL(proxy);
+                    HttpsURLConnection connection = (HttpsURLConnection) url.openConnection(
+                            new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyURL.getHost(), proxyURL.getPort())));
+                    setDefaultProxyAuthenticator(proxyURL.getUserInfo());
+
+                    return connection;
                 }
+
             } else if (scanParameters.containsKey(ApplicationConstants.NETWORK_SSL_CERT_FILE_KEY)) {
                 String certFilePath = (String) scanParameters.get(ApplicationConstants.NETWORK_SSL_CERT_FILE_KEY);
                 if (!isStringNullOrBlank(certFilePath)) {
                     File crtFile = new File(certFilePath);
+                    fileInputStream = new FileInputStream(crtFile);
                     Certificate certificate =
-                            CertificateFactory.getInstance("X.509").generateCertificate(new FileInputStream(crtFile));
+                            CertificateFactory.getInstance("X.509").generateCertificate(fileInputStream);
 
                     KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
                     keyStore.load(null, null);
@@ -183,6 +184,14 @@ public class Utility {
             }
         } catch (Exception e) {
             logger.error(ApplicationConstants.HTTP_URL_CONNECTION_EXCEPTION, e.getMessage());
+        } finally {
+            if (fileInputStream != null) {
+                try {
+                    fileInputStream.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
         return null;
     }

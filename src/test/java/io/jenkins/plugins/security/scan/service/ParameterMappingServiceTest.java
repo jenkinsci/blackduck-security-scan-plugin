@@ -283,7 +283,7 @@ public class ParameterMappingServiceTest {
         Map<String, Object> bridgeParametersMap =
                 ParameterMappingService.prepareAddtionalParametersMap(securityScanStep);
 
-        assertEquals(5, bridgeParametersMap.size());
+        assertEquals(7, bridgeParametersMap.size());
         assertEquals(
                 "https://fake.bridge-download.url",
                 bridgeParametersMap.get(ApplicationConstants.BRIDGECLI_DOWNLOAD_URL));
@@ -291,6 +291,8 @@ public class ParameterMappingServiceTest {
         assertEquals("/fake/path", bridgeParametersMap.get(ApplicationConstants.BRIDGECLI_INSTALL_DIRECTORY));
         assertTrue((boolean) bridgeParametersMap.get(ApplicationConstants.INCLUDE_DIAGNOSTICS_KEY));
         assertTrue((boolean) bridgeParametersMap.get(ApplicationConstants.NETWORK_AIRGAP_KEY));
+        assertTrue((boolean) bridgeParametersMap.get(ApplicationConstants.NETWORK_SSL_TRUSTALL_KEY));
+        assertEquals("/fake/cert/file", bridgeParametersMap.get(ApplicationConstants.NETWORK_SSL_CERT_FILE_KEY));
 
         Map<String, Object> emptyBridgeParametersMap =
                 ParameterMappingService.prepareAddtionalParametersMap(new SecurityScanStep());
