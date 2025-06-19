@@ -18,4 +18,6 @@ public interface PrCommentScan {
     public Boolean isPolaris_prComment_enabled();
 
     public Boolean isPolaris_prComment_enabled_actualValue();
+
+    public String getPolaris_prComment_severities();
 }
