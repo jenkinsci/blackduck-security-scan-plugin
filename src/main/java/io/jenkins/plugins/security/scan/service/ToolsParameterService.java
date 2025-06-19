@@ -12,7 +12,10 @@ import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.global.Utility;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import io.jenkins.plugins.security.scan.input.BridgeInput;
-import io.jenkins.plugins.security.scan.input.NetworkAirGap;
+import io.jenkins.plugins.security.scan.input.Network;
+import io.jenkins.plugins.security.scan.input.Ssl;
+import io.jenkins.plugins.security.scan.input.SslTrust;
+import io.jenkins.plugins.security.scan.input.SslCert;
 import io.jenkins.plugins.security.scan.input.blackducksca.BlackDuckSCA;
 import io.jenkins.plugins.security.scan.input.coverity.Coverity;
 import io.jenkins.plugins.security.scan.input.detect.Detect;
@@ -203,7 +206,7 @@ public class ToolsParameterService {
 
         setScmObject(bridgeInput, scmObject, scanParameters);
 
-        setNetworkAirGapObject(bridgeInput, scanParameters);
+        setNetworkObject(bridgeInput, scanParameters);
 
         setDetectObject(scanParameters, bridgeInput);
 
@@ -235,12 +238,62 @@ public class ToolsParameterService {
         }
     }
 
-    private void setNetworkAirGapObject(BridgeInput bridgeInput, Map<String, Object> scanParameters) {
+    private void setNetworkObject(BridgeInput bridgeInput, Map<String, Object> scanParameters) {
+        Network network = new Network();
+        boolean hasNetworkConfig = false;
+
+        // Set airgap configuration
         if (scanParameters.containsKey(ApplicationConstants.NETWORK_AIRGAP_KEY)) {
             Boolean isNetworkAirGap = (Boolean) scanParameters.get(ApplicationConstants.NETWORK_AIRGAP_KEY);
-            NetworkAirGap networkAirGap = new NetworkAirGap();
-            networkAirGap.setAirgap(isNetworkAirGap);
-            bridgeInput.setNetworkAirGap(networkAirGap);
+            network.setAirgap(isNetworkAirGap);
+            hasNetworkConfig = true;
+        }
+
+        // Set SSL configuration
+        if (scanParameters.containsKey(ApplicationConstants.BRIDGE_NETWORK_SSL_TRUST_ALL_KEY) || 
+            scanParameters.containsKey(ApplicationConstants.BRIDGE_NETWORK_SSL_CERT_FILE_KEY)) {
+            
+            Ssl ssl = new Ssl();
+            boolean hasSslConfig = false;
+
+            // Configure SSL trust all
+            if (scanParameters.containsKey(ApplicationConstants.BRIDGE_NETWORK_SSL_TRUST_ALL_KEY)) {
+                Boolean trustAll = (Boolean) scanParameters.get(ApplicationConstants.BRIDGE_NETWORK_SSL_TRUST_ALL_KEY);
+                if (trustAll != null && trustAll) {
+                    SslTrust sslTrust = new SslTrust();
+                    sslTrust.setAll(true);
+                    ssl.setTrust(sslTrust);
+                    hasSslConfig = true;
+                }
+            }
+
+            // Configure SSL certificate file
+            if (scanParameters.containsKey(ApplicationConstants.BRIDGE_NETWORK_SSL_CERT_FILE_KEY)) {
+                String certFile = (String) scanParameters.get(ApplicationConstants.BRIDGE_NETWORK_SSL_CERT_FILE_KEY);
+                if (certFile != null && !certFile.trim().isEmpty()) {
+                    SslCert sslCert = new SslCert();
+                    sslCert.setFile(certFile.trim());
+                    ssl.setCert(sslCert);
+                    hasSslConfig = true;
+
+                    // Set NODE_EXTRA_CA_CERTS environment variable if trust all is not enabled
+                    Boolean trustAll = (Boolean) scanParameters.get(ApplicationConstants.BRIDGE_NETWORK_SSL_TRUST_ALL_KEY);
+                    if (trustAll == null || !trustAll) {
+                        System.setProperty("NODE_EXTRA_CA_CERTS", certFile.trim());
+                        logger.info("NODE_EXTRA_CA_CERTS set to: " + certFile.trim());
+                    }
+                }
+            }
+
+            if (hasSslConfig) {
+                network.setSsl(ssl);
+                hasNetworkConfig = true;
+            }
+        }
+
+        // Only set network object if there's configuration
+        if (hasNetworkConfig) {
+            bridgeInput.setNetwork(network);
         }
     }
 

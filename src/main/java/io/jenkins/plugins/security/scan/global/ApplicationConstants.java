@@ -171,6 +171,8 @@ public class ApplicationConstants {
     // Additional Parameters
     public static final String INCLUDE_DIAGNOSTICS_KEY = "include_diagnostics";
     public static final String NETWORK_AIRGAP_KEY = "network_airgap";
+    public static final String BRIDGE_NETWORK_SSL_TRUST_ALL_KEY = "bridge_network_ssl_trust_all";
+    public static final String BRIDGE_NETWORK_SSL_CERT_FILE_KEY = "bridge_network_ssl_cert_file";
     public static final String RETURN_STATUS_KEY = "return_status";
     public static final String BITBUCKET_USERNAME_KEY = "bitbucket_username";
     public static final String BITBUCKET_TOKEN_KEY = "bitbucket_token";

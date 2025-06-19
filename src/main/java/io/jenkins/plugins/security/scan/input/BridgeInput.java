@@ -41,7 +41,7 @@ public class BridgeInput {
     private Gitlab gitlab;
 
     @JsonProperty("network")
-    private NetworkAirGap networkAirGap;
+    private Network network;
 
     @JsonProperty("reports")
     private Reports reports;
@@ -102,12 +102,12 @@ public class BridgeInput {
         this.bitbucket = bitbucket;
     }
 
-    public NetworkAirGap getNetworkAirGap() {
-        return networkAirGap;
+    public Network getNetwork() {
+        return network;
     }
 
-    public void setNetworkAirGap(final NetworkAirGap networkAirGap) {
-        this.networkAirGap = networkAirGap;
+    public void setNetwork(final Network network) {
+        this.network = network;
     }
 
     public Github getGithub() {
