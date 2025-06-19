@@ -243,6 +243,7 @@ public class ToolsParameterService {
         if (scanParameters.containsKey(ApplicationConstants.NETWORK_AIRGAP_KEY)) {
             Boolean isNetworkAirGap = (Boolean) scanParameters.get(ApplicationConstants.NETWORK_AIRGAP_KEY);
             network.setAirgap(isNetworkAirGap);
+            bridgeInput.setNetwork(network);
         }
         if (scanParameters.containsKey(ApplicationConstants.NETWORK_SSL_CERT_FILE_KEY)) {
             String sslCertFile = (String) scanParameters.get(ApplicationConstants.NETWORK_SSL_CERT_FILE_KEY);
@@ -250,13 +251,14 @@ public class ToolsParameterService {
             cert.setFile(sslCertFile);
             ssl.setCert(cert);
             network.setSsl(ssl);
+            bridgeInput.setNetwork(network);
         }
         if (scanParameters.containsKey(ApplicationConstants.NETWORK_SSL_TRUSTALL_KEY)) {
             Boolean isSslTrustAll = (Boolean) scanParameters.get(ApplicationConstants.NETWORK_SSL_TRUSTALL_KEY);
             ssl.setTrustAll(isSslTrustAll);
             network.setSsl(ssl);
+            bridgeInput.setNetwork(network);
         }
-        bridgeInput.setNetwork(network);
     }
 
     private Object getScmObject(Map<String, Object> scanParameters) throws PluginExceptionHandler {
