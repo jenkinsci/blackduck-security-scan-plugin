@@ -111,7 +111,7 @@ public class Utility {
         return null;
     }
 
-    private static HttpURLConnection createTrustAllConnection(URL url, EnvVars envVars, LoggerWrapper logger)
+    public static HttpURLConnection createTrustAllConnection(URL url, EnvVars envVars, LoggerWrapper logger)
             throws Exception {
         TrustManager[] trustAllCerts = new TrustManager[] {
             new X509TrustManager() {
@@ -144,7 +144,7 @@ public class Utility {
         }
     }
 
-    private static HttpURLConnection createCertFileConnection(
+    public static HttpURLConnection createCertFileConnection(
             URL url, EnvVars envVars, LoggerWrapper logger, Map<String, Object> scanParameters) throws Exception {
         String certFilePath = (String) scanParameters.get(ApplicationConstants.NETWORK_SSL_CERT_FILE_KEY);
         if (!isStringNullOrBlank(certFilePath)) {
@@ -194,7 +194,7 @@ public class Utility {
         return null;
     }
 
-    private static HttpURLConnection createDefaultConnection(URL url, EnvVars envVars, LoggerWrapper logger)
+    public static HttpURLConnection createDefaultConnection(URL url, EnvVars envVars, LoggerWrapper logger)
             throws IOException {
         String proxy = getProxy(url, envVars, logger);
         if (proxy.equals(ApplicationConstants.NO_PROXY)) {
