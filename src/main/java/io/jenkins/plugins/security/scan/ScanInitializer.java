@@ -30,7 +30,8 @@ public class ScanInitializer {
 
     public int initializeScanner(Map<String, Object> scanParameters) throws PluginExceptionHandler {
         ScanParametersService scanParametersService = new ScanParametersService(listener);
-        BridgeDownloadParameters bridgeDownloadParameters = new BridgeDownloadParameters(workspace, listener, envVars);
+        BridgeDownloadParameters bridgeDownloadParameters =
+                new BridgeDownloadParameters(workspace, listener, envVars, scanParameters);
         BridgeDownloadParametersService bridgeDownloadParametersService =
                 new BridgeDownloadParametersService(workspace, listener);
         BridgeDownloadParameters bridgeDownloadParams =
@@ -42,7 +43,8 @@ public class ScanInitializer {
 
         bridgeDownloadParametersService.performBridgeDownloadParameterValidation(bridgeDownloadParams);
 
-        BridgeDownloadManager bridgeDownloadManager = new BridgeDownloadManager(workspace, listener, envVars);
+        BridgeDownloadManager bridgeDownloadManager =
+                new BridgeDownloadManager(workspace, listener, envVars, scanParameters);
 
         bridgeDownloadParametersService.updateBridgeInstallationPath(bridgeDownloadParameters);
 
@@ -57,7 +59,8 @@ public class ScanInitializer {
             isBridgeDownloadRequired = bridgeDownloadManager.isBridgeDownloadRequired(bridgeDownloadParams);
         }
 
-        handleBridgeDownload(isBridgeDownloadRequired, isNetworkAirGap, bridgeDownloadParams, bridgeDownloadManager);
+        handleBridgeDownload(
+                isBridgeDownloadRequired, isNetworkAirGap, bridgeDownloadParams, bridgeDownloadManager, scanParameters);
 
         FilePath bridgeInstallationPath =
                 new FilePath(workspace.getChannel(), bridgeDownloadParams.getBridgeInstallationPath());
@@ -91,7 +94,8 @@ public class ScanInitializer {
             boolean isBridgeDownloadRequired,
             boolean isNetworkAirgap,
             BridgeDownloadParameters bridgeDownloadParams,
-            BridgeDownloadManager bridgeDownloadManager)
+            BridgeDownloadManager bridgeDownloadManager,
+            Map<String, Object> scanParameters)
             throws PluginExceptionHandler {
         if (isBridgeDownloadRequired
                 && bridgeDownloadParams.getBridgeDownloadUrl().contains(".zip")) {
@@ -202,8 +206,8 @@ public class ScanInitializer {
         for (Map.Entry<String, Object> entry : scanParameters.entrySet()) {
             String key = entry.getKey();
             if (key.startsWith("bridgecli_")
+                    || key.startsWith("network_")
                     || key.equals(ApplicationConstants.INCLUDE_DIAGNOSTICS_KEY)
-                    || key.equals(ApplicationConstants.NETWORK_AIRGAP_KEY)
                     || key.equals(ApplicationConstants.MARK_BUILD_STATUS)) {
                 if (!additionalParamsFound) {
                     logger.info("Parameters for additional configuration:");

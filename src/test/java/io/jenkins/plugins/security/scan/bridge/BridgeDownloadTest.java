@@ -13,6 +13,8 @@ import java.io.PrintStream;
 import java.net.HttpURLConnection;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
@@ -21,6 +23,7 @@ public class BridgeDownloadTest {
     private TaskListener listenerMock;
     private FilePath workspace;
     private EnvVars envVarsMock;
+    private final Map<String, Object> scanParameters = new HashMap<>();
 
     @BeforeEach
     public void setUp() {
@@ -32,7 +35,7 @@ public class BridgeDownloadTest {
 
     @Test
     public void downloadBridgeCLITest() throws Exception {
-        BridgeDownload bridgeDownload = new BridgeDownload(workspace, listenerMock, envVarsMock);
+        BridgeDownload bridgeDownload = new BridgeDownload(workspace, listenerMock, envVarsMock, scanParameters);
 
         String validBridgeDownloadUrl =
                 String.join("/", ApplicationConstants.BRIDGE_ARTIFACTORY_URL, "latest", "versions.txt");
@@ -55,7 +58,7 @@ public class BridgeDownloadTest {
                 "/", ApplicationConstants.BRIDGE_ARTIFACTORY_URL, "latest", "bridge-cli-bundle-linux64.zip");
         String invalidDownloadUrl = "https://invalid.bridge-download.url";
 
-        BridgeDownload bridgeDownload = new BridgeDownload(workspace, listenerMock, envVarsMock);
+        BridgeDownload bridgeDownload = new BridgeDownload(workspace, listenerMock, envVarsMock, scanParameters);
 
         assertEquals(200, bridgeDownload.getHttpStatusCode(bridgeDownloadUrl));
         assertEquals(-1, bridgeDownload.getHttpStatusCode(invalidDownloadUrl));
@@ -63,7 +66,7 @@ public class BridgeDownloadTest {
 
     @Test
     public void terminateRetryTest() {
-        BridgeDownload bridgeDownload = new BridgeDownload(workspace, listenerMock, envVarsMock);
+        BridgeDownload bridgeDownload = new BridgeDownload(workspace, listenerMock, envVarsMock, scanParameters);
 
         assertTrue(bridgeDownload.terminateRetry(HttpURLConnection.HTTP_UNAUTHORIZED));
         assertTrue(bridgeDownload.terminateRetry(HttpURLConnection.HTTP_FORBIDDEN));
@@ -82,7 +85,7 @@ public class BridgeDownloadTest {
                 "/", ApplicationConstants.BRIDGE_ARTIFACTORY_URL, "latest", "bridge-cli-bundle-linux64.zip");
         String invalidUrl = "https://invalid.bridge-download.url";
 
-        BridgeDownload bridgeDownload = new BridgeDownload(workspace, listenerMock, envVarsMock);
+        BridgeDownload bridgeDownload = new BridgeDownload(workspace, listenerMock, envVarsMock, scanParameters);
 
         assertTrue(bridgeDownload.checkIfBridgeUrlExists(bridgeDownloadUrl));
         assertFalse(bridgeDownload.checkIfBridgeUrlExists(invalidUrl));
