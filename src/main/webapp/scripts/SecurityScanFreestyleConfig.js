@@ -1,7 +1,15 @@
 handleBuildStepChange();
+bindProductDropdowns();
 
 document.addEventListener('change', function () {
     handleBuildStepChange();
+});
+
+document.addEventListener('click', function (event) {
+    if (event.target && event.target.matches('[name="_.product"]')) {
+        updateProductDropdowns();
+        bindProductDropdowns();
+    }
 });
 
 function hideParticularDiv(div) {
@@ -36,6 +44,38 @@ function clearInputFields(div) {
             }
         });
     }
+}
+
+function updateProductDropdowns() {
+    let productSelectElem = document.querySelectorAll('[name="_.product"]');
+    const selectedProducts = new Set();
+    productSelectElem.forEach(select => {
+        if (select.value && select.value !== 'select') {
+            selectedProducts.add(select.value);
+        }
+    });
+
+    // Disable options already selected in other dropdowns
+    productSelectElem.forEach(select => {
+        const currentValue = select.value;
+        Array.from(select.options).forEach(option => {
+            if (
+                option.value !== 'select' &&
+                selectedProducts.has(option.value) &&
+                option.value !== currentValue
+            ) {
+                option.disabled = true;
+            } else {
+                option.disabled = false;
+            }
+        });
+    });
+}
+
+function bindProductDropdowns() {
+    document.querySelectorAll('[name="_.product"]').forEach(select => {
+        select.addEventListener('click', updateProductDropdowns);
+    });
 }
 
 function handleBuildStepChange() {
