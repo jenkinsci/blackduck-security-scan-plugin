@@ -13,6 +13,7 @@ public class IssueCalculator {
     private static final String URL_PROPERTY = "url";
     private static final String TEST_PROPERTY = "test";
     private static final String TESTS_PROPERTY = "tests";
+    private static final String SAST_FULL_PROPERTY = "sastFull";
     private static final String FULL_PROPERTY = "full";
     private static final String SCA_PACKAGE_PROPERTY = "scaPackage";
     private static final String SCA_SIGNATURE_PROPERTY = "scaSignature";
@@ -86,8 +87,11 @@ public class IssueCalculator {
             JsonNode assessmentTypeNode = getNodeIgnoreCase(testNode, assessmentType.name());
             JsonNode testsNode = getNodeIgnoreCase(assessmentTypeNode, TESTS_PROPERTY);
             JsonNode fullNode = getNodeIgnoreCase(testsNode, FULL_PROPERTY);
+            JsonNode sastFullNode = getNodeIgnoreCase(testsNode, SAST_FULL_PROPERTY);
             if (!fullNode.isMissingNode()) {
                 totalIssues += calculateIssues(fullNode);
+            } else if (!sastFullNode.isMissingNode()) {
+                totalIssues += calculateIssues(sastFullNode);
             } else {
                 JsonNode scaPackageNode = getNodeIgnoreCase(testsNode, SCA_PACKAGE_PROPERTY);
                 JsonNode scaSignatureNode = getNodeIgnoreCase(testsNode, SCA_SIGNATURE_PROPERTY);
