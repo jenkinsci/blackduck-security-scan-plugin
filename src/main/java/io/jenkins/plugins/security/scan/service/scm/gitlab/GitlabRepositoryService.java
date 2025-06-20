@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class GitlabRepositoryService {
     private final LoggerWrapper logger;
-    private String GITLAB_CLOUD_HOST_URL = "https://gitlab.com/";
+    public static final String GITLAB_CLOUD_HOST_URL = "https://gitlab.com/";
     private String INVALID_GITLAB_REPO_URL = "Invalid Gitlab repository URL";
 
     public GitlabRepositoryService(TaskListener listener) {
