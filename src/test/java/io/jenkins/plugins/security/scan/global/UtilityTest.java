@@ -115,23 +115,37 @@ public class UtilityTest {
     @Test
     public void createTrustAllConnectionTest() throws Exception {
         EnvVars envVars = new EnvVars();
-        envVars.put("HTTP_PROXY", "http://fake-proxy.com:1010");
+        envVars.put("HTTP_PROXY", "https://fake-proxy.com:1010");
 
         HttpURLConnection connection = Utility.createTrustAllConnection(url, envVars, logger);
 
-        assertNotNull(connection, "Connection should not be null");
+        assertNotNull(connection);
+        assertEquals(url, connection.getURL());
+
+        envVars.put("NO_PROXY", "https://test-url.com");
+
+        connection = Utility.createTrustAllConnection(url, envVars, logger);
+
+        assertNotNull(connection);
         assertEquals(url, connection.getURL());
     }
 
     @Test
     public void createDefaultConnectionTest() throws Exception {
         EnvVars envVars = new EnvVars();
-        envVars.put("HTTP_PROXY", "http://fake-proxy.com:1010");
+        envVars.put("HTTP_PROXY", "https://fake-proxy.com:1010");
 
         HttpURLConnection connection = Utility.createDefaultConnection(url, envVars, logger);
 
-        assertNotNull(connection, "Connection should not be null");
-        assertEquals(url, connection.getURL(), "URL should match the input URL");
+        assertNotNull(connection);
+        assertEquals(url, connection.getURL());
+
+        envVars.put("NO_PROXY", "https://test-url.com");
+
+        connection = Utility.createDefaultConnection(url, envVars, logger);
+
+        assertNotNull(connection);
+        assertEquals(url, connection.getURL());
     }
 
     @Test
