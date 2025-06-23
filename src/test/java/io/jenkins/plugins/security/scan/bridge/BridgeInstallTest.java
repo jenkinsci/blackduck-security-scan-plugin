@@ -11,6 +11,8 @@ import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -22,6 +24,7 @@ public class BridgeInstallTest {
     private FilePath bridgeInstallationPath;
     private BridgeInstall bridgeInstall;
     private BridgeDownloadParameters bridgeDownloadParameters;
+    private final Map<String, Object> scanParameters = new HashMap<>();
 
     @BeforeEach
     public void setup() {
@@ -29,8 +32,9 @@ public class BridgeInstallTest {
         bridgeInstallationPath = new FilePath(
                 new File(getHomeDirectory() + File.separator + ApplicationConstants.DEFAULT_DIRECTORY_NAME));
         Mockito.when(listenerMock.getLogger()).thenReturn(Mockito.mock(PrintStream.class));
-        bridgeInstall = new BridgeInstall(bridgeInstallationPath, listenerMock, envVarsMock);
-        bridgeDownloadParameters = new BridgeDownloadParameters(bridgeInstallationPath, listenerMock, envVarsMock);
+        bridgeInstall = new BridgeInstall(bridgeInstallationPath, listenerMock, envVarsMock, scanParameters);
+        bridgeDownloadParameters =
+                new BridgeDownloadParameters(bridgeInstallationPath, listenerMock, envVarsMock, scanParameters);
     }
 
     @Test
@@ -48,12 +52,12 @@ public class BridgeInstallTest {
         try {
             // Mock bridgeDownloadParameters to specify expected installation and versioning behavior
             BridgeDownloadParameters bridgeDownloadParameters =
-                    new BridgeDownloadParameters(workspace, listenerMock, envVarsMock);
+                    new BridgeDownloadParameters(workspace, listenerMock, envVarsMock, scanParameters);
             bridgeDownloadParameters.setBridgeInstallationPath(
                     bridgeInstallationPath.getRemote() + File.separator + "demo-bridge-bundle-linux64");
             bridgeDownloadParameters.setBridgeDownloadVersion("2.9.9");
             sourceBridge.copyTo(destinationBridge);
-            bridgeInstall.installBridgeCLI(getFullZipPath(), bridgeDownloadParameters);
+            bridgeInstall.installBridgeCLI(getFullZipPath(), bridgeDownloadParameters, scanParameters);
 
             assertFalse(destinationBridge.exists());
             assertTrue(bridgeInstallationPath.child("demo-bridge-extensions").isDirectory());

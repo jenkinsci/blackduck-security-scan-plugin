@@ -68,7 +68,6 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     private String polaris_assessment_types;
     private String polaris_branch_name;
     private String polaris_branch_parent_name;
-    private String polaris_prComment_severities;
     private Boolean polaris_reports_sarif_create;
     private String polaris_reports_sarif_file_path;
     private String polaris_reports_sarif_issue_types;
@@ -126,7 +125,6 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     private Boolean blackducksca_include_diagnostics;
     private Boolean polaris_include_diagnostics;
     private Boolean srm_include_diagnostics;
-    private Boolean network_airgap;
 
     private String mark_build_status;
     private String blackducksca_mark_build_status;
@@ -379,10 +377,6 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
         return polaris_branch_parent_name;
     }
 
-    public String getPolaris_prComment_severities() {
-        return polaris_prComment_severities;
-    }
-
     public Boolean isPolaris_reports_sarif_create() {
         return polaris_reports_sarif_create;
     }
@@ -545,10 +539,6 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
 
     public Boolean isSrm_include_diagnostics() {
         return srm_include_diagnostics;
-    }
-
-    public Boolean isNetwork_airgap() {
-        return network_airgap;
     }
 
     public String getMark_build_status() {
@@ -833,11 +823,6 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     }
 
     @DataBoundSetter
-    public void setPolaris_prComment_severities(String polaris_prComment_severities) {
-        this.polaris_prComment_severities = polaris_prComment_severities;
-    }
-
-    @DataBoundSetter
     public void setPolaris_reports_sarif_create(Boolean polaris_reports_sarif_create) {
         this.polaris_reports_sarif_create = polaris_reports_sarif_create ? true : null;
     }
@@ -1021,11 +1006,6 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     public void setSrm_include_diagnostics(Boolean srm_include_diagnostics) {
         if (getProduct().contentEquals(SecurityProduct.SRM.name().toLowerCase()))
             this.include_diagnostics = srm_include_diagnostics ? true : null;
-    }
-
-    @DataBoundSetter
-    public void setNetwork_airgap(Boolean network_airgap) {
-        this.network_airgap = network_airgap ? true : null;
     }
 
     @DataBoundSetter

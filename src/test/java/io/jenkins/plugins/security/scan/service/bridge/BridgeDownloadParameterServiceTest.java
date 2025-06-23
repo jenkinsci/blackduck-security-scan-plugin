@@ -21,6 +21,7 @@ public class BridgeDownloadParameterServiceTest {
     private final TaskListener listenerMock = Mockito.mock(TaskListener.class);
     private final EnvVars envVarsMock = Mockito.mock(EnvVars.class);
     private FilePath workspace;
+    private final Map<String, Object> scanParameters = new HashMap<>();
 
     @BeforeEach
     void setUp() {
@@ -32,7 +33,7 @@ public class BridgeDownloadParameterServiceTest {
     @Test
     void performBridgeDownloadParameterValidationSuccessTest() throws PluginExceptionHandler {
         BridgeDownloadParameters bridgeDownloadParameters =
-                new BridgeDownloadParameters(workspace, listenerMock, envVarsMock);
+                new BridgeDownloadParameters(workspace, listenerMock, envVarsMock, scanParameters);
         bridgeDownloadParameters.setBridgeDownloadUrl("https://fake.url.com");
         bridgeDownloadParameters.setBridgeDownloadVersion("1.2.3");
 
@@ -42,7 +43,7 @@ public class BridgeDownloadParameterServiceTest {
     @Test
     void performBridgeDownloadParameterValidationFailureTest() {
         BridgeDownloadParameters bridgeDownloadParameters =
-                new BridgeDownloadParameters(workspace, listenerMock, envVarsMock);
+                new BridgeDownloadParameters(workspace, listenerMock, envVarsMock, scanParameters);
         bridgeDownloadParameters.setBridgeDownloadVersion("x.x.x");
 
         assertThrows(
@@ -103,7 +104,7 @@ public class BridgeDownloadParameterServiceTest {
         scanParams.put(ApplicationConstants.BRIDGECLI_DOWNLOAD_URL, "https://fake.url.com");
 
         BridgeDownloadParameters bridgeDownloadParameters =
-                new BridgeDownloadParameters(workspace, listenerMock, envVarsMock);
+                new BridgeDownloadParameters(workspace, listenerMock, envVarsMock, scanParameters);
 
         BridgeDownloadParameters result =
                 bridgeDownloadParametersService.getBridgeDownloadParams(scanParams, bridgeDownloadParameters);
@@ -120,7 +121,7 @@ public class BridgeDownloadParameterServiceTest {
         scanParams.put(ApplicationConstants.NETWORK_AIRGAP_KEY, true);
 
         BridgeDownloadParameters bridgeDownloadParameters =
-                new BridgeDownloadParameters(workspace, listenerMock, envVarsMock);
+                new BridgeDownloadParameters(workspace, listenerMock, envVarsMock, scanParameters);
 
         BridgeDownloadParameters result =
                 bridgeDownloadParametersService.getBridgeDownloadParams(scanParams, bridgeDownloadParameters);
@@ -136,7 +137,7 @@ public class BridgeDownloadParameterServiceTest {
         scanParams.put(ApplicationConstants.NETWORK_AIRGAP_KEY, true);
 
         BridgeDownloadParameters bridgeDownloadParameters =
-                new BridgeDownloadParameters(workspace, listenerMock, envVarsMock);
+                new BridgeDownloadParameters(workspace, listenerMock, envVarsMock, scanParameters);
 
         BridgeDownloadParameters result =
                 bridgeDownloadParametersService.getBridgeDownloadParams(scanParams, bridgeDownloadParameters);
@@ -153,7 +154,7 @@ public class BridgeDownloadParameterServiceTest {
         scanParams.put(ApplicationConstants.BRIDGECLI_DOWNLOAD_URL, "https://bridge.fake.url.com/bridge-cli.zip");
 
         BridgeDownloadParameters bridgeDownloadParameters =
-                new BridgeDownloadParameters(workspace, listenerMock, envVarsMock);
+                new BridgeDownloadParameters(workspace, listenerMock, envVarsMock, scanParameters);
 
         BridgeDownloadParameters result =
                 bridgeDownloadParametersService.getBridgeDownloadParams(scanParams, bridgeDownloadParameters);
@@ -167,7 +168,7 @@ public class BridgeDownloadParameterServiceTest {
         Map<String, Object> scanParamsNull = new HashMap<>();
 
         BridgeDownloadParameters bridgeDownloadParameters =
-                new BridgeDownloadParameters(workspace, listenerMock, envVarsMock);
+                new BridgeDownloadParameters(workspace, listenerMock, envVarsMock, scanParameters);
 
         BridgeDownloadParameters result =
                 bridgeDownloadParametersService.getBridgeDownloadParams(scanParamsNull, bridgeDownloadParameters);

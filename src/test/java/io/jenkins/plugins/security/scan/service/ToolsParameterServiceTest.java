@@ -498,10 +498,12 @@ public class ToolsParameterServiceTest {
     }
 
     @Test
-    public void createNetworkAirGapInputJsonTest() {
+    public void createNetworkInputJsonTest() {
         Map<String, Object> scanParameters = new HashMap<>();
         scanParameters.put(ApplicationConstants.PRODUCT_KEY, SecurityProduct.BLACKDUCK.name());
         scanParameters.put(ApplicationConstants.NETWORK_AIRGAP_KEY, true);
+        scanParameters.put(ApplicationConstants.NETWORK_SSL_TRUSTALL_KEY, true);
+        scanParameters.put(ApplicationConstants.NETWORK_SSL_CERT_FILE_KEY, "/path/to/cert.pem");
 
         String inputJsonPath = toolsParameterService.prepareBridgeInputJson(
                 scanParameters, null, null, ApplicationConstants.BLACKDUCKSCA_INPUT_JSON_PREFIX, null);
