@@ -25,6 +25,9 @@ public class SCMRepositoryService {
     private final EnvVars envVars;
     private final LoggerWrapper logger;
 
+    // Regex pattern to match Bitbucket Cloud URLs with optional user authentication
+    private static final String BITBUCKET_CLOUD_URL_PATTERN = "https://.*@?bitbucket\\.org.*";
+
     public SCMRepositoryService(TaskListener listener, EnvVars envVars) {
         this.listener = listener;
         this.envVars = envVars;
@@ -144,7 +147,7 @@ public class SCMRepositoryService {
         if (installedBranchSourceDependencies.getOrDefault(
                         ApplicationConstants.BITBUCKET_BRANCH_SOURCE_PLUGIN_NAME, false)
                 && scmSource instanceof BitbucketSCMSource) {
-            if (gitURL != null && gitURL.startsWith(BitbucketRepositoryService.BITBUCKET_CLOUD_HOST_URL)) {
+            if (gitURL != null && gitURL.matches(BITBUCKET_CLOUD_URL_PATTERN)) {
                 invokedFrom = InvokedFrom.INT_BITBUCKET_CLOUD;
             } else {
                 invokedFrom = InvokedFrom.INT_BITBUCKET_EE;
