@@ -282,15 +282,11 @@ public class ToolsParameterService {
                 Utility.jenkinsJobType(envVars),
                 scmRepositoryService.findSCMSource());
         if (invokedFrom != null) {
-            bridgeInput.setBridge(new Bridge() {
-                {
-                    setInvoked(new Invoked() {
-                        {
-                            setFrom(invokedFrom.getValue());
-                        }
-                    });
-                }
-            });
+            Bridge bridge = new Bridge();
+            Invoked invoked = new Invoked();
+            invoked.setFrom(invokedFrom.getValue());
+            bridge.setInvoked(invoked);
+            bridgeInput.setBridge(bridge);
         }
     }
 
