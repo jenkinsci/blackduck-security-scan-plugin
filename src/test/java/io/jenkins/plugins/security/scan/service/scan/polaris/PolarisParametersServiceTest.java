@@ -312,4 +312,27 @@ public class PolarisParametersServiceTest {
         assertEquals(List.of("SCA"), sarifObject.getIssue().getTypes());
         assertTrue(sarifObject.getGroupSCAIssues());
     }
+
+    @Test
+    public void preparePolarisSarifObjectWithDefaultPathTest() {
+        Map<String, Object> scanParameters = new HashMap<>();
+        scanParameters.put(ApplicationConstants.POLARIS_REPORTS_SARIF_CREATE_KEY, true);
+        // Do not set POLARIS_REPORTS_SARIF_FILE_PATH_KEY to test default path
+        scanParameters.put(ApplicationConstants.POLARIS_REPORTS_SARIF_SEVERITIES_KEY, "HIGH,LOW");
+        scanParameters.put(ApplicationConstants.POLARIS_REPORTS_SARIF_GROUPSCAISSUES_KEY, false);
+        scanParameters.put(ApplicationConstants.POLARIS_REPORTS_SARIF_ISSUE_TYPES_KEY, "SAST");
+
+        Sarif sarifObject = polarisParametersService.prepareSarifObject(scanParameters);
+
+        assertNotNull(sarifObject);
+        assertTrue(sarifObject.getCreate());
+        assertNotNull(sarifObject.getFile());
+        assertEquals(
+                ApplicationConstants.DEFAULT_POLARIS_SARIF_REPORT_FILE_PATH
+                        + ApplicationConstants.SARIF_REPORT_FILENAME,
+                sarifObject.getFile().getPath());
+        assertEquals(Arrays.asList("HIGH", "LOW"), sarifObject.getSeverities());
+        assertEquals(List.of("SAST"), sarifObject.getIssue().getTypes());
+        assertFalse(sarifObject.getGroupSCAIssues());
+    }
 }

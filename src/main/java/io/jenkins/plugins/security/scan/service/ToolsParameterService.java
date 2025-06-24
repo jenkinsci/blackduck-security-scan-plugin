@@ -10,8 +10,11 @@ import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.global.BridgeParams;
 import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.global.Utility;
+import io.jenkins.plugins.security.scan.global.enums.InvokedFrom;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
+import io.jenkins.plugins.security.scan.input.Bridge;
 import io.jenkins.plugins.security.scan.input.BridgeInput;
+import io.jenkins.plugins.security.scan.input.Invoked;
 import io.jenkins.plugins.security.scan.input.NetworkAirGap;
 import io.jenkins.plugins.security.scan.input.blackducksca.BlackDuckSCA;
 import io.jenkins.plugins.security.scan.input.coverity.Coverity;
@@ -203,6 +206,8 @@ public class ToolsParameterService {
 
         setScmObject(bridgeInput, scmObject, scanParameters);
 
+        setInvokedFrom(bridgeInput);
+
         setNetworkAirGapObject(bridgeInput, scanParameters);
 
         setDetectObject(scanParameters, bridgeInput);
@@ -267,6 +272,25 @@ public class ToolsParameterService {
             } else if (scmObject instanceof Gitlab) {
                 bridgeInput.setGitlab((Gitlab) scmObject);
             }
+        }
+    }
+
+    private void setInvokedFrom(BridgeInput bridgeInput) {
+        SCMRepositoryService scmRepositoryService = new SCMRepositoryService(listener, envVars);
+        InvokedFrom invokedFrom = scmRepositoryService.getInvokedFrom(
+                Utility.installedBranchSourceDependencies(),
+                Utility.jenkinsJobType(envVars),
+                scmRepositoryService.findSCMSource());
+        if (invokedFrom != null) {
+            bridgeInput.setBridge(new Bridge() {
+                {
+                    setInvoked(new Invoked() {
+                        {
+                            setFrom(invokedFrom.getValue());
+                        }
+                    });
+                }
+            });
         }
     }
 

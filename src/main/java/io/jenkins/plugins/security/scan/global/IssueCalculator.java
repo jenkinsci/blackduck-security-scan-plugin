@@ -2,8 +2,8 @@ package io.jenkins.plugins.security.scan.global;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import io.jenkins.plugins.security.scan.global.enums.AssessmentType;
-import io.jenkins.plugins.security.scan.global.enums.IssueSeverities;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
+import java.util.Iterator;
 
 public class IssueCalculator {
 
@@ -13,6 +13,7 @@ public class IssueCalculator {
     private static final String URL_PROPERTY = "url";
     private static final String TEST_PROPERTY = "test";
     private static final String TESTS_PROPERTY = "tests";
+    private static final String SAST_FULL_PROPERTY = "sastFull";
     private static final String FULL_PROPERTY = "full";
     private static final String SCA_PACKAGE_PROPERTY = "scaPackage";
     private static final String SCA_SIGNATURE_PROPERTY = "scaSignature";
@@ -25,20 +26,19 @@ public class IssueCalculator {
     private static final String ISSUE_COUNT_PROPERTY = "issueCount";
 
     public String getIssuesUrl(JsonNode rootNode, String product) {
-        JsonNode productNode = rootNode.path(DATA_PROPERTY).path(product);
+        JsonNode productNode = getNodeIgnoreCase(rootNode, DATA_PROPERTY, product);
         if (productNode.isMissingNode()) {
             return null;
         }
 
         if (product.equals(SecurityProduct.BLACKDUCKSCA.name().toLowerCase())) {
-            return productNode.path(PROJECT_BOM_URL_PROPERTY).asText(null);
+            return getNodeIgnoreCase(productNode, PROJECT_BOM_URL_PROPERTY).asText(null);
         } else if (product.equals(SecurityProduct.COVERITY.name().toLowerCase())) {
-            JsonNode issuesUrlNode = productNode.path(CONNECT_PROPERTY).path(RESULT_URL_PROPERTY);
-            return issuesUrlNode.asText(null);
+            JsonNode resultUrlNode = getNodeIgnoreCase(productNode, CONNECT_PROPERTY, RESULT_URL_PROPERTY);
+            return resultUrlNode.asText(null);
         } else if (product.equals(SecurityProduct.POLARIS.name().toLowerCase())
                 || product.equals(SecurityProduct.SRM.name().toLowerCase())) {
-            JsonNode issuesUrlNode =
-                    productNode.path(PROJECT_PROPERTY).path(ISSUES_PROPERTY).path(URL_PROPERTY);
+            JsonNode issuesUrlNode = getNodeIgnoreCase(productNode, PROJECT_PROPERTY, ISSUES_PROPERTY, URL_PROPERTY);
             return issuesUrlNode.asText(null);
         }
 
@@ -46,7 +46,7 @@ public class IssueCalculator {
     }
 
     public int calculateTotalIssues(JsonNode rootNode, String product) {
-        JsonNode productNode = rootNode.path(DATA_PROPERTY).path(product);
+        JsonNode productNode = getNodeIgnoreCase(rootNode, DATA_PROPERTY, product);
         if (productNode.isMissingNode()) {
             return -1;
         }
@@ -61,37 +61,35 @@ public class IssueCalculator {
     }
 
     private int calculateBlackDuckScaIssues(JsonNode productNode) {
-        JsonNode statusNode = productNode.path(POLICY_PROPERTY).path(STATUS_PROPERTY);
+        JsonNode statusNode = getNodeIgnoreCase(productNode, POLICY_PROPERTY, STATUS_PROPERTY);
         return statusNode.isMissingNode() ? -1 : calculateIssues(statusNode);
     }
 
     private int calculateCoverityIssues(JsonNode productNode) {
-        return productNode
-                .path(CONNECT_PROPERTY)
-                .path(POLICY_PROPERTY)
-                .path(ISSUE_COUNT_PROPERTY)
-                .asInt(-1);
+        JsonNode issueCountNode =
+                getNodeIgnoreCase(productNode, CONNECT_PROPERTY, POLICY_PROPERTY, ISSUE_COUNT_PROPERTY);
+        return issueCountNode.asInt(-1);
     }
 
     private int calculatePolarisIssues(JsonNode productNode) {
-        JsonNode testNode = productNode.path(TEST_PROPERTY);
+        JsonNode testNode = getNodeIgnoreCase(productNode, TEST_PROPERTY);
         if (testNode.isMissingNode()) {
             return -1;
         }
 
         int totalIssues = 0;
         for (AssessmentType assessmentType : AssessmentType.values()) {
-            JsonNode assessmentTypeNode = testNode.path(assessmentType.name());
-            if (assessmentTypeNode.isMissingNode()) {
-                assessmentTypeNode = testNode.path(assessmentType.name().toLowerCase());
-            }
-            JsonNode testsNode = assessmentTypeNode.path(TESTS_PROPERTY);
-            JsonNode fullNode = testsNode.path(FULL_PROPERTY);
+            JsonNode assessmentTypeNode = getNodeIgnoreCase(testNode, assessmentType.name());
+            JsonNode testsNode = getNodeIgnoreCase(assessmentTypeNode, TESTS_PROPERTY);
+            JsonNode fullNode = getNodeIgnoreCase(testsNode, FULL_PROPERTY);
+            JsonNode sastFullNode = getNodeIgnoreCase(testsNode, SAST_FULL_PROPERTY);
             if (!fullNode.isMissingNode()) {
                 totalIssues += calculateIssues(fullNode);
+            } else if (!sastFullNode.isMissingNode()) {
+                totalIssues += calculateIssues(sastFullNode);
             } else {
-                JsonNode scaPackageNode = testsNode.path(SCA_PACKAGE_PROPERTY);
-                JsonNode scaSignatureNode = testsNode.path(SCA_SIGNATURE_PROPERTY);
+                JsonNode scaPackageNode = getNodeIgnoreCase(testsNode, SCA_PACKAGE_PROPERTY);
+                JsonNode scaSignatureNode = getNodeIgnoreCase(testsNode, SCA_SIGNATURE_PROPERTY);
                 if (!scaSignatureNode.isMissingNode()) {
                     totalIssues += calculateIssues(scaSignatureNode);
                 }
@@ -104,21 +102,46 @@ public class IssueCalculator {
     }
 
     private int calculateSrmIssues(JsonNode productNode) {
-        JsonNode analysisNode = productNode.path(ANALYSIS_PROPERTY);
+        JsonNode analysisNode = getNodeIgnoreCase(productNode, ANALYSIS_PROPERTY);
         return analysisNode.isMissingNode() ? -1 : calculateIssues(analysisNode);
     }
 
     public int calculateIssues(JsonNode testNode) {
         if (!testNode.isMissingNode()) {
-            JsonNode issuesNode = testNode.path(ISSUES_PROPERTY);
+            JsonNode issuesNode = getNodeIgnoreCase(testNode, ISSUES_PROPERTY);
             if (!issuesNode.isMissingNode()) {
                 int total = 0;
-                for (IssueSeverities severity : IssueSeverities.values()) {
-                    total += issuesNode.path(severity.name().toLowerCase()).asInt(0);
+                Iterator<String> fieldNames = issuesNode.fieldNames();
+                while (fieldNames.hasNext()) {
+                    String field = fieldNames.next();
+                    total += issuesNode.path(field).asInt(0);
                 }
                 return total;
             }
         }
         return 0;
+    }
+
+    // Helper method for case-insensitive key lookup
+    private JsonNode getNodeIgnoreCase(JsonNode node, String... keys) {
+        JsonNode current = node;
+        for (String key : keys) {
+            if (current == null || current.isMissingNode()) return current;
+            Iterator<String> fieldNamesIterator = current.fieldNames();
+            boolean found = false;
+            while (fieldNamesIterator.hasNext()) {
+                String fieldName = fieldNamesIterator.next();
+                if (fieldName.equalsIgnoreCase(key)) {
+                    current = current.path(fieldName);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                // Fallback to a case-sensitive lookup if no case-insensitive match is found.
+                current = current.path(key);
+            }
+        }
+        return current;
     }
 }
