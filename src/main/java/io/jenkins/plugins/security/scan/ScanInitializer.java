@@ -55,12 +55,18 @@ public class ScanInitializer {
 
         handleNetworkAirgap(isNetworkAirGap, bridgeDownloadParams, isBridgeInstalled);
 
+        if (scanParameters.containsKey(ApplicationConstants.NETWORK_SSL_TRUSTALL_KEY)
+                && (Boolean) scanParameters.get(ApplicationConstants.NETWORK_SSL_TRUSTALL_KEY)
+                && scanParameters.containsKey(ApplicationConstants.NETWORK_SSL_CERT_FILE_KEY)) {
+            logger.warn(ApplicationConstants.NETWORK_SSL_CERT_FILE_KEY + " is ignored since "
+                    + ApplicationConstants.NETWORK_SSL_TRUSTALL_KEY + " is set to true");
+        }
+
         if (isBridgeInstalled) {
             isBridgeDownloadRequired = bridgeDownloadManager.isBridgeDownloadRequired(bridgeDownloadParams);
         }
 
-        handleBridgeDownload(
-                isBridgeDownloadRequired, isNetworkAirGap, bridgeDownloadParams, bridgeDownloadManager, scanParameters);
+        handleBridgeDownload(isBridgeDownloadRequired, isNetworkAirGap, bridgeDownloadParams, bridgeDownloadManager);
 
         FilePath bridgeInstallationPath =
                 new FilePath(workspace.getChannel(), bridgeDownloadParams.getBridgeInstallationPath());
@@ -94,8 +100,7 @@ public class ScanInitializer {
             boolean isBridgeDownloadRequired,
             boolean isNetworkAirgap,
             BridgeDownloadParameters bridgeDownloadParams,
-            BridgeDownloadManager bridgeDownloadManager,
-            Map<String, Object> scanParameters)
+            BridgeDownloadManager bridgeDownloadManager)
             throws PluginExceptionHandler {
         if (isBridgeDownloadRequired
                 && bridgeDownloadParams.getBridgeDownloadUrl().contains(".zip")) {
@@ -118,8 +123,8 @@ public class ScanInitializer {
             bridgeDownloadParams.setBridgeDownloadVersion(installedBridgeVersion);
             logger.info("Bridge download is not required. Found installed in: "
                     + bridgeDownloadParams.getBridgeInstallationPath());
-            logger.println(LogMessages.DASHES);
         }
+        logger.println(LogMessages.DASHES);
     }
 
     public void logMessagesForParameters(Map<String, Object> scanParameters, Set<String> securityProducts) {
