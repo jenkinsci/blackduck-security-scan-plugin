@@ -256,7 +256,8 @@ public class ApplicationConstants {
     // Warn Log Related Constants
     public static final String BRIDGE_CLI_WILL_BE_DOWNLOADED_FROM_THE_PROVIDED_CUSTOM_URL =
             "Bridge-CLI will be downloaded from the provided custom URL. Make sure the network is reachable";
-    public static final String INVALID_BRIDGE_CLI_DOWNLOAD_URL = "Invalid Bridge CLI download URL: %s";
+    public static final String CONNECTION_TO_BRIDGE_CLI_DOWNLOAD_URL_FAILED =
+            "Connection to the Bridge CLI download URL failed: %s";
     public static final String EXCEPTION_OCCURRED_IN_BETWEEN_CONSECUTIVE_RETRY_ATTEMPTS =
             "An exception occurred in between consecutive retry attempts: %s";
     public static final String BRIDGE_CLI_DOWNLOAD_FAILED_AND_ATTEMPT_TO_DOWNLOAD_AGAIN =

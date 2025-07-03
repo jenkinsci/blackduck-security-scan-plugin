@@ -33,7 +33,7 @@ public class BridgeDownload {
         FilePath bridgeInstallationFilePath = new FilePath(workspace.getChannel(), bridgeInstallationPath);
 
         if (!checkIfBridgeUrlExists(bridgeDownloadUrl)) {
-            logger.warn(ApplicationConstants.INVALID_BRIDGE_CLI_DOWNLOAD_URL, bridgeDownloadUrl);
+            logger.warn(ApplicationConstants.CONNECTION_TO_BRIDGE_CLI_DOWNLOAD_URL_FAILED, bridgeDownloadUrl);
         }
 
         int retryCount = 1;
