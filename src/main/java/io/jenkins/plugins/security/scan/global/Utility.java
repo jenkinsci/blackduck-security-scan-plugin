@@ -165,11 +165,11 @@ public class Utility {
 
                 SSLContext sslContext = SSLContext.getInstance("TLS");
                 sslContext.init(null, trustManagerFactory.getTrustManagers(), null);
+                HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
 
                 String proxy = getProxy(url, envVars, logger);
                 if (proxy.equals(ApplicationConstants.NO_PROXY)) {
                     HttpsURLConnection connection = (HttpsURLConnection) url.openConnection(Proxy.NO_PROXY);
-                    connection.setSSLSocketFactory(sslContext.getSocketFactory());
                     return connection;
                 } else {
                     URL proxyURL = new URL(proxy);
