@@ -1,5 +1,7 @@
 package io.jenkins.plugins.security.scan.global;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -218,33 +220,13 @@ public class UtilityTest {
     }
 
     @Test
-    public void testGetDefaultSarifReportFilePath_BlackDuckScan() {
-        boolean isBlackDuckScan = true;
-        boolean isPolarisDuckScan = false;
-        String expected = ApplicationConstants.DEFAULT_BLACKDUCKSCA_SARIF_REPORT_FILE_PATH.concat(
-                ApplicationConstants.SARIF_REPORT_FILENAME);
-        String result = Utility.getDefaultSarifReportFilePath(isBlackDuckScan, isPolarisDuckScan);
-        assertEquals(expected, result);
-    }
-
-    @Test
-    public void testGetDefaultSarifReportFilePath_PolarisDuckScan() {
-        boolean isBlackDuckScan = false;
-        boolean isPolarisDuckScan = true;
-        String expected = ApplicationConstants.DEFAULT_POLARIS_SARIF_REPORT_FILE_PATH.concat(
-                ApplicationConstants.SARIF_REPORT_FILENAME);
-        String result = Utility.getDefaultSarifReportFilePath(isBlackDuckScan, isPolarisDuckScan);
-        assertEquals(expected, result);
-    }
-
-    @Test
     public void testGetCustomSarifReportFilePath_BlackDuckScan() {
         Map<String, Object> scanParams = new HashMap<>();
         scanParams.put(
                 ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_FILE_PATH_KEY, "customPath/report_blackduck.json");
         boolean isBlackDuckScan = true;
-        boolean isPolarisDuckScan = false;
-        String result = Utility.getCustomSarifReportFilePath(scanParams, isBlackDuckScan, isPolarisDuckScan);
+        boolean isPolarisScan = false;
+        String result = Utility.getCustomSarifReportFilePath(scanParams, isBlackDuckScan, isPolarisScan);
         assertEquals("customPath/report_blackduck.json", result);
     }
 
@@ -253,8 +235,8 @@ public class UtilityTest {
         Map<String, Object> scanParams = new HashMap<>();
         scanParams.put(ApplicationConstants.POLARIS_REPORTS_SARIF_FILE_PATH_KEY, "customPath/report_polaris.json");
         boolean isBlackDuckScan = false;
-        boolean isPolarisDuckScan = true;
-        String result = Utility.getCustomSarifReportFilePath(scanParams, isBlackDuckScan, isPolarisDuckScan);
+        boolean isPolarisScan = true;
+        String result = Utility.getCustomSarifReportFilePath(scanParams, isBlackDuckScan, isPolarisScan);
         assertEquals("customPath/report_polaris.json", result);
     }
 
@@ -315,6 +297,25 @@ public class UtilityTest {
         JsonNode actualNode = Utility.parseJsonFile(jsonContent);
 
         assertEquals(expectedNode, actualNode);
+    }
+
+    @Test
+    public void testDefaultSarifReportFilePaths() {
+        String expectedBlackDuckLegacy = ApplicationConstants.DEFAULT_BLACKDUCKSCA_SARIF_REPORT_FILE_PATH
+                + ApplicationConstants.SARIF_REPORT_FILENAME;
+        String expectedPolarisLegacy = ApplicationConstants.DEFAULT_POLARIS_SARIF_REPORT_FILE_PATH
+                + ApplicationConstants.SARIF_REPORT_FILENAME;
+        assertEquals(".blackduck/integrations/blackducksca/sarif/report.sarif.json", expectedBlackDuckLegacy);
+        assertEquals(".blackduck/integrations/polaris/sarif/report.sarif.json", expectedPolarisLegacy);
+    }
+
+    @Test
+    public void testResolveSarifReportFilePath_CustomTakesPrecedence() throws Exception {
+        Map<String, Object> scanParams = new HashMap<>();
+        scanParams.put(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_FILE_PATH_KEY, "custom/path/report.sarif.json");
+        FilePath workspace = new FilePath(new java.io.File("."));
+        String result = Utility.resolveSarifReportFilePath(scanParams, workspace, true, false, null);
+        assertEquals("custom/path/report.sarif.json", result);
     }
 
     public String getHomeDirectory() {

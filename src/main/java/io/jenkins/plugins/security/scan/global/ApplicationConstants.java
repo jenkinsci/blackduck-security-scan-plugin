@@ -18,8 +18,9 @@ public class ApplicationConstants {
     public static final String LINUX_ARM_COMPATIBLE_BRIDGE_VERSION = "3.5.1";
     public static final String DEFAULT_DIRECTORY_NAME = "bridge-cli-bundle";
     public static final String BRIDGE_REPORT_DIRECTORY = ".bridge";
-    public static final String DEFAULT_BLACKDUCKSCA_SARIF_REPORT_FILE_PATH = ".bridge/Blackduck SCA SARIF Generator/";
-    public static final String DEFAULT_POLARIS_SARIF_REPORT_FILE_PATH = ".bridge/Polaris SARIF Generator/";
+    public static final String DEFAULT_BLACKDUCKSCA_SARIF_REPORT_FILE_PATH =
+            ".blackduck/integrations/blackducksca/sarif/";
+    public static final String DEFAULT_POLARIS_SARIF_REPORT_FILE_PATH = ".blackduck/integrations/polaris/sarif/";
     public static final String SARIF_REPORT_FILENAME = "report.sarif.json";
     public static final int BRIDGE_DOWNLOAD_MAX_RETRIES = 3;
     public static final int INTERVAL_BETWEEN_CONSECUTIVE_RETRY_ATTEMPTS = 10000;
