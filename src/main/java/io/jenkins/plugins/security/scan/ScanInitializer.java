@@ -58,8 +58,7 @@ public class ScanInitializer {
         if (scanParameters.containsKey(ApplicationConstants.NETWORK_SSL_TRUSTALL_KEY)
                 && (Boolean) scanParameters.get(ApplicationConstants.NETWORK_SSL_TRUSTALL_KEY)
                 && scanParameters.containsKey(ApplicationConstants.NETWORK_SSL_CERT_FILE_KEY)) {
-            logger.warn(ApplicationConstants.NETWORK_SSL_CERT_FILE_KEY + " is ignored during bridge download since "
-                    + ApplicationConstants.NETWORK_SSL_TRUSTALL_KEY + " is set to true");
+            throw new PluginExceptionHandler(ErrorCode.SSL_CONFIG_CONFLICT_ERROR);
         }
 
         if (isBridgeInstalled) {

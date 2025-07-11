@@ -1,9 +1,5 @@
 package io.jenkins.plugins.security.scan;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
-
 import hudson.EnvVars;
 import hudson.FilePath;
 import hudson.model.TaskListener;
@@ -18,6 +14,9 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
 public class ScanInitializerTest {
     private ScanInitializer scanInitializer;
@@ -65,6 +64,31 @@ public class ScanInitializerTest {
         scanParameters.put(ApplicationConstants.BRIDGECLI_INSTALL_DIRECTORY, "/path/to/bridge");
 
         assertThrows(PluginExceptionHandler.class, () -> scanInitializer.initializeScanner(scanParameters));
+    }
+
+    @Test
+    public void initializeScannerSSLConfigFailureTest() {
+        Map<String, Object> scanParameters = new HashMap<>();
+        scanParameters.put(ApplicationConstants.PRODUCT_KEY, "BLACKDUCKSCA");
+        scanParameters.put(ApplicationConstants.BLACKDUCKSCA_URL_KEY, "https://fake.blackduck.url");
+        scanParameters.put(ApplicationConstants.BLACKDUCKSCA_TOKEN_KEY, "MDJDSROSVC56FAKEKEY");
+        scanParameters.put(ApplicationConstants.NETWORK_SSL_TRUSTALL_KEY, true);
+        scanParameters.put(ApplicationConstants.NETWORK_SSL_CERT_FILE_KEY, "/path/to/cert.pem");
+
+        assertThrows(PluginExceptionHandler.class, () -> scanInitializer.initializeScanner(scanParameters));
+    }
+
+    @Test
+    public void initializeScannerSSLConfigSuccessTest() throws PluginExceptionHandler {
+        Map<String, Object> scanParameters = new HashMap<>();
+        scanParameters.put(ApplicationConstants.PRODUCT_KEY, "BLACKDUCKSCA");
+        scanParameters.put(ApplicationConstants.BLACKDUCKSCA_URL_KEY, "https://fake.blackduck.url");
+        scanParameters.put(ApplicationConstants.BLACKDUCKSCA_TOKEN_KEY, "MDJDSROSVC56FAKEKEY");
+        scanParameters.put(ApplicationConstants.NETWORK_SSL_TRUSTALL_KEY, true);
+
+        int exitCode = scanInitializer.initializeScanner(scanParameters);
+
+        assertEquals(0, exitCode);
     }
 
     @Test
