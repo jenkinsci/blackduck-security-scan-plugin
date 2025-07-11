@@ -35,6 +35,11 @@ public class ExceptionMessages {
         exitCodeToMessage.put(ErrorCode.NO_GITLAB_TOKEN_FOUND, "No GitLab token found");
         exitCodeToMessage.put(ErrorCode.INVALID_GITHUB_URL, "Invalid GitHub repository URL");
         exitCodeToMessage.put(ErrorCode.INVALID_GITLAB_URL, "Invalid GitLab repository URL");
+        exitCodeToMessage.put(
+                ErrorCode.SSL_CONFIG_CONFLICT_ERROR,
+                "Both " + ApplicationConstants.NETWORK_SSL_CERT_FILE_KEY + " and "
+                        + ApplicationConstants.NETWORK_SSL_TRUSTALL_KEY
+                        + " are set. Only one of these resources should be set at a time.");
         exitCodeToMessage.put(ErrorCode.UNDEFINED_PLUGIN_ERROR, "Undefined plugin error");
         exitCodeToMessage.put(
                 ErrorCode.REQUIRED_BRANCH_SOURCE_PLUGIN_NOT_INSTALLED,
