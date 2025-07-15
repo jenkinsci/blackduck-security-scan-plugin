@@ -87,11 +87,12 @@ public class BlackDuckSCAParametersService {
     public BlackDuckSCA prepareBlackDuckSCAObjectForBridge(Map<String, Object> blackDuckSCAParameters) {
         BlackDuckSCA blackDuckSCA = new BlackDuckSCA();
         Automation automation = new Automation();
+        Scan scan = new Scan();
 
         setUrl(blackDuckSCAParameters, blackDuckSCA);
         setToken(blackDuckSCAParameters, blackDuckSCA);
-        setScanFull(blackDuckSCAParameters, blackDuckSCA);
-        setScanFailureSeverities(blackDuckSCAParameters, blackDuckSCA);
+        setScanFull(blackDuckSCAParameters, blackDuckSCA, scan);
+        setScanFailureSeverities(blackDuckSCAParameters, blackDuckSCA, scan);
         setAutomationPrComment(blackDuckSCAParameters, automation, blackDuckSCA);
         setFixPr(blackDuckSCAParameters, blackDuckSCA);
         setSarif(blackDuckSCAParameters, blackDuckSCA);
@@ -118,7 +119,8 @@ public class BlackDuckSCAParametersService {
         }
     }
 
-    private void setScanFailureSeverities(Map<String, Object> blackDuckSCAParameters, BlackDuckSCA blackDuckSCA) {
+    private void setScanFailureSeverities(
+            Map<String, Object> blackDuckSCAParameters, BlackDuckSCA blackDuckSCA, Scan scan) {
         if (blackDuckSCAParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_SCAN_FAILURE_SEVERITIES_KEY)) {
             String value = blackDuckSCAParameters
                     .get(ApplicationConstants.BLACKDUCKSCA_SCAN_FAILURE_SEVERITIES_KEY)
@@ -133,7 +135,6 @@ public class BlackDuckSCAParametersService {
                 }
                 if (!failureSeverities.isEmpty()) {
                     Failure failure = new Failure();
-                    Scan scan = new Scan();
                     failure.setSeverities(failureSeverities);
                     scan.setFailure(failure);
                     blackDuckSCA.setScan(scan);
@@ -179,7 +180,7 @@ public class BlackDuckSCAParametersService {
         }
     }
 
-    private void setScanFull(Map<String, Object> scanParameters, BlackDuckSCA blackDuckSCA) {
+    private void setScanFull(Map<String, Object> scanParameters, BlackDuckSCA blackDuckSCA, Scan scan) {
         if (scanParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_SCAN_FULL_KEY)) {
             String product = scanParameters
                     .get(ApplicationConstants.PRODUCT_KEY)
@@ -193,7 +194,6 @@ public class BlackDuckSCAParametersService {
                         .toString()
                         .trim();
                 if (Utility.isBoolean(value)) {
-                    Scan scan = new Scan();
                     scan.setFull(Boolean.parseBoolean(value));
                     blackDuckSCA.setScan(scan);
                 }
