@@ -15,6 +15,7 @@ import io.jenkins.plugins.security.scan.service.scm.bitbucket.BitbucketRepositor
 import io.jenkins.plugins.security.scan.service.scm.github.GithubRepositoryService;
 import io.jenkins.plugins.security.scan.service.scm.gitlab.GitlabRepositoryService;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 import jenkins.model.Jenkins;
 import jenkins.scm.api.SCMSource;
 import jenkins.scm.api.SCMSourceOwner;
@@ -24,6 +25,8 @@ public class SCMRepositoryService {
     private final TaskListener listener;
     private final EnvVars envVars;
     private final LoggerWrapper logger;
+
+    private static final AtomicBoolean shouldLogJobName = new AtomicBoolean(true);
 
     // Regex pattern to match Bitbucket Cloud URLs with optional user authentication
     private static final String BITBUCKET_CLOUD_URL_PATTERN = "https://.*@?bitbucket\\.org.*";
@@ -83,6 +86,10 @@ public class SCMRepositoryService {
     public SCMSource findSCMSource() {
         String jobName = envVars.get(ApplicationConstants.ENV_JOB_NAME_KEY);
         jobName = jobName.contains("/") ? jobName.substring(0, jobName.lastIndexOf('/')) : jobName;
+
+        if (shouldLogJobName.getAndSet(false)) {
+            logger.info("Jenkins Job name: " + jobName);
+        }
 
         Jenkins jenkins = Jenkins.getInstanceOrNull();
         SCMSourceOwner owner = jenkins != null ? jenkins.getItemByFullName(jobName, SCMSourceOwner.class) : null;
