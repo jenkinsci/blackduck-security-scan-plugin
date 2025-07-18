@@ -4,14 +4,16 @@ import hudson.EnvVars;
 import hudson.FilePath;
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
+import java.util.Map;
 
 public class BridgeDownloadParameters {
     private String bridgeDownloadUrl;
     private String bridgeDownloadVersion;
     private String bridgeInstallationPath;
 
-    public BridgeDownloadParameters(FilePath workspace, TaskListener listener, EnvVars envVars) {
-        BridgeInstall bridgeInstall = new BridgeInstall(workspace, listener, envVars);
+    public BridgeDownloadParameters(
+            FilePath workspace, TaskListener listener, EnvVars envVars, Map<String, Object> scanParameters) {
+        BridgeInstall bridgeInstall = new BridgeInstall(workspace, listener, envVars, scanParameters);
         this.bridgeDownloadUrl = ApplicationConstants.BRIDGE_ARTIFACTORY_URL;
         this.bridgeDownloadVersion = ApplicationConstants.BRIDGE_CLI_LATEST_VERSION;
         this.bridgeInstallationPath = bridgeInstall.defaultBridgeInstallationPath(workspace, listener);
