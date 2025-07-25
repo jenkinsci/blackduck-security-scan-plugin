@@ -1,5 +1,9 @@
 package io.jenkins.plugins.security.scan;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
+
 import hudson.EnvVars;
 import hudson.FilePath;
 import hudson.model.TaskListener;
@@ -14,9 +18,6 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
 
 public class ScanInitializerTest {
     private ScanInitializer scanInitializer;
