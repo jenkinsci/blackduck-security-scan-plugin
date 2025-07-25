@@ -7,6 +7,7 @@ import io.jenkins.plugins.gitlabbranchsource.GitLabSCMSource;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.global.LoggerWrapper;
+import io.jenkins.plugins.security.scan.global.enums.InvokedFrom;
 import io.jenkins.plugins.security.scan.input.scm.bitbucket.Bitbucket;
 import io.jenkins.plugins.security.scan.input.scm.github.Github;
 import io.jenkins.plugins.security.scan.input.scm.gitlab.Gitlab;
@@ -23,6 +24,9 @@ public class SCMRepositoryService {
     private final TaskListener listener;
     private final EnvVars envVars;
     private final LoggerWrapper logger;
+
+    // Regex pattern to match Bitbucket Cloud URLs with optional user authentication
+    private static final String BITBUCKET_CLOUD_URL_PATTERN = "https://.*@?bitbucket\\.org.*";
 
     public SCMRepositoryService(TaskListener listener, EnvVars envVars) {
         this.listener = listener;
@@ -119,5 +123,78 @@ public class SCMRepositoryService {
         }
 
         return fullRepoName;
+    }
+
+    public InvokedFrom getInvokedFrom(
+            Map<String, Boolean> installedBranchSourceDependencies, String jobType, SCMSource scmSource) {
+        InvokedFrom invokedFrom;
+
+        if (jobType.equalsIgnoreCase(ApplicationConstants.MULTIBRANCH_JOB_TYPE_NAME)) {
+            invokedFrom = getInvokedFromForMultiBranchJob(installedBranchSourceDependencies, scmSource);
+        } else if (jobType.equalsIgnoreCase(ApplicationConstants.FREESTYLE_JOB_TYPE_NAME)) {
+            invokedFrom = InvokedFrom.INT_JENKINS_FREESTYLE;
+        } else {
+            invokedFrom = InvokedFrom.INT_JENKINS_PIPELINE;
+        }
+
+        return invokedFrom;
+    }
+
+    private InvokedFrom getInvokedFromForMultiBranchJob(
+            Map<String, Boolean> installedBranchSourceDependencies, SCMSource scmSource) {
+        String gitURL = envVars.get(ApplicationConstants.GIT_URL);
+
+        if (isBitbucketSource(installedBranchSourceDependencies, scmSource)) {
+            return determineBitbucketType(gitURL);
+        }
+
+        if (isGithubSource(installedBranchSourceDependencies, scmSource)) {
+            return determineGithubType(gitURL);
+        }
+
+        if (isGitlabSource(installedBranchSourceDependencies, scmSource)) {
+            return determineGitlabType(gitURL);
+        }
+
+        return null;
+    }
+
+    private boolean isBitbucketSource(Map<String, Boolean> installedBranchSourceDependencies, SCMSource scmSource) {
+        return installedBranchSourceDependencies.getOrDefault(
+                        ApplicationConstants.BITBUCKET_BRANCH_SOURCE_PLUGIN_NAME, false)
+                && scmSource instanceof BitbucketSCMSource;
+    }
+
+    private InvokedFrom determineBitbucketType(String gitURL) {
+        if (gitURL != null && gitURL.matches(BITBUCKET_CLOUD_URL_PATTERN)) {
+            return InvokedFrom.INT_BITBUCKET_CLOUD;
+        }
+        return InvokedFrom.INT_BITBUCKET_EE;
+    }
+
+    private boolean isGithubSource(Map<String, Boolean> installedBranchSourceDependencies, SCMSource scmSource) {
+        return installedBranchSourceDependencies.getOrDefault(
+                        ApplicationConstants.GITHUB_BRANCH_SOURCE_PLUGIN_NAME, false)
+                && scmSource instanceof GitHubSCMSource;
+    }
+
+    private InvokedFrom determineGithubType(String gitURL) {
+        if (gitURL != null && gitURL.startsWith(GithubRepositoryService.GITHUB_CLOUD_HOST_URL)) {
+            return InvokedFrom.INT_GITHUB_CLOUD;
+        }
+        return InvokedFrom.INT_GITHUB_EE;
+    }
+
+    private boolean isGitlabSource(Map<String, Boolean> installedBranchSourceDependencies, SCMSource scmSource) {
+        return installedBranchSourceDependencies.getOrDefault(
+                        ApplicationConstants.GITLAB_BRANCH_SOURCE_PLUGIN_NAME, false)
+                && scmSource instanceof GitLabSCMSource;
+    }
+
+    private InvokedFrom determineGitlabType(String gitURL) {
+        if (gitURL != null && gitURL.startsWith(GitlabRepositoryService.GITLAB_CLOUD_HOST_URL)) {
+            return InvokedFrom.INT_GITLAB_CLOUD;
+        }
+        return InvokedFrom.INT_GITLAB_EE;
     }
 }

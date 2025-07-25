@@ -86,7 +86,7 @@
             <f:entry field="coverity_project_directory" title="Project Directory (Optional)">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="coverity_local" title="Using Coverity Connect? (Optional)">
+            <f:entry field="coverity_local" title="Run Coverity Analysis locally (Optional)">
                 <f:checkbox/>
             </f:entry>
             <f:entry field="coverity_include_diagnostics" title="Include Diagnostics (Optional)">

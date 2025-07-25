@@ -239,6 +239,9 @@ public class BlackDuckSCAParametersService {
 
     public Sarif prepareSarifObject(Map<String, Object> sarifParameters) {
         Sarif sarif = new Sarif();
+        boolean shouldCreateSarifInDefaultPath =
+                sarifParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_CREATE_KEY)
+                        && !sarifParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_FILE_PATH_KEY);
 
         if (sarifParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_CREATE_KEY)) {
             Boolean isReports_sarif_create =
@@ -252,6 +255,12 @@ public class BlackDuckSCAParametersService {
                 sarif.setFile(new File());
                 sarif.getFile().setPath(reports_sarif_file_path);
             }
+        }
+        if (shouldCreateSarifInDefaultPath) {
+            sarif.setFile(new File());
+            sarif.getFile()
+                    .setPath(ApplicationConstants.DEFAULT_BLACKDUCKSCA_SARIF_REPORT_FILE_PATH
+                            + ApplicationConstants.SARIF_REPORT_FILENAME);
         }
         if (sarifParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_REPORTS_SARIF_SEVERITIES_KEY)) {
             String reports_sarif_severities =
