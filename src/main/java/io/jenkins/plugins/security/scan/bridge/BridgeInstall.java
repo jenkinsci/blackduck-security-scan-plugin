@@ -6,6 +6,7 @@ import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.global.*;
 import java.io.IOException;
+import java.util.Map;
 import jenkins.model.Jenkins;
 
 public class BridgeInstall {
@@ -13,15 +14,21 @@ public class BridgeInstall {
     private final FilePath workspace;
     private final TaskListener listener;
     private final EnvVars envVars;
+    private final Map<String, Object> scanParameters;
 
-    public BridgeInstall(FilePath workspace, TaskListener listener, EnvVars envVars) {
+    public BridgeInstall(
+            FilePath workspace, TaskListener listener, EnvVars envVars, Map<String, Object> scanParameters) {
         this.workspace = workspace;
         this.logger = new LoggerWrapper(listener);
         this.listener = listener;
         this.envVars = envVars;
+        this.scanParameters = scanParameters;
     }
 
-    public void installBridgeCLI(FilePath bridgeZipPath, BridgeDownloadParameters bridgeDownloadParameters)
+    public void installBridgeCLI(
+            FilePath bridgeZipPath,
+            BridgeDownloadParameters bridgeDownloadParameters,
+            Map<String, Object> scanParameters)
             throws PluginExceptionHandler {
 
         String bridgeInstallationPath = bridgeDownloadParameters.getBridgeInstallationPath();
@@ -107,7 +114,8 @@ public class BridgeInstall {
                 installedBridgeVersionFilePath =
                         String.join("/", targetFolder.getRemote(), ApplicationConstants.VERSION_FILE);
             }
-            BridgeDownloadManager bridgeDownloadManager = new BridgeDownloadManager(workspace, listener, envVars);
+            BridgeDownloadManager bridgeDownloadManager =
+                    new BridgeDownloadManager(workspace, listener, envVars, scanParameters);
             String installedBridgeVersion =
                     bridgeDownloadManager.getBridgeVersionFromVersionFile(installedBridgeVersionFilePath);
             bridgeDownloadParameters.setBridgeDownloadVersion(installedBridgeVersion);

@@ -33,7 +33,7 @@ import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 
 public class SecurityScanStep extends Step
-        implements SecurityScan, PrCommentScan, FixPrScan, ReturnStatusScan, Serializable {
+        implements SecurityScan, PrCommentScan, FixPrScan, ReturnStatusScan, NetworkParams, Serializable {
     private static final long serialVersionUID = 6294070801130995534L;
 
     private String product;
@@ -163,6 +163,8 @@ public class SecurityScanStep extends Step
     private Boolean polaris_include_diagnostics;
     private Boolean srm_include_diagnostics;
     private Boolean network_airgap;
+    private String network_ssl_cert_file;
+    private Boolean network_ssl_trustAll;
     /*
     By default, the plugin will always return a status code even if there is error.
      */
@@ -600,6 +602,14 @@ public class SecurityScanStep extends Step
 
     public Boolean isNetwork_airgap() {
         return network_airgap;
+    }
+
+    public String getNetwork_ssl_cert_file() {
+        return network_ssl_cert_file;
+    }
+
+    public Boolean isNetwork_ssl_trustAll() {
+        return network_ssl_trustAll;
     }
 
     public Boolean isReturn_status() {
@@ -1246,6 +1256,16 @@ public class SecurityScanStep extends Step
     @DataBoundSetter
     public void setNetwork_airgap(Boolean network_airgap) {
         this.network_airgap = network_airgap ? true : null;
+    }
+
+    @DataBoundSetter
+    public void setNetwork_ssl_cert_file(String network_ssl_cert_file) {
+        this.network_ssl_cert_file = network_ssl_cert_file;
+    }
+
+    @DataBoundSetter
+    public void setNetwork_ssl_trustAll(Boolean network_ssl_trustAll) {
+        this.network_ssl_trustAll = network_ssl_trustAll;
     }
 
     @DataBoundSetter

@@ -9,6 +9,7 @@ import io.jenkins.plugins.security.scan.extension.SecurityScan;
 import io.jenkins.plugins.security.scan.extension.freestyle.FreestyleScan;
 import io.jenkins.plugins.security.scan.extension.global.ScannerGlobalConfig;
 import io.jenkins.plugins.security.scan.extension.pipeline.FixPrScan;
+import io.jenkins.plugins.security.scan.extension.pipeline.NetworkParams;
 import io.jenkins.plugins.security.scan.extension.pipeline.PrCommentScan;
 import io.jenkins.plugins.security.scan.extension.pipeline.ReturnStatusScan;
 import io.jenkins.plugins.security.scan.global.*;
@@ -163,6 +164,10 @@ public class ParameterMappingService {
                     ApplicationConstants.BRIDGECLI_DOWNLOAD_VERSION,
                     config.getBridgeDownloadVersion());
             addParameterIfNotBlank(globalParameters, ApplicationConstants.NETWORK_AIRGAP_KEY, config.isNetworkAirGap());
+            addParameterIfNotBlank(
+                    globalParameters, ApplicationConstants.NETWORK_SSL_CERT_FILE_KEY, config.getNetworkSslCertFile());
+            addParameterIfNotBlank(
+                    globalParameters, ApplicationConstants.NETWORK_SSL_TRUSTALL_KEY, config.isNetworkSslTrustAll());
             addParameterIfNotBlank(
                     globalParameters, ApplicationConstants.POLARIS_SERVER_URL_KEY, config.getPolarisServerUrl());
             addParameterIfNotBlank(
@@ -415,10 +420,6 @@ public class ParameterMappingService {
                 securityScan.getPolaris_branch_parent_name());
         addParameterIfNotBlank(
                 polarisParametersMap,
-                ApplicationConstants.POLARIS_PRCOMMENT_SEVERITIES_KEY,
-                securityScan.getPolaris_prComment_severities());
-        addParameterIfNotBlank(
-                polarisParametersMap,
                 ApplicationConstants.POLARIS_TEST_SCA_TYPE_KEY,
                 securityScan.getPolaris_test_sca_type());
         addParameterIfNotBlank(
@@ -456,6 +457,11 @@ public class ParameterMappingService {
                 polarisParametersMap.put(
                         ApplicationConstants.POLARIS_PRCOMMENT_ENABLED_KEY,
                         prCommentScan.isPolaris_prComment_enabled_actualValue());
+            }
+            if (prCommentScan.getPolaris_prComment_severities() != null) {
+                polarisParametersMap.put(
+                        ApplicationConstants.POLARIS_PRCOMMENT_SEVERITIES_KEY,
+                        prCommentScan.getPolaris_prComment_severities());
             }
         }
 
@@ -646,9 +652,21 @@ public class ParameterMappingService {
         addParameterIfNotBlank(
                 bridgeParameters, ApplicationConstants.INCLUDE_DIAGNOSTICS_KEY, securityScan.isInclude_diagnostics());
         addParameterIfNotBlank(
-                bridgeParameters, ApplicationConstants.NETWORK_AIRGAP_KEY, securityScan.isNetwork_airgap());
-        addParameterIfNotBlank(
                 bridgeParameters, ApplicationConstants.MARK_BUILD_STATUS, securityScan.getMark_build_status());
+
+        if (securityScan instanceof NetworkParams) {
+            NetworkParams networkParams = (NetworkParams) securityScan;
+            addParameterIfNotBlank(
+                    bridgeParameters, ApplicationConstants.NETWORK_AIRGAP_KEY, networkParams.isNetwork_airgap());
+            addParameterIfNotBlank(
+                    bridgeParameters,
+                    ApplicationConstants.NETWORK_SSL_CERT_FILE_KEY,
+                    networkParams.getNetwork_ssl_cert_file());
+            addParameterIfNotBlank(
+                    bridgeParameters,
+                    ApplicationConstants.NETWORK_SSL_TRUSTALL_KEY,
+                    networkParams.isNetwork_ssl_trustAll());
+        }
 
         return bridgeParameters;
     }

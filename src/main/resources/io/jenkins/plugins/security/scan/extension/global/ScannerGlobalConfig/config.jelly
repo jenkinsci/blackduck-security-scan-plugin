@@ -103,10 +103,16 @@
 
         <div>
 
-        <div class="tab-info-os">Airgap Configuration</div>
-            <div class="airgap-section">
+        <div class="tab-info-os">Network Configuration</div>
+            <div class="network-section">
                 <f:entry field="networkAirGap" title="Network Airgap (Optional)">
                     <f:checkbox checked="${instance.isNetworkAirGap() == true}"/>
+                </f:entry>
+                <f:entry field="networkSslTrustAll" title="Network SSL Trust All (Optional)">
+                    <f:checkbox checked="${instance.isNetworkSslTrustAll() == true}"/>
+                </f:entry>
+                <f:entry field="networkSslCertFile" title="Network SSL Certificate File Path (Optional)">
+                    <f:textbox name="networkSslCertFile" />
                 </f:entry>
             </div>
         </div>
@@ -145,8 +151,6 @@
                     <c:select/>
                 </f:entry>
             </div>
-
-
 
             <!-- Place a single info line above the tabs -->
             <div class="tab-info-os">Configure Bridge CLI download URL for different platforms</div>

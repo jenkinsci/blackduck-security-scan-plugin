@@ -30,7 +30,8 @@ public class ScanInitializer {
 
     public int initializeScanner(Map<String, Object> scanParameters) throws PluginExceptionHandler {
         ScanParametersService scanParametersService = new ScanParametersService(listener);
-        BridgeDownloadParameters bridgeDownloadParameters = new BridgeDownloadParameters(workspace, listener, envVars);
+        BridgeDownloadParameters bridgeDownloadParameters =
+                new BridgeDownloadParameters(workspace, listener, envVars, scanParameters);
         BridgeDownloadParametersService bridgeDownloadParametersService =
                 new BridgeDownloadParametersService(workspace, listener);
         BridgeDownloadParameters bridgeDownloadParams =
@@ -42,7 +43,8 @@ public class ScanInitializer {
 
         bridgeDownloadParametersService.performBridgeDownloadParameterValidation(bridgeDownloadParams);
 
-        BridgeDownloadManager bridgeDownloadManager = new BridgeDownloadManager(workspace, listener, envVars);
+        BridgeDownloadManager bridgeDownloadManager =
+                new BridgeDownloadManager(workspace, listener, envVars, scanParameters);
 
         bridgeDownloadParametersService.updateBridgeInstallationPath(bridgeDownloadParameters);
 
@@ -52,6 +54,12 @@ public class ScanInitializer {
         boolean isBridgeDownloadRequired = true;
 
         handleNetworkAirgap(isNetworkAirGap, bridgeDownloadParams, isBridgeInstalled);
+
+        if (scanParameters.containsKey(ApplicationConstants.NETWORK_SSL_TRUSTALL_KEY)
+                && (Boolean) scanParameters.get(ApplicationConstants.NETWORK_SSL_TRUSTALL_KEY)
+                && scanParameters.containsKey(ApplicationConstants.NETWORK_SSL_CERT_FILE_KEY)) {
+            throw new PluginExceptionHandler(ErrorCode.SSL_CONFIG_CONFLICT_ERROR);
+        }
 
         if (isBridgeInstalled) {
             isBridgeDownloadRequired = bridgeDownloadManager.isBridgeDownloadRequired(bridgeDownloadParams);
@@ -114,8 +122,8 @@ public class ScanInitializer {
             bridgeDownloadParams.setBridgeDownloadVersion(installedBridgeVersion);
             logger.info("Bridge download is not required. Found installed in: "
                     + bridgeDownloadParams.getBridgeInstallationPath());
-            logger.println(LogMessages.DASHES);
         }
+        logger.println(LogMessages.DASHES);
     }
 
     public void logMessagesForParameters(Map<String, Object> scanParameters, Set<String> securityProducts) {
@@ -202,8 +210,8 @@ public class ScanInitializer {
         for (Map.Entry<String, Object> entry : scanParameters.entrySet()) {
             String key = entry.getKey();
             if (key.startsWith("bridgecli_")
+                    || key.startsWith("network_")
                     || key.equals(ApplicationConstants.INCLUDE_DIAGNOSTICS_KEY)
-                    || key.equals(ApplicationConstants.NETWORK_AIRGAP_KEY)
                     || key.equals(ApplicationConstants.MARK_BUILD_STATUS)) {
                 if (!additionalParamsFound) {
                     logger.info("Parameters for additional configuration:");

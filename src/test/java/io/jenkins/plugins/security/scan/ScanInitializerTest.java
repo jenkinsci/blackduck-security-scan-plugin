@@ -68,6 +68,31 @@ public class ScanInitializerTest {
     }
 
     @Test
+    public void initializeScannerSSLConfigFailureTest() {
+        Map<String, Object> scanParameters = new HashMap<>();
+        scanParameters.put(ApplicationConstants.PRODUCT_KEY, "BLACKDUCKSCA");
+        scanParameters.put(ApplicationConstants.BLACKDUCKSCA_URL_KEY, "https://fake.blackduck.url");
+        scanParameters.put(ApplicationConstants.BLACKDUCKSCA_TOKEN_KEY, "MDJDSROSVC56FAKEKEY");
+        scanParameters.put(ApplicationConstants.NETWORK_SSL_TRUSTALL_KEY, true);
+        scanParameters.put(ApplicationConstants.NETWORK_SSL_CERT_FILE_KEY, "/path/to/cert.pem");
+
+        assertThrows(PluginExceptionHandler.class, () -> scanInitializer.initializeScanner(scanParameters));
+    }
+
+    @Test
+    public void initializeScannerSSLConfigSuccessTest() throws PluginExceptionHandler {
+        Map<String, Object> scanParameters = new HashMap<>();
+        scanParameters.put(ApplicationConstants.PRODUCT_KEY, "BLACKDUCKSCA");
+        scanParameters.put(ApplicationConstants.BLACKDUCKSCA_URL_KEY, "https://fake.blackduck.url");
+        scanParameters.put(ApplicationConstants.BLACKDUCKSCA_TOKEN_KEY, "MDJDSROSVC56FAKEKEY");
+        scanParameters.put(ApplicationConstants.NETWORK_SSL_TRUSTALL_KEY, true);
+
+        int exitCode = scanInitializer.initializeScanner(scanParameters);
+
+        assertEquals(0, exitCode);
+    }
+
+    @Test
     public void initializeScannerAirGapSuccessTest() throws PluginExceptionHandler {
         Map<String, Object> scanParameters = new HashMap<>();
         scanParameters.put(ApplicationConstants.PRODUCT_KEY, "BLACKDUCKSCA");

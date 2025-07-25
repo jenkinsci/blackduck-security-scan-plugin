@@ -137,8 +137,6 @@ public interface SecurityScan {
 
     public String getPolaris_branch_name();
 
-    public String getPolaris_prComment_severities();
-
     public String getPolaris_branch_parent_name();
 
     public String getPolaris_test_sca_type();
@@ -215,8 +213,6 @@ public interface SecurityScan {
     public String getBridgecli_install_directory();
 
     public Boolean isInclude_diagnostics();
-
-    public Boolean isNetwork_airgap();
 
     public String getMark_build_status();
 }

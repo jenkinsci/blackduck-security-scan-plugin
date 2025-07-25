@@ -99,17 +99,55 @@ public class UtilityTest {
         EnvVars envVars = new EnvVars();
         envVars.put("HTTP_PROXY", "http://fake-proxy.com:1010");
 
-        HttpURLConnection httpProxyConnection = Utility.getHttpURLConnection(url, envVars, logger);
+        Map<String, Object> scanParameters = new HashMap<>();
+
+        HttpURLConnection httpProxyConnection = Utility.getHttpURLConnection(url, envVars, logger, scanParameters);
 
         assertNotNull(httpProxyConnection);
         assertEquals(url, httpProxyConnection.getURL());
 
         envVars.put("NO_PROXY", "https://test-url.com, https://fake-url.com");
 
-        HttpURLConnection noProxyConnection = Utility.getHttpURLConnection(url, envVars, logger);
+        HttpURLConnection noProxyConnection = Utility.getHttpURLConnection(url, envVars, logger, scanParameters);
 
         assertNotNull(noProxyConnection);
         assertEquals(url, noProxyConnection.getURL());
+    }
+
+    @Test
+    public void createTrustAllConnectionTest() throws Exception {
+        EnvVars envVars = new EnvVars();
+        envVars.put("HTTP_PROXY", "https://fake-proxy.com:1010");
+
+        HttpURLConnection connection = Utility.createTrustAllConnection(url, envVars, logger);
+
+        assertNotNull(connection);
+        assertEquals(url, connection.getURL());
+
+        envVars.put("NO_PROXY", "https://test-url.com");
+
+        connection = Utility.createTrustAllConnection(url, envVars, logger);
+
+        assertNotNull(connection);
+        assertEquals(url, connection.getURL());
+    }
+
+    @Test
+    public void createDefaultConnectionTest() throws Exception {
+        EnvVars envVars = new EnvVars();
+        envVars.put("HTTP_PROXY", "https://fake-proxy.com:1010");
+
+        HttpURLConnection connection = Utility.createDefaultConnection(url, envVars, logger);
+
+        assertNotNull(connection);
+        assertEquals(url, connection.getURL());
+
+        envVars.put("NO_PROXY", "https://test-url.com");
+
+        connection = Utility.createDefaultConnection(url, envVars, logger);
+
+        assertNotNull(connection);
+        assertEquals(url, connection.getURL());
     }
 
     @Test
