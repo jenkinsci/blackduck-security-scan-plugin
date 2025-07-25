@@ -121,10 +121,16 @@ public class Utility {
                 }
 
                 @Override
-                public void checkClientTrusted(X509Certificate[] certs, String authType) throws CertificateException {}
+                public void checkClientTrusted(X509Certificate[] certs, String authType) throws CertificateException {
+                    // No implementation needed for trusting all certificates
+                    // This method is intentionally left blank to trust all client certificates
+                }
 
                 @Override
-                public void checkServerTrusted(X509Certificate[] certs, String authType) throws CertificateException {}
+                public void checkServerTrusted(X509Certificate[] certs, String authType) throws CertificateException {
+                    // No implementation needed for trusting all certificates
+                    // This method is intentionally left blank to trust all client certificates
+                }
             }
         };
 
@@ -149,9 +155,7 @@ public class Utility {
         String certFilePath = (String) scanParameters.get(ApplicationConstants.NETWORK_SSL_CERT_FILE_KEY);
         if (!isStringNullOrBlank(certFilePath)) {
             File crtFile = new File(certFilePath);
-            FileInputStream fileInputStream = null;
-            try {
-                fileInputStream = new FileInputStream(crtFile);
+            try (FileInputStream fileInputStream = new FileInputStream(crtFile)) {
                 Certificate certificate =
                         CertificateFactory.getInstance("X.509").generateCertificate(fileInputStream);
 
@@ -181,14 +185,6 @@ public class Utility {
                 }
             } catch (Exception e) {
                 throw new RuntimeException(e);
-            } finally {
-                if (fileInputStream != null) {
-                    try {
-                        fileInputStream.close();
-                    } catch (IOException e) {
-                        logger.warn("Failed to close file input stream: " + e.getMessage());
-                    }
-                }
             }
         }
         return null;
