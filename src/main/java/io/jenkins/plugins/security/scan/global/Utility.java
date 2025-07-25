@@ -186,7 +186,7 @@ public class Utility {
                     try {
                         fileInputStream.close();
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        logger.warn("Failed to close file input stream: " + e.getMessage());
                     }
                 }
             }
