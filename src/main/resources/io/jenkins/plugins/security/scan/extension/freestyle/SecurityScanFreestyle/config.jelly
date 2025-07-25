@@ -145,6 +145,9 @@
                 <f:entry field="polaris_test_sca_type" title="SCA Test Type (Optional)">
                     <f:textbox/>
                 </f:entry>
+                <f:entry field="polaris_test_sast_type" title="SAST Test Type (Optional)">
+                    <f:textbox/>
+                </f:entry>
                 <f:entry field="polaris_project_directory" title="Project Directory (Optional)">
                     <f:textbox/>
                 </f:entry>

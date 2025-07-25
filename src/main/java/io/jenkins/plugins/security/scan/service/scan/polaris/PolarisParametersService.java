@@ -6,10 +6,7 @@ import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.global.Utility;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
-import io.jenkins.plugins.security.scan.input.polaris.Parent;
-import io.jenkins.plugins.security.scan.input.polaris.Polaris;
-import io.jenkins.plugins.security.scan.input.polaris.Prcomment;
-import io.jenkins.plugins.security.scan.input.polaris.Test;
+import io.jenkins.plugins.security.scan.input.polaris.*;
 import io.jenkins.plugins.security.scan.input.project.Project;
 import io.jenkins.plugins.security.scan.input.project.Source;
 import io.jenkins.plugins.security.scan.input.report.File;
@@ -128,7 +125,7 @@ public class PolarisParametersService {
         setApplicationName(polarisParameters, polaris);
         setProjectName(polarisParameters, polaris);
         setBranchName(polarisParameters, polaris);
-        setTestScaType(polarisParameters, polaris);
+        setTestScaTypeAndSastType(polarisParameters, polaris);
         setPolarisPrCommentInputs(polarisParameters, prcomment, polaris);
         setAssessmentMode(polarisParameters, polaris);
         setWaitForScan(polarisParameters, polaris);
@@ -217,16 +214,36 @@ public class PolarisParametersService {
         }
     }
 
-    private void setTestScaType(Map<String, Object> polarisParameters, Polaris polaris) {
+    private void setTestScaTypeAndSastType(Map<String, Object> polarisParameters, Polaris polaris) {
+        Test test = new Test();
+
         if (polarisParameters.containsKey(ApplicationConstants.POLARIS_TEST_SCA_TYPE_KEY)) {
-            Test test = new Test();
+            Sca sca = new Sca();
+            sca.setType(polarisParameters
+                    .get(ApplicationConstants.POLARIS_TEST_SCA_TYPE_KEY)
+                    .toString()
+                    .trim());
+            test.setSca(sca);
             polaris.setTest(test);
-            polaris.getTest()
-                    .getSca()
-                    .setType(polarisParameters
-                            .get(ApplicationConstants.POLARIS_TEST_SCA_TYPE_KEY)
-                            .toString()
-                            .trim());
+        }
+
+        if (polarisParameters.containsKey(ApplicationConstants.POLARIS_TEST_SAST_TYPE_KEY)) {
+            Sast sast = new Sast();
+
+            String testSastTypeValue = polarisParameters
+                    .get(ApplicationConstants.POLARIS_TEST_SAST_TYPE_KEY)
+                    .toString()
+                    .trim();
+
+            if (!testSastTypeValue.isEmpty()) {
+                List<String> testSastType = Stream.of(
+                                testSastTypeValue.toUpperCase().split(","))
+                        .map(String::trim)
+                        .collect(Collectors.toList());
+                sast.setType(testSastType);
+                test.setSast(sast);
+                polaris.setTest(test);
+            }
         }
     }
 
