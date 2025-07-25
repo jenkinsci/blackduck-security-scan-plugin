@@ -15,14 +15,15 @@ import java.io.IOException;
 import java.net.*;
 import java.security.KeyStore;
 import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.net.ssl.*;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
 import jenkins.model.Jenkins;
 
 public class Utility {
@@ -113,26 +114,7 @@ public class Utility {
 
     public static HttpURLConnection createTrustAllConnection(URL url, EnvVars envVars, LoggerWrapper logger)
             throws Exception {
-        TrustManager[] trustAllCerts = new TrustManager[] {
-            new X509TrustManager() {
-                @Override
-                public X509Certificate[] getAcceptedIssuers() {
-                    return null;
-                }
-
-                @Override
-                public void checkClientTrusted(X509Certificate[] certs, String authType) throws CertificateException {
-                    // No implementation needed for trusting all certificates
-                    // This method is intentionally left blank to trust all client certificates
-                }
-
-                @Override
-                public void checkServerTrusted(X509Certificate[] certs, String authType) throws CertificateException {
-                    // No implementation needed for trusting all certificates
-                    // This method is intentionally left blank to trust all client certificates
-                }
-            }
-        };
+        TrustManager[] trustAllCerts = new TrustManager[] {new TrustAllManager()};
 
         SSLContext sc = SSLContext.getInstance("TLS");
         sc.init(null, trustAllCerts, new java.security.SecureRandom());
