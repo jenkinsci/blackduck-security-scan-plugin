@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hudson.EnvVars;
 import hudson.FilePath;
+import hudson.cli.NoCheckTrustManager;
 import hudson.model.Result;
 import hudson.model.TaskListener;
 import hudson.model.TopLevelItem;
@@ -20,10 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.*;
 import jenkins.model.Jenkins;
 
 public class Utility {
@@ -114,7 +112,7 @@ public class Utility {
 
     public static HttpURLConnection createTrustAllConnection(URL url, EnvVars envVars, LoggerWrapper logger)
             throws Exception {
-        TrustManager[] trustAllCerts = new TrustManager[] {new TrustAllManager()};
+        TrustManager[] trustAllCerts = new TrustManager[] {new NoCheckTrustManager()};
 
         SSLContext sc = SSLContext.getInstance("TLS");
         sc.init(null, trustAllCerts, new java.security.SecureRandom());
