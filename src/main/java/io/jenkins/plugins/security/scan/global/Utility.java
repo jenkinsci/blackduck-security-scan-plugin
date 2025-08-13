@@ -16,7 +16,9 @@ import java.io.IOException;
 import java.net.*;
 import java.security.KeyStore;
 import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -139,16 +141,26 @@ public class Utility {
                 Certificate certificate =
                         CertificateFactory.getInstance("X.509").generateCertificate(fileInputStream);
 
-                KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-                keyStore.load(null, null);
-                keyStore.setCertificateEntry("certificate_pem", certificate);
-
-                TrustManagerFactory trustManagerFactory =
+                // Load system default trust store
+                TrustManagerFactory defaultTrustManagerFactory =
                         TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-                trustManagerFactory.init(keyStore);
+                defaultTrustManagerFactory.init((KeyStore) null);
+
+                // Create custom keystore with the provided certificate
+                KeyStore customKeyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+                customKeyStore.load(null, null);
+                customKeyStore.setCertificateEntry("custom_certificate", certificate);
+
+                TrustManagerFactory customTrustManagerFactory =
+                        TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+                customTrustManagerFactory.init(customKeyStore);
+
+                // Combine system and custom trust managers
+                X509TrustManager combinedTrustManager =
+                        getCombinedTrustManager(defaultTrustManagerFactory, customTrustManagerFactory);
 
                 SSLContext sslContext = SSLContext.getInstance("TLS");
-                sslContext.init(null, trustManagerFactory.getTrustManagers(), null);
+                sslContext.init(null, new TrustManager[] {combinedTrustManager}, null);
                 HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
 
                 String proxy = getProxy(url, envVars, logger);
@@ -168,6 +180,44 @@ public class Utility {
             }
         }
         return null;
+    }
+
+    private static X509TrustManager getCombinedTrustManager(
+            TrustManagerFactory defaultTrustManagerFactory, TrustManagerFactory customTrustManagerFactory) {
+        X509TrustManager defaultTrustManager =
+                (X509TrustManager) defaultTrustManagerFactory.getTrustManagers()[0];
+        X509TrustManager customTrustManager =
+                (X509TrustManager) customTrustManagerFactory.getTrustManagers()[0];
+
+        return new X509TrustManager() {
+            @Override
+            public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+                try {
+                    defaultTrustManager.checkClientTrusted(chain, authType);
+                } catch (CertificateException e) {
+                    customTrustManager.checkClientTrusted(chain, authType);
+                }
+            }
+
+            @Override
+            public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+                try {
+                    defaultTrustManager.checkServerTrusted(chain, authType);
+                } catch (CertificateException e) {
+                    customTrustManager.checkServerTrusted(chain, authType);
+                }
+            }
+
+            @Override
+            public X509Certificate[] getAcceptedIssuers() {
+                X509Certificate[] defaultIssuers = defaultTrustManager.getAcceptedIssuers();
+                X509Certificate[] customIssuers = customTrustManager.getAcceptedIssuers();
+                X509Certificate[] allIssuers = new X509Certificate[defaultIssuers.length + customIssuers.length];
+                System.arraycopy(defaultIssuers, 0, allIssuers, 0, defaultIssuers.length);
+                System.arraycopy(customIssuers, 0, allIssuers, defaultIssuers.length, customIssuers.length);
+                return allIssuers;
+            }
+        };
     }
 
     public static HttpURLConnection createDefaultConnection(URL url, EnvVars envVars, LoggerWrapper logger)
