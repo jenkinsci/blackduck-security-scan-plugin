@@ -318,6 +318,55 @@ public class UtilityTest {
         assertEquals("custom/path/report.sarif.json", result);
     }
 
+    @Test
+    public void extractVersionFromUrlNumericVersionTest() {
+        // Test backward compatibility with numeric versions
+        String urlWithNumericVersion =
+                "https://repo.blackduck.com/bds-integrations-release/com/blackduck/integration/bridge/binaries/bridge-cli-bundle/3.0.0/bridge-cli-bundle-3.0.0-win64.zip";
+        String extractedVersion = Utility.extractVersionFromUrl(urlWithNumericVersion);
+        assertEquals("3.0.0", extractedVersion);
+    }
+
+    @Test
+    public void extractVersionFromUrlAlphanumericVersionTest() {
+        // Test new alphanumeric version support
+        String urlWithAlphanumericVersion =
+                "https://artifactory.tools.duckutil.net/artifactory/clops-local/integrations/bridge/binaries/bridge-cli-bundle/3.7.1rc1/bridge-cli-bundle-3.7.1rc1-win64.zip";
+        String extractedVersion = Utility.extractVersionFromUrl(urlWithAlphanumericVersion);
+        assertEquals("3.7.1rc1", extractedVersion);
+    }
+
+    @Test
+    public void extractVersionFromUrlVariousFormatsTest() {
+        // Test various alphanumeric version formats
+        assertEquals(
+                "3.7.1beta2", Utility.extractVersionFromUrl("https://example.com/bridge/3.7.1beta2/bridge-cli.zip"));
+        assertEquals(
+                "3.8.0alpha1", Utility.extractVersionFromUrl("https://example.com/bridge/3.8.0alpha1/bridge-cli.zip"));
+        assertEquals("4.0.0rc10", Utility.extractVersionFromUrl("https://example.com/bridge/4.0.0rc10/bridge-cli.zip"));
+        assertEquals(
+                "3.7.2snapshot",
+                Utility.extractVersionFromUrl("https://example.com/bridge/3.7.2snapshot/bridge-cli.zip"));
+        assertEquals("2.5.0m1", Utility.extractVersionFromUrl("https://example.com/bridge/2.5.0m1/bridge-cli.zip"));
+        assertEquals("1.9.9dev", Utility.extractVersionFromUrl("https://example.com/bridge/1.9.9dev/bridge-cli.zip"));
+    }
+
+    @Test
+    public void extractVersionFromUrlEdgeCasesTest() {
+        // Test edge cases
+        String urlWithoutVersion = "https://example.com/bridge/latest/bridge-cli.zip";
+        assertEquals(ApplicationConstants.NOT_AVAILABLE, Utility.extractVersionFromUrl(urlWithoutVersion));
+
+        String urlWithText = "https://example.com/bridge/stable/bridge-cli.zip";
+        assertEquals(ApplicationConstants.NOT_AVAILABLE, Utility.extractVersionFromUrl(urlWithText));
+
+        String emptyUrl = "";
+        assertEquals(ApplicationConstants.NOT_AVAILABLE, Utility.extractVersionFromUrl(emptyUrl));
+
+        String nullUrl = null;
+        assertEquals(ApplicationConstants.NOT_AVAILABLE, Utility.extractVersionFromUrl(nullUrl));
+    }
+
     public String getHomeDirectory() {
         return System.getProperty("user.home");
     }

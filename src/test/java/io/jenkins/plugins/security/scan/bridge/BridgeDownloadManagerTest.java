@@ -158,6 +158,84 @@ public class BridgeDownloadManagerTest {
         assertEquals(expectedVersion, resultWithoutVersion);
     }
 
+    @Test
+    public void getBridgeVersionFromVersionFileWithAlphanumericVersionTest() {
+        BridgeDownloadManager bridgeDownloadManager =
+                new BridgeDownloadManager(workspace, listenerMock, envVarsMock, scanParameters);
+
+        // Test alphanumeric version parsing (new format)
+        String alphanumericVersionsFileContent = "bridge-cli-bundle: 3.7.1rc1\nother-component: 1.0.0";
+
+        // Create temporary file with alphanumeric version content
+        try {
+            FilePath tempFile = workspace.createTempFile("versions_alphanumeric", ".txt");
+            tempFile.write(alphanumericVersionsFileContent, "UTF-8");
+
+            String alphanumericVersion = bridgeDownloadManager.getBridgeVersionFromVersionFile(tempFile.getRemote());
+            assertEquals("3.7.1rc1", alphanumericVersion);
+
+            // Cleanup
+            tempFile.delete();
+        } catch (IOException | InterruptedException e) {
+            fail("Exception occurred during alphanumeric version test: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void getBridgeVersionFromVersionFileBackwardCompatibilityTest() {
+        BridgeDownloadManager bridgeDownloadManager =
+                new BridgeDownloadManager(workspace, listenerMock, envVarsMock, scanParameters);
+
+        // Test backward compatibility with numeric versions
+        String numericVersionsFileContent = "bridge-cli-bundle: 3.0.0\nother-component: 1.0.0";
+
+        try {
+            FilePath tempFile = workspace.createTempFile("versions_numeric", ".txt");
+            tempFile.write(numericVersionsFileContent, "UTF-8");
+
+            String numericVersion = bridgeDownloadManager.getBridgeVersionFromVersionFile(tempFile.getRemote());
+            assertEquals("3.0.0", numericVersion);
+
+            // Cleanup
+            tempFile.delete();
+        } catch (IOException | InterruptedException e) {
+            fail("Exception occurred during backward compatibility test: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void extractVersionFromUrlWithAlphanumericVersionTest() {
+        // Test URL with alphanumeric version
+        String urlWithAlphanumericVersion =
+                "https://artifactory.tools.duckutil.net/artifactory/clops-local/integrations/bridge/binaries/bridge-cli-bundle/3.7.1rc1/bridge-cli-bundle-3.7.1rc1-win64.zip";
+        String extractedAlphanumericVersion = Utility.extractVersionFromUrl(urlWithAlphanumericVersion);
+        assertEquals("3.7.1rc1", extractedAlphanumericVersion);
+    }
+
+    @Test
+    public void extractVersionFromUrlBackwardCompatibilityTest() {
+        // Test backward compatibility with numeric versions
+        String urlWithNumericVersion = "https://repo.blackduck.com/bridge-cli/3.0.0/bridge-cli-3.0.0-linux64.zip";
+        String extractedNumericVersion = Utility.extractVersionFromUrl(urlWithNumericVersion);
+        assertEquals("3.0.0", extractedNumericVersion);
+    }
+
+    @Test
+    public void extractVersionFromUrlVariousAlphanumericFormatsTest() {
+        // Test various alphanumeric formats
+        String urlWithBeta = "https://example.com/bridge/3.7.1beta2/bridge-cli.zip";
+        assertEquals("3.7.1beta2", Utility.extractVersionFromUrl(urlWithBeta));
+
+        String urlWithAlpha = "https://example.com/bridge/3.8.0alpha1/bridge-cli.zip";
+        assertEquals("3.8.0alpha1", Utility.extractVersionFromUrl(urlWithAlpha));
+
+        String urlWithRc = "https://example.com/bridge/4.0.0rc10/bridge-cli.zip";
+        assertEquals("4.0.0rc10", Utility.extractVersionFromUrl(urlWithRc));
+
+        String urlWithSnapshot = "https://example.com/bridge/3.7.2snapshot/bridge-cli.zip";
+        assertEquals("3.7.2snapshot", Utility.extractVersionFromUrl(urlWithSnapshot));
+    }
+
     public String getHomeDirectory() {
         return System.getProperty("user.home");
     }

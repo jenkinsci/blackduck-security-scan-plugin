@@ -405,7 +405,10 @@ public class Utility {
     }
 
     public static String extractVersionFromUrl(String url) {
-        String regex = "/(\\d+\\.\\d+\\.\\d+)/";
+        if (url == null || url.isEmpty()) {
+            return ApplicationConstants.NOT_AVAILABLE;
+        }
+        String regex = "/([0-9.]+[a-zA-Z0-9]*)/";
         Pattern pattern = Pattern.compile(regex);
         String version;
 
