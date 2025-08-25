@@ -97,7 +97,7 @@ public class BridgeDownloadManager {
             FilePath file = new FilePath(workspace.getChannel(), versionFilePath);
             if (file.exists()) {
                 String versionsFileContent = file.readToString();
-                Matcher matcher = Pattern.compile("bridge-cli-bundle: (\\d+\\.\\d+\\.\\d+)")
+                Matcher matcher = Pattern.compile("bridge-cli-bundle: ([0-9.]+[a-zA-Z0-9]*)")
                         .matcher(versionsFileContent);
 
                 if (matcher.find()) {

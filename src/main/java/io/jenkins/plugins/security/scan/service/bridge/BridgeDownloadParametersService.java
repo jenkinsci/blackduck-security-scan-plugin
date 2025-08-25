@@ -59,7 +59,7 @@ public class BridgeDownloadParametersService {
     }
 
     public boolean isValidVersion(String version) {
-        Pattern pattern = Pattern.compile("\\d+\\.\\d+\\.\\d+");
+        Pattern pattern = Pattern.compile("[0-9.]+[a-zA-Z0-9]*");
         Matcher matcher = pattern.matcher(version);
         if (matcher.matches() || version.equals(ApplicationConstants.BRIDGE_CLI_LATEST_VERSION)) {
             return true;
@@ -239,10 +239,15 @@ public class BridgeDownloadParametersService {
         if (version.equals(ApplicationConstants.BRIDGE_CLI_LATEST_VERSION)) {
             return true;
         }
-        String[] inputVersionSplits = version.split("\\.");
-        String[] minCompatibleArmVersionSplits = minCompatibleBridgeVersion.split("\\.");
 
-        if (inputVersionSplits.length != 3 && minCompatibleArmVersionSplits.length != 3) {
+        // Extract numeric version part before any alpha characters for comparison
+        String numericVersion = extractNumericVersion(version);
+        String numericMinVersion = extractNumericVersion(minCompatibleBridgeVersion);
+
+        String[] inputVersionSplits = numericVersion.split("\\.");
+        String[] minCompatibleArmVersionSplits = numericMinVersion.split("\\.");
+
+        if (inputVersionSplits.length != 3 || minCompatibleArmVersionSplits.length != 3) {
             return false;
         }
 
@@ -262,5 +267,12 @@ public class BridgeDownloadParametersService {
                 null);
 
         return inputVersion.compareTo(minCompatibleArmVersion) >= 0;
+    }
+
+    private String extractNumericVersion(String version) {
+        // Extract numeric part (e.g., "3.7.1" from "3.7.1rc1")
+        Pattern pattern = Pattern.compile("([0-9.]+)");
+        Matcher matcher = pattern.matcher(version);
+        return matcher.find() ? matcher.group(1) : version;
     }
 }
