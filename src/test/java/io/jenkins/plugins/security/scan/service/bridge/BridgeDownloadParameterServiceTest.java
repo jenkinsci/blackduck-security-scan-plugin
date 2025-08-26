@@ -69,12 +69,23 @@ public class BridgeDownloadParameterServiceTest {
 
     @Test
     void isValidVersionTest() {
+        // Test numeric versions (backward compatibility)
         String validVersion = "1.2.3";
         assertTrue(bridgeDownloadParametersService.isValidVersion(validVersion));
         assertTrue(bridgeDownloadParametersService.isValidVersion("latest"));
 
+        // Test alphanumeric versions (new support)
+        assertTrue(bridgeDownloadParametersService.isValidVersion("3.7.1rc1"));
+        assertTrue(bridgeDownloadParametersService.isValidVersion("3.8.0beta2"));
+        assertTrue(bridgeDownloadParametersService.isValidVersion("4.0.0alpha1"));
+        assertTrue(bridgeDownloadParametersService.isValidVersion("3.7.2snapshot"));
+        assertTrue(bridgeDownloadParametersService.isValidVersion("2.5.0m1"));
+
+        // Test invalid versions
         String invalidVersion = "x.x.x";
         assertFalse(bridgeDownloadParametersService.isValidVersion(invalidVersion));
+        assertFalse(bridgeDownloadParametersService.isValidVersion("invalid"));
+        assertFalse(bridgeDownloadParametersService.isValidVersion(""));
     }
 
     @Test
@@ -227,6 +238,37 @@ public class BridgeDownloadParameterServiceTest {
                 "2.0.0", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
         assertFalse(bridgeDownloadParametersService.isVersionCompatibleForARMChips(
                 "1.2.12", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
+    }
+
+    @Test
+    public void isVersionCompatibleForARMWithAlphanumericVersionsTest() {
+        // Test alphanumeric versions - should work with numeric comparison
+        assertTrue(bridgeDownloadParametersService.isVersionCompatibleForARMChips(
+                "3.7.1rc1", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertTrue(bridgeDownloadParametersService.isVersionCompatibleForARMChips(
+                "4.0.0beta2", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertTrue(bridgeDownloadParametersService.isVersionCompatibleForARMChips(
+                "3.5.2alpha1", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
+
+        // Test alphanumeric versions below threshold
+        assertFalse(bridgeDownloadParametersService.isVersionCompatibleForARMChips(
+                "2.1.0rc1", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertFalse(bridgeDownloadParametersService.isVersionCompatibleForARMChips(
+                "3.4.0beta1", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
+
+        // Test "latest" always returns true
+        assertTrue(bridgeDownloadParametersService.isVersionCompatibleForARMChips(
+                "latest", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
+    }
+
+    @Test
+    public void performBridgeDownloadParameterValidationWithAlphanumericVersionTest() throws PluginExceptionHandler {
+        BridgeDownloadParameters bridgeDownloadParameters =
+                new BridgeDownloadParameters(workspace, listenerMock, envVarsMock, scanParameters);
+        bridgeDownloadParameters.setBridgeDownloadUrl("https://fake.url.com");
+        bridgeDownloadParameters.setBridgeDownloadVersion("3.7.1rc1");
+
+        assertTrue(bridgeDownloadParametersService.performBridgeDownloadParameterValidation(bridgeDownloadParameters));
     }
 
     public String getHomeDirectory() {
