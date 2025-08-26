@@ -59,7 +59,7 @@ public class BridgeDownloadParametersService {
     }
 
     public boolean isValidVersion(String version) {
-        Pattern pattern = Pattern.compile("[0-9.]+[a-zA-Z0-9]*");
+        Pattern pattern = Pattern.compile(ApplicationConstants.BRIDGE_VERSION_EXTRACTION_REGEX);
         Matcher matcher = pattern.matcher(version);
         if (matcher.matches() || version.equals(ApplicationConstants.BRIDGE_CLI_LATEST_VERSION)) {
             return true;

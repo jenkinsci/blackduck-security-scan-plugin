@@ -408,7 +408,7 @@ public class Utility {
         if (url == null || url.isEmpty()) {
             return ApplicationConstants.NOT_AVAILABLE;
         }
-        String regex = "/([0-9.]+[a-zA-Z0-9]*)/";
+        String regex = String.format("/(%s)/", ApplicationConstants.BRIDGE_VERSION_EXTRACTION_REGEX);
         Pattern pattern = Pattern.compile(regex);
         String version;
 
