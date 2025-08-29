@@ -82,6 +82,8 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     private String project_directory;
     private String polaris_test_sca_type;
     private String polaris_test_sast_type;
+    private String polaris_test_sca_location;
+    private String polaris_test_sast_location;
     private String coverity_project_directory;
     private String blackducksca_project_directory;
     private String polaris_project_directory;
@@ -412,6 +414,14 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
 
     public String getPolaris_test_sast_type() {
         return polaris_test_sast_type;
+    }
+
+    public String getPolaris_test_sca_location() {
+        return polaris_test_sca_location;
+    }
+
+    public String getPolaris_test_sast_location() {
+        return polaris_test_sast_location;
     }
 
     public Integer getPolaris_sca_search_depth() {
@@ -871,6 +881,16 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     @DataBoundSetter
     public void setPolaris_test_sast_type(String polaris_test_sast_type) {
         this.polaris_test_sast_type = Util.fixEmptyAndTrim(polaris_test_sast_type);
+    }
+
+    @DataBoundSetter
+    public void setPolaris_test_sca_location(String polaris_test_sca_location) {
+        this.polaris_test_sca_location = Util.fixEmptyAndTrim(polaris_test_sca_location);
+    }
+
+    @DataBoundSetter
+    public void setPolaris_test_sast_location(String polaris_test_sast_location) {
+        this.polaris_test_sast_location = Util.fixEmptyAndTrim(polaris_test_sast_location);
     }
 
     @DataBoundSetter

@@ -428,6 +428,14 @@ public class ParameterMappingService {
                 securityScan.getPolaris_test_sast_type());
         addParameterIfNotBlank(
                 polarisParametersMap,
+                ApplicationConstants.POLARIS_TEST_SCA_LOCATION_KEY,
+                securityScan.getPolaris_test_sca_location());
+        addParameterIfNotBlank(
+                polarisParametersMap,
+                ApplicationConstants.POLARIS_TEST_SAST_LOCATION_KEY,
+                securityScan.getPolaris_test_sast_location());
+        addParameterIfNotBlank(
+                polarisParametersMap,
                 ApplicationConstants.POLARIS_ASSESSMENT_MODE_KEY,
                 securityScan.getPolaris_assessment_mode());
         addParameterIfNotBlank(

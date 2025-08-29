@@ -124,6 +124,8 @@ public class SecurityScanStep extends Step
     private String polaris_assessment_mode;
     private String polaris_test_sca_type;
     private String polaris_test_sast_type;
+    private String polaris_test_sca_location;
+    private String polaris_test_sast_location;
     private String project_source_archive;
     private String project_source_excludes;
     private Boolean project_source_preserveSymLinks;
@@ -482,6 +484,14 @@ public class SecurityScanStep extends Step
 
     public String getPolaris_test_sast_type() {
         return polaris_test_sast_type;
+    }
+
+    public String getPolaris_test_sca_location() {
+        return polaris_test_sca_location;
+    }
+
+    public String getPolaris_test_sast_location() {
+        return polaris_test_sast_location;
     }
 
     public Boolean isPolaris_reports_sarif_create() {
@@ -1049,6 +1059,16 @@ public class SecurityScanStep extends Step
     @DataBoundSetter
     public void setPolaris_test_sast_type(String polaris_test_sast_type) {
         this.polaris_test_sast_type = Util.fixEmptyAndTrim(polaris_test_sast_type);
+    }
+
+    @DataBoundSetter
+    public void setPolaris_test_sca_location(String polaris_test_sca_location) {
+        this.polaris_test_sca_location = Util.fixEmptyAndTrim(polaris_test_sca_location);
+    }
+
+    @DataBoundSetter
+    public void setPolaris_test_sast_location(String polaris_test_sast_location) {
+        this.polaris_test_sast_location = Util.fixEmptyAndTrim(polaris_test_sast_location);
     }
 
     @DataBoundSetter

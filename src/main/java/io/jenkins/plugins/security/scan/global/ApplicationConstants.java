@@ -153,6 +153,8 @@ public class ApplicationConstants {
     public static final String POLARIS_ASSESSMENT_MODE_KEY = "polaris_assessment_mode";
     public static final String POLARIS_TEST_SCA_TYPE_KEY = "polaris_test_sca_type";
     public static final String POLARIS_TEST_SAST_TYPE_KEY = "polaris_test_sast_type";
+    public static final String POLARIS_TEST_SCA_LOCATION_KEY = "polaris_test_sca_location";
+    public static final String POLARIS_TEST_SAST_LOCATION_KEY = "polaris_test_sast_location";
     public static final String POLARIS_WAITFORSCAN_KEY = "polaris_waitForScan";
 
     // SRM Parameters
