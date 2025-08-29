@@ -214,80 +214,83 @@ public class PolarisParametersService {
         }
     }
 
-	private void setTestScaTypeLocationAndSastTypeLocation(Map<String, Object> polarisParameters, Polaris polaris) {
-		Test test = polaris.getTest() != null ? polaris.getTest() : new Test();
+    private void setTestScaTypeLocationAndSastTypeLocation(Map<String, Object> polarisParameters, Polaris polaris) {
+        Test test = polaris.getTest() != null ? polaris.getTest() : new Test();
 
-		// SCA type and location
-		boolean hasScaType = polarisParameters.containsKey(ApplicationConstants.POLARIS_TEST_SCA_TYPE_KEY);
-		boolean hasScaLocation = polarisParameters.containsKey(ApplicationConstants.POLARIS_TEST_SCA_LOCATION_KEY);
-		if (hasScaType || hasScaLocation) {
-			Sca sca = test.getSca() != null ? test.getSca() : new Sca();
-			if (hasScaType) {
-				String testScaTypeValue = polarisParameters
-					.get(ApplicationConstants.POLARIS_TEST_SCA_TYPE_KEY)
-					.toString()
-					.trim();
-				if (!testScaTypeValue.isEmpty()) {
-					sca.setType(testScaTypeValue);
-				}
-			}
-			if (hasScaLocation) {
-				String testScaLocationValue = polarisParameters
-					.get(ApplicationConstants.POLARIS_TEST_SCA_LOCATION_KEY)
-					.toString()
-					.trim();
-				if (!testScaLocationValue.isEmpty()) {
-					if ("local".equalsIgnoreCase(testScaLocationValue)) {
-						throw new IllegalArgumentException("SCA has no local scan option");
-					}
-					if (!"hybrid".equalsIgnoreCase(testScaLocationValue) && !"remote".equalsIgnoreCase(testScaLocationValue)) {
-						throw new IllegalArgumentException("Invalid SCA location: " + testScaLocationValue + ". valid values are: hybrid, remote");
-					}
-					sca.setLocation(testScaLocationValue);
-				}
-			}
-			test.setSca(sca);
-		}
+        // SCA type and location
+        boolean hasScaType = polarisParameters.containsKey(ApplicationConstants.POLARIS_TEST_SCA_TYPE_KEY);
+        boolean hasScaLocation = polarisParameters.containsKey(ApplicationConstants.POLARIS_TEST_SCA_LOCATION_KEY);
+        if (hasScaType || hasScaLocation) {
+            Sca sca = test.getSca() != null ? test.getSca() : new Sca();
+            if (hasScaType) {
+                String testScaTypeValue = polarisParameters
+                        .get(ApplicationConstants.POLARIS_TEST_SCA_TYPE_KEY)
+                        .toString()
+                        .trim();
+                if (!testScaTypeValue.isEmpty()) {
+                    sca.setType(testScaTypeValue);
+                }
+            }
+            if (hasScaLocation) {
+                String testScaLocationValue = polarisParameters
+                        .get(ApplicationConstants.POLARIS_TEST_SCA_LOCATION_KEY)
+                        .toString()
+                        .trim();
+                if (!testScaLocationValue.isEmpty()) {
+                    if ("local".equalsIgnoreCase(testScaLocationValue)) {
+                        throw new IllegalArgumentException("SCA has no local scan option");
+                    }
+                    if (!"hybrid".equalsIgnoreCase(testScaLocationValue)
+                            && !"remote".equalsIgnoreCase(testScaLocationValue)) {
+                        throw new IllegalArgumentException(
+                                "Invalid SCA location: " + testScaLocationValue + ". valid values are: hybrid, remote");
+                    }
+                    sca.setLocation(testScaLocationValue);
+                }
+            }
+            test.setSca(sca);
+        }
 
-		// SAST type and location
-		boolean hasSastType = polarisParameters.containsKey(ApplicationConstants.POLARIS_TEST_SAST_TYPE_KEY);
-		boolean hasSastLocation = polarisParameters.containsKey(ApplicationConstants.POLARIS_TEST_SAST_LOCATION_KEY);
-		if (hasSastType || hasSastLocation) {
-			Sast sast = test.getSast() != null ? test.getSast() : new Sast();
-			if (hasSastType) {
-				String testSastTypeValue = polarisParameters
-					.get(ApplicationConstants.POLARIS_TEST_SAST_TYPE_KEY)
-					.toString()
-					.trim();
-				if (!testSastTypeValue.isEmpty()) {
-					List<String> testSastType = Stream.of(
-							testSastTypeValue.toUpperCase().split(","))
-						.map(String::trim)
-						.collect(Collectors.toList());
-					sast.setType(testSastType);
-				}
-			}
-			if (hasSastLocation) {
-				String testSastLocationValue = polarisParameters
-					.get(ApplicationConstants.POLARIS_TEST_SAST_LOCATION_KEY)
-					.toString()
-					.trim();
-				if (!testSastLocationValue.isEmpty()) {
-					if (!"local".equalsIgnoreCase(testSastLocationValue)
-						&& !"hybrid".equalsIgnoreCase(testSastLocationValue)
-						&& !"remote".equalsIgnoreCase(testSastLocationValue)) {
-						throw new IllegalArgumentException("Invalid SAST location: " + testSastLocationValue + ". valid values are: local, hybrid, remote");
-					}
-					sast.setLocation(testSastLocationValue);
-				}
-			}
-			test.setSast(sast);
-		}
+        // SAST type and location
+        boolean hasSastType = polarisParameters.containsKey(ApplicationConstants.POLARIS_TEST_SAST_TYPE_KEY);
+        boolean hasSastLocation = polarisParameters.containsKey(ApplicationConstants.POLARIS_TEST_SAST_LOCATION_KEY);
+        if (hasSastType || hasSastLocation) {
+            Sast sast = test.getSast() != null ? test.getSast() : new Sast();
+            if (hasSastType) {
+                String testSastTypeValue = polarisParameters
+                        .get(ApplicationConstants.POLARIS_TEST_SAST_TYPE_KEY)
+                        .toString()
+                        .trim();
+                if (!testSastTypeValue.isEmpty()) {
+                    List<String> testSastType = Stream.of(
+                                    testSastTypeValue.toUpperCase().split(","))
+                            .map(String::trim)
+                            .collect(Collectors.toList());
+                    sast.setType(testSastType);
+                }
+            }
+            if (hasSastLocation) {
+                String testSastLocationValue = polarisParameters
+                        .get(ApplicationConstants.POLARIS_TEST_SAST_LOCATION_KEY)
+                        .toString()
+                        .trim();
+                if (!testSastLocationValue.isEmpty()) {
+                    if (!"local".equalsIgnoreCase(testSastLocationValue)
+                            && !"hybrid".equalsIgnoreCase(testSastLocationValue)
+                            && !"remote".equalsIgnoreCase(testSastLocationValue)) {
+                        throw new IllegalArgumentException("Invalid SAST location: " + testSastLocationValue
+                                + ". valid values are: local, hybrid, remote");
+                    }
+                    sast.setLocation(testSastLocationValue);
+                }
+            }
+            test.setSast(sast);
+        }
 
-		if ((hasScaType || hasScaLocation) || (hasSastType || hasSastLocation)) {
-			polaris.setTest(test);
-		}
-	}
+        if ((hasScaType || hasScaLocation) || (hasSastType || hasSastLocation)) {
+            polaris.setTest(test);
+        }
+    }
 
     private void setSarif(Map<String, Object> polarisParameters, Polaris polaris) {
         if (polarisParameters.containsKey(ApplicationConstants.POLARIS_REPORTS_SARIF_CREATE_KEY)

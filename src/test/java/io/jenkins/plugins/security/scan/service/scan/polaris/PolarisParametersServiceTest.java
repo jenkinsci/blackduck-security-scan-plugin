@@ -355,7 +355,6 @@ public class PolarisParametersServiceTest {
         assertFalse(sarifObject.getGroupSCAIssues());
     }
 
-
     @Test
     void testSastLocationSetToLocal() {
         Map<String, Object> polarisParameters = new HashMap<>();
