@@ -404,5 +404,4 @@ public class PolarisParametersServiceTest {
 
         assertEquals("remote", polaris.getTest().getSca().getLocation());
     }
-
 }
