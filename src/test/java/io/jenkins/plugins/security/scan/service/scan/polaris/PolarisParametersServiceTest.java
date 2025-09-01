@@ -386,30 +386,6 @@ public class PolarisParametersServiceTest {
     }
 
     @Test
-    void testSastLocationSetToUnsupportedValue() {
-        Map<String, Object> polarisParameters = new HashMap<>();
-        polarisParameters.put(ApplicationConstants.POLARIS_TEST_SAST_LOCATION_KEY, "unsupported");
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            polarisParametersService.preparePolarisObjectForBridge(polarisParameters);
-        });
-
-        assertTrue(exception.getMessage().contains("valid values are"));
-    }
-
-    @Test
-    void testScaLocationSetToLocalUnsupported() {
-        Map<String, Object> polarisParameters = new HashMap<>();
-        polarisParameters.put(ApplicationConstants.POLARIS_TEST_SCA_LOCATION_KEY, "local");
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            polarisParametersService.preparePolarisObjectForBridge(polarisParameters);
-        });
-
-        assertTrue(exception.getMessage().contains("SCA has no local scan option"));
-    }
-
-    @Test
     void testScaLocationSetToHybrid() {
         Map<String, Object> polarisParameters = new HashMap<>();
         polarisParameters.put(ApplicationConstants.POLARIS_TEST_SCA_LOCATION_KEY, "hybrid");
@@ -429,15 +405,4 @@ public class PolarisParametersServiceTest {
         assertEquals("remote", polaris.getTest().getSca().getLocation());
     }
 
-    @Test
-    void testScaLocationSetToUnsupportedValue() {
-        Map<String, Object> polarisParameters = new HashMap<>();
-        polarisParameters.put(ApplicationConstants.POLARIS_TEST_SCA_LOCATION_KEY, "unsupported");
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            polarisParametersService.preparePolarisObjectForBridge(polarisParameters);
-        });
-
-        assertTrue(exception.getMessage().contains("valid values are"));
-    }
 }

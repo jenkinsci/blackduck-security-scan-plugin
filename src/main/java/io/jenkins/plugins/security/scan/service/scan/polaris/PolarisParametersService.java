@@ -237,14 +237,6 @@ public class PolarisParametersService {
                         .toString()
                         .trim();
                 if (!testScaLocationValue.isEmpty()) {
-                    if ("local".equalsIgnoreCase(testScaLocationValue)) {
-                        throw new IllegalArgumentException("SCA has no local scan option");
-                    }
-                    if (!"hybrid".equalsIgnoreCase(testScaLocationValue)
-                            && !"remote".equalsIgnoreCase(testScaLocationValue)) {
-                        throw new IllegalArgumentException(
-                                "Invalid SCA location: " + testScaLocationValue + ". valid values are: hybrid, remote");
-                    }
                     sca.setLocation(testScaLocationValue);
                 }
             }
@@ -275,12 +267,6 @@ public class PolarisParametersService {
                         .toString()
                         .trim();
                 if (!testSastLocationValue.isEmpty()) {
-                    if (!"local".equalsIgnoreCase(testSastLocationValue)
-                            && !"hybrid".equalsIgnoreCase(testSastLocationValue)
-                            && !"remote".equalsIgnoreCase(testSastLocationValue)) {
-                        throw new IllegalArgumentException("Invalid SAST location: " + testSastLocationValue
-                                + ". valid values are: local, hybrid, remote");
-                    }
                     sast.setLocation(testSastLocationValue);
                 }
             }
