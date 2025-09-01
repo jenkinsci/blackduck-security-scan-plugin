@@ -87,8 +87,7 @@ public class ScanInitializer {
         if (assessmentModeValue.equals(ApplicationConstants.POLARIS_ASSESSMENT_MODE_SOURCE_UPLOAD_VALUE)
                 && Utility.isVersionCompatible(
                         version, ApplicationConstants.POLARIS_TEST_SAST_LOCATION_COMPATIBLE_BRIDGE_VERSION)) {
-            logger.warn(
-                    "The 'SOURCE_UPLOAD' assessment mode for Polaris is deprecated and will be removed in future releases. Please use the polaris.test.sast.location='remote' to get this feature.");
+            logger.warn(ApplicationConstants.POLARIS_SOURCE_UPLOAD_DEPRECATION_WARNING);
         }
     }
 

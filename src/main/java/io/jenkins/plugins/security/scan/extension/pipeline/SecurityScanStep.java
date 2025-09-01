@@ -1398,8 +1398,7 @@ public class SecurityScanStep extends Step
             items.add(new ListBoxModel.Option(ApplicationConstants.DEFAULT_DROPDOWN_OPTION_NAME, ""));
             items.add(new ListBoxModel.Option("CI", "CI"));
             items.add(new ListBoxModel.Option(
-                    "⚠\uFE0F SOURCE_UPLOAD (The 'SOURCE_UPLOAD' assessment mode for Polaris is deprecated and will be removed in future releases. Please use the polaris.test.sast.location='remote' to get this feature.)",
-                    "SOURCE_UPLOAD"));
+                    ApplicationConstants.POLARIS_ASSESSMENT_MODE_SOURCE_UPLOAD_PARAMETER_DESCRIPTION, "SOURCE_UPLOAD"));
             return items;
         }
     }

@@ -280,6 +280,10 @@ public class ApplicationConstants {
     public static final String
             DEPRECATED_PRODUCT_WILL_BE_REMOVED_IN_FUTURE_AND_RECOMMENDING_TO_USE_NEW_PRODUCT_AND_ITS_PARAMETERS =
                     "%s product is deprecated and will be removed in future. Please use %s and its corresponding parameters instead.";
+    public static final String POLARIS_SOURCE_UPLOAD_DEPRECATION_WARNING =
+            "The 'SOURCE_UPLOAD' assessment mode for Polaris is deprecated and will be removed in future releases. Please use the polaris.test.sast.location='remote' to get this feature.";
+    public static final String POLARIS_ASSESSMENT_MODE_SOURCE_UPLOAD_PARAMETER_DESCRIPTION =
+            "⚠\uFE0F SOURCE_UPLOAD (The 'SOURCE_UPLOAD' assessment mode for Polaris is deprecated and will be removed in future releases. Please use the polaris.test.sast.location='remote' to get this feature.)";
 
     // Info Log Related Issue Count
     public static final String SCAN_INFO_FILE_NOT_FOUND = "File for issue count does not exist";
