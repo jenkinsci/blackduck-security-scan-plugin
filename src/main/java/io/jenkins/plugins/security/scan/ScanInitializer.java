@@ -72,7 +72,24 @@ public class ScanInitializer {
 
         logger.info("Bridge CLI version is - " + bridgeDownloadParams.getBridgeDownloadVersion());
 
+        if (scanParameters.containsKey(ApplicationConstants.POLARIS_ASSESSMENT_MODE_KEY)) {
+            showValidationWarningForSourceUpload(
+                    bridgeDownloadParams.getBridgeInstallationPath(),
+                    scanParameters
+                            .get(ApplicationConstants.POLARIS_ASSESSMENT_MODE_KEY)
+                            .toString());
+        }
+
         return scanner.runScanner(scanParameters, bridgeInstallationPath);
+    }
+
+    private void showValidationWarningForSourceUpload(String version, String assessmentModeValue) {
+        if (assessmentModeValue.equals(ApplicationConstants.POLARIS_ASSESSMENT_MODE_SOURCE_UPLOAD_VALUE)
+                && Utility.isVersionCompatible(
+                        version, ApplicationConstants.POLARIS_TEST_SAST_LOCATION_COMPATIBLE_BRIDGE_VERSION)) {
+            logger.warn(
+                    "The 'SOURCE_UPLOAD' assessment mode for Polaris is deprecated and will be removed in future releases. Please use the polaris.test.sast.location='remote' to get this feature.");
+        }
     }
 
     private boolean checkNetworkAirgap(Map<String, Object> scanParameters) {

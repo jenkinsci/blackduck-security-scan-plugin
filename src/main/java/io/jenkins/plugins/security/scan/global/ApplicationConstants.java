@@ -16,6 +16,7 @@ public class ApplicationConstants {
     public static final String PLATFORM_MACOSX = "macosx";
     public static final String MAC_ARM_COMPATIBLE_BRIDGE_VERSION = "2.1.0";
     public static final String LINUX_ARM_COMPATIBLE_BRIDGE_VERSION = "3.5.1";
+    public static final String POLARIS_TEST_SAST_LOCATION_COMPATIBLE_BRIDGE_VERSION = "3.7.8";
     public static final String DEFAULT_DIRECTORY_NAME = "bridge-cli-bundle";
     public static final String BRIDGE_REPORT_DIRECTORY = ".bridge";
     public static final String DEFAULT_BLACKDUCKSCA_SARIF_REPORT_FILE_PATH =
@@ -32,6 +33,7 @@ public class ApplicationConstants {
     public static final String SCAN_INFO_OUT_FILE_NAME = ".bridge/output/scan_info_out.json";
     public static final String BLACK_DUCK_LOGO_FILE_NAME = "/plugin/blackduck-security-scan/icons/blackduck.png";
     public static final String BRIDGE_VERSION_EXTRACTION_REGEX = "[0-9.]+[a-zA-Z0-9]*";
+    public static final String POLARIS_ASSESSMENT_MODE_SOURCE_UPLOAD_VALUE = "SOURCE_UPLOAD";
 
     // Jenkins Environment Variables
     public static final String ENV_JOB_NAME_KEY = "JOB_NAME";

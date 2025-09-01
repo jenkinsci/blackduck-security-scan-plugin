@@ -1299,7 +1299,9 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
             ListBoxModel items = new ListBoxModel();
             items.add(new ListBoxModel.Option(ApplicationConstants.DEFAULT_DROPDOWN_OPTION_NAME, ""));
             items.add(new ListBoxModel.Option("CI", "CI"));
-            items.add(new ListBoxModel.Option("SOURCE_UPLOAD", "SOURCE_UPLOAD"));
+            items.add(new ListBoxModel.Option(
+                    "⚠\uFE0F SOURCE_UPLOAD (The 'SOURCE_UPLOAD' assessment mode for Polaris is deprecated and will be removed in future releases. Please use the polaris.test.sast.location='remote' to get this feature.)",
+                    "SOURCE_UPLOAD"));
             return items;
         }
     }
