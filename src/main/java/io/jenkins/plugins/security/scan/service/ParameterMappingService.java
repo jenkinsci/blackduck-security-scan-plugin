@@ -824,20 +824,20 @@ public class ParameterMappingService {
         return items;
     }
 
-	public static ListBoxModel getSCATestLocationItems() {
-		ListBoxModel items = new ListBoxModel();
-		items.add(TestLocation.HYBRID.getName(), TestLocation.HYBRID.getValue());
-		items.add(TestLocation.REMOTE.getName(), TestLocation.REMOTE.getValue());
-		return items;
-	}
+    public static ListBoxModel getSCATestLocationItems() {
+        ListBoxModel items = new ListBoxModel();
+        items.add(TestLocation.HYBRID.getName(), TestLocation.HYBRID.getValue());
+        items.add(TestLocation.REMOTE.getName(), TestLocation.REMOTE.getValue());
+        return items;
+    }
 
-	public static ListBoxModel getSASTTestLocationItems() {
-		ListBoxModel items = new ListBoxModel();
-		items.add(TestLocation.HYBRID.getName(), TestLocation.HYBRID.getValue());
-		items.add(TestLocation.LOCAL.getName(), TestLocation.LOCAL.getValue());
-		items.add(TestLocation.REMOTE.getName(), TestLocation.REMOTE.getValue());
-		return items;
-	}
+    public static ListBoxModel getSASTTestLocationItems() {
+        ListBoxModel items = new ListBoxModel();
+        items.add(TestLocation.HYBRID.getName(), TestLocation.HYBRID.getValue());
+        items.add(TestLocation.LOCAL.getName(), TestLocation.LOCAL.getValue());
+        items.add(TestLocation.REMOTE.getName(), TestLocation.REMOTE.getValue());
+        return items;
+    }
 
     public static ListBoxModel getMarkBuildStatusItems() {
         ListBoxModel items = new ListBoxModel();
