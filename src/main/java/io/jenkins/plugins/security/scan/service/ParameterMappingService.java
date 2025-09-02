@@ -15,6 +15,7 @@ import io.jenkins.plugins.security.scan.extension.pipeline.ReturnStatusScan;
 import io.jenkins.plugins.security.scan.global.*;
 import io.jenkins.plugins.security.scan.global.enums.BuildStatus;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
+import io.jenkins.plugins.security.scan.global.enums.TestLocation;
 import java.util.*;
 import java.util.stream.Collectors;
 import jenkins.model.GlobalConfiguration;
@@ -822,6 +823,21 @@ public class ParameterMappingService {
                 SecurityProduct.SRM.name().toLowerCase());
         return items;
     }
+
+	public static ListBoxModel getSCATestLocationItems() {
+		ListBoxModel items = new ListBoxModel();
+		items.add(TestLocation.HYBRID.getName(), TestLocation.HYBRID.getValue());
+		items.add(TestLocation.REMOTE.getName(), TestLocation.REMOTE.getValue());
+		return items;
+	}
+
+	public static ListBoxModel getSASTTestLocationItems() {
+		ListBoxModel items = new ListBoxModel();
+		items.add(TestLocation.HYBRID.getName(), TestLocation.HYBRID.getValue());
+		items.add(TestLocation.LOCAL.getName(), TestLocation.LOCAL.getValue());
+		items.add(TestLocation.REMOTE.getName(), TestLocation.REMOTE.getValue());
+		return items;
+	}
 
     public static ListBoxModel getMarkBuildStatusItems() {
         ListBoxModel items = new ListBoxModel();

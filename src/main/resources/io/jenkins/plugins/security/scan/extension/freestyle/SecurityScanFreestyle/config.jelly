@@ -146,13 +146,13 @@
                     <f:textbox/>
                 </f:entry>
                 <f:entry field="polaris_test_sca_location" title="SCA Test Location (Optional)">
-                    <f:textbox/>
+                    <f:select/>
                 </f:entry>
                 <f:entry field="polaris_test_sast_type" title="SAST Test Type (Optional)">
                     <f:textbox/>
                 </f:entry>
                 <f:entry field="polaris_test_sast_location" title="SAST Test Location (Optional)">
-                    <f:textbox/>
+                    <f:select/>
                 </f:entry>
                 <f:entry field="polaris_project_directory" title="Project Directory (Optional)">
                     <f:textbox/>

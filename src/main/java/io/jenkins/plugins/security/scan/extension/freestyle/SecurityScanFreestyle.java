@@ -1262,6 +1262,22 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
             return items;
         }
 
+		@SuppressWarnings({"lgtm[jenkins/no-permission-check]", "lgtm[jenkins/csrf]"})
+		public ListBoxModel doFillPolaris_test_sast_locationItems() {
+			ListBoxModel items = new ListBoxModel();
+			items.add(ApplicationConstants.DEFAULT_DROPDOWN_OPTION_NAME, "");
+			items.addAll(ParameterMappingService.getSASTTestLocationItems());
+			return items;
+		}
+
+		@SuppressWarnings({"lgtm[jenkins/no-permission-check]", "lgtm[jenkins/csrf]"})
+		public ListBoxModel doFillPolaris_test_sca_locationItems() {
+			ListBoxModel items = new ListBoxModel();
+			items.add(ApplicationConstants.DEFAULT_DROPDOWN_OPTION_NAME, "");
+			items.addAll(ParameterMappingService.getSCATestLocationItems());
+			return items;
+		}
+
         @SuppressWarnings({"lgtm[jenkins/no-permission-check]", "lgtm[jenkins/csrf]"})
         public ListBoxModel doFillBlackducksca_mark_build_statusItems() {
             ListBoxModel items = new ListBoxModel();
