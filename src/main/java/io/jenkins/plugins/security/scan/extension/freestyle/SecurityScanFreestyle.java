@@ -74,11 +74,18 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     private Boolean polaris_reports_sarif_groupSCAIssues;
     private String polaris_reports_sarif_severities;
     private Boolean polaris_reports_sarif_groupSCAIssues_temporary;
+
+	@Deprecated
     private String project_source_archive;
+	@Deprecated
     private String polaris_assessment_mode;
+	@Deprecated
     private String project_source_excludes;
+	@Deprecated
     private Boolean project_source_preserveSymLinks;
+	@Deprecated
     private Boolean project_source_preserveSymLinks_actualValue;
+
     private String project_directory;
     private String polaris_test_sca_type;
     private String polaris_test_sast_type;
@@ -404,6 +411,7 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
         return polaris_reports_sarif_groupSCAIssues_temporary;
     }
 
+	@Deprecated
     public String getPolaris_assessment_mode() {
         return polaris_assessment_mode;
     }
@@ -452,18 +460,22 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
         return polaris_sast_args;
     }
 
+	@Deprecated
     public String getProject_source_archive() {
         return project_source_archive;
     }
 
+	@Deprecated
     public Boolean isProject_source_preserveSymLinks() {
         return project_source_preserveSymLinks;
     }
 
+	@Deprecated
     public Boolean isProject_source_preserveSymLinks_actualValue() {
         return project_source_preserveSymLinks_actualValue;
     }
 
+	@Deprecated
     public String getProject_source_excludes() {
         return project_source_excludes;
     }
@@ -868,6 +880,7 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
         this.bitbucket_username = bitbucket_username;
     }
 
+ 	@Deprecated
     @DataBoundSetter
     public void setPolaris_assessment_mode(String polaris_assessment_mode) {
         this.polaris_assessment_mode = Util.fixEmptyAndTrim(polaris_assessment_mode);
@@ -933,17 +946,20 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
         this.polaris_waitForScan = this.polaris_waitForScan_actualValue = polaris_waitForScan;
     }
 
+	@Deprecated
     @DataBoundSetter
     public void setProject_source_archive(String project_source_archive) {
         this.project_source_archive = Util.fixEmptyAndTrim(project_source_archive);
     }
 
+	@Deprecated
     @DataBoundSetter
     public void setProject_source_preserveSymLinks(Boolean project_source_preserveSymLinks) {
         this.project_source_preserveSymLinks =
                 this.project_source_preserveSymLinks_actualValue = project_source_preserveSymLinks ? true : null;
     }
 
+	@Deprecated
     @DataBoundSetter
     public void setProject_source_excludes(String project_source_excludes) {
         this.project_source_excludes = Util.fixEmptyAndTrim(project_source_excludes);
@@ -1310,14 +1326,5 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
             return items;
         }
 
-        @SuppressWarnings({"lgtm[jenkins/no-permission-check]", "lgtm[jenkins/csrf]"})
-        public ListBoxModel doFillPolaris_assessment_modeItems() {
-            ListBoxModel items = new ListBoxModel();
-            items.add(new ListBoxModel.Option(ApplicationConstants.DEFAULT_DROPDOWN_OPTION_NAME, ""));
-            items.add(new ListBoxModel.Option("CI", "CI"));
-            items.add(new ListBoxModel.Option(
-                    ApplicationConstants.POLARIS_ASSESSMENT_MODE_SOURCE_UPLOAD_PARAMETER_DESCRIPTION, "SOURCE_UPLOAD"));
-            return items;
-        }
     }
 }

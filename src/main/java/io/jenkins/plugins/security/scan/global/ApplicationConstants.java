@@ -33,7 +33,6 @@ public class ApplicationConstants {
     public static final String SCAN_INFO_OUT_FILE_NAME = ".bridge/output/scan_info_out.json";
     public static final String BLACK_DUCK_LOGO_FILE_NAME = "/plugin/blackduck-security-scan/icons/blackduck.png";
     public static final String BRIDGE_VERSION_EXTRACTION_REGEX = "[0-9.]+[a-zA-Z0-9]*";
-    public static final String POLARIS_ASSESSMENT_MODE_SOURCE_UPLOAD_VALUE = "SOURCE_UPLOAD";
 
     // Jenkins Environment Variables
     public static final String ENV_JOB_NAME_KEY = "JOB_NAME";
@@ -152,8 +151,11 @@ public class ApplicationConstants {
     public static final String POLARIS_REPORTS_SARIF_GROUPSCAISSUES_KEY = "polaris_reports_sarif_groupSCAIssues";
     public static final String POLARIS_REPORTS_SARIF_SEVERITIES_KEY = "polaris_reports_sarif_severities";
     public static final String POLARIS_REPORTS_SARIF_ISSUE_TYPES_KEY = "polaris_reports_sarif_issue_types";
+
+	@Deprecated
     public static final String POLARIS_ASSESSMENT_MODE_KEY = "polaris_assessment_mode";
-    public static final String POLARIS_TEST_SCA_TYPE_KEY = "polaris_test_sca_type";
+
+	public static final String POLARIS_TEST_SCA_TYPE_KEY = "polaris_test_sca_type";
     public static final String POLARIS_TEST_SAST_TYPE_KEY = "polaris_test_sast_type";
     public static final String POLARIS_TEST_SCA_LOCATION_KEY = "polaris_test_sca_location";
     public static final String POLARIS_TEST_SAST_LOCATION_KEY = "polaris_test_sast_location";
@@ -171,8 +173,12 @@ public class ApplicationConstants {
 
     // Source Upload Parameters
     public static final String PROJECT_DIRECTORY_KEY = "project_directory";
+
+	@Deprecated
     public static final String PROJECT_SOURCE_ARCHIVE_KEY = "project_source_archive";
+	@Deprecated
     public static final String PROJECT_SOURCE_EXCLUDES_KEY = "project_source_excludes";
+	@Deprecated
     public static final String PROJECT_SOURCE_PRESERVE_SYM_LINKS_KEY = "project_source_preserveSymLinks";
 
     // Additional Parameters
@@ -281,9 +287,7 @@ public class ApplicationConstants {
             DEPRECATED_PRODUCT_WILL_BE_REMOVED_IN_FUTURE_AND_RECOMMENDING_TO_USE_NEW_PRODUCT_AND_ITS_PARAMETERS =
                     "%s product is deprecated and will be removed in future. Please use %s and its corresponding parameters instead.";
     public static final String POLARIS_SOURCE_UPLOAD_DEPRECATION_WARNING =
-            "The 'SOURCE_UPLOAD' assessment mode for Polaris is deprecated and will be removed in future releases. Please use the polaris.test.sast.location='remote' to get this feature.";
-    public static final String POLARIS_ASSESSMENT_MODE_SOURCE_UPLOAD_PARAMETER_DESCRIPTION =
-            "⚠\uFE0F SOURCE_UPLOAD (The 'SOURCE_UPLOAD' assessment mode for Polaris is deprecated and will be removed in future releases. Please use the polaris.test.sast.location='remote' to get this feature.)";
+            "polaris_assessment_mode is deprecated. Use polaris_test_sast_location=remote and/or polaris_test_sca_location=remote for source upload scans instead.";
 
     // Info Log Related Issue Count
     public static final String SCAN_INFO_FILE_NOT_FOUND = "File for issue count does not exist";

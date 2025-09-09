@@ -72,23 +72,14 @@ public class ScanInitializer {
 
         logger.info("Bridge CLI version is - " + bridgeDownloadParams.getBridgeDownloadVersion());
 
-        if (scanParameters.containsKey(ApplicationConstants.POLARIS_ASSESSMENT_MODE_KEY)) {
-            showValidationWarningForSourceUpload(
-                    bridgeDownloadParams.getBridgeInstallationPath(),
-                    scanParameters
-                            .get(ApplicationConstants.POLARIS_ASSESSMENT_MODE_KEY)
-                            .toString());
-        }
+		// Warning message for polaris assessment mode deprecation
+		if (scanParameters.containsKey(ApplicationConstants.POLARIS_ASSESSMENT_MODE_KEY)
+			&& Utility.isVersionCompatible(bridgeDownloadParams.getBridgeDownloadVersion(),
+			ApplicationConstants.POLARIS_TEST_SAST_LOCATION_COMPATIBLE_BRIDGE_VERSION)) {
+			logger.warn(ApplicationConstants.POLARIS_SOURCE_UPLOAD_DEPRECATION_WARNING);
+		}
 
         return scanner.runScanner(scanParameters, bridgeInstallationPath);
-    }
-
-    private void showValidationWarningForSourceUpload(String version, String assessmentModeValue) {
-        if (assessmentModeValue.equals(ApplicationConstants.POLARIS_ASSESSMENT_MODE_SOURCE_UPLOAD_VALUE)
-                && Utility.isVersionCompatible(
-                        version, ApplicationConstants.POLARIS_TEST_SAST_LOCATION_COMPATIBLE_BRIDGE_VERSION)) {
-            logger.warn(ApplicationConstants.POLARIS_SOURCE_UPLOAD_DEPRECATION_WARNING);
-        }
     }
 
     private boolean checkNetworkAirgap(Map<String, Object> scanParameters) {
