@@ -165,19 +165,19 @@ public interface SecurityScan {
 
     Boolean isPolaris_waitForScan_actualValue();
 
-	@Deprecated
+    @Deprecated
     String getPolaris_assessment_mode();
 
-	@Deprecated
+    @Deprecated
     String getProject_source_archive();
 
-	@Deprecated
+    @Deprecated
     Boolean isProject_source_preserveSymLinks();
 
-	@Deprecated
+    @Deprecated
     Boolean isProject_source_preserveSymLinks_actualValue();
 
-	@Deprecated
+    @Deprecated
     String getProject_source_excludes();
 
     String getProject_directory();

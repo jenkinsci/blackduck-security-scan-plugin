@@ -75,15 +75,19 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     private String polaris_reports_sarif_severities;
     private Boolean polaris_reports_sarif_groupSCAIssues_temporary;
 
-	@Deprecated
+    @Deprecated
     private String project_source_archive;
-	@Deprecated
+
+    @Deprecated
     private String polaris_assessment_mode;
-	@Deprecated
+
+    @Deprecated
     private String project_source_excludes;
-	@Deprecated
+
+    @Deprecated
     private Boolean project_source_preserveSymLinks;
-	@Deprecated
+
+    @Deprecated
     private Boolean project_source_preserveSymLinks_actualValue;
 
     private String project_directory;
@@ -411,7 +415,7 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
         return polaris_reports_sarif_groupSCAIssues_temporary;
     }
 
-	@Deprecated
+    @Deprecated
     public String getPolaris_assessment_mode() {
         return polaris_assessment_mode;
     }
@@ -460,22 +464,22 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
         return polaris_sast_args;
     }
 
-	@Deprecated
+    @Deprecated
     public String getProject_source_archive() {
         return project_source_archive;
     }
 
-	@Deprecated
+    @Deprecated
     public Boolean isProject_source_preserveSymLinks() {
         return project_source_preserveSymLinks;
     }
 
-	@Deprecated
+    @Deprecated
     public Boolean isProject_source_preserveSymLinks_actualValue() {
         return project_source_preserveSymLinks_actualValue;
     }
 
-	@Deprecated
+    @Deprecated
     public String getProject_source_excludes() {
         return project_source_excludes;
     }
@@ -880,7 +884,7 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
         this.bitbucket_username = bitbucket_username;
     }
 
- 	@Deprecated
+    @Deprecated
     @DataBoundSetter
     public void setPolaris_assessment_mode(String polaris_assessment_mode) {
         this.polaris_assessment_mode = Util.fixEmptyAndTrim(polaris_assessment_mode);
@@ -946,20 +950,20 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
         this.polaris_waitForScan = this.polaris_waitForScan_actualValue = polaris_waitForScan;
     }
 
-	@Deprecated
+    @Deprecated
     @DataBoundSetter
     public void setProject_source_archive(String project_source_archive) {
         this.project_source_archive = Util.fixEmptyAndTrim(project_source_archive);
     }
 
-	@Deprecated
+    @Deprecated
     @DataBoundSetter
     public void setProject_source_preserveSymLinks(Boolean project_source_preserveSymLinks) {
         this.project_source_preserveSymLinks =
                 this.project_source_preserveSymLinks_actualValue = project_source_preserveSymLinks ? true : null;
     }
 
-	@Deprecated
+    @Deprecated
     @DataBoundSetter
     public void setProject_source_excludes(String project_source_excludes) {
         this.project_source_excludes = Util.fixEmptyAndTrim(project_source_excludes);
@@ -1325,6 +1329,5 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
             items.addAll(ParameterMappingService.getMarkBuildStatusItems());
             return items;
         }
-
     }
 }

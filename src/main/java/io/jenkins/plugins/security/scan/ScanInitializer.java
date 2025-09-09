@@ -72,12 +72,13 @@ public class ScanInitializer {
 
         logger.info("Bridge CLI version is - " + bridgeDownloadParams.getBridgeDownloadVersion());
 
-		// Warning message for polaris assessment mode deprecation
-		if (scanParameters.containsKey(ApplicationConstants.POLARIS_ASSESSMENT_MODE_KEY)
-			&& Utility.isVersionCompatible(bridgeDownloadParams.getBridgeDownloadVersion(),
-			ApplicationConstants.POLARIS_TEST_SAST_LOCATION_COMPATIBLE_BRIDGE_VERSION)) {
-			logger.warn(ApplicationConstants.POLARIS_SOURCE_UPLOAD_DEPRECATION_WARNING);
-		}
+        // Warning message for polaris assessment mode deprecation
+        if (scanParameters.containsKey(ApplicationConstants.POLARIS_ASSESSMENT_MODE_KEY)
+                && Utility.isVersionCompatible(
+                        bridgeDownloadParams.getBridgeDownloadVersion(),
+                        ApplicationConstants.POLARIS_TEST_SAST_LOCATION_COMPATIBLE_BRIDGE_VERSION)) {
+            logger.warn(ApplicationConstants.POLARIS_SOURCE_UPLOAD_DEPRECATION_WARNING);
+        }
 
         return scanner.runScanner(scanParameters, bridgeInstallationPath);
     }

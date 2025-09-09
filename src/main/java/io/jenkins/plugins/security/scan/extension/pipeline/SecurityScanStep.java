@@ -121,20 +121,27 @@ public class SecurityScanStep extends Step
     private Boolean polaris_reports_sarif_groupSCAIssues;
     private String polaris_reports_sarif_severities;
     private Boolean polaris_reports_sarif_groupSCAIssues_temporary;
-	@Deprecated
+
+    @Deprecated
     private String polaris_assessment_mode;
+
     private String polaris_test_sca_type;
     private String polaris_test_sast_type;
     private String polaris_test_sca_location;
     private String polaris_test_sast_location;
-	@Deprecated
+
+    @Deprecated
     private String project_source_archive;
-	@Deprecated
+
+    @Deprecated
     private String project_source_excludes;
-	@Deprecated
+
+    @Deprecated
     private Boolean project_source_preserveSymLinks;
-	@Deprecated
+
+    @Deprecated
     private Boolean project_source_preserveSymLinks_actualValue;
+
     private String project_directory;
     private String coverity_project_directory;
     private String blackducksca_project_directory;
@@ -523,22 +530,22 @@ public class SecurityScanStep extends Step
         return polaris_reports_sarif_groupSCAIssues_temporary;
     }
 
-	@Deprecated
+    @Deprecated
     public String getPolaris_assessment_mode() {
         return polaris_assessment_mode;
     }
 
-	@Deprecated
+    @Deprecated
     public String getProject_source_archive() {
         return project_source_archive;
     }
 
-	@Deprecated
+    @Deprecated
     public Boolean isProject_source_preserveSymLinks() {
         return project_source_preserveSymLinks;
     }
 
-	@Deprecated
+    @Deprecated
     public Boolean isProject_source_preserveSymLinks_actualValue() {
         return project_source_preserveSymLinks_actualValue;
     }
@@ -1080,7 +1087,7 @@ public class SecurityScanStep extends Step
         this.polaris_test_sast_location = Util.fixEmptyAndTrim(polaris_test_sast_location);
     }
 
-	@Deprecated
+    @Deprecated
     @DataBoundSetter
     public void setPolaris_assessment_mode(String polaris_assessment_mode) {
         this.polaris_assessment_mode = Util.fixEmptyAndTrim(polaris_assessment_mode);
@@ -1112,20 +1119,20 @@ public class SecurityScanStep extends Step
         this.polaris_reports_sarif_issue_types = Util.fixEmptyAndTrim(polaris_reports_sarif_issue_types);
     }
 
-	@Deprecated
+    @Deprecated
     @DataBoundSetter
     public void setProject_source_archive(String project_source_archive) {
         this.project_source_archive = Util.fixEmptyAndTrim(project_source_archive);
     }
 
-	@Deprecated
+    @Deprecated
     @DataBoundSetter
     public void setProject_source_preserveSymLinks(Boolean project_source_preserveSymLinks) {
         this.project_source_preserveSymLinks = project_source_preserveSymLinks ? true : null;
         this.project_source_preserveSymLinks_actualValue = project_source_preserveSymLinks;
     }
 
-	@Deprecated
+    @Deprecated
     @DataBoundSetter
     public void setProject_source_excludes(String project_source_excludes) {
         this.project_source_excludes = Util.fixEmptyAndTrim(project_source_excludes);
@@ -1420,7 +1427,6 @@ public class SecurityScanStep extends Step
             items.addAll(ParameterMappingService.getMarkBuildStatusItems());
             return items;
         }
-
     }
 
     public class Execution extends SynchronousNonBlockingStepExecution<Integer> {
