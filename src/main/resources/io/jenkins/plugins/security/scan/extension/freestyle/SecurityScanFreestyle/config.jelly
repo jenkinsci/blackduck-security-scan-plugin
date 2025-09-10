@@ -145,8 +145,14 @@
                 <f:entry field="polaris_test_sca_type" title="SCA Test Type (Optional)">
                     <f:textbox/>
                 </f:entry>
+                <f:entry field="polaris_test_sca_location" title="SCA Test Location (Optional)">
+                    <f:select/>
+                </f:entry>
                 <f:entry field="polaris_test_sast_type" title="SAST Test Type (Optional)">
                     <f:textbox/>
+                </f:entry>
+                <f:entry field="polaris_test_sast_location" title="SAST Test Location (Optional)">
+                    <f:select/>
                 </f:entry>
                 <f:entry field="polaris_project_directory" title="Project Directory (Optional)">
                     <f:textbox/>
@@ -161,30 +167,6 @@
                     <f:checkbox checked="${instance.isPolaris_waitForScan() == null || instance.isPolaris_waitForScan() == true}" />
                 </f:entry>
             </f:section>
-
-            <div id="polaris_assessment_mode_sec" class="polaris_assessment_mode_sec">
-                <f:advanced title="Scan Options">
-                    <div id="polaris_assessment_mode" class="polaris_assessment_mode">
-                        <f:entry field="polaris_assessment_mode" title="Assessment Mode (Optional)">
-                            <f:select/>
-                        </f:entry>
-                    </div>
-
-                    <div id="source_upload" style="display: none;" class="source_upload">
-                        <f:section title="Source Code Upload Options">
-                            <f:entry field="project_source_archive" title="Upload Archive Instead Of Project Directory (Optional)">
-                                <f:textbox/>
-                            </f:entry>
-                            <f:entry field="project_source_excludes" title="Project Source Excludes (Optional)">
-                                <f:textbox/>
-                            </f:entry>
-                            <f:entry field="project_source_preserveSymLinks" title="Project Source Preserve Sym Links (Optional)">
-                                <f:checkbox checked="${instance.isProject_source_preserveSymLinks() == true}"/>
-                            </f:entry>
-                        </f:section>
-                    </div>
-                </f:advanced>
-            </div>
 
             <div id="polaris_sarif_report_sec" class="polaris_sarif_report_sec">
                 <f:advanced title="SARIF Report Options">

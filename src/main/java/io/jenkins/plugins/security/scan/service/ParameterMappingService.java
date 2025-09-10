@@ -15,6 +15,7 @@ import io.jenkins.plugins.security.scan.extension.pipeline.ReturnStatusScan;
 import io.jenkins.plugins.security.scan.global.*;
 import io.jenkins.plugins.security.scan.global.enums.BuildStatus;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
+import io.jenkins.plugins.security.scan.global.enums.TestLocation;
 import java.util.*;
 import java.util.stream.Collectors;
 import jenkins.model.GlobalConfiguration;
@@ -223,6 +224,16 @@ public class ParameterMappingService {
         }
     }
 
+    public static void addDeprecatedParameterIfNotBlank(String key, Object value) {
+        if (value instanceof String) {
+            if (!Utility.isStringNullOrBlank((String) value)) {
+                addDeprecatedParameter(key);
+            }
+        } else if (value instanceof Boolean || value instanceof Integer) {
+            addDeprecatedParameter(key);
+        }
+    }
+
     public static Map<String, Object> prepareBlackDuckSCAParametersMap(SecurityScan securityScan) {
         Map<String, Object> blackDuckParameters = new HashMap<>();
 
@@ -428,18 +439,32 @@ public class ParameterMappingService {
                 securityScan.getPolaris_test_sast_type());
         addParameterIfNotBlank(
                 polarisParametersMap,
+                ApplicationConstants.POLARIS_TEST_SCA_LOCATION_KEY,
+                securityScan.getPolaris_test_sca_location());
+        addParameterIfNotBlank(
+                polarisParametersMap,
+                ApplicationConstants.POLARIS_TEST_SAST_LOCATION_KEY,
+                securityScan.getPolaris_test_sast_location());
+        addParameterIfNotBlank(
+                polarisParametersMap,
                 ApplicationConstants.POLARIS_ASSESSMENT_MODE_KEY,
                 securityScan.getPolaris_assessment_mode());
+        addDeprecatedParameterIfNotBlank(
+                ApplicationConstants.POLARIS_ASSESSMENT_MODE_KEY, securityScan.getPolaris_assessment_mode());
         addParameterIfNotBlank(
                 polarisParametersMap, ApplicationConstants.PROJECT_DIRECTORY_KEY, securityScan.getProject_directory());
         addParameterIfNotBlank(
                 polarisParametersMap,
                 ApplicationConstants.PROJECT_SOURCE_ARCHIVE_KEY,
                 securityScan.getProject_source_archive());
+        addDeprecatedParameterIfNotBlank(
+                ApplicationConstants.PROJECT_SOURCE_ARCHIVE_KEY, securityScan.getProject_source_archive());
         addParameterIfNotBlank(
                 polarisParametersMap,
                 ApplicationConstants.PROJECT_SOURCE_EXCLUDES_KEY,
                 securityScan.getProject_source_excludes());
+        addDeprecatedParameterIfNotBlank(
+                ApplicationConstants.PROJECT_SOURCE_EXCLUDES_KEY, securityScan.getProject_source_excludes());
         addParameterIfNotBlank(
                 polarisParametersMap,
                 ApplicationConstants.POLARIS_WAITFORSCAN_KEY,
@@ -447,6 +472,9 @@ public class ParameterMappingService {
 
         if (securityScan.isProject_source_preserveSymLinks_actualValue() != null) {
             polarisParametersMap.put(
+                    ApplicationConstants.PROJECT_SOURCE_PRESERVE_SYM_LINKS_KEY,
+                    securityScan.isProject_source_preserveSymLinks_actualValue());
+            addDeprecatedParameterIfNotBlank(
                     ApplicationConstants.PROJECT_SOURCE_PRESERVE_SYM_LINKS_KEY,
                     securityScan.isProject_source_preserveSymLinks_actualValue());
         }
@@ -812,6 +840,21 @@ public class ParameterMappingService {
         items.add(
                 SecurityProduct.SRM.getProductLabel(),
                 SecurityProduct.SRM.name().toLowerCase());
+        return items;
+    }
+
+    public static ListBoxModel getSCATestLocationItems() {
+        ListBoxModel items = new ListBoxModel();
+        items.add(TestLocation.HYBRID.getName(), TestLocation.HYBRID.getValue());
+        items.add(TestLocation.REMOTE.getName(), TestLocation.REMOTE.getValue());
+        return items;
+    }
+
+    public static ListBoxModel getSASTTestLocationItems() {
+        ListBoxModel items = new ListBoxModel();
+        items.add(TestLocation.HYBRID.getName(), TestLocation.HYBRID.getValue());
+        items.add(TestLocation.LOCAL.getName(), TestLocation.LOCAL.getValue());
+        items.add(TestLocation.REMOTE.getName(), TestLocation.REMOTE.getValue());
         return items;
     }
 
