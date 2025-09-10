@@ -289,7 +289,7 @@ public class ApplicationConstants {
             DEPRECATED_PRODUCT_WILL_BE_REMOVED_IN_FUTURE_AND_RECOMMENDING_TO_USE_NEW_PRODUCT_AND_ITS_PARAMETERS =
                     "%s product is deprecated and will be removed in future. Please use %s and its corresponding parameters instead.";
     public static final String POLARIS_SOURCE_UPLOAD_DEPRECATION_WARNING =
-            "polaris_assessment_mode is deprecated. Use polaris_test_sast_location=remote and/or polaris_test_sca_location=remote for source upload scans instead.";
+            "Polaris Assessment Mode is deprecated. Use \"SAST Test Location (Optional)\" as \"REMOTE\" and/or \"SCA Test Location (Optional)\" as \"REMOTE\" for source upload scans instead.";
 
     // Info Log Related Issue Count
     public static final String SCAN_INFO_FILE_NOT_FOUND = "File for issue count does not exist";
