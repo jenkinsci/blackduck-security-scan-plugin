@@ -9,6 +9,7 @@ import io.jenkins.plugins.security.scan.global.ErrorCode;
 import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.global.Utility;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
@@ -77,8 +78,10 @@ public class BridgeDownload {
                 Utility.getHttpURLConnection(new URL(bridgeDownloadUrl), envVars, logger, scanParameters);
 
         if (connection != null) {
-            bridgeZipFilePath.copyFrom(connection.getURL());
-            logger.info("Bridge CLI successfully downloaded in: " + bridgeZipFilePath);
+            try (InputStream inputStream = connection.getInputStream()) {
+                bridgeZipFilePath.copyFrom(inputStream);
+                logger.info("Bridge CLI successfully downloaded in: " + bridgeZipFilePath);
+            }
         }
 
         return bridgeZipFilePath;
