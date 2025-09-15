@@ -75,10 +75,10 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     private String polaris_reports_sarif_severities;
     private Boolean polaris_reports_sarif_groupSCAIssues_temporary;
 
-	@Deprecated
-	private String polaris_assessment_mode;
+    @Deprecated
+    private String polaris_assessment_mode;
 
-	private String project_source_archive;
+    private String project_source_archive;
 
     private String project_source_excludes;
 
