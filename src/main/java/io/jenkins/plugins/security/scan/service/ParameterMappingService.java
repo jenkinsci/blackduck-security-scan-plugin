@@ -457,14 +457,10 @@ public class ParameterMappingService {
                 polarisParametersMap,
                 ApplicationConstants.PROJECT_SOURCE_ARCHIVE_KEY,
                 securityScan.getProject_source_archive());
-        addDeprecatedParameterIfNotBlank(
-                ApplicationConstants.PROJECT_SOURCE_ARCHIVE_KEY, securityScan.getProject_source_archive());
         addParameterIfNotBlank(
                 polarisParametersMap,
                 ApplicationConstants.PROJECT_SOURCE_EXCLUDES_KEY,
                 securityScan.getProject_source_excludes());
-        addDeprecatedParameterIfNotBlank(
-                ApplicationConstants.PROJECT_SOURCE_EXCLUDES_KEY, securityScan.getProject_source_excludes());
         addParameterIfNotBlank(
                 polarisParametersMap,
                 ApplicationConstants.POLARIS_WAITFORSCAN_KEY,
@@ -472,9 +468,6 @@ public class ParameterMappingService {
 
         if (securityScan.isProject_source_preserveSymLinks_actualValue() != null) {
             polarisParametersMap.put(
-                    ApplicationConstants.PROJECT_SOURCE_PRESERVE_SYM_LINKS_KEY,
-                    securityScan.isProject_source_preserveSymLinks_actualValue());
-            addDeprecatedParameterIfNotBlank(
                     ApplicationConstants.PROJECT_SOURCE_PRESERVE_SYM_LINKS_KEY,
                     securityScan.isProject_source_preserveSymLinks_actualValue());
         }
