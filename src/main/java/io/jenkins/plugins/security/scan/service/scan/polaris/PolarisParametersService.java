@@ -217,7 +217,15 @@ public class PolarisParametersService {
     private void setTestScaTypeLocationAndSastTypeLocation(Map<String, Object> polarisParameters, Polaris polaris) {
         Test test = polaris.getTest() != null ? polaris.getTest() : new Test();
 
-        // SCA type and location
+        boolean scaSet = setScaTypeAndLocation(polarisParameters, test);
+        boolean sastSet = setSastTypeAndLocation(polarisParameters, test);
+
+        if (scaSet || sastSet) {
+            polaris.setTest(test);
+        }
+    }
+
+    private boolean setScaTypeAndLocation(Map<String, Object> polarisParameters, Test test) {
         boolean hasScaType = polarisParameters.containsKey(ApplicationConstants.POLARIS_TEST_SCA_TYPE_KEY);
         boolean hasScaLocation = polarisParameters.containsKey(ApplicationConstants.POLARIS_TEST_SCA_LOCATION_KEY);
         if (hasScaType || hasScaLocation) {
@@ -241,9 +249,12 @@ public class PolarisParametersService {
                 }
             }
             test.setSca(sca);
+            return true;
         }
+        return false;
+    }
 
-        // SAST type and location
+    private boolean setSastTypeAndLocation(Map<String, Object> polarisParameters, Test test) {
         boolean hasSastType = polarisParameters.containsKey(ApplicationConstants.POLARIS_TEST_SAST_TYPE_KEY);
         boolean hasSastLocation = polarisParameters.containsKey(ApplicationConstants.POLARIS_TEST_SAST_LOCATION_KEY);
         if (hasSastType || hasSastLocation) {
@@ -271,11 +282,9 @@ public class PolarisParametersService {
                 }
             }
             test.setSast(sast);
+            return true;
         }
-
-        if ((hasScaType || hasScaLocation) || (hasSastType || hasSastLocation)) {
-            polaris.setTest(test);
-        }
+        return false;
     }
 
     private void setSarif(Map<String, Object> polarisParameters, Polaris polaris) {
