@@ -174,13 +174,10 @@ public class ApplicationConstants {
     // Source Upload Parameters
     public static final String PROJECT_DIRECTORY_KEY = "project_directory";
 
-    @Deprecated
     public static final String PROJECT_SOURCE_ARCHIVE_KEY = "project_source_archive";
 
-    @Deprecated
     public static final String PROJECT_SOURCE_EXCLUDES_KEY = "project_source_excludes";
 
-    @Deprecated
     public static final String PROJECT_SOURCE_PRESERVE_SYM_LINKS_KEY = "project_source_preserveSymLinks";
 
     // Additional Parameters

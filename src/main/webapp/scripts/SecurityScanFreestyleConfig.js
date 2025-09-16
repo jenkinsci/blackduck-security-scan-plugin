@@ -43,6 +43,23 @@ function handleBuildStepChange() {
         const polarisDiv = element.querySelector('#polaris');
         const srmDiv = element.querySelector('#srm');
 
+        const polarisRemoteAnalysisDiv = polarisDiv.querySelector(
+            '#polaris-remote-analysis');
+        const scaLocation = polarisDiv.querySelector(
+            'select[name="_.polaris_test_sca_location"]')?.value;
+        const sastLocation = polarisDiv.querySelector(
+            'select[name="_.polaris_test_sast_location"]')?.value;
+
+        if (!polarisRemoteAnalysisDiv) {
+            return;
+        }
+        if (scaLocation === 'remote' || sastLocation === 'remote') {
+            showParticularDiv(polarisRemoteAnalysisDiv);
+        } else {
+            clearInputFields(polarisRemoteAnalysisDiv);
+            hideParticularDiv(polarisRemoteAnalysisDiv);
+        }
+
         if (selectedOption === 'blackducksca') {
             clearInputFields(coverityDiv);
             hideParticularDiv(coverityDiv);
