@@ -120,6 +120,11 @@
                 <f:entry field="coverity_prComment_enabled" title="Add Comments to Pull Requests (Optional)">
                     <f:checkbox/>
                 </f:entry>
+                <div id="coverity_pr_comment_params">
+                    <f:entry field="coverity_prComment_impacts" title="PR Comment Impacts (Optional)">
+                        <f:textbox/>
+                    </f:entry>
+                </div>
             </f:advanced>
         </div>
     </div>
