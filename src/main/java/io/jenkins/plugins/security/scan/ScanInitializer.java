@@ -80,7 +80,7 @@ public class ScanInitializer {
             logger.warn(ApplicationConstants.POLARIS_SOURCE_UPLOAD_DEPRECATION_WARNING);
         }
 
-        return scanner.runScanner(scanParameters, bridgeInstallationPath);
+        return scanner.runScanner(scanParameters, bridgeInstallationPath, bridgeDownloadParams);
     }
 
     private boolean checkNetworkAirgap(Map<String, Object> scanParameters) {

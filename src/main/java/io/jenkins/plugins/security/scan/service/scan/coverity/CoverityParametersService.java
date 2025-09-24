@@ -2,6 +2,7 @@ package io.jenkins.plugins.security.scan.service.scan.coverity;
 
 import hudson.EnvVars;
 import hudson.model.TaskListener;
+import io.jenkins.plugins.security.scan.bridge.BridgeDownloadParameters;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.global.Utility;
@@ -21,11 +22,18 @@ import java.util.stream.Collectors;
 public class CoverityParametersService {
     private final LoggerWrapper logger;
     private final EnvVars envVars;
+	private BridgeDownloadParameters bridgeDownloadParameters;
 
     public CoverityParametersService(TaskListener listener, EnvVars envVars) {
         this.logger = new LoggerWrapper(listener);
         this.envVars = envVars;
-    }
+	}
+
+	public CoverityParametersService(TaskListener listener, EnvVars envVars, BridgeDownloadParameters bridgeDownloadParameters) {
+		this.logger = new LoggerWrapper(listener);
+		this.envVars = envVars;
+		this.bridgeDownloadParameters = bridgeDownloadParameters;
+	}
 
     public boolean hasAllMandatoryCoverityParams(Map<String, Object> coverityParameters) {
         if (coverityParameters == null || coverityParameters.isEmpty()) {
@@ -245,7 +253,9 @@ public class CoverityParametersService {
             if (isEnabled.equals("true")) {
                 boolean isPullRequestEvent = Utility.isPullRequestEvent(envVars);
                 if (isPullRequestEvent) {
-					if (1== 1) {
+					if (Utility.isVersionCompatible(
+						bridgeDownloadParameters.getBridgeDownloadVersion(),
+						ApplicationConstants.COVERITY_PRCOMMENT_IMPACTS_COMPATIBLE_BRIDGE_VERSION)) {
 						PrComment prComment = new PrComment();
 						prComment.setEnabled(true);
 						handlePrCommentImpacts(coverityParameters, prComment);
