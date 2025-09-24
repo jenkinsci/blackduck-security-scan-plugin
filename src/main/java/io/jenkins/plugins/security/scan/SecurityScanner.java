@@ -47,11 +47,15 @@ public class SecurityScanner {
         this.logger = new LoggerWrapper(listener);
     }
 
-    public int runScanner(Map<String, Object> scanParams, FilePath bridgeInstallationPath, BridgeDownloadParameters bridgeDownloadParams)
+    public int runScanner(
+            Map<String, Object> scanParams,
+            FilePath bridgeInstallationPath,
+            BridgeDownloadParameters bridgeDownloadParams)
             throws PluginExceptionHandler {
         int scanner = 0;
 
-        List<String> commandLineArgs = toolsParameterService.getCommandLineArgs(scanParams, bridgeInstallationPath, bridgeDownloadParams);
+        List<String> commandLineArgs =
+                toolsParameterService.getCommandLineArgs(scanParams, bridgeInstallationPath, bridgeDownloadParams);
 
         logger.info("Executable command line arguments: "
                 + commandLineArgs.stream()

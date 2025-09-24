@@ -53,7 +53,10 @@ public class ToolsParameterService {
         this.logger = new LoggerWrapper(listener);
     }
 
-    public List<String> getCommandLineArgs(Map<String, Object> scanParameters, FilePath bridgeInstallationPath, BridgeDownloadParameters bridgeDownloadParams)
+    public List<String> getCommandLineArgs(
+            Map<String, Object> scanParameters,
+            FilePath bridgeInstallationPath,
+            BridgeDownloadParameters bridgeDownloadParams)
             throws PluginExceptionHandler {
         List<String> commandLineArgs = new ArrayList<>();
 
@@ -82,7 +85,8 @@ public class ToolsParameterService {
         }
     }
 
-    private List<String> getSecurityProductSpecificCommands(Map<String, Object> scanParameters, BridgeDownloadParameters bridgeDownloadParams)
+    private List<String> getSecurityProductSpecificCommands(
+            Map<String, Object> scanParameters, BridgeDownloadParameters bridgeDownloadParams)
             throws PluginExceptionHandler {
         ScanParametersService scanParametersService = new ScanParametersService(listener);
         Set<String> securityProducts = scanParametersService.getSecurityProducts(scanParameters);
@@ -129,9 +133,11 @@ public class ToolsParameterService {
             Map<String, Object> scanParameters,
             Set<String> securityProducts,
             List<String> scanCommands,
-            Object scmObject, BridgeDownloadParameters bridgeDownloadParams) {
+            Object scmObject,
+            BridgeDownloadParameters bridgeDownloadParams) {
         if (securityProducts.contains(SecurityProduct.COVERITY.name())) {
-            CoverityParametersService coverityParametersService = new CoverityParametersService(listener, envVars, bridgeDownloadParams);
+            CoverityParametersService coverityParametersService =
+                    new CoverityParametersService(listener, envVars, bridgeDownloadParams);
             Coverity coverity = coverityParametersService.prepareCoverityObjectForBridge(scanParameters);
             Project project = coverityParametersService.prepareProjectObjectForBridge(scanParameters);
 

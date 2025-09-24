@@ -15,7 +15,7 @@ public interface PrCommentScan {
 
     public Boolean isCoverity_prComment_enabled_actualValue();
 
-	public String getCoverity_prComment_impacts();
+    public String getCoverity_prComment_impacts();
 
     public Boolean isPolaris_prComment_enabled();
 

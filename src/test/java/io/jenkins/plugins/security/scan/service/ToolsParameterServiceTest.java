@@ -544,9 +544,10 @@ public class ToolsParameterServiceTest {
         blackDuckParametersMap.put(ApplicationConstants.BLACKDUCKSCA_PRCOMMENT_ENABLED_KEY, false);
         blackDuckParametersMap.put(ApplicationConstants.INCLUDE_DIAGNOSTICS_KEY, true);
 
-		BridgeDownloadParameters bridgeDownloadParams = Mockito.mock(BridgeDownloadParameters.class);
+        BridgeDownloadParameters bridgeDownloadParams = Mockito.mock(BridgeDownloadParameters.class);
 
-		List<String> commandLineArgs = toolsParameterService.getCommandLineArgs(blackDuckParametersMap, workspace, bridgeDownloadParams);
+        List<String> commandLineArgs =
+                toolsParameterService.getCommandLineArgs(blackDuckParametersMap, workspace, bridgeDownloadParams);
 
         if (getOSNameForTest().contains("win")) {
             assertEquals(
@@ -582,9 +583,10 @@ public class ToolsParameterServiceTest {
         coverityParameters.put(ApplicationConstants.COVERITY_PASSPHRASE_KEY, "fakeUserPassword");
         coverityParameters.put(ApplicationConstants.INCLUDE_DIAGNOSTICS_KEY, true);
 
-		BridgeDownloadParameters bridgeDownloadParams = Mockito.mock(BridgeDownloadParameters.class);
+        BridgeDownloadParameters bridgeDownloadParams = Mockito.mock(BridgeDownloadParameters.class);
 
-		List<String> commandLineArgs = toolsParameterService.getCommandLineArgs(coverityParameters, workspace, bridgeDownloadParams);
+        List<String> commandLineArgs =
+                toolsParameterService.getCommandLineArgs(coverityParameters, workspace, bridgeDownloadParams);
 
         if (getOSNameForTest().contains("win")) {
             assertEquals(
@@ -620,9 +622,10 @@ public class ToolsParameterServiceTest {
         polarisParameters.put(ApplicationConstants.POLARIS_APPLICATION_NAME_KEY, "Fake-application-name");
         polarisParameters.put(ApplicationConstants.POLARIS_PROJECT_NAME_KEY, "fake-project-name");
 
-		BridgeDownloadParameters bridgeDownloadParams = Mockito.mock(BridgeDownloadParameters.class);
+        BridgeDownloadParameters bridgeDownloadParams = Mockito.mock(BridgeDownloadParameters.class);
 
-		List<String> commandLineArgs = toolsParameterService.getCommandLineArgs(polarisParameters, workspace, bridgeDownloadParams);
+        List<String> commandLineArgs =
+                toolsParameterService.getCommandLineArgs(polarisParameters, workspace, bridgeDownloadParams);
 
         if (getOSNameForTest().contains("win")) {
             assertEquals(
@@ -657,9 +660,10 @@ public class ToolsParameterServiceTest {
         srmParameters.put(ApplicationConstants.SRM_PROJECT_NAME_KEY, "fake-project-name");
         srmParameters.put(ApplicationConstants.SRM_PROJECT_ID_KEY, "fake-project-id");
 
-		BridgeDownloadParameters bridgeDownloadParams = Mockito.mock(BridgeDownloadParameters.class);
+        BridgeDownloadParameters bridgeDownloadParams = Mockito.mock(BridgeDownloadParameters.class);
 
-		List<String> commandLineArgs = toolsParameterService.getCommandLineArgs(srmParameters, workspace, bridgeDownloadParams);
+        List<String> commandLineArgs =
+                toolsParameterService.getCommandLineArgs(srmParameters, workspace, bridgeDownloadParams);
 
         if (getOSNameForTest().contains("win")) {
             assertEquals(

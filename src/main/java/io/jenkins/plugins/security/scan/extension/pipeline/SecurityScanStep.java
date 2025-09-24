@@ -95,7 +95,7 @@ public class SecurityScanStep extends Step
     private String coverity_install_directory;
     private Boolean coverity_prComment_enabled;
     private Boolean coverity_prComment_enabled_actualValue;
-	private String coverity_prComment_impacts;
+    private String coverity_prComment_impacts;
     private String coverity_version;
     private Boolean coverity_local;
     private String coverity_build_command;
@@ -415,9 +415,9 @@ public class SecurityScanStep extends Step
         return coverity_prComment_enabled_actualValue;
     }
 
-	public String getCoverity_prComment_impacts() {
-		return coverity_prComment_impacts;
-	}
+    public String getCoverity_prComment_impacts() {
+        return coverity_prComment_impacts;
+    }
 
     public String getCoverity_version() {
         return coverity_version;
@@ -985,10 +985,10 @@ public class SecurityScanStep extends Step
         this.coverity_prComment_enabled_actualValue = coverity_prComment_enabled ? true : false;
     }
 
-	@DataBoundSetter
-	public void setCoverity_prComment_impacts(String coverity_prComment_severities) {
-		this.coverity_prComment_impacts = Util.fixEmptyAndTrim(coverity_prComment_severities);
-	}
+    @DataBoundSetter
+    public void setCoverity_prComment_impacts(String coverity_prComment_severities) {
+        this.coverity_prComment_impacts = Util.fixEmptyAndTrim(coverity_prComment_severities);
+    }
 
     @DataBoundSetter
     public void setCoverity_version(String coverity_version) {

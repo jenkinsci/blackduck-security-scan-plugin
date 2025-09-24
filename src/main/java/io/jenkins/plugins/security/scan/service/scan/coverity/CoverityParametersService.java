@@ -22,18 +22,19 @@ import java.util.stream.Collectors;
 public class CoverityParametersService {
     private final LoggerWrapper logger;
     private final EnvVars envVars;
-	private BridgeDownloadParameters bridgeDownloadParameters;
+    private BridgeDownloadParameters bridgeDownloadParameters;
 
     public CoverityParametersService(TaskListener listener, EnvVars envVars) {
         this.logger = new LoggerWrapper(listener);
         this.envVars = envVars;
-	}
+    }
 
-	public CoverityParametersService(TaskListener listener, EnvVars envVars, BridgeDownloadParameters bridgeDownloadParameters) {
-		this.logger = new LoggerWrapper(listener);
-		this.envVars = envVars;
-		this.bridgeDownloadParameters = bridgeDownloadParameters;
-	}
+    public CoverityParametersService(
+            TaskListener listener, EnvVars envVars, BridgeDownloadParameters bridgeDownloadParameters) {
+        this.logger = new LoggerWrapper(listener);
+        this.envVars = envVars;
+        this.bridgeDownloadParameters = bridgeDownloadParameters;
+    }
 
     public boolean hasAllMandatoryCoverityParams(Map<String, Object> coverityParameters) {
         if (coverityParameters == null || coverityParameters.isEmpty()) {
@@ -253,18 +254,18 @@ public class CoverityParametersService {
             if (isEnabled.equals("true")) {
                 boolean isPullRequestEvent = Utility.isPullRequestEvent(envVars);
                 if (isPullRequestEvent) {
-					if (Utility.isVersionCompatible(
-						bridgeDownloadParameters.getBridgeDownloadVersion(),
-						ApplicationConstants.COVERITY_PRCOMMENT_IMPACTS_COMPATIBLE_BRIDGE_VERSION)) {
-						PrComment prComment = new PrComment();
-						prComment.setEnabled(true);
-						handlePrCommentImpacts(coverityParameters, prComment);
-						coverity.setPrComment(prComment);
-					} else {
-						Automation automation = new Automation();
-						automation.setPrComment(true);
-						coverity.setAutomation(automation);
-					}
+                    if (Utility.isVersionCompatible(
+                            bridgeDownloadParameters.getBridgeDownloadVersion(),
+                            ApplicationConstants.COVERITY_PRCOMMENT_IMPACTS_COMPATIBLE_BRIDGE_VERSION)) {
+                        PrComment prComment = new PrComment();
+                        prComment.setEnabled(true);
+                        handlePrCommentImpacts(coverityParameters, prComment);
+                        coverity.setPrComment(prComment);
+                    } else {
+                        Automation automation = new Automation();
+                        automation.setPrComment(true);
+                        coverity.setAutomation(automation);
+                    }
                 } else {
                     logger.info(ApplicationConstants.COVERITY_PRCOMMENT_INFO_FOR_NON_PR_SCANS);
                 }
@@ -272,21 +273,21 @@ public class CoverityParametersService {
         }
     }
 
-	private static void handlePrCommentImpacts(Map<String, Object> coverityParameters, PrComment prcomment) {
-		if (coverityParameters.containsKey(ApplicationConstants.COVERITY_PRCOMMENT_IMPACTS_KEY)) {
-			String prCommentImpactsValue = coverityParameters
-				.get(ApplicationConstants.COVERITY_PRCOMMENT_IMPACTS_KEY)
-				.toString()
-				.trim();
-			if (!prCommentImpactsValue.isEmpty()) {
-				List<String> prCommentImpacts = Arrays.stream(
-						prCommentImpactsValue.toUpperCase().split(","))
-					.map(String::trim)
-					.collect(Collectors.toList());
-				prcomment.setImpacts(prCommentImpacts);
-			}
-		}
-	}
+    private static void handlePrCommentImpacts(Map<String, Object> coverityParameters, PrComment prcomment) {
+        if (coverityParameters.containsKey(ApplicationConstants.COVERITY_PRCOMMENT_IMPACTS_KEY)) {
+            String prCommentImpactsValue = coverityParameters
+                    .get(ApplicationConstants.COVERITY_PRCOMMENT_IMPACTS_KEY)
+                    .toString()
+                    .trim();
+            if (!prCommentImpactsValue.isEmpty()) {
+                List<String> prCommentImpacts = Arrays.stream(
+                                prCommentImpactsValue.toUpperCase().split(","))
+                        .map(String::trim)
+                        .collect(Collectors.toList());
+                prcomment.setImpacts(prCommentImpacts);
+            }
+        }
+    }
 
     private void setCoverityInstallDirectory(Map<String, Object> coverityParameters, Coverity coverity) {
         if (coverityParameters.containsKey(ApplicationConstants.COVERITY_INSTALL_DIRECTORY_KEY)) {
