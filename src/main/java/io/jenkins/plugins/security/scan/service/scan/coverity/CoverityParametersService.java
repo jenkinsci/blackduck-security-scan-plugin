@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CoverityParametersService {
     private final LoggerWrapper logger;
@@ -244,15 +245,38 @@ public class CoverityParametersService {
             if (isEnabled.equals("true")) {
                 boolean isPullRequestEvent = Utility.isPullRequestEvent(envVars);
                 if (isPullRequestEvent) {
-                    Automation automation = new Automation();
-                    automation.setPrComment(true);
-                    coverity.setAutomation(automation);
+					if (1== 1) {
+						PrComment prComment = new PrComment();
+						prComment.setEnabled(true);
+						handlePrCommentImpacts(coverityParameters, prComment);
+						coverity.setPrComment(prComment);
+					} else {
+						Automation automation = new Automation();
+						automation.setPrComment(true);
+						coverity.setAutomation(automation);
+					}
                 } else {
                     logger.info(ApplicationConstants.COVERITY_PRCOMMENT_INFO_FOR_NON_PR_SCANS);
                 }
             }
         }
     }
+
+	private static void handlePrCommentImpacts(Map<String, Object> coverityParameters, PrComment prcomment) {
+		if (coverityParameters.containsKey(ApplicationConstants.COVERITY_PRCOMMENT_IMPACTS_KEY)) {
+			String prCommentImpactsValue = coverityParameters
+				.get(ApplicationConstants.COVERITY_PRCOMMENT_IMPACTS_KEY)
+				.toString()
+				.trim();
+			if (!prCommentImpactsValue.isEmpty()) {
+				List<String> prCommentImpacts = Arrays.stream(
+						prCommentImpactsValue.toUpperCase().split(","))
+					.map(String::trim)
+					.collect(Collectors.toList());
+				prcomment.setImpacts(prCommentImpacts);
+			}
+		}
+	}
 
     private void setCoverityInstallDirectory(Map<String, Object> coverityParameters, Coverity coverity) {
         if (coverityParameters.containsKey(ApplicationConstants.COVERITY_INSTALL_DIRECTORY_KEY)) {

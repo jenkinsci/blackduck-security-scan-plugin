@@ -391,6 +391,9 @@ public class ParameterMappingService {
                     coverityParameters,
                     ApplicationConstants.COVERITY_PRCOMMENT_ENABLED_KEY,
                     prCommentScan.isCoverity_prComment_enabled_actualValue());
+			addParameterIfNotBlank(coverityParameters,
+				ApplicationConstants.COVERITY_PRCOMMENT_IMPACTS_KEY,
+				prCommentScan.getCoverity_prComment_impacts());
         }
 
         prepareCoverityToolConfigurationParametersMap(coverityParameters, securityScan);

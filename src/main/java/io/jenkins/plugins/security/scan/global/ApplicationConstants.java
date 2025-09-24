@@ -131,6 +131,7 @@ public class ApplicationConstants {
     public static final String COVERITY_CONFIG_PATH_KEY = "coverity_config_path";
     public static final String COVERITY_ARGS_KEY = "coverity_args";
     public static final String COVERITY_PRCOMMENT_ENABLED_KEY = "coverity_prComment_enabled";
+	public static final String COVERITY_PRCOMMENT_IMPACTS_KEY = "coverity_prComment_impacts";
     public static final String COVERITY_VERSION_KEY = "coverity_version";
     public static final String COVERITY_LOCAL_KEY = "coverity_local";
     public static final String COVERITY_EXECUTION_PATH_KEY = "coverity_execution_path";
