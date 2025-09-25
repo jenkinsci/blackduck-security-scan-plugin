@@ -262,17 +262,16 @@ public class CoverityParametersService {
                         handlePrCommentImpacts(coverityParameters, prComment);
                         coverity.setPrComment(prComment);
                     } else {
-						logger.info(String.format(
-						    "Bridge CLI version %s < %s, converting to legacy automation format.",
-						    bridgeDownloadParameters.getBridgeDownloadVersion(),
-						    ApplicationConstants.COVERITY_PRCOMMENT_IMPACTS_COMPATIBLE_BRIDGE_VERSION
-						));
+                        logger.info(String.format(
+                                "Bridge CLI version %s < %s, converting to legacy automation format.",
+                                bridgeDownloadParameters.getBridgeDownloadVersion(),
+                                ApplicationConstants.COVERITY_PRCOMMENT_IMPACTS_COMPATIBLE_BRIDGE_VERSION));
                         Automation automation = new Automation();
                         automation.setPrComment(true);
                         coverity.setAutomation(automation);
-						logger.info(String.format(
-							"Converted Coverity PR comment configuration to legacy format for compatibility with Bridge CLI < %s.",
-							ApplicationConstants.COVERITY_PRCOMMENT_IMPACTS_COMPATIBLE_BRIDGE_VERSION));
+                        logger.info(String.format(
+                                "Converted Coverity PR comment configuration to legacy format for compatibility with Bridge CLI < %s.",
+                                ApplicationConstants.COVERITY_PRCOMMENT_IMPACTS_COMPATIBLE_BRIDGE_VERSION));
                     }
                 } else {
                     logger.info(ApplicationConstants.COVERITY_PRCOMMENT_INFO_FOR_NON_PR_SCANS);
