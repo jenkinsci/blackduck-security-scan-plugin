@@ -1,7 +1,6 @@
 package io.jenkins.plugins.security.scan.global;
 
 import com.cloudbees.hudson.plugins.folder.Folder;
-import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hudson.EnvVars;
@@ -451,46 +450,5 @@ public class Utility {
 
         // Default path
         return getDefaultSarifReportFilePath(isBlackDuckScan, isPolarisScan);
-    }
-
-    public static boolean isVersionCompatible(String version, String minCompatibleBridgeVersion) {
-        if (version.equals(ApplicationConstants.BRIDGE_CLI_LATEST_VERSION)) {
-            return true;
-        }
-
-        // Extract numeric version part before any alpha characters for comparison
-        String numericVersion = Utility.extractNumericVersion(version);
-        String numericMinVersion = Utility.extractNumericVersion(minCompatibleBridgeVersion);
-
-        String[] inputVersionSplits = numericVersion.split("\\.");
-        String[] minCompatibleArmVersionSplits = numericMinVersion.split("\\.");
-
-        if (inputVersionSplits.length != 3 || minCompatibleArmVersionSplits.length != 3) {
-            return false;
-        }
-
-        Version inputVersion = new Version(
-                Integer.parseInt(inputVersionSplits[0]),
-                Integer.parseInt(inputVersionSplits[1]),
-                Integer.parseInt(inputVersionSplits[2]),
-                null,
-                null,
-                null);
-        Version minCompatibleArmVersion = new Version(
-                Integer.parseInt(minCompatibleArmVersionSplits[0]),
-                Integer.parseInt(minCompatibleArmVersionSplits[1]),
-                Integer.parseInt(minCompatibleArmVersionSplits[2]),
-                null,
-                null,
-                null);
-
-        return inputVersion.compareTo(minCompatibleArmVersion) >= 0;
-    }
-
-    public static String extractNumericVersion(String version) {
-        // Extract numeric part (e.g., "3.7.1" from "3.7.1rc1")
-        Pattern pattern = Pattern.compile("([0-9.]+)");
-        Matcher matcher = pattern.matcher(version);
-        return matcher.find() ? matcher.group(1) : version;
     }
 }

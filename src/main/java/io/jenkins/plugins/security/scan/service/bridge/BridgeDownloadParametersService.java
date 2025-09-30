@@ -1,5 +1,6 @@
 package io.jenkins.plugins.security.scan.service.bridge;
 
+import com.fasterxml.jackson.core.Version;
 import hudson.FilePath;
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.bridge.BridgeDownloadParameters;
@@ -176,7 +177,7 @@ public class BridgeDownloadParametersService {
 
         if (isMac) {
             boolean isValidVersionForARM = Objects.isNull(version)
-                    || Utility.isVersionCompatible(version, ApplicationConstants.MAC_ARM_COMPATIBLE_BRIDGE_VERSION);
+                    || isVersionCompatibleForARMChips(version, ApplicationConstants.MAC_ARM_COMPATIBLE_BRIDGE_VERSION);
             return selectPlatform(
                     version,
                     isArm,
@@ -188,7 +189,8 @@ public class BridgeDownloadParametersService {
 
         if (isLinux) {
             boolean isValidVersionForARM = Objects.isNull(version)
-                    || Utility.isVersionCompatible(version, ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION);
+                    || isVersionCompatibleForARMChips(
+                            version, ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION);
             return selectPlatform(
                     version,
                     isArm,
@@ -231,5 +233,46 @@ public class BridgeDownloadParametersService {
                 .concat("-")
                 .concat(getPlatform(version))
                 .concat(".zip");
+    }
+
+    public boolean isVersionCompatibleForARMChips(String version, String minCompatibleBridgeVersion) {
+        if (version.equals(ApplicationConstants.BRIDGE_CLI_LATEST_VERSION)) {
+            return true;
+        }
+
+        // Extract numeric version part before any alpha characters for comparison
+        String numericVersion = extractNumericVersion(version);
+        String numericMinVersion = extractNumericVersion(minCompatibleBridgeVersion);
+
+        String[] inputVersionSplits = numericVersion.split("\\.");
+        String[] minCompatibleArmVersionSplits = numericMinVersion.split("\\.");
+
+        if (inputVersionSplits.length != 3 || minCompatibleArmVersionSplits.length != 3) {
+            return false;
+        }
+
+        Version inputVersion = new Version(
+                Integer.parseInt(inputVersionSplits[0]),
+                Integer.parseInt(inputVersionSplits[1]),
+                Integer.parseInt(inputVersionSplits[2]),
+                null,
+                null,
+                null);
+        Version minCompatibleArmVersion = new Version(
+                Integer.parseInt(minCompatibleArmVersionSplits[0]),
+                Integer.parseInt(minCompatibleArmVersionSplits[1]),
+                Integer.parseInt(minCompatibleArmVersionSplits[2]),
+                null,
+                null,
+                null);
+
+        return inputVersion.compareTo(minCompatibleArmVersion) >= 0;
+    }
+
+    private String extractNumericVersion(String version) {
+        // Extract numeric part (e.g., "3.7.1" from "3.7.1rc1")
+        Pattern pattern = Pattern.compile("([0-9.]+)");
+        Matcher matcher = pattern.matcher(version);
+        return matcher.find() ? matcher.group(1) : version;
     }
 }

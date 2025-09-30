@@ -100,6 +100,18 @@ securityProduct.addEventListener('change', function() {
 });
 
 document.addEventListener('change', function(event) {
+    var polarisAssessmentModeOption = document.querySelector('select[name="_.polaris_assessment_mode"]')?.value;
+    var sourceUploadDiv = document.getElementById('source_upload');
+
+    if (polarisAssessmentModeOption === 'SOURCE_UPLOAD') {
+        showParticularDiv(sourceUploadDiv);
+    }
+
+    if (polarisAssessmentModeOption === 'CI' || polarisAssessmentModeOption === '') {
+        clearInputFields(sourceUploadDiv);
+        hideParticularDiv(sourceUploadDiv);
+    }
+
     toggleSarifParamsDivs(event);
     togglePrCommentDivs();
     toggleFixPrParamsDivs();
