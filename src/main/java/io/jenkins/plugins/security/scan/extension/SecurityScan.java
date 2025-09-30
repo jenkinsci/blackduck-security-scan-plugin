@@ -168,16 +168,12 @@ public interface SecurityScan {
     @Deprecated
     String getPolaris_assessment_mode();
 
-    @Deprecated
     String getProject_source_archive();
 
-    @Deprecated
     Boolean isProject_source_preserveSymLinks();
 
-    @Deprecated
     Boolean isProject_source_preserveSymLinks_actualValue();
 
-    @Deprecated
     String getProject_source_excludes();
 
     String getProject_directory();

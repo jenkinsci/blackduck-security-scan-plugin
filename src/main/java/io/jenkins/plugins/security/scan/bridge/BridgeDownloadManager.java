@@ -8,6 +8,7 @@ import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.global.Utility;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -144,7 +145,9 @@ public class BridgeDownloadManager {
 
             HttpURLConnection connection = Utility.getHttpURLConnection(url, envVars, logger, scanParameters);
             if (connection != null) {
-                tempFilePath.copyFrom(connection.getURL());
+                try (InputStream inputStream = connection.getInputStream()) {
+                    tempFilePath.copyFrom(inputStream);
+                }
                 tempVersionFilePath = tempFilePath.getRemote();
             }
         } catch (IOException | InterruptedException e) {

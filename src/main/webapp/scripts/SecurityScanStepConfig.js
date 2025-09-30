@@ -100,6 +100,24 @@ securityProduct.addEventListener('change', function() {
 });
 
 document.addEventListener('change', function(event) {
+    const polarisDiv = document.getElementById('polaris');
+    const polarisRemoteAnalysisDiv = polarisDiv.querySelector(
+        '#polaris-remote-analysis');
+    const scaLocation = polarisDiv.querySelector(
+        'select[name="_.polaris_test_sca_location"]')?.value;
+    const sastLocation = polarisDiv.querySelector(
+        'select[name="_.polaris_test_sast_location"]')?.value;
+
+    if (!polarisRemoteAnalysisDiv) {
+        return;
+    }
+    if (scaLocation === 'remote' || sastLocation === 'remote') {
+        showParticularDiv(polarisRemoteAnalysisDiv);
+    } else {
+        clearInputFields(polarisRemoteAnalysisDiv);
+        hideParticularDiv(polarisRemoteAnalysisDiv);
+    }
+
     toggleSarifParamsDivs(event);
     togglePrCommentDivs();
     toggleFixPrParamsDivs();
