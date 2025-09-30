@@ -16,7 +16,6 @@ public class ApplicationConstants {
     public static final String PLATFORM_MACOSX = "macosx";
     public static final String MAC_ARM_COMPATIBLE_BRIDGE_VERSION = "2.1.0";
     public static final String LINUX_ARM_COMPATIBLE_BRIDGE_VERSION = "3.5.1";
-    public static final String POLARIS_TEST_SAST_LOCATION_COMPATIBLE_BRIDGE_VERSION = "3.7.8";
     public static final String COVERITY_PRCOMMENT_IMPACTS_COMPATIBLE_BRIDGE_VERSION = "3.9.0";
     public static final String DEFAULT_DIRECTORY_NAME = "bridge-cli-bundle";
     public static final String BRIDGE_REPORT_DIRECTORY = ".bridge";
@@ -153,14 +152,9 @@ public class ApplicationConstants {
     public static final String POLARIS_REPORTS_SARIF_GROUPSCAISSUES_KEY = "polaris_reports_sarif_groupSCAIssues";
     public static final String POLARIS_REPORTS_SARIF_SEVERITIES_KEY = "polaris_reports_sarif_severities";
     public static final String POLARIS_REPORTS_SARIF_ISSUE_TYPES_KEY = "polaris_reports_sarif_issue_types";
-
-    @Deprecated
     public static final String POLARIS_ASSESSMENT_MODE_KEY = "polaris_assessment_mode";
-
     public static final String POLARIS_TEST_SCA_TYPE_KEY = "polaris_test_sca_type";
     public static final String POLARIS_TEST_SAST_TYPE_KEY = "polaris_test_sast_type";
-    public static final String POLARIS_TEST_SCA_LOCATION_KEY = "polaris_test_sca_location";
-    public static final String POLARIS_TEST_SAST_LOCATION_KEY = "polaris_test_sast_location";
     public static final String POLARIS_WAITFORSCAN_KEY = "polaris_waitForScan";
 
     // SRM Parameters
@@ -175,14 +169,8 @@ public class ApplicationConstants {
 
     // Source Upload Parameters
     public static final String PROJECT_DIRECTORY_KEY = "project_directory";
-
-    @Deprecated
     public static final String PROJECT_SOURCE_ARCHIVE_KEY = "project_source_archive";
-
-    @Deprecated
     public static final String PROJECT_SOURCE_EXCLUDES_KEY = "project_source_excludes";
-
-    @Deprecated
     public static final String PROJECT_SOURCE_PRESERVE_SYM_LINKS_KEY = "project_source_preserveSymLinks";
 
     // Additional Parameters
@@ -290,8 +278,6 @@ public class ApplicationConstants {
     public static final String
             DEPRECATED_PRODUCT_WILL_BE_REMOVED_IN_FUTURE_AND_RECOMMENDING_TO_USE_NEW_PRODUCT_AND_ITS_PARAMETERS =
                     "%s product is deprecated and will be removed in future. Please use %s and its corresponding parameters instead.";
-    public static final String POLARIS_SOURCE_UPLOAD_DEPRECATION_WARNING =
-            "Polaris Assessment Mode is deprecated. Use \"SAST Test Location (Optional)\" as \"REMOTE\" and/or \"SCA Test Location (Optional)\" as \"REMOTE\" for source upload scans instead.";
 
     // Info Log Related Issue Count
     public static final String SCAN_INFO_FILE_NOT_FOUND = "File for issue count does not exist";
