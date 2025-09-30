@@ -137,16 +137,26 @@ function toggleSarifParamsDivs(event) {
 }
 
 function togglePrCommentDivs() {
-    var selectedOption = securityProduct.value;
-    if (selectedOption == "polaris") {
-        var polarisPrEnabledCheckbox = document.querySelector('input[name="_.polaris_prComment_enabled"]')
-        var polarisPrCommentSection = document.getElementById('polaris_pr_comment_params')
-        if (polarisPrEnabledCheckbox.checked) {
-            polarisPrCommentSection.style.display = 'block';
-        } else {
-            polarisPrCommentSection.style.display = 'none';
-            clearInputFields(polarisPrCommentSection);
-        }
+    const selectedOption = securityProduct.value;
+    let checkbox, section;
+
+    if (selectedOption === "polaris") {
+        checkbox = document.querySelector('input[name="_.polaris_prComment_enabled"]');
+        section = document.getElementById('polaris_pr_comment_params');
+    } else if (selectedOption === "coverity") {
+        checkbox = document.querySelector('input[name="_.coverity_prComment_enabled"]');
+        section = document.getElementById('coverity_pr_comment_params');
+    } else {
+        return;
+    }
+
+    if (!checkbox || !section) return;
+
+    if (checkbox.checked) {
+        section.style.display = 'block';
+    } else {
+        section.style.display = 'none';
+        clearInputFields(section);
     }
 }
 

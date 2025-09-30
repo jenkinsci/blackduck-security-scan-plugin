@@ -15,6 +15,9 @@ public class Coverity {
     @JsonProperty("automation")
     private Automation automation;
 
+    @JsonProperty("prComment")
+    private PrComment prComment;
+
     @JsonProperty("version")
     private String version;
 
@@ -61,6 +64,14 @@ public class Coverity {
 
     public void setAutomation(Automation automation) {
         this.automation = automation;
+    }
+
+    public PrComment getPrComment() {
+        return prComment;
+    }
+
+    public void setPrComment(PrComment prComment) {
+        this.prComment = prComment;
     }
 
     public String getVersion() {

@@ -17,6 +17,7 @@ public class ApplicationConstants {
     public static final String MAC_ARM_COMPATIBLE_BRIDGE_VERSION = "2.1.0";
     public static final String LINUX_ARM_COMPATIBLE_BRIDGE_VERSION = "3.5.1";
     public static final String POLARIS_TEST_SAST_LOCATION_COMPATIBLE_BRIDGE_VERSION = "3.7.8";
+    public static final String COVERITY_PRCOMMENT_IMPACTS_COMPATIBLE_BRIDGE_VERSION = "3.9.0";
     public static final String DEFAULT_DIRECTORY_NAME = "bridge-cli-bundle";
     public static final String BRIDGE_REPORT_DIRECTORY = ".bridge";
     public static final String DEFAULT_BLACKDUCKSCA_SARIF_REPORT_FILE_PATH =
@@ -131,6 +132,7 @@ public class ApplicationConstants {
     public static final String COVERITY_CONFIG_PATH_KEY = "coverity_config_path";
     public static final String COVERITY_ARGS_KEY = "coverity_args";
     public static final String COVERITY_PRCOMMENT_ENABLED_KEY = "coverity_prComment_enabled";
+    public static final String COVERITY_PRCOMMENT_IMPACTS_KEY = "coverity_prComment_impacts";
     public static final String COVERITY_VERSION_KEY = "coverity_version";
     public static final String COVERITY_LOCAL_KEY = "coverity_local";
     public static final String COVERITY_EXECUTION_PATH_KEY = "coverity_execution_path";

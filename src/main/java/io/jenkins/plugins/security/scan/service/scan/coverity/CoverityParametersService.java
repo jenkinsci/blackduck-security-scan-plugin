@@ -2,6 +2,7 @@ package io.jenkins.plugins.security.scan.service.scan.coverity;
 
 import hudson.EnvVars;
 import hudson.model.TaskListener;
+import io.jenkins.plugins.security.scan.bridge.BridgeDownloadParameters;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.global.LoggerWrapper;
 import io.jenkins.plugins.security.scan.global.Utility;
@@ -16,14 +17,23 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CoverityParametersService {
     private final LoggerWrapper logger;
     private final EnvVars envVars;
+    private BridgeDownloadParameters bridgeDownloadParameters;
 
     public CoverityParametersService(TaskListener listener, EnvVars envVars) {
         this.logger = new LoggerWrapper(listener);
         this.envVars = envVars;
+    }
+
+    public CoverityParametersService(
+            TaskListener listener, EnvVars envVars, BridgeDownloadParameters bridgeDownloadParameters) {
+        this.logger = new LoggerWrapper(listener);
+        this.envVars = envVars;
+        this.bridgeDownloadParameters = bridgeDownloadParameters;
     }
 
     public boolean hasAllMandatoryCoverityParams(Map<String, Object> coverityParameters) {
@@ -244,12 +254,44 @@ public class CoverityParametersService {
             if (isEnabled.equals("true")) {
                 boolean isPullRequestEvent = Utility.isPullRequestEvent(envVars);
                 if (isPullRequestEvent) {
-                    Automation automation = new Automation();
-                    automation.setPrComment(true);
-                    coverity.setAutomation(automation);
+                    if (Utility.isVersionCompatible(
+                            bridgeDownloadParameters.getBridgeDownloadVersion(),
+                            ApplicationConstants.COVERITY_PRCOMMENT_IMPACTS_COMPATIBLE_BRIDGE_VERSION)) {
+                        PrComment prComment = new PrComment();
+                        prComment.setEnabled(true);
+                        handlePrCommentImpacts(coverityParameters, prComment);
+                        coverity.setPrComment(prComment);
+                    } else {
+                        logger.info(String.format(
+                                "Bridge CLI version %s < %s, converting to legacy automation format.",
+                                bridgeDownloadParameters.getBridgeDownloadVersion(),
+                                ApplicationConstants.COVERITY_PRCOMMENT_IMPACTS_COMPATIBLE_BRIDGE_VERSION));
+                        Automation automation = new Automation();
+                        automation.setPrComment(true);
+                        coverity.setAutomation(automation);
+                        logger.info(String.format(
+                                "Converted Coverity PR comment configuration to legacy format for compatibility with Bridge CLI < %s.",
+                                ApplicationConstants.COVERITY_PRCOMMENT_IMPACTS_COMPATIBLE_BRIDGE_VERSION));
+                    }
                 } else {
                     logger.info(ApplicationConstants.COVERITY_PRCOMMENT_INFO_FOR_NON_PR_SCANS);
                 }
+            }
+        }
+    }
+
+    private static void handlePrCommentImpacts(Map<String, Object> coverityParameters, PrComment prcomment) {
+        if (coverityParameters.containsKey(ApplicationConstants.COVERITY_PRCOMMENT_IMPACTS_KEY)) {
+            String prCommentImpactsValue = coverityParameters
+                    .get(ApplicationConstants.COVERITY_PRCOMMENT_IMPACTS_KEY)
+                    .toString()
+                    .trim();
+            if (!prCommentImpactsValue.isEmpty()) {
+                List<String> prCommentImpacts = Arrays.stream(
+                                prCommentImpactsValue.toUpperCase().split(","))
+                        .map(String::trim)
+                        .collect(Collectors.toList());
+                prcomment.setImpacts(prCommentImpacts);
             }
         }
     }
