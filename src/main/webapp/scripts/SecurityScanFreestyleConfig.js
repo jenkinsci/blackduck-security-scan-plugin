@@ -38,64 +38,73 @@ function clearInputFields(div) {
 function handleBuildStepChange() {
     document.querySelectorAll('.build-step-blackduck').forEach(element => {
         const selectedOption = element.querySelector('select[name="_.product"]')?.value;
+        const polarisAssessmentModeOption = element.querySelector('select[name="_.polaris_assessment_mode"]')?.value;
         const blackduckscaDiv = element.querySelector('#blackducksca');
         const coverityDiv = element.querySelector('#coverity');
         const polarisDiv = element.querySelector('#polaris');
         const srmDiv = element.querySelector('#srm');
+        const sourceUploadDiv = element.querySelector('#source_upload');
 
-        if (selectedOption === 'blackducksca') {
-            clearInputFields(coverityDiv);
-            hideParticularDiv(coverityDiv);
-            clearInputFields(polarisDiv);
-            hideParticularDiv(polarisDiv);
-            clearInputFields(srmDiv);
-            hideParticularDiv(srmDiv);
-            showParticularDiv(blackduckscaDiv);
-            validateProductField(element);
-            toggleSarifParamsDivs(element);
-            handleSarifReportSectionVisibility(element);
-        } else if (selectedOption === 'coverity') {
-            clearInputFields(blackduckscaDiv);
-            hideParticularDiv(blackduckscaDiv);
-            clearInputFields(polarisDiv);
-            hideParticularDiv(polarisDiv);
-            clearInputFields(srmDiv);
-            hideParticularDiv(srmDiv);
-            showParticularDiv(coverityDiv);
-            validateProductField(element);
-            validateCoverityFields(element);
-        } else if (selectedOption === 'polaris') {
-            clearInputFields(blackduckscaDiv);
-            hideParticularDiv(blackduckscaDiv);
-            clearInputFields(coverityDiv);
-            hideParticularDiv(coverityDiv);
-            clearInputFields(srmDiv);
-            hideParticularDiv(srmDiv);
-            showParticularDiv(polarisDiv);
-            validateProductField(element);
-            validatePolarisFields(element);
-            toggleSarifParamsDivs(element);
-            handleSarifReportSectionVisibility(element);
-        } else if (selectedOption === 'srm') {
-            clearInputFields(blackduckscaDiv);
-            hideParticularDiv(blackduckscaDiv);
-            clearInputFields(coverityDiv);
-            hideParticularDiv(coverityDiv);
-            clearInputFields(polarisDiv);
-            hideParticularDiv(polarisDiv);
-            showParticularDiv(srmDiv);
-            validateProductField(element);
-            validateSrmFields(element);
-        } else if (selectedOption === 'select') {
-            clearInputFields(blackduckscaDiv);
-            clearInputFields(coverityDiv);
-            clearInputFields(polarisDiv);
-            clearInputFields(srmDiv);
-            hideParticularDiv(blackduckscaDiv);
-            hideParticularDiv(coverityDiv);
-            hideParticularDiv(polarisDiv);
-            hideParticularDiv(srmDiv);
-            validateProductField(element);
+        if (polarisAssessmentModeOption === 'SOURCE_UPLOAD') {
+            showParticularDiv(sourceUploadDiv);
+        } else if (polarisAssessmentModeOption === 'CI' || polarisAssessmentModeOption === '') {
+            clearInputFields(sourceUploadDiv);
+            hideParticularDiv(sourceUploadDiv);
+        }
+
+            if (selectedOption === 'blackducksca') {
+                clearInputFields(coverityDiv);
+                hideParticularDiv(coverityDiv);
+                clearInputFields(polarisDiv);
+                hideParticularDiv(polarisDiv);
+                clearInputFields(srmDiv);
+                hideParticularDiv(srmDiv);
+                showParticularDiv(blackduckscaDiv);
+                validateProductField(element);
+                toggleSarifParamsDivs(element);
+                handleSarifReportSectionVisibility(element);
+            } else if (selectedOption === 'coverity') {
+                clearInputFields(blackduckscaDiv);
+                hideParticularDiv(blackduckscaDiv);
+                clearInputFields(polarisDiv);
+                hideParticularDiv(polarisDiv);
+                clearInputFields(srmDiv);
+                hideParticularDiv(srmDiv);
+                showParticularDiv(coverityDiv);
+                validateProductField(element);
+                validateCoverityFields(element);
+            } else if (selectedOption === 'polaris') {
+                clearInputFields(blackduckscaDiv);
+                hideParticularDiv(blackduckscaDiv);
+                clearInputFields(coverityDiv);
+                hideParticularDiv(coverityDiv);
+                clearInputFields(srmDiv);
+                hideParticularDiv(srmDiv);
+                showParticularDiv(polarisDiv);
+                validateProductField(element);
+                validatePolarisFields(element);
+                toggleSarifParamsDivs(element);
+                handleSarifReportSectionVisibility(element);
+            } else if (selectedOption === 'srm') {
+                clearInputFields(blackduckscaDiv);
+                hideParticularDiv(blackduckscaDiv);
+                clearInputFields(coverityDiv);
+                hideParticularDiv(coverityDiv);
+                clearInputFields(polarisDiv);
+                hideParticularDiv(polarisDiv);
+                showParticularDiv(srmDiv);
+                validateProductField(element);
+                validateSrmFields(element);
+            } else if (selectedOption === 'select') {
+                clearInputFields(blackduckscaDiv);
+                clearInputFields(coverityDiv);
+                clearInputFields(polarisDiv);
+                clearInputFields(srmDiv);
+                hideParticularDiv(blackduckscaDiv);
+                hideParticularDiv(coverityDiv);
+                hideParticularDiv(polarisDiv);
+                hideParticularDiv(srmDiv);
+                validateProductField(element);
         }
     });
 }
