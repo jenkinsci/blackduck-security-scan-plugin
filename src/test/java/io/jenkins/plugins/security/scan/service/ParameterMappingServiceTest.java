@@ -146,7 +146,7 @@ public class ParameterMappingServiceTest {
         securityScanFreestyle.setBlackducksca_url("https://fake.blackduck-url");
         securityScanFreestyle.setBlackducksca_token("fake-token");
         securityScanFreestyle.setDetect_install_directory("/fake/path");
-        securityScanFreestyle.setBlackducksca_scan_full(true);
+        securityScanFreestyle.setBlackducksca_scan_full("true");
         securityScanFreestyle.setDetect_download_url("https://fake.blackduck-download-url");
         securityScanFreestyle.setBlackducksca_scan_failure_severities("MAJOR");
         securityScanFreestyle.setBlackducksca_waitForScan(true);
@@ -163,8 +163,8 @@ public class ParameterMappingServiceTest {
                 "https://fake.blackduck-url", blackDuckParametersMap.get(ApplicationConstants.BLACKDUCKSCA_URL_KEY));
         assertEquals("fake-token", blackDuckParametersMap.get(ApplicationConstants.BLACKDUCKSCA_TOKEN_KEY));
         assertEquals("/fake/path", blackDuckParametersMap.get(ApplicationConstants.DETECT_INSTALL_DIRECTORY_KEY));
-        assertTrue((boolean) blackDuckParametersMap.get(ApplicationConstants.BLACKDUCKSCA_SCAN_FULL_KEY));
-        assertEquals(
+		assertEquals(Boolean.TRUE, blackDuckParametersMap.get(ApplicationConstants.BLACKDUCKSCA_SCAN_FULL_KEY));
+		assertEquals(
                 "https://fake.blackduck-download-url",
                 blackDuckParametersMap.get(ApplicationConstants.DETECT_DOWNLOAD_URL_KEY));
         assertEquals(

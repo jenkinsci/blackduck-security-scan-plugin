@@ -17,7 +17,7 @@ function clearInputFields(div) {
         return;
 
     const inputFields = div.querySelectorAll(
-        'input[type="text"], input[type="checkbox"], select');
+        'input[type="text"], input[type="checkbox"], input[type="radio"], select');
     inputFields.forEach(function (field) {
         if (field.type === 'text' || field.tagName.toLowerCase()
             === 'select') {
@@ -30,6 +30,15 @@ function clearInputFields(div) {
                 !== "_.polaris_reports_sarif_groupSCAIssues" && field.name
                 !== "_.blackducksca_reports_sarif_groupSCAIssues") {
                 field.checked = false;
+            }
+        } else if (field.type === 'radio') {
+            // For radio buttons, uncheck them and reset to default "Auto" option
+            if (field.name === "_.blackducksca_scan_full") {
+                if (field.value === "") {
+                    field.checked = true; // Set "Auto" as default
+                } else {
+                    field.checked = false;
+                }
             }
         }
     });

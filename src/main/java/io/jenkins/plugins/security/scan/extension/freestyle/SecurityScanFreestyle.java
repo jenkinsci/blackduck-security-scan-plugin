@@ -651,14 +651,24 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     }
 
     @DataBoundSetter
-    public void setBlackducksca_scan_full(Boolean blackducksca_scan_full) {
-        if (blackducksca_scan_full) {
-            this.blackduckscaIntelligentScan = true;
+    public void setBlackducksca_scan_full(String blackducksca_scan_full) {
+        if (blackducksca_scan_full == null || blackducksca_scan_full.trim().isEmpty()) {
+            // Auto mode - null value
+            this.blackducksca_scan_full = null;
+            this.blackduckscaIntelligentScan = null;
+        } else if ("true".equals(blackducksca_scan_full.trim())) {
+            // Full scan mode
+            this.blackducksca_scan_full = Boolean.TRUE;
+            this.blackduckscaIntelligentScan = Boolean.FALSE;
+        } else if ("false".equals(blackducksca_scan_full.trim())) {
+            // Rapid scan mode
+            this.blackducksca_scan_full = Boolean.FALSE;
+            this.blackduckscaIntelligentScan = Boolean.TRUE;
+        } else {
+            // Default to Auto mode for any unexpected values
+            this.blackducksca_scan_full = null;
+            this.blackduckscaIntelligentScan = null;
         }
-        if (!blackducksca_scan_full) {
-            this.blackduckscaIntelligentScan = false;
-        }
-        this.blackducksca_scan_full = blackducksca_scan_full ? true : null;
     }
 
     @DataBoundSetter

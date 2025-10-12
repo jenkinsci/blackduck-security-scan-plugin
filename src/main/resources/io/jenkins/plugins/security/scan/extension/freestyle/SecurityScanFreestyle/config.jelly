@@ -26,9 +26,26 @@
             </f:section>
 
             <f:advanced title="Scan Options">
-                <f:entry field="blackducksca_scan_full" title="Full Scan (Optional)">
-                    <f:checkbox checked="${instance.isBlackducksca_scan_full() == true}"/>
+                <f:entry field="blackducksca_scan_full" title="Scan Mode">
+                    <div style="display: flex; gap: 2em; align-items: center;">
+                        <label style="display: flex; align-items: center; gap: 0.5em;">
+                            <input type="radio" name="blackducksca_scan_full" value="" checked="${instance.isBlackducksca_scan_full() == null ? 'checked' : null}" />
+                            Auto (Recommended)
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5em;">
+                            <input type="radio" name="blackducksca_scan_full" value="true" checked="${instance.isBlackducksca_scan_full() == true ? 'checked' : null}" />
+                            Full
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5em;">
+                            <input type="radio" name="blackducksca_scan_full" value="false" checked="${instance.isBlackducksca_scan_full() == false ? 'checked' : null}" />
+                            Rapid
+                        </label>
+                    </div>
                 </f:entry>
+
+<!--                <f:entry field="blackducksca_scan_full" title="Full Scan (Optional)">-->
+<!--                    <f:checkbox checked="${instance.isBlackducksca_scan_full() == true}"/>-->
+<!--                </f:entry>-->
                 <f:entry field="blackducksca_scan_failure_severities" title="Scan Failure Severities (Optional)">
                     <f:textbox/>
                 </f:entry>
