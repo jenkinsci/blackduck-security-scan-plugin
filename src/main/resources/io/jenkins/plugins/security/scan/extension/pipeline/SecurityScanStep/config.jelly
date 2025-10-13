@@ -32,7 +32,7 @@
                     </label>
                     <label style="display: flex; align-items: center; gap: 0.5em;">
                         <input type="radio" name="blackducksca_scan_full" value="true" checked="${instance.isBlackducksca_scan_full() == true ? 'checked' : null}" />
-                        Full
+                        Intelligent
                     </label>
                     <label style="display: flex; align-items: center; gap: 0.5em;">
                         <input type="radio" name="blackducksca_scan_full" value="false" checked="${instance.isBlackducksca_scan_full() == false ? 'checked' : null}" />
