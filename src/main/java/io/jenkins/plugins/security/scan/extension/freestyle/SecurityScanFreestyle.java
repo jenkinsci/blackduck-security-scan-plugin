@@ -657,10 +657,10 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
             this.blackduckscaIntelligentScan = null;
         } else if ("true".equals(blackducksca_scan_full.trim())) {
             this.blackducksca_scan_full = Boolean.TRUE;
-            this.blackduckscaIntelligentScan = Boolean.FALSE;
+            this.blackduckscaIntelligentScan = Boolean.TRUE;
         } else if ("false".equals(blackducksca_scan_full.trim())) {
             this.blackducksca_scan_full = Boolean.FALSE;
-            this.blackduckscaIntelligentScan = Boolean.TRUE;
+            this.blackduckscaIntelligentScan = Boolean.FALSE;
         } else {
             this.blackducksca_scan_full = null;
             this.blackduckscaIntelligentScan = null;
