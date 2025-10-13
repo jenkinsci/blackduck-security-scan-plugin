@@ -32,8 +32,7 @@ function clearInputFields(div) {
                 field.checked = false;
             }
         } else if (field.type === 'radio') {
-            // For radio buttons, uncheck them and reset to default "Auto" option
-            if (field.name === "_.blackducksca_scan_full") {
+            if (field.name.endsWith("blackducksca_scan_full")) {
                 if (field.value === "") {
                     field.checked = true; // Set "Auto" as default
                 } else {

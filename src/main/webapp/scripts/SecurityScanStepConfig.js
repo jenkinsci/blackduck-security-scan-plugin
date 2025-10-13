@@ -38,12 +38,20 @@ function hideParticularDiv(div) {
 
 function clearInputFields(div) {
     if (div) {
-        var inputFields = div.querySelectorAll('input[type="text"], input[type="checkbox"], select');
+        var inputFields = div.querySelectorAll('input[type="text"], input[type="checkbox"], input[type="radio"], select');
         inputFields.forEach(function(field) {
             if (field.type === 'text' || field.tagName.toLowerCase() === 'select') {
                 field.value = '';
             } else if (field.type === 'checkbox') {
                 field.checked = false;
+            } else if (field.type === 'radio') {
+                if (field.name.endsWith("blackducksca_scan_full")) {
+                    if (field.value === "") {
+                        field.checked = true; // Set "Auto" as default
+                    } else {
+                        field.checked = false;
+                    }
+                }
             }
         });
     }

@@ -733,16 +733,22 @@ public class SecurityScanStep extends Step
         this.detect_install_directory = blackducksca_install_directory;
     }
 
-    @DataBoundSetter
-    public void setBlackducksca_scan_full(Boolean blackducksca_scan_full) {
-        if (blackducksca_scan_full) {
-            this.blackduckscaIntelligentScan = true;
-        }
-        if (!blackducksca_scan_full) {
-            this.blackduckscaIntelligentScan = false;
-        }
-        this.blackducksca_scan_full = blackducksca_scan_full ? true : null;
-    }
+	@DataBoundSetter
+	public void setBlackducksca_scan_full(String blackducksca_scan_full) {
+		if (blackducksca_scan_full == null || blackducksca_scan_full.trim().isEmpty()) {
+			this.blackducksca_scan_full = null;
+			this.blackduckscaIntelligentScan = null;
+		} else if ("true".equals(blackducksca_scan_full.trim())) {
+			this.blackducksca_scan_full = Boolean.TRUE;
+			this.blackduckscaIntelligentScan = Boolean.FALSE;
+		} else if ("false".equals(blackducksca_scan_full.trim())) {
+			this.blackducksca_scan_full = Boolean.FALSE;
+			this.blackduckscaIntelligentScan = Boolean.TRUE;
+		} else {
+			this.blackducksca_scan_full = null;
+			this.blackduckscaIntelligentScan = null;
+		}
+	}
 
     @DataBoundSetter
     public void setBlackducksca_scan_failure_severities(String blackducksca_scan_failure_severities) {

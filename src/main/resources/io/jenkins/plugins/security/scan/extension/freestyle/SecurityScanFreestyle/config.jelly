@@ -43,9 +43,6 @@
                     </div>
                 </f:entry>
 
-<!--                <f:entry field="blackducksca_scan_full" title="Full Scan (Optional)">-->
-<!--                    <f:checkbox checked="${instance.isBlackducksca_scan_full() == true}"/>-->
-<!--                </f:entry>-->
                 <f:entry field="blackducksca_scan_failure_severities" title="Scan Failure Severities (Optional)">
                     <f:textbox/>
                 </f:entry>
