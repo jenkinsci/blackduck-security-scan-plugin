@@ -733,15 +733,38 @@ public class SecurityScanStep extends Step
         this.detect_install_directory = blackducksca_install_directory;
     }
 
+    /**
+     * When using Jenkinsfile to initiate the pipeline step, this method is called directly with a Boolean parameter.
+     * **/
     @DataBoundSetter
     public void setBlackducksca_scan_full(Boolean blackducksca_scan_full) {
-        if (blackducksca_scan_full) {
+        if (blackducksca_scan_full == null) {
+            this.blackducksca_scan_full = null;
+            this.blackduckscaIntelligentScan = null;
+        } else if (blackducksca_scan_full) {
+            this.blackducksca_scan_full = true;
             this.blackduckscaIntelligentScan = true;
-        }
-        if (!blackducksca_scan_full) {
+        } else {
+            this.blackducksca_scan_full = false;
             this.blackduckscaIntelligentScan = false;
         }
-        this.blackducksca_scan_full = blackducksca_scan_full ? true : null;
+    }
+
+    /**
+     * Adding this method-overriding for the default boolean setter to handle the "auto" string value from the UI.
+     * As radio-button options are String values, we need to handle the conversion here. Because, the Boolean parameter
+     * was converting anything but "true" to false, which was not the expected behavior. Such behavior was not allowing
+     * to set the NULL value, which is required for the "auto" option.
+     * **/
+    @DataBoundSetter
+    public void setBlackducksca_scan_full(String value) {
+        if ("auto".equals(value)) {
+            setBlackducksca_scan_full((Boolean) null);
+        } else if ("true".equals(value)) {
+            setBlackducksca_scan_full(Boolean.TRUE);
+        } else if ("false".equals(value)) {
+            setBlackducksca_scan_full(Boolean.FALSE);
+        }
     }
 
     @DataBoundSetter

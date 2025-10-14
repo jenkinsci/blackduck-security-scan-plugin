@@ -18,3 +18,54 @@
 #blackducksca_fixPr_params .f\:entry {
     margin-bottom: 10px;
 }
+
+/* Custom radio button styling - using more specific selectors */
+input[type="radio"] {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    width: 20px !important;
+    height: 20px !important;
+    border: 2px solid #ccc !important;
+    border-radius: 50% !important;
+    outline: none !important;
+    cursor: pointer !important;
+    position: relative !important;
+    margin: 0 !important;
+    background-color: white !important;
+    transition: all 0.2s ease !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+}
+
+input[type="radio"]:hover {
+    border-color: #063f61 !important;
+}
+
+input[type="radio"]:checked {
+    border-color: #063f61 !important;
+    background-color: #063f61 !important;
+}
+
+input[type="radio"]:checked::after {
+    content: '' !important;
+    width: 8px !important;
+    height: 8px !important;
+    border-radius: 50% !important;
+    background-color: white !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    display: block !important;
+}
+
+/* Label styling for radio buttons */
+label:has(input[type="radio"]) {
+    cursor: pointer !important;
+    font-weight: normal !important;
+    color: #333 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5em !important;
+}
