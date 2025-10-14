@@ -29,7 +29,7 @@
                 <f:entry field="blackducksca_scan_full" title="Scan Mode">
                     <div style="display: flex; gap: 2em; align-items: center;">
                         <label style="display: flex; align-items: center; gap: 0.5em;">
-                            <input type="radio" name="blackducksca_scan_full" value="unset" checked="${instance.isBlackducksca_scan_full() == null ? 'checked' : null}" />
+                            <input type="radio" name="blackducksca_scan_full" value="auto" checked="${instance.isBlackducksca_scan_full() == null ? 'checked' : null}" />
                             Auto (Recommended)
                         </label>
                         <label style="display: flex; align-items: center; gap: 0.5em;">

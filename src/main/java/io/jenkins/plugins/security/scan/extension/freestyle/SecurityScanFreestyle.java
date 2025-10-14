@@ -664,10 +664,15 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
         }
     }
 
-    // Add this setter to handle the "unset" string
+    /**
+     * Adding this method-overriding for the default boolean setter to handle the "auto" string value from the UI.
+     * As radio-button options are String values, we need to handle the conversion here. Because, the Boolean parameter
+     * was converting anything but "true" to false, which was not the expected behavior. Such behavior was not allowing
+     * to set the NULL value, which is required for the "auto" option.
+     * **/
     @DataBoundSetter
     public void setBlackducksca_scan_full(String value) {
-        if ("unset".equals(value)) {
+        if ("auto".equals(value)) {
             setBlackducksca_scan_full((Boolean) null);
         } else if ("true".equals(value)) {
             setBlackducksca_scan_full(Boolean.TRUE);
