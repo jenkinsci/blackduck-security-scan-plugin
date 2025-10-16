@@ -6,8 +6,8 @@ public class Sca {
     @JsonProperty("type")
     private String type;
 
-	@JsonProperty("location")
-	private String location;
+    @JsonProperty("location")
+    private String location;
 
     public String getType() {
         return type;
@@ -17,11 +17,11 @@ public class Sca {
         this.type = type;
     }
 
-	public String getLocation() {
-		return location;
-	}
+    public String getLocation() {
+        return location;
+    }
 
-	public void setLocation(String location) {
-		this.location = location;
-	}
+    public void setLocation(String location) {
+        this.location = location;
+    }
 }

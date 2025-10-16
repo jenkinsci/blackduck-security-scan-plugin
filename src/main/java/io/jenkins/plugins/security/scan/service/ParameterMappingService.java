@@ -224,15 +224,15 @@ public class ParameterMappingService {
         }
     }
 
-	public static void addDeprecatedParameterIfNotBlank(String key, Object value) {
-		if (value instanceof String) {
-			if (!Utility.isStringNullOrBlank((String) value)) {
-				addDeprecatedParameter(key);
-			}
-		} else if (value instanceof Boolean || value instanceof Integer) {
-			addDeprecatedParameter(key);
-		}
-	}
+    public static void addDeprecatedParameterIfNotBlank(String key, Object value) {
+        if (value instanceof String) {
+            if (!Utility.isStringNullOrBlank((String) value)) {
+                addDeprecatedParameter(key);
+            }
+        } else if (value instanceof Boolean || value instanceof Integer) {
+            addDeprecatedParameter(key);
+        }
+    }
 
     public static Map<String, Object> prepareBlackDuckSCAParametersMap(SecurityScan securityScan) {
         Map<String, Object> blackDuckParameters = new HashMap<>();
@@ -441,16 +441,16 @@ public class ParameterMappingService {
                 polarisParametersMap,
                 ApplicationConstants.POLARIS_TEST_SAST_TYPE_KEY,
                 securityScan.getPolaris_test_sast_type());
-		addParameterIfNotBlank(
-			polarisParametersMap,
-			ApplicationConstants.POLARIS_TEST_SCA_LOCATION_KEY,
-			securityScan.getPolaris_test_sca_location());
-		addParameterIfNotBlank(
-			polarisParametersMap,
-			ApplicationConstants.POLARIS_TEST_SAST_LOCATION_KEY,
-			securityScan.getPolaris_test_sast_location());
-		addDeprecatedParameterIfNotBlank(
-			ApplicationConstants.POLARIS_ASSESSMENT_MODE_KEY, securityScan.getPolaris_assessment_mode());
+        addParameterIfNotBlank(
+                polarisParametersMap,
+                ApplicationConstants.POLARIS_TEST_SCA_LOCATION_KEY,
+                securityScan.getPolaris_test_sca_location());
+        addParameterIfNotBlank(
+                polarisParametersMap,
+                ApplicationConstants.POLARIS_TEST_SAST_LOCATION_KEY,
+                securityScan.getPolaris_test_sast_location());
+        addDeprecatedParameterIfNotBlank(
+                ApplicationConstants.POLARIS_ASSESSMENT_MODE_KEY, securityScan.getPolaris_assessment_mode());
         addParameterIfNotBlank(
                 polarisParametersMap, ApplicationConstants.PROJECT_DIRECTORY_KEY, securityScan.getProject_directory());
         addParameterIfNotBlank(
@@ -836,20 +836,20 @@ public class ParameterMappingService {
         return items;
     }
 
-	public static ListBoxModel getSCATestLocationItems() {
-		ListBoxModel items = new ListBoxModel();
-		items.add(TestLocation.HYBRID.getName(), TestLocation.HYBRID.getValue());
-		items.add(TestLocation.REMOTE.getName(), TestLocation.REMOTE.getValue());
-		return items;
-	}
+    public static ListBoxModel getSCATestLocationItems() {
+        ListBoxModel items = new ListBoxModel();
+        items.add(TestLocation.HYBRID.getName(), TestLocation.HYBRID.getValue());
+        items.add(TestLocation.REMOTE.getName(), TestLocation.REMOTE.getValue());
+        return items;
+    }
 
-	public static ListBoxModel getSASTTestLocationItems() {
-		ListBoxModel items = new ListBoxModel();
-		items.add(TestLocation.HYBRID.getName(), TestLocation.HYBRID.getValue());
-		items.add(TestLocation.LOCAL.getName(), TestLocation.LOCAL.getValue());
-		items.add(TestLocation.REMOTE.getName(), TestLocation.REMOTE.getValue());
-		return items;
-	}
+    public static ListBoxModel getSASTTestLocationItems() {
+        ListBoxModel items = new ListBoxModel();
+        items.add(TestLocation.HYBRID.getName(), TestLocation.HYBRID.getValue());
+        items.add(TestLocation.LOCAL.getName(), TestLocation.LOCAL.getValue());
+        items.add(TestLocation.REMOTE.getName(), TestLocation.REMOTE.getValue());
+        return items;
+    }
 
     public static ListBoxModel getMarkBuildStatusItems() {
         ListBoxModel items = new ListBoxModel();

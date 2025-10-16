@@ -7,8 +7,8 @@ public class Sast {
     @JsonProperty("type")
     private List<String> type;
 
-	@JsonProperty("location")
-	private String location;
+    @JsonProperty("location")
+    private String location;
 
     public List<String> getType() {
         return type;
@@ -18,11 +18,11 @@ public class Sast {
         this.type = type;
     }
 
-	public String getLocation() {
-		return location;
-	}
+    public String getLocation() {
+        return location;
+    }
 
-	public void setLocation(String location) {
-		this.location = location;
-	}
+    public void setLocation(String location) {
+        this.location = location;
+    }
 }

@@ -16,7 +16,7 @@ public class ApplicationConstants {
     public static final String PLATFORM_MACOSX = "macosx";
     public static final String MAC_ARM_COMPATIBLE_BRIDGE_VERSION = "2.1.0";
     public static final String LINUX_ARM_COMPATIBLE_BRIDGE_VERSION = "3.5.1";
-	public static final String COVERITY_PRCOMMENT_IMPACTS_COMPATIBLE_BRIDGE_VERSION = "3.9.0";
+    public static final String COVERITY_PRCOMMENT_IMPACTS_COMPATIBLE_BRIDGE_VERSION = "3.9.0";
     public static final String POLARIS_TEST_SAST_LOCATION_COMPATIBLE_BRIDGE_VERSION = "3.8.0";
     public static final String DEFAULT_DIRECTORY_NAME = "bridge-cli-bundle";
     public static final String BRIDGE_REPORT_DIRECTORY = ".bridge";

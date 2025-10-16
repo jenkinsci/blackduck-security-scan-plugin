@@ -219,47 +219,35 @@ public class BridgeDownloadParameterServiceTest {
 
     @Test
     public void isVersionCompatibleForMacARMTest() {
-        assertTrue(Utility.isVersionCompatible(
-                "2.1.0", ApplicationConstants.MAC_ARM_COMPATIBLE_BRIDGE_VERSION));
-        assertTrue(Utility.isVersionCompatible(
-                "2.2.38", ApplicationConstants.MAC_ARM_COMPATIBLE_BRIDGE_VERSION));
-        assertFalse(Utility.isVersionCompatible(
-                "2.0.0", ApplicationConstants.MAC_ARM_COMPATIBLE_BRIDGE_VERSION));
-        assertFalse(Utility.isVersionCompatible(
-                "1.2.12", ApplicationConstants.MAC_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertTrue(Utility.isVersionCompatible("2.1.0", ApplicationConstants.MAC_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertTrue(Utility.isVersionCompatible("2.2.38", ApplicationConstants.MAC_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertFalse(Utility.isVersionCompatible("2.0.0", ApplicationConstants.MAC_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertFalse(Utility.isVersionCompatible("1.2.12", ApplicationConstants.MAC_ARM_COMPATIBLE_BRIDGE_VERSION));
     }
 
     @Test
     public void isVersionCompatibleForLinuxARMTest() {
-        assertTrue(Utility.isVersionCompatible(
-                "3.5.1", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
-        assertTrue(Utility.isVersionCompatible(
-                "3.5.38", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
-        assertFalse(Utility.isVersionCompatible(
-                "2.0.0", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
-        assertFalse(Utility.isVersionCompatible(
-                "1.2.12", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertTrue(Utility.isVersionCompatible("3.5.1", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertTrue(Utility.isVersionCompatible("3.5.38", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertFalse(Utility.isVersionCompatible("2.0.0", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertFalse(Utility.isVersionCompatible("1.2.12", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
     }
 
     @Test
     public void isVersionCompatibleForARMWithAlphanumericVersionsTest() {
         // Test alphanumeric versions - should work with numeric comparison
-        assertTrue(Utility.isVersionCompatible(
-                "3.7.1rc1", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
-        assertTrue(Utility.isVersionCompatible(
-                "4.0.0beta2", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
-        assertTrue(Utility.isVersionCompatible(
-                "3.5.2alpha1", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertTrue(Utility.isVersionCompatible("3.7.1rc1", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertTrue(Utility.isVersionCompatible("4.0.0beta2", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertTrue(
+                Utility.isVersionCompatible("3.5.2alpha1", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
 
         // Test alphanumeric versions below threshold
-        assertFalse(Utility.isVersionCompatible(
-                "2.1.0rc1", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
-        assertFalse(Utility.isVersionCompatible(
-                "3.4.0beta1", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertFalse(Utility.isVersionCompatible("2.1.0rc1", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertFalse(
+                Utility.isVersionCompatible("3.4.0beta1", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
 
         // Test "latest" always returns true
-        assertTrue(Utility.isVersionCompatible(
-                "latest", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertTrue(Utility.isVersionCompatible("latest", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
     }
 
     @Test

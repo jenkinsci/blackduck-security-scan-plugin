@@ -1,6 +1,5 @@
 package io.jenkins.plugins.security.scan.service.bridge;
 
-import com.fasterxml.jackson.core.Version;
 import hudson.FilePath;
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.bridge.BridgeDownloadParameters;
@@ -189,8 +188,7 @@ public class BridgeDownloadParametersService {
 
         if (isLinux) {
             boolean isValidVersionForARM = Objects.isNull(version)
-                    || Utility.isVersionCompatible(
-                            version, ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION);
+                    || Utility.isVersionCompatible(version, ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION);
             return selectPlatform(
                     version,
                     isArm,
@@ -234,5 +232,4 @@ public class BridgeDownloadParametersService {
                 .concat(getPlatform(version))
                 .concat(".zip");
     }
-
 }

@@ -143,11 +143,11 @@ public interface SecurityScan {
 
     String getPolaris_test_sast_type();
 
-	String getPolaris_test_sca_location();
+    String getPolaris_test_sca_location();
 
-	String getPolaris_test_sast_location();
+    String getPolaris_test_sast_location();
 
-	String getBitbucket_username();
+    String getBitbucket_username();
 
     Boolean isPolaris_reports_sarif_create();
 
@@ -165,7 +165,7 @@ public interface SecurityScan {
 
     Boolean isPolaris_waitForScan_actualValue();
 
-	@Deprecated
+    @Deprecated
     String getPolaris_assessment_mode();
 
     String getProject_source_archive();
