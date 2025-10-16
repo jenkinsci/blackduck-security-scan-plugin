@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import hudson.EnvVars;
 import hudson.model.TaskListener;
+import io.jenkins.plugins.security.scan.bridge.BridgeDownloadParameters;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import io.jenkins.plugins.security.scan.input.coverity.Coverity;
@@ -23,10 +24,12 @@ public class CoverityParametersServiceTest {
     private final String TEST_COVERITY_URL = "https://fake.coverity.url";
     private final String TEST_COVERITY_USER_NAME = "fake-user";
     private final String TEST_COVERITY_USER_PASSWORD = "fakeUserPassword";
+    private BridgeDownloadParameters bridgeDownloadParameters;
 
     @BeforeEach
     void setUp() {
-        coverityParametersService = new CoverityParametersService(listenerMock, envVarsMock);
+        bridgeDownloadParameters = Mockito.mock(BridgeDownloadParameters.class);
+        coverityParametersService = new CoverityParametersService(listenerMock, envVarsMock, bridgeDownloadParameters);
         Mockito.when(listenerMock.getLogger()).thenReturn(Mockito.mock(PrintStream.class));
     }
 
@@ -97,6 +100,7 @@ public class CoverityParametersServiceTest {
         coverityParameters.put(ApplicationConstants.COVERITY_WAITFORSCAN_KEY, true);
 
         Mockito.when(envVarsMock.get(ApplicationConstants.ENV_CHANGE_ID_KEY)).thenReturn("1");
+        Mockito.when(bridgeDownloadParameters.getBridgeDownloadVersion()).thenReturn("3.8.0");
 
         Coverity coverity = coverityParametersService.prepareCoverityObjectForBridge(coverityParameters);
 
@@ -125,6 +129,8 @@ public class CoverityParametersServiceTest {
                 .thenReturn("main");
 
         RepositoryDetailsHolder.setRepositoryName("default-repo-name");
+
+        Mockito.when(bridgeDownloadParameters.getBridgeDownloadVersion()).thenReturn("3.8.0");
 
         Coverity coverity = coverityParametersService.prepareCoverityObjectForBridge(coverityParameters);
 

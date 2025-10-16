@@ -15,7 +15,6 @@ import io.jenkins.plugins.security.scan.extension.pipeline.ReturnStatusScan;
 import io.jenkins.plugins.security.scan.global.*;
 import io.jenkins.plugins.security.scan.global.enums.BuildStatus;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
-import io.jenkins.plugins.security.scan.global.enums.TestLocation;
 import java.util.*;
 import java.util.stream.Collectors;
 import jenkins.model.GlobalConfiguration;
@@ -224,16 +223,6 @@ public class ParameterMappingService {
         }
     }
 
-    public static void addDeprecatedParameterIfNotBlank(String key, Object value) {
-        if (value instanceof String) {
-            if (!Utility.isStringNullOrBlank((String) value)) {
-                addDeprecatedParameter(key);
-            }
-        } else if (value instanceof Boolean || value instanceof Integer) {
-            addDeprecatedParameter(key);
-        }
-    }
-
     public static Map<String, Object> prepareBlackDuckSCAParametersMap(SecurityScan securityScan) {
         Map<String, Object> blackDuckParameters = new HashMap<>();
 
@@ -391,6 +380,10 @@ public class ParameterMappingService {
                     coverityParameters,
                     ApplicationConstants.COVERITY_PRCOMMENT_ENABLED_KEY,
                     prCommentScan.isCoverity_prComment_enabled_actualValue());
+            addParameterIfNotBlank(
+                    coverityParameters,
+                    ApplicationConstants.COVERITY_PRCOMMENT_IMPACTS_KEY,
+                    prCommentScan.getCoverity_prComment_impacts());
         }
 
         prepareCoverityToolConfigurationParametersMap(coverityParameters, securityScan);
@@ -439,18 +432,8 @@ public class ParameterMappingService {
                 securityScan.getPolaris_test_sast_type());
         addParameterIfNotBlank(
                 polarisParametersMap,
-                ApplicationConstants.POLARIS_TEST_SCA_LOCATION_KEY,
-                securityScan.getPolaris_test_sca_location());
-        addParameterIfNotBlank(
-                polarisParametersMap,
-                ApplicationConstants.POLARIS_TEST_SAST_LOCATION_KEY,
-                securityScan.getPolaris_test_sast_location());
-        addParameterIfNotBlank(
-                polarisParametersMap,
                 ApplicationConstants.POLARIS_ASSESSMENT_MODE_KEY,
                 securityScan.getPolaris_assessment_mode());
-        addDeprecatedParameterIfNotBlank(
-                ApplicationConstants.POLARIS_ASSESSMENT_MODE_KEY, securityScan.getPolaris_assessment_mode());
         addParameterIfNotBlank(
                 polarisParametersMap, ApplicationConstants.PROJECT_DIRECTORY_KEY, securityScan.getProject_directory());
         addParameterIfNotBlank(
@@ -833,21 +816,6 @@ public class ParameterMappingService {
         items.add(
                 SecurityProduct.SRM.getProductLabel(),
                 SecurityProduct.SRM.name().toLowerCase());
-        return items;
-    }
-
-    public static ListBoxModel getSCATestLocationItems() {
-        ListBoxModel items = new ListBoxModel();
-        items.add(TestLocation.HYBRID.getName(), TestLocation.HYBRID.getValue());
-        items.add(TestLocation.REMOTE.getName(), TestLocation.REMOTE.getValue());
-        return items;
-    }
-
-    public static ListBoxModel getSASTTestLocationItems() {
-        ListBoxModel items = new ListBoxModel();
-        items.add(TestLocation.HYBRID.getName(), TestLocation.HYBRID.getValue());
-        items.add(TestLocation.LOCAL.getName(), TestLocation.LOCAL.getValue());
-        items.add(TestLocation.REMOTE.getName(), TestLocation.REMOTE.getValue());
         return items;
     }
 

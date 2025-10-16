@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hudson.EnvVars;
 import hudson.FilePath;
 import hudson.model.TaskListener;
+import io.jenkins.plugins.security.scan.bridge.BridgeDownloadParameters;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.global.BridgeParams;
@@ -52,13 +53,16 @@ public class ToolsParameterService {
         this.logger = new LoggerWrapper(listener);
     }
 
-    public List<String> getCommandLineArgs(Map<String, Object> scanParameters, FilePath bridgeInstallationPath)
+    public List<String> getCommandLineArgs(
+            Map<String, Object> scanParameters,
+            FilePath bridgeInstallationPath,
+            BridgeDownloadParameters bridgeDownloadParams)
             throws PluginExceptionHandler {
         List<String> commandLineArgs = new ArrayList<>();
 
         commandLineArgs.add(getBridgeRunCommand(bridgeInstallationPath));
 
-        commandLineArgs.addAll(getSecurityProductSpecificCommands(scanParameters));
+        commandLineArgs.addAll(getSecurityProductSpecificCommands(scanParameters, bridgeDownloadParams));
 
         if (Objects.equals(scanParameters.get(ApplicationConstants.INCLUDE_DIAGNOSTICS_KEY), true)) {
             commandLineArgs.add(BridgeParams.DIAGNOSTICS_OPTION);
@@ -81,7 +85,8 @@ public class ToolsParameterService {
         }
     }
 
-    private List<String> getSecurityProductSpecificCommands(Map<String, Object> scanParameters)
+    private List<String> getSecurityProductSpecificCommands(
+            Map<String, Object> scanParameters, BridgeDownloadParameters bridgeDownloadParams)
             throws PluginExceptionHandler {
         ScanParametersService scanParametersService = new ScanParametersService(listener);
         Set<String> securityProducts = scanParametersService.getSecurityProducts(scanParameters);
@@ -90,7 +95,7 @@ public class ToolsParameterService {
         Object scmObject = getScmObject(scanParameters);
 
         setBlackDuckScaCommands(scanParameters, securityProducts, scanCommands, scmObject);
-        setCoverityCommands(scanParameters, securityProducts, scanCommands, scmObject);
+        setCoverityCommands(scanParameters, securityProducts, scanCommands, scmObject, bridgeDownloadParams);
         setPolarisCommands(scanParameters, securityProducts, scanCommands, scmObject);
         setSrmCommands(scanParameters, securityProducts, scanCommands, scmObject);
 
@@ -128,9 +133,11 @@ public class ToolsParameterService {
             Map<String, Object> scanParameters,
             Set<String> securityProducts,
             List<String> scanCommands,
-            Object scmObject) {
+            Object scmObject,
+            BridgeDownloadParameters bridgeDownloadParams) {
         if (securityProducts.contains(SecurityProduct.COVERITY.name())) {
-            CoverityParametersService coverityParametersService = new CoverityParametersService(listener, envVars);
+            CoverityParametersService coverityParametersService =
+                    new CoverityParametersService(listener, envVars, bridgeDownloadParams);
             Coverity coverity = coverityParametersService.prepareCoverityObjectForBridge(scanParameters);
             Project project = coverityParametersService.prepareProjectObjectForBridge(scanParameters);
 

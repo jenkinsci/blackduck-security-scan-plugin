@@ -95,6 +95,7 @@ public class SecurityScanStep extends Step
     private String coverity_install_directory;
     private Boolean coverity_prComment_enabled;
     private Boolean coverity_prComment_enabled_actualValue;
+    private String coverity_prComment_impacts;
     private String coverity_version;
     private Boolean coverity_local;
     private String coverity_build_command;
@@ -129,15 +130,10 @@ public class SecurityScanStep extends Step
     private String polaris_test_sast_type;
     private String polaris_test_sca_location;
     private String polaris_test_sast_location;
-
     private String project_source_archive;
-
     private String project_source_excludes;
-
     private Boolean project_source_preserveSymLinks;
-
     private Boolean project_source_preserveSymLinks_actualValue;
-
     private String project_directory;
     private String coverity_project_directory;
     private String blackducksca_project_directory;
@@ -408,6 +404,10 @@ public class SecurityScanStep extends Step
 
     public Boolean isCoverity_prComment_enabled_actualValue() {
         return coverity_prComment_enabled_actualValue;
+    }
+
+    public String getCoverity_prComment_impacts() {
+        return coverity_prComment_impacts;
     }
 
     public String getCoverity_version() {
@@ -747,15 +747,38 @@ public class SecurityScanStep extends Step
         this.detect_install_directory = blackducksca_install_directory;
     }
 
+    /**
+     * When using Jenkinsfile to initiate the pipeline step, this method is called directly with a Boolean parameter.
+     * **/
     @DataBoundSetter
     public void setBlackducksca_scan_full(Boolean blackducksca_scan_full) {
-        if (blackducksca_scan_full) {
+        if (blackducksca_scan_full == null) {
+            this.blackducksca_scan_full = null;
+            this.blackduckscaIntelligentScan = null;
+        } else if (blackducksca_scan_full) {
+            this.blackducksca_scan_full = true;
             this.blackduckscaIntelligentScan = true;
-        }
-        if (!blackducksca_scan_full) {
+        } else {
+            this.blackducksca_scan_full = false;
             this.blackduckscaIntelligentScan = false;
         }
-        this.blackducksca_scan_full = blackducksca_scan_full ? true : null;
+    }
+
+    /**
+     * Adding this method-overriding for the default boolean setter to handle the "auto" string value from the UI.
+     * As radio-button options are String values, we need to handle the conversion here. Because, the Boolean parameter
+     * was converting anything but "true" to false, which was not the expected behavior. Such behavior was not allowing
+     * to set the NULL value, which is required for the "auto" option.
+     * **/
+    @DataBoundSetter
+    public void setBlackducksca_scan_full(String value) {
+        if ("auto".equals(value)) {
+            setBlackducksca_scan_full((Boolean) null);
+        } else if ("true".equals(value)) {
+            setBlackducksca_scan_full(Boolean.TRUE);
+        } else if ("false".equals(value)) {
+            setBlackducksca_scan_full(Boolean.FALSE);
+        }
     }
 
     @DataBoundSetter
@@ -971,6 +994,11 @@ public class SecurityScanStep extends Step
     public void setCoverity_prComment_enabled(Boolean coverity_prComment_enabled) {
         this.coverity_prComment_enabled = coverity_prComment_enabled ? true : null;
         this.coverity_prComment_enabled_actualValue = coverity_prComment_enabled ? true : false;
+    }
+
+    @DataBoundSetter
+    public void setCoverity_prComment_impacts(String coverity_prComment_severities) {
+        this.coverity_prComment_impacts = Util.fixEmptyAndTrim(coverity_prComment_severities);
     }
 
     @DataBoundSetter

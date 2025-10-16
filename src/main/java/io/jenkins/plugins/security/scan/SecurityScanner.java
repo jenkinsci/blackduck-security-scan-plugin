@@ -8,6 +8,7 @@ import hudson.model.Run;
 import hudson.model.TaskListener;
 import hudson.tasks.ArtifactArchiver;
 import io.jenkins.plugins.security.scan.action.IssueAction;
+import io.jenkins.plugins.security.scan.bridge.BridgeDownloadParameters;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.global.IssueCalculator;
@@ -46,11 +47,15 @@ public class SecurityScanner {
         this.logger = new LoggerWrapper(listener);
     }
 
-    public int runScanner(Map<String, Object> scanParams, FilePath bridgeInstallationPath)
+    public int runScanner(
+            Map<String, Object> scanParams,
+            FilePath bridgeInstallationPath,
+            BridgeDownloadParameters bridgeDownloadParams)
             throws PluginExceptionHandler {
         int scanner = 0;
 
-        List<String> commandLineArgs = toolsParameterService.getCommandLineArgs(scanParams, bridgeInstallationPath);
+        List<String> commandLineArgs =
+                toolsParameterService.getCommandLineArgs(scanParams, bridgeInstallationPath, bridgeDownloadParams);
 
         logger.info("Executable command line arguments: "
                 + commandLineArgs.stream()

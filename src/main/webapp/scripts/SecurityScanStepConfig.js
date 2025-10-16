@@ -38,12 +38,20 @@ function hideParticularDiv(div) {
 
 function clearInputFields(div) {
     if (div) {
-        var inputFields = div.querySelectorAll('input[type="text"], input[type="checkbox"], select');
+        var inputFields = div.querySelectorAll('input[type="text"], input[type="checkbox"], input[type="radio"], select');
         inputFields.forEach(function(field) {
             if (field.type === 'text' || field.tagName.toLowerCase() === 'select') {
                 field.value = '';
             } else if (field.type === 'checkbox') {
                 field.checked = false;
+            } else if (field.type === 'radio') {
+                if (field.name.endsWith("blackducksca_scan_full")) {
+                    if (field.value === "") {
+                        field.checked = true; // Set "Auto" as default
+                    } else {
+                        field.checked = false;
+                    }
+                }
             }
         });
     }
@@ -155,16 +163,26 @@ function toggleSarifParamsDivs(event) {
 }
 
 function togglePrCommentDivs() {
-    var selectedOption = securityProduct.value;
-    if (selectedOption == "polaris") {
-        var polarisPrEnabledCheckbox = document.querySelector('input[name="_.polaris_prComment_enabled"]')
-        var polarisPrCommentSection = document.getElementById('polaris_pr_comment_params')
-        if (polarisPrEnabledCheckbox.checked) {
-            polarisPrCommentSection.style.display = 'block';
-        } else {
-            polarisPrCommentSection.style.display = 'none';
-            clearInputFields(polarisPrCommentSection);
-        }
+    const selectedOption = securityProduct.value;
+    let checkbox, section;
+
+    if (selectedOption === "polaris") {
+        checkbox = document.querySelector('input[name="_.polaris_prComment_enabled"]');
+        section = document.getElementById('polaris_pr_comment_params');
+    } else if (selectedOption === "coverity") {
+        checkbox = document.querySelector('input[name="_.coverity_prComment_enabled"]');
+        section = document.getElementById('coverity_pr_comment_params');
+    } else {
+        return;
+    }
+
+    if (!checkbox || !section) return;
+
+    if (checkbox.checked) {
+        section.style.display = 'block';
+    } else {
+        section.style.display = 'none';
+        clearInputFields(section);
     }
 }
 
