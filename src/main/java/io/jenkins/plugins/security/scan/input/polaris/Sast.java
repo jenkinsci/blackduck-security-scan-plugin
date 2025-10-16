@@ -7,6 +7,9 @@ public class Sast {
     @JsonProperty("type")
     private List<String> type;
 
+	@JsonProperty("location")
+	private String location;
+
     public List<String> getType() {
         return type;
     }
@@ -14,4 +17,12 @@ public class Sast {
     public void setType(List<String> type) {
         this.type = type;
     }
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
 }

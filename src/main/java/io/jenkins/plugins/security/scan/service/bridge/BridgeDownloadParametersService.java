@@ -177,7 +177,7 @@ public class BridgeDownloadParametersService {
 
         if (isMac) {
             boolean isValidVersionForARM = Objects.isNull(version)
-                    || isVersionCompatibleForARMChips(version, ApplicationConstants.MAC_ARM_COMPATIBLE_BRIDGE_VERSION);
+                    || Utility.isVersionCompatible(version, ApplicationConstants.MAC_ARM_COMPATIBLE_BRIDGE_VERSION);
             return selectPlatform(
                     version,
                     isArm,
@@ -189,7 +189,7 @@ public class BridgeDownloadParametersService {
 
         if (isLinux) {
             boolean isValidVersionForARM = Objects.isNull(version)
-                    || isVersionCompatibleForARMChips(
+                    || Utility.isVersionCompatible(
                             version, ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION);
             return selectPlatform(
                     version,
