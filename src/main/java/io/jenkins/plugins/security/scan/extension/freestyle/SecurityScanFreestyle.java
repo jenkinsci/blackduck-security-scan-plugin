@@ -74,14 +74,19 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     private Boolean polaris_reports_sarif_groupSCAIssues;
     private String polaris_reports_sarif_severities;
     private Boolean polaris_reports_sarif_groupSCAIssues_temporary;
-    private String project_source_archive;
+
+    @Deprecated
     private String polaris_assessment_mode;
+
+    private String project_source_archive;
     private String project_source_excludes;
     private Boolean project_source_preserveSymLinks;
     private Boolean project_source_preserveSymLinks_actualValue;
     private String project_directory;
     private String polaris_test_sca_type;
     private String polaris_test_sast_type;
+    private String polaris_test_sca_location;
+    private String polaris_test_sast_location;
     private String coverity_project_directory;
     private String blackducksca_project_directory;
     private String polaris_project_directory;
@@ -402,6 +407,7 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
         return polaris_reports_sarif_groupSCAIssues_temporary;
     }
 
+    @Deprecated
     public String getPolaris_assessment_mode() {
         return polaris_assessment_mode;
     }
@@ -412,6 +418,14 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
 
     public String getPolaris_test_sast_type() {
         return polaris_test_sast_type;
+    }
+
+    public String getPolaris_test_sca_location() {
+        return polaris_test_sca_location;
+    }
+
+    public String getPolaris_test_sast_location() {
+        return polaris_test_sast_location;
     }
 
     public Integer getPolaris_sca_search_depth() {
@@ -878,6 +892,7 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
         this.bitbucket_username = bitbucket_username;
     }
 
+    @Deprecated
     @DataBoundSetter
     public void setPolaris_assessment_mode(String polaris_assessment_mode) {
         this.polaris_assessment_mode = Util.fixEmptyAndTrim(polaris_assessment_mode);
@@ -891,6 +906,16 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     @DataBoundSetter
     public void setPolaris_test_sast_type(String polaris_test_sast_type) {
         this.polaris_test_sast_type = Util.fixEmptyAndTrim(polaris_test_sast_type);
+    }
+
+    @DataBoundSetter
+    public void setPolaris_test_sca_location(String polaris_test_sca_location) {
+        this.polaris_test_sca_location = Util.fixEmptyAndTrim(polaris_test_sca_location);
+    }
+
+    @DataBoundSetter
+    public void setPolaris_test_sast_location(String polaris_test_sast_location) {
+        this.polaris_test_sast_location = Util.fixEmptyAndTrim(polaris_test_sast_location);
     }
 
     @DataBoundSetter
@@ -1263,6 +1288,22 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
         }
 
         @SuppressWarnings({"lgtm[jenkins/no-permission-check]", "lgtm[jenkins/csrf]"})
+        public ListBoxModel doFillPolaris_test_sast_locationItems() {
+            ListBoxModel items = new ListBoxModel();
+            items.add(ApplicationConstants.DEFAULT_DROPDOWN_OPTION_NAME, "");
+            items.addAll(ParameterMappingService.getSASTTestLocationItems());
+            return items;
+        }
+
+        @SuppressWarnings({"lgtm[jenkins/no-permission-check]", "lgtm[jenkins/csrf]"})
+        public ListBoxModel doFillPolaris_test_sca_locationItems() {
+            ListBoxModel items = new ListBoxModel();
+            items.add(ApplicationConstants.DEFAULT_DROPDOWN_OPTION_NAME, "");
+            items.addAll(ParameterMappingService.getSCATestLocationItems());
+            return items;
+        }
+
+        @SuppressWarnings({"lgtm[jenkins/no-permission-check]", "lgtm[jenkins/csrf]"})
         public ListBoxModel doFillBlackducksca_mark_build_statusItems() {
             ListBoxModel items = new ListBoxModel();
             items.add(ApplicationConstants.DEFAULT_DROPDOWN_OPTION_NAME, "");
@@ -1291,15 +1332,6 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
             ListBoxModel items = new ListBoxModel();
             items.add(ApplicationConstants.DEFAULT_DROPDOWN_OPTION_NAME, "");
             items.addAll(ParameterMappingService.getMarkBuildStatusItems());
-            return items;
-        }
-
-        @SuppressWarnings({"lgtm[jenkins/no-permission-check]", "lgtm[jenkins/csrf]"})
-        public ListBoxModel doFillPolaris_assessment_modeItems() {
-            ListBoxModel items = new ListBoxModel();
-            items.add(new ListBoxModel.Option(ApplicationConstants.DEFAULT_DROPDOWN_OPTION_NAME, ""));
-            items.add(new ListBoxModel.Option("CI", "CI"));
-            items.add(new ListBoxModel.Option("SOURCE_UPLOAD", "SOURCE_UPLOAD"));
             return items;
         }
     }

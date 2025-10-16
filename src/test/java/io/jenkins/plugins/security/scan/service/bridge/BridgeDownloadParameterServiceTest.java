@@ -8,6 +8,7 @@ import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.bridge.BridgeDownloadParameters;
 import io.jenkins.plugins.security.scan.exception.PluginExceptionHandler;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
+import io.jenkins.plugins.security.scan.global.Utility;
 import java.io.File;
 import java.io.PrintStream;
 import java.util.HashMap;
@@ -218,47 +219,35 @@ public class BridgeDownloadParameterServiceTest {
 
     @Test
     public void isVersionCompatibleForMacARMTest() {
-        assertTrue(bridgeDownloadParametersService.isVersionCompatibleForARMChips(
-                "2.1.0", ApplicationConstants.MAC_ARM_COMPATIBLE_BRIDGE_VERSION));
-        assertTrue(bridgeDownloadParametersService.isVersionCompatibleForARMChips(
-                "2.2.38", ApplicationConstants.MAC_ARM_COMPATIBLE_BRIDGE_VERSION));
-        assertFalse(bridgeDownloadParametersService.isVersionCompatibleForARMChips(
-                "2.0.0", ApplicationConstants.MAC_ARM_COMPATIBLE_BRIDGE_VERSION));
-        assertFalse(bridgeDownloadParametersService.isVersionCompatibleForARMChips(
-                "1.2.12", ApplicationConstants.MAC_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertTrue(Utility.isVersionCompatible("2.1.0", ApplicationConstants.MAC_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertTrue(Utility.isVersionCompatible("2.2.38", ApplicationConstants.MAC_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertFalse(Utility.isVersionCompatible("2.0.0", ApplicationConstants.MAC_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertFalse(Utility.isVersionCompatible("1.2.12", ApplicationConstants.MAC_ARM_COMPATIBLE_BRIDGE_VERSION));
     }
 
     @Test
     public void isVersionCompatibleForLinuxARMTest() {
-        assertTrue(bridgeDownloadParametersService.isVersionCompatibleForARMChips(
-                "3.5.1", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
-        assertTrue(bridgeDownloadParametersService.isVersionCompatibleForARMChips(
-                "3.5.38", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
-        assertFalse(bridgeDownloadParametersService.isVersionCompatibleForARMChips(
-                "2.0.0", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
-        assertFalse(bridgeDownloadParametersService.isVersionCompatibleForARMChips(
-                "1.2.12", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertTrue(Utility.isVersionCompatible("3.5.1", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertTrue(Utility.isVersionCompatible("3.5.38", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertFalse(Utility.isVersionCompatible("2.0.0", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertFalse(Utility.isVersionCompatible("1.2.12", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
     }
 
     @Test
     public void isVersionCompatibleForARMWithAlphanumericVersionsTest() {
         // Test alphanumeric versions - should work with numeric comparison
-        assertTrue(bridgeDownloadParametersService.isVersionCompatibleForARMChips(
-                "3.7.1rc1", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
-        assertTrue(bridgeDownloadParametersService.isVersionCompatibleForARMChips(
-                "4.0.0beta2", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
-        assertTrue(bridgeDownloadParametersService.isVersionCompatibleForARMChips(
-                "3.5.2alpha1", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertTrue(Utility.isVersionCompatible("3.7.1rc1", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertTrue(Utility.isVersionCompatible("4.0.0beta2", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertTrue(
+                Utility.isVersionCompatible("3.5.2alpha1", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
 
         // Test alphanumeric versions below threshold
-        assertFalse(bridgeDownloadParametersService.isVersionCompatibleForARMChips(
-                "2.1.0rc1", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
-        assertFalse(bridgeDownloadParametersService.isVersionCompatibleForARMChips(
-                "3.4.0beta1", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertFalse(Utility.isVersionCompatible("2.1.0rc1", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertFalse(
+                Utility.isVersionCompatible("3.4.0beta1", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
 
         // Test "latest" always returns true
-        assertTrue(bridgeDownloadParametersService.isVersionCompatibleForARMChips(
-                "latest", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
+        assertTrue(Utility.isVersionCompatible("latest", ApplicationConstants.LINUX_ARM_COMPATIBLE_BRIDGE_VERSION));
     }
 
     @Test

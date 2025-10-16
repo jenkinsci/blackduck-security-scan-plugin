@@ -325,7 +325,7 @@ public class ParameterMappingServiceTest {
         securityScanStep.setPolaris_prComment_enabled(true);
         securityScanStep.setPolaris_prComment_severities("high, critical");
         securityScanStep.setPolaris_waitForScan(true);
-        securityScanStep.setPolaris_assessment_mode("SOURCE_UPLOAD");
+        securityScanStep.setPolaris_test_sca_location("remote");
         securityScanStep.setProject_directory("test/directory");
         securityScanStep.setProject_source_archive("fake-source-archive");
         securityScanStep.setProject_source_preserveSymLinks(true);
@@ -344,7 +344,7 @@ public class ParameterMappingServiceTest {
         assertEquals(true, polarisParametersMap.get(ApplicationConstants.POLARIS_PRCOMMENT_ENABLED_KEY));
         assertEquals("high, critical", polarisParametersMap.get(ApplicationConstants.POLARIS_PRCOMMENT_SEVERITIES_KEY));
         assertTrue((Boolean) polarisParametersMap.get(ApplicationConstants.POLARIS_WAITFORSCAN_KEY));
-        assertEquals("SOURCE_UPLOAD", polarisParametersMap.get(ApplicationConstants.POLARIS_ASSESSMENT_MODE_KEY));
+        assertEquals("remote", polarisParametersMap.get(ApplicationConstants.POLARIS_TEST_SCA_LOCATION_KEY));
         assertEquals("test/directory", polarisParametersMap.get(ApplicationConstants.PROJECT_DIRECTORY_KEY));
         assertEquals("fake-source-archive", polarisParametersMap.get(ApplicationConstants.PROJECT_SOURCE_ARCHIVE_KEY));
         assertEquals("test_exclude", polarisParametersMap.get(ApplicationConstants.PROJECT_SOURCE_EXCLUDES_KEY));

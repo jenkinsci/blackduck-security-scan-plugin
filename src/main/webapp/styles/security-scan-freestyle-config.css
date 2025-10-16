@@ -4,8 +4,7 @@
 
 /* Style for the nested div to be indented */
 #polaris_sarif_params,
-#blackducksca_sarif_params,
-#source_upload {
+#blackducksca_sarif_params {
     margin-left: 10px;
     border-left: 2.23px solid #C3CCD1;
     padding-left: 10px;

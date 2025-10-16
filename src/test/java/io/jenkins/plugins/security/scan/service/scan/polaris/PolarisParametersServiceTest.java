@@ -90,6 +90,8 @@ public class PolarisParametersServiceTest {
         polarisParameters.put(ApplicationConstants.POLARIS_PRCOMMENT_SEVERITIES_KEY, "HIGH");
         polarisParameters.put(ApplicationConstants.POLARIS_TEST_SCA_TYPE_KEY, "SCA-PACKAGE");
         polarisParameters.put(ApplicationConstants.POLARIS_TEST_SAST_TYPE_KEY, "SAST_RAPID");
+        polarisParameters.put(ApplicationConstants.POLARIS_TEST_SCA_LOCATION_KEY, "hybrid");
+        polarisParameters.put(ApplicationConstants.POLARIS_TEST_SAST_LOCATION_KEY, "remote");
 
         polarisParameters.put(ApplicationConstants.POLARIS_WAITFORSCAN_KEY, true);
 
@@ -103,6 +105,8 @@ public class PolarisParametersServiceTest {
         assertEquals(polaris.getBranch().getName(), "test-branch");
         assertEquals(polaris.getTest().getSca().getType(), "SCA-PACKAGE");
         assertEquals(polaris.getTest().getSast().getType(), List.of("SAST_RAPID"));
+        assertEquals(polaris.getTest().getSca().getLocation(), "hybrid");
+        assertEquals(polaris.getTest().getSast().getLocation(), "remote");
         assertNull(polaris.getBranch().getParent());
         assertNull(polaris.getPrcomment());
         assertEquals(polaris.isWaitForScan(), true);
@@ -123,6 +127,8 @@ public class PolarisParametersServiceTest {
         polarisParameters.put(ApplicationConstants.POLARIS_PRCOMMENT_SEVERITIES_KEY, "HIGH");
         polarisParameters.put(ApplicationConstants.POLARIS_TEST_SCA_TYPE_KEY, "SCA-PACKAGE");
         polarisParameters.put(ApplicationConstants.POLARIS_TEST_SAST_TYPE_KEY, "SAST_RAPID");
+        polarisParameters.put(ApplicationConstants.POLARIS_TEST_SCA_LOCATION_KEY, "hybrid");
+        polarisParameters.put(ApplicationConstants.POLARIS_TEST_SAST_LOCATION_KEY, "remote");
         polarisParameters.put(ApplicationConstants.POLARIS_REPORTS_SARIF_CREATE_KEY, true);
         polarisParameters.put(ApplicationConstants.POLARIS_REPORTS_SARIF_FILE_PATH_KEY, "/path/to/sarif/file");
         polarisParameters.put(ApplicationConstants.POLARIS_REPORTS_SARIF_SEVERITIES_KEY, "HIGH,MEDIUM,LOW");
@@ -139,6 +145,8 @@ public class PolarisParametersServiceTest {
         assertEquals(polaris.getBranch().getName(), "test-branch");
         assertEquals(polaris.getTest().getSca().getType(), "SCA-PACKAGE");
         assertEquals(polaris.getTest().getSast().getType(), List.of("SAST_RAPID"));
+        assertEquals(polaris.getTest().getSca().getLocation(), "hybrid");
+        assertEquals(polaris.getTest().getSast().getLocation(), "remote");
         assertNull(polaris.getBranch().getParent());
         assertNull(polaris.getPrcomment());
         assertTrue(polaris.getReports().getSarif().getCreate());
@@ -166,6 +174,8 @@ public class PolarisParametersServiceTest {
         polarisParameters.put(ApplicationConstants.POLARIS_PRCOMMENT_SEVERITIES_KEY, "CRITICAL, HIGH, MEDIUM");
         polarisParameters.put(ApplicationConstants.POLARIS_TEST_SCA_TYPE_KEY, "SCA-SIGNATURE");
         polarisParameters.put(ApplicationConstants.POLARIS_TEST_SAST_TYPE_KEY, "SAST_RAPID");
+        polarisParameters.put(ApplicationConstants.POLARIS_TEST_SCA_LOCATION_KEY, "hybrid");
+        polarisParameters.put(ApplicationConstants.POLARIS_TEST_SAST_LOCATION_KEY, "remote");
         polarisParameters.put(ApplicationConstants.POLARIS_WAITFORSCAN_KEY, true);
 
         Mockito.when(envVarsMock.get(ApplicationConstants.ENV_CHANGE_ID_KEY)).thenReturn("1");
@@ -341,5 +351,55 @@ public class PolarisParametersServiceTest {
         assertEquals(Arrays.asList("HIGH", "LOW"), sarifObject.getSeverities());
         assertEquals(List.of("SAST"), sarifObject.getIssue().getTypes());
         assertFalse(sarifObject.getGroupSCAIssues());
+    }
+
+    @Test
+    void testSastLocationSetToLocal() {
+        Map<String, Object> polarisParameters = new HashMap<>();
+        polarisParameters.put(ApplicationConstants.POLARIS_TEST_SAST_LOCATION_KEY, "local");
+
+        Polaris polaris = polarisParametersService.preparePolarisObjectForBridge(polarisParameters);
+
+        assertEquals("local", polaris.getTest().getSast().getLocation());
+    }
+
+    @Test
+    void testSastLocationSetToHybrid() {
+        Map<String, Object> polarisParameters = new HashMap<>();
+        polarisParameters.put(ApplicationConstants.POLARIS_TEST_SAST_LOCATION_KEY, "hybrid");
+
+        Polaris polaris = polarisParametersService.preparePolarisObjectForBridge(polarisParameters);
+
+        assertEquals("hybrid", polaris.getTest().getSast().getLocation());
+    }
+
+    @Test
+    void testSastLocationSetToRemote() {
+        Map<String, Object> polarisParameters = new HashMap<>();
+        polarisParameters.put(ApplicationConstants.POLARIS_TEST_SAST_LOCATION_KEY, "remote");
+
+        Polaris polaris = polarisParametersService.preparePolarisObjectForBridge(polarisParameters);
+
+        assertEquals("remote", polaris.getTest().getSast().getLocation());
+    }
+
+    @Test
+    void testScaLocationSetToHybrid() {
+        Map<String, Object> polarisParameters = new HashMap<>();
+        polarisParameters.put(ApplicationConstants.POLARIS_TEST_SCA_LOCATION_KEY, "hybrid");
+
+        Polaris polaris = polarisParametersService.preparePolarisObjectForBridge(polarisParameters);
+
+        assertEquals("hybrid", polaris.getTest().getSca().getLocation());
+    }
+
+    @Test
+    void testScaLocationSetToRemote() {
+        Map<String, Object> polarisParameters = new HashMap<>();
+        polarisParameters.put(ApplicationConstants.POLARIS_TEST_SCA_LOCATION_KEY, "remote");
+
+        Polaris polaris = polarisParametersService.preparePolarisObjectForBridge(polarisParameters);
+
+        assertEquals("remote", polaris.getTest().getSca().getLocation());
     }
 }

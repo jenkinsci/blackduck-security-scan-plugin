@@ -108,16 +108,22 @@ securityProduct.addEventListener('change', function() {
 });
 
 document.addEventListener('change', function(event) {
-    var polarisAssessmentModeOption = document.querySelector('select[name="_.polaris_assessment_mode"]')?.value;
-    var sourceUploadDiv = document.getElementById('source_upload');
+    const polarisDiv = document.getElementById('polaris');
+    const polarisRemoteAnalysisDiv = polarisDiv.querySelector(
+        '#polaris-remote-analysis');
+    const scaLocation = polarisDiv.querySelector(
+        'select[name="_.polaris_test_sca_location"]')?.value;
+    const sastLocation = polarisDiv.querySelector(
+        'select[name="_.polaris_test_sast_location"]')?.value;
 
-    if (polarisAssessmentModeOption === 'SOURCE_UPLOAD') {
-        showParticularDiv(sourceUploadDiv);
+    if (!polarisRemoteAnalysisDiv) {
+        return;
     }
-
-    if (polarisAssessmentModeOption === 'CI' || polarisAssessmentModeOption === '') {
-        clearInputFields(sourceUploadDiv);
-        hideParticularDiv(sourceUploadDiv);
+    if (scaLocation === 'remote' || sastLocation === 'remote') {
+        showParticularDiv(polarisRemoteAnalysisDiv);
+    } else {
+        clearInputFields(polarisRemoteAnalysisDiv);
+        hideParticularDiv(polarisRemoteAnalysisDiv);
     }
 
     toggleSarifParamsDivs(event);
