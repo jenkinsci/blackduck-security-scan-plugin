@@ -231,6 +231,9 @@
                     <f:entry field="polaris_sast_args" title="Additional Arguments (Optional)">
                         <f:textbox/>
                     </f:entry>
+                    <f:entry field="polaris_coverity_version" title="Coverity Version (Optional)">
+                        <f:textbox/>
+                    </f:entry>
                 </f:advanced>
 
                 <f:advanced title="Detect (SCA) Tool Options">

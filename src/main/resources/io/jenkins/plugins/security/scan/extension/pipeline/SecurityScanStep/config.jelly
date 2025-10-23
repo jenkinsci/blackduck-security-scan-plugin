@@ -125,9 +125,6 @@
             <f:entry field="coverity_policy_view" title="Coverity Policy View (Optional)">
                 <f:textbox/>
             </f:entry>
-            <f:entry field="coverity_version" title="Coverity Version (Optional)">
-                <f:textbox/>
-            </f:entry>
         </f:advanced>
 
         <div id="coverity_pr_comment_sec">
@@ -291,6 +288,9 @@
 
     <div id="coverity-tool-configuration" style="display: none;">
         <f:advanced title="Coverity (SAST) Tool Options">
+            <f:entry field="coverity_version" title="Coverity Version (Optional)">
+                <f:textbox/>
+            </f:entry>
             <f:entry field="coverity_build_command" title="Build Command (Optional)">
                 <f:textbox/>
             </f:entry>
