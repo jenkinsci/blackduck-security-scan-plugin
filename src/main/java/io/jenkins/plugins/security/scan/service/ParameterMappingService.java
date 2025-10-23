@@ -611,13 +611,11 @@ public class ParameterMappingService {
                 ApplicationConstants.COVERITY_CONFIG_PATH_KEY,
                 freestyleScan.getPolaris_sast_config_path());
         addParameterIfNotBlank(
+                polarisParametersMap, ApplicationConstants.COVERITY_ARGS_KEY, freestyleScan.getPolaris_sast_args());
+        addParameterIfNotBlank(
                 polarisParametersMap,
-				ApplicationConstants.COVERITY_ARGS_KEY,
-				freestyleScan.getPolaris_sast_args());
-		addParameterIfNotBlank(
-			polarisParametersMap,
-			ApplicationConstants.COVERITY_VERSION_KEY,
-			freestyleScan.getPolaris_coverity_version());
+                ApplicationConstants.COVERITY_VERSION_KEY,
+                freestyleScan.getPolaris_coverity_version());
     }
 
     private static void prepareSrmToolConfigurationParametersMap(

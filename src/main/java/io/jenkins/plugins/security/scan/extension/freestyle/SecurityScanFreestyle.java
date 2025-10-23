@@ -457,9 +457,9 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
         return polaris_sast_args;
     }
 
-	public String getPolaris_coverity_version() {
-		return polaris_coverity_version;
-	}
+    public String getPolaris_coverity_version() {
+        return polaris_coverity_version;
+    }
 
     public String getProject_source_archive() {
         return project_source_archive;
@@ -958,10 +958,10 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
         this.polaris_sast_args = Util.fixEmptyAndTrim(polaris_sast_args);
     }
 
-	@DataBoundSetter
-	public void setPolaris_coverity_version(String polaris_coverity_version) {
-		this.polaris_coverity_version = Util.fixEmptyAndTrim(polaris_coverity_version);
-	}
+    @DataBoundSetter
+    public void setPolaris_coverity_version(String polaris_coverity_version) {
+        this.polaris_coverity_version = Util.fixEmptyAndTrim(polaris_coverity_version);
+    }
 
     @DataBoundSetter
     public void setPolaris_waitForScan(Boolean polaris_waitForScan) {

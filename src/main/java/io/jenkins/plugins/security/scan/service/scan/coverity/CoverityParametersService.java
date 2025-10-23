@@ -213,15 +213,15 @@ public class CoverityParametersService {
 
     private Coverity setVersion(Map<String, Object> coverityParameters, Coverity coverity) {
         if (coverityParameters.containsKey(ApplicationConstants.COVERITY_VERSION_KEY)) {
-			if (coverity == null) {
-				coverity = new Coverity();
-			}
+            if (coverity == null) {
+                coverity = new Coverity();
+            }
             coverity.setVersion(coverityParameters
                     .get(ApplicationConstants.COVERITY_VERSION_KEY)
                     .toString()
                     .trim());
         }
-		return coverity;
+        return coverity;
     }
 
     public Coverity setArbitaryInputs(Map<String, Object> coverityParameters, Coverity coverity) {
@@ -231,7 +231,7 @@ public class CoverityParametersService {
         coverity = setCleanCommand(coverityParameters, coverity);
         coverity = setConfigCommand(coverityParameters, coverity);
         coverity = setArgs(coverityParameters, coverity);
-		coverity = setVersion(coverityParameters, coverity);
+        coverity = setVersion(coverityParameters, coverity);
 
         if (SecurityProduct.SRM.name().equalsIgnoreCase(securityPlatform)) {
             coverity = setExecutionPath(coverityParameters, coverity);
