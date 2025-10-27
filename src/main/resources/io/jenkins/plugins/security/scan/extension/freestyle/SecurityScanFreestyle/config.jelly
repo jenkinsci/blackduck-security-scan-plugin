@@ -99,9 +99,6 @@
                 <f:entry field="coverity_policy_view" title="Coverity Policy View (Optional)">
                     <f:textbox/>
                 </f:entry>
-                <f:entry field="coverity_version" title="Coverity Version (Optional)">
-                    <f:textbox/>
-                </f:entry>
                 <f:entry field="coverity_project_directory" title="Project Directory (Optional)">
                     <f:textbox/>
                 </f:entry>
@@ -128,6 +125,9 @@
                         <f:textbox/>
                     </f:entry>
                     <f:entry field="coverity_config_path" title="Config File Path (Optional)">
+                        <f:textbox/>
+                    </f:entry>
+                    <f:entry field="coverity_version" title="Coverity Version (Optional)">
                         <f:textbox/>
                     </f:entry>
                     <f:entry field="coverity_args" title="Additional Arguments (Optional)">
@@ -228,10 +228,10 @@
                     <f:entry field="polaris_sast_config_path" title="Config File Path (Optional)">
                         <f:textbox/>
                     </f:entry>
-                    <f:entry field="polaris_sast_args" title="Additional Arguments (Optional)">
-                        <f:textbox/>
-                    </f:entry>
                     <f:entry field="polaris_coverity_version" title="Coverity Version (Optional)">
+                         <f:textbox/>
+                    </f:entry>
+                    <f:entry field="polaris_sast_args" title="Additional Arguments (Optional)">
                         <f:textbox/>
                     </f:entry>
                 </f:advanced>
