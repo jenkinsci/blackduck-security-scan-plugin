@@ -97,6 +97,7 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     private String polaris_sast_clean_command;
     private String polaris_sast_config_path;
     private String polaris_sast_args;
+    private String polaris_coverity_version;
     private Boolean polaris_waitForScan;
     private Boolean polaris_waitForScan_actualValue;
 
@@ -454,6 +455,10 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
 
     public String getPolaris_sast_args() {
         return polaris_sast_args;
+    }
+
+    public String getPolaris_coverity_version() {
+        return polaris_coverity_version;
     }
 
     public String getProject_source_archive() {
@@ -951,6 +956,11 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     @DataBoundSetter
     public void setPolaris_sast_args(String polaris_sast_args) {
         this.polaris_sast_args = Util.fixEmptyAndTrim(polaris_sast_args);
+    }
+
+    @DataBoundSetter
+    public void setPolaris_coverity_version(String polaris_coverity_version) {
+        this.polaris_coverity_version = Util.fixEmptyAndTrim(polaris_coverity_version);
     }
 
     @DataBoundSetter
