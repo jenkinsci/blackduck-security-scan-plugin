@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>plugin</artifactId>
-    <version>4.85</version>
+    <version>5.24</version>
     <relativePath />
   </parent>
   <groupId>io.jenkins.plugins</groupId>
@@ -29,7 +29,7 @@
     <!-- https://www.jenkins.io/doc/developer/plugin-development/choosing-jenkins-baseline/ -->
     <revision>2.6.0</revision>
     <changelist>-SNAPSHOT</changelist>
-    <jenkins.version>2.440.3</jenkins.version>
+    <jenkins.version>2.492.3</jenkins.version>
     <gitHubRepo>jenkinsci/${project.artifactId}-plugin</gitHubRepo>
     <spotless.check.skip>false</spotless.check.skip>
   </properties>
@@ -39,8 +39,8 @@
       <dependency>
         <!-- Pick up common dependencies for the selected LTS line: https://github.com/jenkinsci/bom#usage -->
         <groupId>io.jenkins.tools.bom</groupId>
-        <artifactId>bom-2.440.x</artifactId>
-        <version>3387.v0f2773fa_3200</version>
+        <artifactId>bom-2.492.x</artifactId>
+        <version>5473.vb_9533d9e5d88</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -51,7 +51,7 @@
     <dependency>
       <groupId>io.jenkins.plugins</groupId>
       <artifactId>apache-httpcomponents-client-5-api</artifactId>
-      <version>5.4-118.v199115451c4d</version>
+      <!--      <version>5.4.4-144.vc483d91903d2</version>-->
     </dependency>
     <dependency>
       <groupId>io.jenkins.plugins</groupId>
@@ -82,7 +82,6 @@
     <dependency>
       <groupId>org.jenkins-ci.plugins</groupId>
       <artifactId>cloudbees-folder</artifactId>
-      <version>6.901.vb_4c7a_da_75da_3</version>
     </dependency>
     <dependency>
       <groupId>org.jenkins-ci.plugins</groupId>
@@ -132,19 +131,16 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.6.2</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
-      <version>5.6.2</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>2.23.4</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -172,7 +168,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.5.0</version>
       </plugin>
       <plugin>
         <groupId>org.jacoco</groupId>
