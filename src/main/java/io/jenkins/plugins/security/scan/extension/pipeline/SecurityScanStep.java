@@ -1,8 +1,6 @@
 package io.jenkins.plugins.security.scan.extension.pipeline;
 
 import com.cloudbees.jenkins.plugins.bitbucket.BitbucketSCMSource;
-import edu.umd.cs.findbugs.annotations.NonNull;
-import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.*;
 import hudson.model.Node;
@@ -24,6 +22,8 @@ import io.jenkins.plugins.security.scan.service.scm.SCMRepositoryService;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import jenkins.scm.api.SCMSource;
 import org.jenkinsci.plugins.github_branch_source.GitHubSCMSource;
 import org.jenkinsci.plugins.workflow.actions.WarningAction;
@@ -1384,7 +1384,7 @@ public class SecurityScanStep extends Step
             return ApplicationConstants.PIPELINE_STEP_NAME;
         }
 
-        @NonNull
+        @Nonnull
         @Override
         public String getDisplayName() {
             return ApplicationConstants.DISPLAY_NAME_BLACKDUCK;
@@ -1462,7 +1462,7 @@ public class SecurityScanStep extends Step
         @SuppressFBWarnings("SE_TRANSIENT_FIELD_NOT_RESTORED")
         private final transient FilePath workspace;
 
-        protected Execution(@NonNull StepContext context) throws InterruptedException, IOException {
+        protected Execution(@Nonnull StepContext context) throws InterruptedException, IOException {
             super(context);
             run = context.get(Run.class);
             listener = context.get(TaskListener.class);
