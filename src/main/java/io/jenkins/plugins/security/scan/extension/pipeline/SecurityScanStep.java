@@ -752,7 +752,7 @@ public class SecurityScanStep extends Step
      * This single setter eliminates ambiguity and ensures consistent behavior across all scenarios.
      *
      * Supports:
-	 * - Freestyle UI, Pipeline syntax: sends "auto"/"true"/"false" as strings
+     * - Freestyle UI, Pipeline syntax: sends "auto"/"true"/"false" as strings
      * - Direct configuration: can pass Boolean true/false or null
      *
      * @param value Can be Boolean, String, or null
