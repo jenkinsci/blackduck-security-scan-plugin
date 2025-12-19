@@ -748,36 +748,49 @@ public class SecurityScanStep extends Step
     }
 
     /**
-     * When using Jenkinsfile to initiate the pipeline step, this method is called directly with a Boolean parameter.
+     * Setter for blackducksca_scan_full that handles both String and Boolean values.
+     * This single setter eliminates ambiguity and ensures consistent behavior across all scenarios.
+     *
+     * Supports:
+     * - Freestyle UI: sends "auto"/"true"/"false" as strings
+     * - Direct configuration: can pass Boolean true/false or null
+     *
+     * @param value Can be Boolean, String, or null
+     *              - Boolean true/false → full scan on/off
+     *              - String "auto"/null → automatic detection (field becomes null)
+     *              - String "true"/"false" → converted to boolean
      * **/
     @DataBoundSetter
-    public void setBlackducksca_scan_full(Boolean blackducksca_scan_full) {
-        if (blackducksca_scan_full == null) {
+    public void setBlackducksca_scan_full(Object value) {
+        Boolean boolValue = null;
+
+        if (value == null || ApplicationConstants.BLACKDUCKSCA_SCAN_FULL_OPTION_AUTO.equals(value)) {
+            // null or "auto" → automatic detection
+            boolValue = null;
+        } else if (value instanceof Boolean) {
+            // Direct boolean value
+            boolValue = (Boolean) value;
+        } else if (value instanceof String) {
+            // String value from UI
+            String strValue = (String) value;
+            if ("true".equalsIgnoreCase(strValue)) {
+                boolValue = true;
+            } else if ("false".equalsIgnoreCase(strValue)) {
+                boolValue = false;
+            }
+            // If string is "auto" or any other value, boolValue remains null
+        }
+
+        // Apply the resolved value
+        if (boolValue == null) {
             this.blackducksca_scan_full = null;
             this.blackduckscaIntelligentScan = null;
-        } else if (blackducksca_scan_full) {
+        } else if (boolValue) {
             this.blackducksca_scan_full = true;
             this.blackduckscaIntelligentScan = true;
         } else {
             this.blackducksca_scan_full = false;
             this.blackduckscaIntelligentScan = false;
-        }
-    }
-
-    /**
-     * Adding this method-overriding for the default boolean setter to handle the "auto" string value from the UI.
-     * As radio-button options are String values, we need to handle the conversion here. Because, the Boolean parameter
-     * was converting anything but "true" to false, which was not the expected behavior. Such behavior was not allowing
-     * to set the NULL value, which is required for the "auto" option.
-     * **/
-    @DataBoundSetter
-    public void setBlackducksca_scan_full(String value) {
-        if ("auto".equals(value)) {
-            setBlackducksca_scan_full((Boolean) null);
-        } else if ("true".equals(value)) {
-            setBlackducksca_scan_full(Boolean.TRUE);
-        } else if ("false".equals(value)) {
-            setBlackducksca_scan_full(Boolean.FALSE);
         }
     }
 
