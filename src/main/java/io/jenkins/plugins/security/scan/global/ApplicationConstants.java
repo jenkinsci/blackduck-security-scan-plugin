@@ -34,6 +34,7 @@ public class ApplicationConstants {
     public static final String SCAN_INFO_OUT_FILE_NAME = ".bridge/output/scan_info_out.json";
     public static final String BLACK_DUCK_LOGO_FILE_NAME = "/plugin/blackduck-security-scan/icons/blackduck.png";
     public static final String BRIDGE_VERSION_EXTRACTION_REGEX = "[0-9.]+[a-zA-Z0-9]*";
+    public static final String BLACKDUCKSCA_SCAN_FULL_OPTION_AUTO = "auto";
 
     // Jenkins Environment Variables
     public static final String ENV_JOB_NAME_KEY = "JOB_NAME";
