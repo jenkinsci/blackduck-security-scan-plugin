@@ -353,5 +353,6 @@ public class ApplicationConstants {
             COVERITY_BUILD_COMMAND_KEY,
             COVERITY_CLEAN_COMMAND_KEY,
             COVERITY_CONFIG_PATH_KEY,
+            COVERITY_VERSION_KEY,
             COVERITY_ARGS_KEY);
 }
