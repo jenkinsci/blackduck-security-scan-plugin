@@ -352,6 +352,33 @@ public class ParameterMappingServiceTest {
     }
 
     @Test
+    public void preparePolarisParametersMapWithFixPrTest() {
+        securityScanStep.setPolaris_server_url("https://fake.polaris-server.url");
+        securityScanStep.setPolaris_access_token("fake-access-token");
+        securityScanStep.setPolaris_application_name("fake-application-name");
+        securityScanStep.setPolaris_project_name("fake-project-name");
+        securityScanStep.setPolaris_assessment_types("SCA");
+        securityScanStep.setPolaris_branch_name("test");
+        securityScanStep.setPolaris_fixpr_enabled(true);
+        securityScanStep.setPolaris_fixpr_maxCount(5);
+        securityScanStep.setPolaris_fixpr_createSinglePR(true);
+        securityScanStep.setPolaris_fixpr_useUpgradeGuidance("SHORT_TERM");
+        securityScanStep.setPolaris_fixpr_filter_severities("CRITICAL,HIGH");
+        securityScanStep.setPolaris_fixpr_filter_by("POLICY");
+
+        Map<String, Object> polarisParametersMap =
+                ParameterMappingService.preparePolarisParametersMap(securityScanStep);
+
+        assertTrue((boolean) polarisParametersMap.get(ApplicationConstants.POLARIS_FIXPR_ENABLED_KEY));
+        assertEquals(5, polarisParametersMap.get(ApplicationConstants.POLARIS_FIXPR_MAXCOUNT_KEY));
+        assertTrue((boolean) polarisParametersMap.get(ApplicationConstants.POLARIS_FIXPR_CREATE_SINGLE_PR_KEY));
+        assertEquals("SHORT_TERM", polarisParametersMap.get(ApplicationConstants.POLARIS_FIXPR_USEUPGRADEGUIDANCE_KEY));
+        assertEquals(
+                "CRITICAL,HIGH", polarisParametersMap.get(ApplicationConstants.POLARIS_FIXPR_FILTER_SEVERITIES_KEY));
+        assertEquals("POLICY", polarisParametersMap.get(ApplicationConstants.POLARIS_FIXPR_FILTER_BY_KEY));
+    }
+
+    @Test
     public void preparePolarisParametersMapForFreestyleTest() {
         securityScanFreestyle.setProduct("POLARIS");
         securityScanFreestyle.setBitbucket_token("FAKETOKEN");

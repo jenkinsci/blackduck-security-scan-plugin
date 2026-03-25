@@ -6,6 +6,7 @@ import hudson.EnvVars;
 import hudson.model.TaskListener;
 import io.jenkins.plugins.security.scan.global.ApplicationConstants;
 import io.jenkins.plugins.security.scan.input.coverity.Coverity;
+import io.jenkins.plugins.security.scan.input.polaris.FixPr;
 import io.jenkins.plugins.security.scan.input.polaris.Polaris;
 import io.jenkins.plugins.security.scan.input.project.Project;
 import io.jenkins.plugins.security.scan.input.report.Sarif;
@@ -351,6 +352,73 @@ public class PolarisParametersServiceTest {
         assertEquals(Arrays.asList("HIGH", "LOW"), sarifObject.getSeverities());
         assertEquals(List.of("SAST"), sarifObject.getIssue().getTypes());
         assertFalse(sarifObject.getGroupSCAIssues());
+    }
+
+    @Test
+    public void preparePolarisFixPrObjectTest() {
+        Map<String, Object> fixPrParameters = new HashMap<>();
+
+        fixPrParameters.put(ApplicationConstants.POLARIS_FIXPR_ENABLED_KEY, true);
+        fixPrParameters.put(ApplicationConstants.POLARIS_FIXPR_FILTER_SEVERITIES_KEY, "CRITICAL,HIGH");
+        fixPrParameters.put(ApplicationConstants.POLARIS_FIXPR_USEUPGRADEGUIDANCE_KEY, "SHORT_TERM,LONG_TERM");
+        fixPrParameters.put(ApplicationConstants.POLARIS_FIXPR_MAXCOUNT_KEY, 5);
+        fixPrParameters.put(ApplicationConstants.POLARIS_FIXPR_CREATE_SINGLE_PR_KEY, true);
+        fixPrParameters.put(ApplicationConstants.POLARIS_FIXPR_FILTER_BY_KEY, "POLICY");
+
+        FixPr fixPrObject = polarisParametersService.prepareFixPrObject(fixPrParameters);
+
+        assertNotNull(fixPrObject);
+        assertTrue(fixPrObject.getEnabled());
+        assertEquals(Arrays.asList("CRITICAL", "HIGH"), fixPrObject.getFilter().getSeverities());
+        assertEquals("POLICY", fixPrObject.getFilter().getBy());
+        assertEquals(Arrays.asList("SHORT_TERM", "LONG_TERM"), fixPrObject.getUseUpgradeGuidance());
+        assertEquals(5, fixPrObject.getMaxCount());
+        assertTrue(fixPrObject.getCreateSinglePR());
+    }
+
+    @Test
+    public void preparePolarisObjectForBridge_withFixPrInNonPRContextTest() {
+        Map<String, Object> polarisParameters = new HashMap<>();
+
+        polarisParameters.put(ApplicationConstants.POLARIS_SERVER_URL_KEY, TEST_POLARIS_SERVER_URL);
+        polarisParameters.put(ApplicationConstants.POLARIS_ACCESS_TOKEN_KEY, TEST_POLARIS_ACCESS_TOKEN);
+        polarisParameters.put(ApplicationConstants.POLARIS_APPLICATION_NAME_KEY, TEST_APPLICATION_NAME);
+        polarisParameters.put(ApplicationConstants.POLARIS_PROJECT_NAME_KEY, "fake-project-name");
+        polarisParameters.put(ApplicationConstants.POLARIS_ASSESSMENT_TYPES_KEY, "SCA");
+        polarisParameters.put(ApplicationConstants.POLARIS_BRANCH_NAME_KEY, "test-branch");
+        polarisParameters.put(ApplicationConstants.POLARIS_FIXPR_ENABLED_KEY, true);
+        polarisParameters.put(ApplicationConstants.POLARIS_FIXPR_MAXCOUNT_KEY, 3);
+        polarisParameters.put(ApplicationConstants.POLARIS_FIXPR_FILTER_SEVERITIES_KEY, "CRITICAL");
+        polarisParameters.put(ApplicationConstants.POLARIS_FIXPR_FILTER_BY_KEY, "SEVERITIES");
+        polarisParameters.put(ApplicationConstants.POLARIS_FIXPR_USEUPGRADEGUIDANCE_KEY, "SHORT_TERM");
+
+        Polaris polaris = polarisParametersService.preparePolarisObjectForBridge(polarisParameters);
+
+        assertNotNull(polaris.getFixPr());
+        assertTrue(polaris.getFixPr().getEnabled());
+        assertEquals(3, polaris.getFixPr().getMaxCount());
+        assertEquals(Arrays.asList("CRITICAL"), polaris.getFixPr().getFilter().getSeverities());
+        assertEquals("SEVERITIES", polaris.getFixPr().getFilter().getBy());
+        assertEquals(Arrays.asList("SHORT_TERM"), polaris.getFixPr().getUseUpgradeGuidance());
+    }
+
+    @Test
+    public void preparePolarisObjectForBridge_fixPrIgnoredInPRContextTest() {
+        Map<String, Object> polarisParameters = new HashMap<>();
+
+        polarisParameters.put(ApplicationConstants.POLARIS_SERVER_URL_KEY, TEST_POLARIS_SERVER_URL);
+        polarisParameters.put(ApplicationConstants.POLARIS_ACCESS_TOKEN_KEY, TEST_POLARIS_ACCESS_TOKEN);
+        polarisParameters.put(ApplicationConstants.POLARIS_APPLICATION_NAME_KEY, TEST_APPLICATION_NAME);
+        polarisParameters.put(ApplicationConstants.POLARIS_PROJECT_NAME_KEY, "fake-project-name");
+        polarisParameters.put(ApplicationConstants.POLARIS_ASSESSMENT_TYPES_KEY, "SCA");
+        polarisParameters.put(ApplicationConstants.POLARIS_BRANCH_NAME_KEY, "test-branch");
+        polarisParameters.put(ApplicationConstants.POLARIS_FIXPR_ENABLED_KEY, true);
+
+        Mockito.when(envVarsMock.get(ApplicationConstants.ENV_CHANGE_ID_KEY)).thenReturn("1");
+
+        Polaris polaris = polarisParametersService.preparePolarisObjectForBridge(polarisParameters);
+
+        assertNull(polaris.getFixPr());
     }
 
     @Test

@@ -486,6 +486,34 @@ public class ParameterMappingService {
             }
         }
 
+        if (securityScan instanceof FixPrScan) {
+            FixPrScan fixPrScan = (FixPrScan) securityScan;
+            addParameterIfNotBlank(
+                    polarisParametersMap,
+                    ApplicationConstants.POLARIS_FIXPR_ENABLED_KEY,
+                    fixPrScan.isPolaris_fixpr_enabled_actualValue());
+            addParameterIfNotBlank(
+                    polarisParametersMap,
+                    ApplicationConstants.POLARIS_FIXPR_MAXCOUNT_KEY,
+                    fixPrScan.getPolaris_fixpr_maxCount());
+            addParameterIfNotBlank(
+                    polarisParametersMap,
+                    ApplicationConstants.POLARIS_FIXPR_CREATE_SINGLE_PR_KEY,
+                    fixPrScan.isPolaris_fixpr_createSinglePR_actualValue());
+            addParameterIfNotBlank(
+                    polarisParametersMap,
+                    ApplicationConstants.POLARIS_FIXPR_USEUPGRADEGUIDANCE_KEY,
+                    fixPrScan.getPolaris_fixpr_useUpgradeGuidance());
+            addParameterIfNotBlank(
+                    polarisParametersMap,
+                    ApplicationConstants.POLARIS_FIXPR_FILTER_SEVERITIES_KEY,
+                    fixPrScan.getPolaris_fixpr_filter_severities());
+            addParameterIfNotBlank(
+                    polarisParametersMap,
+                    ApplicationConstants.POLARIS_FIXPR_FILTER_BY_KEY,
+                    fixPrScan.getPolaris_fixpr_filter_by());
+        }
+
         if (securityScan instanceof FreestyleScan) {
             FreestyleScan freestyleScan = (FreestyleScan) securityScan;
             preparePolarisToolConfigurationParametersMap(polarisParametersMap, freestyleScan);
