@@ -356,7 +356,6 @@ public class PolarisParametersService {
         }
 
         boolean hasFilterSeverities =
-
                 fixPrParameters.containsKey(ApplicationConstants.POLARIS_FIXPR_FILTER_SEVERITIES_KEY);
         boolean hasFilterBy = fixPrParameters.containsKey(ApplicationConstants.POLARIS_FIXPR_FILTER_BY_KEY);
 
