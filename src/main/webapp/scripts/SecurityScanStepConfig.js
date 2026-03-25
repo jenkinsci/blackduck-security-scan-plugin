@@ -200,6 +200,7 @@ function toggleFixPrParamsDivs() {
     } else if (selectedOption == "polaris") {
         var polarisFixPrCheckbox = document.querySelector('input[name="_.polaris_fixpr_enabled"]')
         var polarisFixPrParamSection = document.getElementById('polaris_fixPr_params')
+        if (!polarisFixPrCheckbox || !polarisFixPrParamSection) return;
         if (polarisFixPrCheckbox.checked) {
             polarisFixPrParamSection.style.display = 'block';
         } else {

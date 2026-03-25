@@ -328,7 +328,7 @@ public class PolarisParametersService {
                     .get(ApplicationConstants.POLARIS_FIXPR_ENABLED_KEY)
                     .toString()
                     .trim();
-            if (value.equals("true")) {
+            if (value.equalsIgnoreCase("true")) {
                 boolean isPullRequestEvent = Utility.isPullRequestEvent(envVars);
                 if (isPullRequestEvent) {
                     logger.info(ApplicationConstants.POLARIS_FIXPR_INFO_FOR_NON_PR_SCANS);
@@ -355,26 +355,31 @@ public class PolarisParametersService {
             fixPr.setCreateSinglePR(createSinglePR);
         }
 
-        if (fixPrParameters.containsKey(ApplicationConstants.POLARIS_FIXPR_FILTER_SEVERITIES_KEY)) {
-            String filterSeverities =
-                    (String) fixPrParameters.get(ApplicationConstants.POLARIS_FIXPR_FILTER_SEVERITIES_KEY);
-            String[] severitiesInput = filterSeverities.toUpperCase().split(",");
-            List<String> severities =
-                    Arrays.stream(severitiesInput).map(String::trim).collect(Collectors.toList());
-            if (!severities.isEmpty()) {
-                Filter filter = fixPr.getFilter() != null ? fixPr.getFilter() : new Filter();
-                filter.setSeverities(severities);
-                fixPr.setFilter(filter);
-            }
-        }
+        boolean hasFilterSeverities =
 
-        if (fixPrParameters.containsKey(ApplicationConstants.POLARIS_FIXPR_FILTER_BY_KEY)) {
-            String filterBy = (String) fixPrParameters.get(ApplicationConstants.POLARIS_FIXPR_FILTER_BY_KEY);
-            if (filterBy != null && !filterBy.trim().isEmpty()) {
-                Filter filter = fixPr.getFilter() != null ? fixPr.getFilter() : new Filter();
-                filter.setBy(filterBy.toUpperCase().trim());
-                fixPr.setFilter(filter);
+                fixPrParameters.containsKey(ApplicationConstants.POLARIS_FIXPR_FILTER_SEVERITIES_KEY);
+        boolean hasFilterBy = fixPrParameters.containsKey(ApplicationConstants.POLARIS_FIXPR_FILTER_BY_KEY);
+
+        if (hasFilterSeverities || hasFilterBy) {
+            Filter filter = new Filter();
+
+            if (hasFilterSeverities) {
+                String filterSeverities =
+                        (String) fixPrParameters.get(ApplicationConstants.POLARIS_FIXPR_FILTER_SEVERITIES_KEY);
+                String[] severitiesInput = filterSeverities.toUpperCase().split(",");
+                List<String> severities =
+                        Arrays.stream(severitiesInput).map(String::trim).collect(Collectors.toList());
+                filter.setSeverities(severities);
             }
+
+            if (hasFilterBy) {
+                String filterBy = (String) fixPrParameters.get(ApplicationConstants.POLARIS_FIXPR_FILTER_BY_KEY);
+                if (filterBy != null && !filterBy.trim().isEmpty()) {
+                    filter.setBy(filterBy.toUpperCase().trim());
+                }
+            }
+
+            fixPr.setFilter(filter);
         }
 
         if (fixPrParameters.containsKey(ApplicationConstants.POLARIS_FIXPR_USEUPGRADEGUIDANCE_KEY)) {
