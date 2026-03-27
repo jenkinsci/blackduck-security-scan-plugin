@@ -349,35 +349,14 @@ public class PolarisParametersService {
             fixPr.setMaxCount(maxCount);
         }
 
-        if (fixPrParameters.containsKey(ApplicationConstants.POLARIS_FIXPR_CREATE_SINGLE_PR_KEY)) {
-            Boolean createSinglePR =
-                    (Boolean) fixPrParameters.get(ApplicationConstants.POLARIS_FIXPR_CREATE_SINGLE_PR_KEY);
-            fixPr.setCreateSinglePR(createSinglePR);
-        }
-
-        boolean hasFilterSeverities =
-                fixPrParameters.containsKey(ApplicationConstants.POLARIS_FIXPR_FILTER_SEVERITIES_KEY);
-        boolean hasFilterBy = fixPrParameters.containsKey(ApplicationConstants.POLARIS_FIXPR_FILTER_BY_KEY);
-
-        if (hasFilterSeverities || hasFilterBy) {
+        if (fixPrParameters.containsKey(ApplicationConstants.POLARIS_FIXPR_FILTER_SEVERITIES_KEY)) {
             Filter filter = new Filter();
-
-            if (hasFilterSeverities) {
-                String filterSeverities =
-                        (String) fixPrParameters.get(ApplicationConstants.POLARIS_FIXPR_FILTER_SEVERITIES_KEY);
-                String[] severitiesInput = filterSeverities.toUpperCase().split(",");
-                List<String> severities =
-                        Arrays.stream(severitiesInput).map(String::trim).collect(Collectors.toList());
-                filter.setSeverities(severities);
-            }
-
-            if (hasFilterBy) {
-                String filterBy = (String) fixPrParameters.get(ApplicationConstants.POLARIS_FIXPR_FILTER_BY_KEY);
-                if (filterBy != null && !filterBy.trim().isEmpty()) {
-                    filter.setBy(filterBy.toUpperCase().trim());
-                }
-            }
-
+            String filterSeverities =
+                    (String) fixPrParameters.get(ApplicationConstants.POLARIS_FIXPR_FILTER_SEVERITIES_KEY);
+            String[] severitiesInput = filterSeverities.toUpperCase().split(",");
+            List<String> severities =
+                    Arrays.stream(severitiesInput).map(String::trim).collect(Collectors.toList());
+            filter.setSeverities(severities);
             fixPr.setFilter(filter);
         }
 

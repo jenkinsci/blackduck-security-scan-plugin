@@ -164,10 +164,8 @@ public class ApplicationConstants {
     public static final String POLARIS_TEST_SAST_LOCATION_KEY = "polaris_test_sast_location";
     public static final String POLARIS_FIXPR_ENABLED_KEY = "polaris_fixpr_enabled";
     public static final String POLARIS_FIXPR_MAXCOUNT_KEY = "polaris_fixpr_maxcount";
-    public static final String POLARIS_FIXPR_CREATE_SINGLE_PR_KEY = "polaris_fixpr_createSinglePR";
     public static final String POLARIS_FIXPR_USEUPGRADEGUIDANCE_KEY = "polaris_fixpr_useUpgradeGuidance";
     public static final String POLARIS_FIXPR_FILTER_SEVERITIES_KEY = "polaris_fixpr_filter_severities";
-    public static final String POLARIS_FIXPR_FILTER_BY_KEY = "polaris_fixpr_filter_by";
     public static final String POLARIS_WAITFORSCAN_KEY = "polaris_waitForScan";
 
     // SRM Parameters

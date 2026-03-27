@@ -498,20 +498,12 @@ public class ParameterMappingService {
                     fixPrScan.getPolaris_fixpr_maxCount());
             addParameterIfNotBlank(
                     polarisParametersMap,
-                    ApplicationConstants.POLARIS_FIXPR_CREATE_SINGLE_PR_KEY,
-                    fixPrScan.isPolaris_fixpr_createSinglePR_actualValue());
-            addParameterIfNotBlank(
-                    polarisParametersMap,
                     ApplicationConstants.POLARIS_FIXPR_USEUPGRADEGUIDANCE_KEY,
                     fixPrScan.getPolaris_fixpr_useUpgradeGuidance());
             addParameterIfNotBlank(
                     polarisParametersMap,
                     ApplicationConstants.POLARIS_FIXPR_FILTER_SEVERITIES_KEY,
                     fixPrScan.getPolaris_fixpr_filter_severities());
-            addParameterIfNotBlank(
-                    polarisParametersMap,
-                    ApplicationConstants.POLARIS_FIXPR_FILTER_BY_KEY,
-                    fixPrScan.getPolaris_fixpr_filter_by());
         }
 
         if (securityScan instanceof FreestyleScan) {

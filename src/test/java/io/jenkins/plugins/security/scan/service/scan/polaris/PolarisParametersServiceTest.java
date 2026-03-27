@@ -362,18 +362,14 @@ public class PolarisParametersServiceTest {
         fixPrParameters.put(ApplicationConstants.POLARIS_FIXPR_FILTER_SEVERITIES_KEY, "CRITICAL,HIGH");
         fixPrParameters.put(ApplicationConstants.POLARIS_FIXPR_USEUPGRADEGUIDANCE_KEY, "SHORT_TERM,LONG_TERM");
         fixPrParameters.put(ApplicationConstants.POLARIS_FIXPR_MAXCOUNT_KEY, 5);
-        fixPrParameters.put(ApplicationConstants.POLARIS_FIXPR_CREATE_SINGLE_PR_KEY, true);
-        fixPrParameters.put(ApplicationConstants.POLARIS_FIXPR_FILTER_BY_KEY, "POLICY");
 
         FixPr fixPrObject = polarisParametersService.prepareFixPrObject(fixPrParameters);
 
         assertNotNull(fixPrObject);
         assertTrue(fixPrObject.getEnabled());
         assertEquals(Arrays.asList("CRITICAL", "HIGH"), fixPrObject.getFilter().getSeverities());
-        assertEquals("POLICY", fixPrObject.getFilter().getBy());
         assertEquals(Arrays.asList("SHORT_TERM", "LONG_TERM"), fixPrObject.getUseUpgradeGuidance());
         assertEquals(5, fixPrObject.getMaxCount());
-        assertTrue(fixPrObject.getCreateSinglePR());
     }
 
     @Test
@@ -389,7 +385,6 @@ public class PolarisParametersServiceTest {
         polarisParameters.put(ApplicationConstants.POLARIS_FIXPR_ENABLED_KEY, true);
         polarisParameters.put(ApplicationConstants.POLARIS_FIXPR_MAXCOUNT_KEY, 3);
         polarisParameters.put(ApplicationConstants.POLARIS_FIXPR_FILTER_SEVERITIES_KEY, "CRITICAL");
-        polarisParameters.put(ApplicationConstants.POLARIS_FIXPR_FILTER_BY_KEY, "SEVERITIES");
         polarisParameters.put(ApplicationConstants.POLARIS_FIXPR_USEUPGRADEGUIDANCE_KEY, "SHORT_TERM");
 
         Polaris polaris = polarisParametersService.preparePolarisObjectForBridge(polarisParameters);
@@ -398,7 +393,6 @@ public class PolarisParametersServiceTest {
         assertTrue(polaris.getFixPr().getEnabled());
         assertEquals(3, polaris.getFixPr().getMaxCount());
         assertEquals(Arrays.asList("CRITICAL"), polaris.getFixPr().getFilter().getSeverities());
-        assertEquals("SEVERITIES", polaris.getFixPr().getFilter().getBy());
         assertEquals(Arrays.asList("SHORT_TERM"), polaris.getFixPr().getUseUpgradeGuidance());
     }
 

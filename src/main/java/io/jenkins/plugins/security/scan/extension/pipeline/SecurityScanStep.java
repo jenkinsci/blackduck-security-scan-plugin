@@ -142,11 +142,8 @@ public class SecurityScanStep extends Step
     private Boolean polaris_fixpr_enabled;
     private Boolean polaris_fixpr_enabled_actualValue;
     private Integer polaris_fixpr_maxCount;
-    private Boolean polaris_fixpr_createSinglePR;
-    private Boolean polaris_fixpr_createSinglePR_actualValue;
     private String polaris_fixpr_useUpgradeGuidance;
     private String polaris_fixpr_filter_severities;
-    private String polaris_fixpr_filter_by;
     private Boolean polaris_waitForScan;
     private Boolean polaris_waitForScan_actualValue;
 
@@ -563,24 +560,12 @@ public class SecurityScanStep extends Step
         return polaris_fixpr_maxCount;
     }
 
-    public Boolean isPolaris_fixpr_createSinglePR() {
-        return polaris_fixpr_createSinglePR;
-    }
-
-    public Boolean isPolaris_fixpr_createSinglePR_actualValue() {
-        return polaris_fixpr_createSinglePR_actualValue;
-    }
-
     public String getPolaris_fixpr_useUpgradeGuidance() {
         return polaris_fixpr_useUpgradeGuidance;
     }
 
     public String getPolaris_fixpr_filter_severities() {
         return polaris_fixpr_filter_severities;
-    }
-
-    public String getPolaris_fixpr_filter_by() {
-        return polaris_fixpr_filter_by;
     }
 
     public Boolean isPolaris_waitForScan() {
@@ -1221,12 +1206,6 @@ public class SecurityScanStep extends Step
     }
 
     @DataBoundSetter
-    public void setPolaris_fixpr_createSinglePR(Boolean polaris_fixpr_createSinglePR) {
-        this.polaris_fixpr_createSinglePR = polaris_fixpr_createSinglePR ? true : null;
-        this.polaris_fixpr_createSinglePR_actualValue = polaris_fixpr_createSinglePR ? true : false;
-    }
-
-    @DataBoundSetter
     public void setPolaris_fixpr_useUpgradeGuidance(String polaris_fixpr_useUpgradeGuidance) {
         this.polaris_fixpr_useUpgradeGuidance = Util.fixEmptyAndTrim(polaris_fixpr_useUpgradeGuidance);
     }
@@ -1234,11 +1213,6 @@ public class SecurityScanStep extends Step
     @DataBoundSetter
     public void setPolaris_fixpr_filter_severities(String polaris_fixpr_filter_severities) {
         this.polaris_fixpr_filter_severities = Util.fixEmptyAndTrim(polaris_fixpr_filter_severities);
-    }
-
-    @DataBoundSetter
-    public void setPolaris_fixpr_filter_by(String polaris_fixpr_filter_by) {
-        this.polaris_fixpr_filter_by = Util.fixEmptyAndTrim(polaris_fixpr_filter_by);
     }
 
     @DataBoundSetter

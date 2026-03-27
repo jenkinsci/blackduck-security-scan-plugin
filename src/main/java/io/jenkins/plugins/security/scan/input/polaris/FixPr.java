@@ -10,9 +10,6 @@ public class FixPr {
     @JsonProperty("maxCount")
     private Integer maxCount;
 
-    @JsonProperty("createSinglePR")
-    private Boolean createSinglePR;
-
     @JsonProperty("useUpgradeGuidance")
     private List<String> useUpgradeGuidance;
 
@@ -33,14 +30,6 @@ public class FixPr {
 
     public void setMaxCount(Integer maxCount) {
         this.maxCount = maxCount;
-    }
-
-    public Boolean getCreateSinglePR() {
-        return createSinglePR;
-    }
-
-    public void setCreateSinglePR(Boolean createSinglePR) {
-        this.createSinglePR = createSinglePR;
     }
 
     public List<String> getUseUpgradeGuidance() {
