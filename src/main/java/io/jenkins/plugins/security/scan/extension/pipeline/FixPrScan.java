@@ -1,6 +1,6 @@
 package io.jenkins.plugins.security.scan.extension.pipeline;
 
-interface FixPrScan {
+public interface FixPrScan {
     Boolean isBlackducksca_fixpr_enabled();
 
     Boolean isBlackducksca_fixpr_enabled_actualValue();
