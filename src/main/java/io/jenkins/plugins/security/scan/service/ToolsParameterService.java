@@ -384,6 +384,9 @@ public class ToolsParameterService {
         if (scanParameters.containsKey(ApplicationConstants.BLACKDUCKSCA_FIXPR_ENABLED_KEY)
                 && Objects.equals(scanParameters.get(ApplicationConstants.BLACKDUCKSCA_FIXPR_ENABLED_KEY), true)) {
             return true;
+        } else if (scanParameters.containsKey(ApplicationConstants.POLARIS_FIXPR_ENABLED_KEY)
+                && Objects.equals(scanParameters.get(ApplicationConstants.POLARIS_FIXPR_ENABLED_KEY), true)) {
+            return true;
         }
         return false;
     }

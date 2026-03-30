@@ -312,6 +312,50 @@ public class ToolsParameterServiceTest {
     }
 
     @Test
+    void bitbucket_polarisInputJson_withFixPrTest() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Mockito.doReturn(null).when(envVarsMock).get(ApplicationConstants.ENV_CHANGE_ID_KEY);
+
+        Polaris polaris = new Polaris();
+        polaris.setServerUrl("https://fake.polaris.url");
+        polaris.setAccessToken(TOKEN);
+        polaris.setApplicationName(new ApplicationName());
+        polaris.getApplicationName().setName("test");
+        polaris.setPolarisProject(new PolarisProject());
+        polaris.getPolarisProject().setName("test");
+        polaris.setAssessmentTypes(new AssessmentTypes());
+        polaris.getAssessmentTypes().setTypes(List.of("SCA", "SAST"));
+        polaris.setBranch(new Branch());
+        polaris.getBranch().setName("fake-pr-branch");
+
+        Map<String, Object> scanParameters = new HashMap<>();
+        scanParameters.put(ApplicationConstants.POLARIS_FIXPR_ENABLED_KEY, true);
+
+        Bitbucket bitbucketObject = BitbucketRepositoryService.createBitbucketObject(
+                "https://bitbucket.org", TOKEN, null, "test", "test-branch", "abc", "fake-user");
+
+        try {
+            String expectedJson =
+                    "{\"data\":{\"polaris\":{\"serverUrl\":\"https://fake.polaris.url\",\"accesstoken\":\"MDJDSROSVC56FAKEKEY\",\"application\":{\"name\":\"test\"},\"project\":{\"name\":\"test\"},\"assessment\":{\"types\":[\"SCA\",\"SAST\"]},\"branch\":{\"name\":\"fake-pr-branch\"}},\"bitbucket\":{\"api\":{\"user\":{\"name\":\"fake-user\"},\"token\":\"MDJDSROSVC56FAKEKEY\"},\"project\":{\"repository\":{\"branch\":{\"name\":\"test-branch\"},\"name\":\"test\"}},\"workspace\":{\"id\":\"abc\"}},\"bridge\":{\"invoked\":{\"from\":\"Integrations-jenkins-pipeline\"}}}}";
+
+            String inputJsonPathForFixPr = toolsParameterService.prepareBridgeInputJson(
+                    scanParameters, polaris, bitbucketObject, ApplicationConstants.POLARIS_INPUT_JSON_PREFIX, null);
+            Path filePath = Paths.get(inputJsonPathForFixPr);
+
+            String actualJsonString = new String(Files.readAllBytes(filePath));
+
+            JsonNode expectedJsonNode = objectMapper.readTree(expectedJson);
+            JsonNode actualJsonNode = objectMapper.readTree(actualJsonString);
+
+            assertEquals(expectedJsonNode, actualJsonNode);
+            Utility.removeFile(filePath.toString(), workspace, listenerMock);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     void createSrmInputJsonTest() {
         SRM srm = new SRM();
         srm.setUrl("https://fake.srm.url");
@@ -705,6 +749,21 @@ public class ToolsParameterServiceTest {
 
         scanParameters.clear();
         assertFalse(ToolsParameterService.isPrCommentValueSet(scanParameters));
+    }
+
+    @Test
+    public void isFixPrValueSetTest() {
+        Map<String, Object> scanParameters = new HashMap<>();
+
+        scanParameters.put(ApplicationConstants.BLACKDUCKSCA_FIXPR_ENABLED_KEY, true);
+        assertTrue(ToolsParameterService.isFixPrValueSet(scanParameters));
+
+        scanParameters.clear();
+        scanParameters.put(ApplicationConstants.POLARIS_FIXPR_ENABLED_KEY, true);
+        assertTrue(ToolsParameterService.isFixPrValueSet(scanParameters));
+
+        scanParameters.clear();
+        assertFalse(ToolsParameterService.isFixPrValueSet(scanParameters));
     }
 
     @Test

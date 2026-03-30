@@ -328,7 +328,7 @@ public class PolarisParametersService {
                     .get(ApplicationConstants.POLARIS_FIXPR_ENABLED_KEY)
                     .toString()
                     .trim();
-            if (value.equalsIgnoreCase("true")) {
+            if (value.equals("true")) {
                 boolean isPullRequestEvent = Utility.isPullRequestEvent(envVars);
                 if (isPullRequestEvent) {
                     logger.info(ApplicationConstants.POLARIS_FIXPR_INFO_FOR_NON_PR_SCANS);
