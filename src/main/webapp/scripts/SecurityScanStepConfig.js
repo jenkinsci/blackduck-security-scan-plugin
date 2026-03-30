@@ -197,6 +197,16 @@ function toggleFixPrParamsDivs() {
             blackduckFixPrParamSection.style.display = 'none';
             clearInputFields(blackduckFixPrParamSection);
         }
+    } else if (selectedOption == "polaris") {
+        var polarisFixPrCheckbox = document.querySelector('input[name="_.polaris_fixpr_enabled"]')
+        var polarisFixPrParamSection = document.getElementById('polaris_fixPr_params')
+        if (!polarisFixPrCheckbox || !polarisFixPrParamSection) return;
+        if (polarisFixPrCheckbox.checked) {
+            polarisFixPrParamSection.style.display = 'block';
+        } else {
+            polarisFixPrParamSection.style.display = 'none';
+            clearInputFields(polarisFixPrParamSection);
+        }
     }
 }
 
@@ -225,14 +235,18 @@ function handlePostMergeWorkflowSectionsVisibility() {
     } else if (selectedOption === 'polaris') {
         var polarisSarif_section = document.getElementById('polaris_sarif_report_sec');
         var polarisPRComment_section = document.getElementById('polaris_pr_comment_sec');
+        var polarisFixPr_section = document.getElementById('polaris_fixPr_sec');
         if (polarisWaitForScanEnabled == false) {
             hideParticularDiv(polarisSarif_section);
             hideParticularDiv(polarisPRComment_section);
+            hideParticularDiv(polarisFixPr_section);
             clearInputFields(polarisSarif_section);
             clearInputFields(polarisPRComment_section);
+            clearInputFields(polarisFixPr_section);
         } else if (polarisWaitForScanEnabled == true) {
             showParticularDiv(polarisSarif_section);
             showParticularDiv(polarisPRComment_section);
+            showParticularDiv(polarisFixPr_section);
         }
     } else if (selectedOption === 'coverity') {
         var coverityPRComment_section = document.getElementById('coverity_pr_comment_sec');

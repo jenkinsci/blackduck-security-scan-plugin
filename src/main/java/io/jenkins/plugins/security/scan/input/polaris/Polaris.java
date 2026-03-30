@@ -32,6 +32,9 @@ public class Polaris {
     @JsonProperty("reports")
     private Reports reports;
 
+    @JsonProperty("fixPr")
+    private FixPr fixPr;
+
     @JsonProperty("waitForScan")
     private Boolean waitForScan;
 
@@ -112,6 +115,14 @@ public class Polaris {
 
     public void setTest(Test test) {
         this.test = test;
+    }
+
+    public FixPr getFixPr() {
+        return fixPr;
+    }
+
+    public void setFixPr(FixPr fixPr) {
+        this.fixPr = fixPr;
     }
 
     public Boolean isWaitForScan() {

@@ -139,6 +139,11 @@ public class SecurityScanStep extends Step
     private String blackducksca_project_directory;
     private String polaris_project_directory;
     private String srm_project_directory;
+    private Boolean polaris_fixpr_enabled;
+    private Boolean polaris_fixpr_enabled_actualValue;
+    private Integer polaris_fixpr_maxCount;
+    private String polaris_fixpr_useUpgradeGuidance;
+    private String polaris_fixpr_filter_severities;
     private Boolean polaris_waitForScan;
     private Boolean polaris_waitForScan_actualValue;
 
@@ -541,6 +546,26 @@ public class SecurityScanStep extends Step
 
     public Boolean isProject_source_preserveSymLinks_actualValue() {
         return project_source_preserveSymLinks_actualValue;
+    }
+
+    public Boolean isPolaris_fixpr_enabled() {
+        return polaris_fixpr_enabled;
+    }
+
+    public Boolean isPolaris_fixpr_enabled_actualValue() {
+        return polaris_fixpr_enabled_actualValue;
+    }
+
+    public Integer getPolaris_fixpr_maxCount() {
+        return polaris_fixpr_maxCount;
+    }
+
+    public String getPolaris_fixpr_useUpgradeGuidance() {
+        return polaris_fixpr_useUpgradeGuidance;
+    }
+
+    public String getPolaris_fixpr_filter_severities() {
+        return polaris_fixpr_filter_severities;
     }
 
     public Boolean isPolaris_waitForScan() {
@@ -1167,6 +1192,27 @@ public class SecurityScanStep extends Step
     @DataBoundSetter
     public void setProject_source_excludes(String project_source_excludes) {
         this.project_source_excludes = Util.fixEmptyAndTrim(project_source_excludes);
+    }
+
+    @DataBoundSetter
+    public void setPolaris_fixpr_enabled(Boolean polaris_fixpr_enabled) {
+        this.polaris_fixpr_enabled = polaris_fixpr_enabled ? true : null;
+        this.polaris_fixpr_enabled_actualValue = polaris_fixpr_enabled ? true : false;
+    }
+
+    @DataBoundSetter
+    public void setPolaris_fixpr_maxCount(Integer polaris_fixpr_maxCount) {
+        this.polaris_fixpr_maxCount = polaris_fixpr_maxCount;
+    }
+
+    @DataBoundSetter
+    public void setPolaris_fixpr_useUpgradeGuidance(String polaris_fixpr_useUpgradeGuidance) {
+        this.polaris_fixpr_useUpgradeGuidance = Util.fixEmptyAndTrim(polaris_fixpr_useUpgradeGuidance);
+    }
+
+    @DataBoundSetter
+    public void setPolaris_fixpr_filter_severities(String polaris_fixpr_filter_severities) {
+        this.polaris_fixpr_filter_severities = Util.fixEmptyAndTrim(polaris_fixpr_filter_severities);
     }
 
     @DataBoundSetter

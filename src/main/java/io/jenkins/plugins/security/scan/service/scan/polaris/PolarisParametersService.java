@@ -128,6 +128,7 @@ public class PolarisParametersService {
         setTestScaTypeAndSastType(polarisParameters, polaris);
         setTestScaTypeLocationAndSastTypeLocation(polarisParameters, polaris);
         setPolarisPrCommentInputs(polarisParameters, prcomment, polaris);
+        setFixPr(polarisParameters, polaris);
         setAssessmentMode(polarisParameters, polaris);
         setWaitForScan(polarisParameters, polaris);
 
@@ -319,6 +320,58 @@ public class PolarisParametersService {
             return true;
         }
         return false;
+    }
+
+    private void setFixPr(Map<String, Object> polarisParameters, Polaris polaris) {
+        if (polarisParameters.containsKey(ApplicationConstants.POLARIS_FIXPR_ENABLED_KEY)) {
+            String value = polarisParameters
+                    .get(ApplicationConstants.POLARIS_FIXPR_ENABLED_KEY)
+                    .toString()
+                    .trim();
+            if (value.equals("true")) {
+                boolean isPullRequestEvent = Utility.isPullRequestEvent(envVars);
+                if (isPullRequestEvent) {
+                    logger.info(ApplicationConstants.POLARIS_FIXPR_INFO_FOR_NON_PR_SCANS);
+                } else {
+                    FixPr fixPr = prepareFixPrObject(polarisParameters);
+                    polaris.setFixPr(fixPr);
+                }
+            }
+        }
+    }
+
+    public FixPr prepareFixPrObject(Map<String, Object> fixPrParameters) {
+        FixPr fixPr = new FixPr();
+        fixPr.setEnabled(true);
+
+        if (fixPrParameters.containsKey(ApplicationConstants.POLARIS_FIXPR_MAXCOUNT_KEY)) {
+            Integer maxCount = (Integer) fixPrParameters.get(ApplicationConstants.POLARIS_FIXPR_MAXCOUNT_KEY);
+            fixPr.setMaxCount(maxCount);
+        }
+
+        if (fixPrParameters.containsKey(ApplicationConstants.POLARIS_FIXPR_FILTER_SEVERITIES_KEY)) {
+            Filter filter = new Filter();
+            String filterSeverities =
+                    (String) fixPrParameters.get(ApplicationConstants.POLARIS_FIXPR_FILTER_SEVERITIES_KEY);
+            String[] severitiesInput = filterSeverities.toUpperCase().split(",");
+            List<String> severities =
+                    Arrays.stream(severitiesInput).map(String::trim).collect(Collectors.toList());
+            filter.setSeverities(severities);
+            fixPr.setFilter(filter);
+        }
+
+        if (fixPrParameters.containsKey(ApplicationConstants.POLARIS_FIXPR_USEUPGRADEGUIDANCE_KEY)) {
+            String useUpgradeGuidance =
+                    (String) fixPrParameters.get(ApplicationConstants.POLARIS_FIXPR_USEUPGRADEGUIDANCE_KEY);
+            String[] guidanceInput = useUpgradeGuidance.toUpperCase().split(",");
+            List<String> guidance =
+                    Arrays.stream(guidanceInput).map(String::trim).collect(Collectors.toList());
+            if (!guidance.isEmpty()) {
+                fixPr.setUseUpgradeGuidance(guidance);
+            }
+        }
+
+        return fixPr;
     }
 
     private void setSarif(Map<String, Object> polarisParameters, Polaris polaris) {

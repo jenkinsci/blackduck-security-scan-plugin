@@ -162,6 +162,10 @@ public class ApplicationConstants {
     public static final String POLARIS_TEST_SAST_TYPE_KEY = "polaris_test_sast_type";
     public static final String POLARIS_TEST_SCA_LOCATION_KEY = "polaris_test_sca_location";
     public static final String POLARIS_TEST_SAST_LOCATION_KEY = "polaris_test_sast_location";
+    public static final String POLARIS_FIXPR_ENABLED_KEY = "polaris_fixpr_enabled";
+    public static final String POLARIS_FIXPR_MAXCOUNT_KEY = "polaris_fixpr_maxcount";
+    public static final String POLARIS_FIXPR_USEUPGRADEGUIDANCE_KEY = "polaris_fixpr_useUpgradeGuidance";
+    public static final String POLARIS_FIXPR_FILTER_SEVERITIES_KEY = "polaris_fixpr_filter_severities";
     public static final String POLARIS_WAITFORSCAN_KEY = "polaris_waitForScan";
 
     // SRM Parameters
@@ -342,6 +346,7 @@ public class ApplicationConstants {
 
     public static final String BLACKDUCK_FIXPR_INFO_FOR_NON_PR_SCANS =
             "Black Duck SCA Fix PR ignored for pull request scan";
+    public static final String POLARIS_FIXPR_INFO_FOR_NON_PR_SCANS = "Polaris Fix PR ignored for pull request scan";
 
     public static final String BLACKDUCK_SECURITY_SCAN_PLUGIN_DOCS_URL =
             "https://documentation.blackduck.com/bundle/bridge/page/documentation/c_using-jenkins-plugin.html";
