@@ -127,6 +127,7 @@ public class PolarisParametersService {
         setBranchName(polarisParameters, polaris);
         setTestScaTypeAndSastType(polarisParameters, polaris);
         setTestScaTypeLocationAndSastTypeLocation(polarisParameters, polaris);
+        setArtifactToUpload(polarisParameters, polaris);
         setPolarisPrCommentInputs(polarisParameters, prcomment, polaris);
         setFixPr(polarisParameters, polaris);
         setAssessmentMode(polarisParameters, polaris);
@@ -320,6 +321,15 @@ public class PolarisParametersService {
             return true;
         }
         return false;
+    }
+
+    private void setArtifactToUpload(Map<String, Object> polarisParameters, Polaris polaris) {
+        if (polarisParameters.containsKey(ApplicationConstants.POLARIS_ARTIFACTTOUPLOAD_KEY)) {
+            polaris.setArtifactToUpload(polarisParameters
+                    .get(ApplicationConstants.POLARIS_ARTIFACTTOUPLOAD_KEY)
+                    .toString()
+                    .trim());
+        }
     }
 
     private void setFixPr(Map<String, Object> polarisParameters, Polaris polaris) {

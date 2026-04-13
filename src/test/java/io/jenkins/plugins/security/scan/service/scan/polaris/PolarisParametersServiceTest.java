@@ -93,6 +93,7 @@ public class PolarisParametersServiceTest {
         polarisParameters.put(ApplicationConstants.POLARIS_TEST_SAST_TYPE_KEY, "SAST_RAPID");
         polarisParameters.put(ApplicationConstants.POLARIS_TEST_SCA_LOCATION_KEY, "hybrid");
         polarisParameters.put(ApplicationConstants.POLARIS_TEST_SAST_LOCATION_KEY, "remote");
+        polarisParameters.put(ApplicationConstants.POLARIS_ARTIFACTTOUPLOAD_KEY, "/path/to/artifact.zip");
 
         polarisParameters.put(ApplicationConstants.POLARIS_WAITFORSCAN_KEY, true);
 
@@ -108,6 +109,7 @@ public class PolarisParametersServiceTest {
         assertEquals(polaris.getTest().getSast().getType(), List.of("SAST_RAPID"));
         assertEquals(polaris.getTest().getSca().getLocation(), "hybrid");
         assertEquals(polaris.getTest().getSast().getLocation(), "remote");
+        assertEquals("/path/to/artifact.zip", polaris.getArtifactToUpload());
         assertNull(polaris.getBranch().getParent());
         assertNull(polaris.getPrcomment());
         assertEquals(polaris.isWaitForScan(), true);
@@ -195,6 +197,41 @@ public class PolarisParametersServiceTest {
         assertEquals(polaris.getTest().getSca().getType(), "SCA-SIGNATURE");
         assertEquals(polaris.getTest().getSast().getType(), List.of("SAST_RAPID"));
         assertEquals(polaris.isWaitForScan(), true);
+    }
+
+    @Test
+    void preparePolarisObjectForBridge_withArtifactToUploadTest() {
+        Map<String, Object> polarisParameters = new HashMap<>();
+
+        polarisParameters.put(ApplicationConstants.POLARIS_SERVER_URL_KEY, TEST_POLARIS_SERVER_URL);
+        polarisParameters.put(ApplicationConstants.POLARIS_ACCESS_TOKEN_KEY, TEST_POLARIS_ACCESS_TOKEN);
+        polarisParameters.put(ApplicationConstants.POLARIS_APPLICATION_NAME_KEY, TEST_APPLICATION_NAME);
+        polarisParameters.put(ApplicationConstants.POLARIS_PROJECT_NAME_KEY, "fake-project-name");
+        polarisParameters.put(ApplicationConstants.POLARIS_ASSESSMENT_TYPES_KEY, "SCA");
+        polarisParameters.put(ApplicationConstants.POLARIS_BRANCH_NAME_KEY, "test-branch");
+        polarisParameters.put(ApplicationConstants.POLARIS_TEST_SCA_TYPE_KEY, "SCA-BINARY");
+        polarisParameters.put(ApplicationConstants.POLARIS_ARTIFACTTOUPLOAD_KEY, "/path/to/binary.jar");
+
+        Polaris polaris = polarisParametersService.preparePolarisObjectForBridge(polarisParameters);
+
+        assertEquals("/path/to/binary.jar", polaris.getArtifactToUpload());
+        assertEquals("SCA-BINARY", polaris.getTest().getSca().getType());
+    }
+
+    @Test
+    void preparePolarisObjectForBridge_withoutArtifactToUploadTest() {
+        Map<String, Object> polarisParameters = new HashMap<>();
+
+        polarisParameters.put(ApplicationConstants.POLARIS_SERVER_URL_KEY, TEST_POLARIS_SERVER_URL);
+        polarisParameters.put(ApplicationConstants.POLARIS_ACCESS_TOKEN_KEY, TEST_POLARIS_ACCESS_TOKEN);
+        polarisParameters.put(ApplicationConstants.POLARIS_APPLICATION_NAME_KEY, TEST_APPLICATION_NAME);
+        polarisParameters.put(ApplicationConstants.POLARIS_PROJECT_NAME_KEY, "fake-project-name");
+        polarisParameters.put(ApplicationConstants.POLARIS_ASSESSMENT_TYPES_KEY, "SCA");
+        polarisParameters.put(ApplicationConstants.POLARIS_BRANCH_NAME_KEY, "test-branch");
+
+        Polaris polaris = polarisParametersService.preparePolarisObjectForBridge(polarisParameters);
+
+        assertNull(polaris.getArtifactToUpload());
     }
 
     @Test
