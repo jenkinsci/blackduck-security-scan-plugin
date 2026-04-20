@@ -154,24 +154,6 @@ function validatePolarisFields(element) {
         const errorDiv = element.querySelector(error);
         if (errorDiv) errorDiv.style.display = value ? "none" : "block";
     });
-
-    validatePolarisScaBinaryFields(element);
-}
-
-function validatePolarisScaBinaryFields(element) {
-    const scaTypeValue = element.querySelector('input[name="_.polaris_test_sca_type"]')?.value?.trim() || '';
-    const artifactValue = element.querySelector('input[name="_.polaris_artifactToUpload"]')?.value?.trim() || '';
-    const errorStandaloneDiv = element.querySelector('#error_polaris_test_sca_type_standalone');
-    const errorArtifactRequiredDiv = element.querySelector('#error_polaris_artifactToUpload_required');
-
-    const normalizedScaType = scaTypeValue.toUpperCase().replace(/-/g, '_');
-    const scaTypes = scaTypeValue ? scaTypeValue.split(',').map(s => s.trim()).filter(s => s) : [];
-    const isScaBinary = normalizedScaType.includes('SCA_BINARY');
-    const isStandaloneViolation = isScaBinary && scaTypes.length > 1;
-    const isArtifactMissing = isScaBinary && !artifactValue;
-
-    if (errorStandaloneDiv) errorStandaloneDiv.style.display = isStandaloneViolation ? "block" : "none";
-    if (errorArtifactRequiredDiv) errorArtifactRequiredDiv.style.display = isArtifactMissing ? "block" : "none";
 }
 
 function validateSrmFields(element) {
