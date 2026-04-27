@@ -28,7 +28,7 @@ stages:
 
 unit_tests:
   stage: test
-  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.218
+  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.271
   only:
     - merge_requests
     - main
