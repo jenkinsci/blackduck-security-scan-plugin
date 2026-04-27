@@ -1,0 +1,74 @@
+include:
+  - project: altair/altair-build-common
+    ref: 1.0.228
+    file: gitlab/ci/altair_common.yml
+  - project: altair/altair-build-common
+    ref: master
+    file: gitlab/ci/altair_pop.yml
+  - project: releng/common-gitlab-ci
+    ref: master
+    file: report-generator.yml
+
+stages:
+  - test
+  - coverage_report
+  - analysis
+  - notification
+
+unit_tests:
+  stage: test
+  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.218
+  only:
+    - merge_requests
+    - main
+    - branches
+  script:
+    - |
+      echo "Run unit tests..."
+      mvn clean test
+
+code_coverage:
+  stage: coverage_report
+  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.218
+  only:
+    - main
+    - merge_requests
+    - branches
+  script:
+    - |
+      echo "Generate code coverage report..."
+      mvn clean verify
+  artifacts:
+    expire_in: 3 days
+    paths:
+      - coverage-report/target/site/jacoco-aggregate
+    reports:
+      coverage_report:
+        coverage_format: jacoco
+        path: coverage-report/target/site/jacoco-aggregate/jacoco.xml
+
+new_pop_blackduck:
+  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.218
+  stage: analysis
+  extends: .new_pop_blackduck_analysis
+  variables:
+    MAVEN_OPTS: -Dmaven.repo.local=${CI_PROJECT_DIR}/.m2 -Xss4M
+    BD_PROPERTIES: "--detect.maven.excluded.scopes=test"
+    DETECT_MAVEN_EXCLUDED_MODULES: "coverage-report"
+    DETECT_PROJECT_NAME: "blackduck-security-scan-plugin"
+  dependencies:
+    - unit_tests
+    - code_coverage
+
+polaris_bridge:
+  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.218
+  stage: analysis
+  variables:
+    MAVEN_OPTS: -Dmaven.repo.local=${CI_PROJECT_DIR}/.m2 -Xss4M
+    DETECT_MAVEN_EXCLUDED_SCOPES: "test"
+    DETECT_MAVEN_EXCLUDED_MODULES: "coverage-report"
+  dependencies:
+    - unit_tests
+    - code_coverage
+
+
