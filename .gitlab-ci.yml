@@ -18,60 +18,60 @@ variables:
     description: "Generate and publish reports (SBOM, VDR) and publish to Artifactory. Set to 'true' to enable report generation and publishing."
 
 stages:
-#  - test
-#  - coverage_report
-#  - build
+  - test
+  - coverage_report
+  - build
   - analysis
   - release_qa
   - sbom_vdr
   - notification
 
-#unit_tests:
-#  stage: test
-#  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.271
-#  only:
-#    - merge_requests
-#    - main
-#    - branches
-#  script:
-#    - |
-#      echo "Run unit tests..."
-#      mvn clean test
-#
-#code_coverage:
-#  stage: coverage_report
-#  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.218
-#  only:
-#    - main
-#    - merge_requests
-#    - branches
-#  script:
-#    - |
-#      echo "Generate code coverage report..."
-#      mvn clean verify
-#  artifacts:
-#    expire_in: 3 days
-#    paths:
-#      - coverage-report/target/site/jacoco-aggregate
-#    reports:
-#      coverage_report:
-#        coverage_format: jacoco
-#        path: coverage-report/target/site/jacoco-aggregate/jacoco.xml
-#
-#build:
-#  stage: build
-#  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.218
-#  script:
-#    - |
-#      echo "Building project..."
-#      mvn clean install -DskipTests
-#  artifacts:
-#    paths:
-#      - "**/target/*.hpi"
-#      - "**/target/*.jar"
+unit_tests:
+  stage: test
+  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.271
+  only:
+    - merge_requests
+    - main
+    - branches
+  script:
+    - |
+      echo "Run unit tests..."
+      mvn clean test
+
+code_coverage:
+  stage: coverage_report
+  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.271
+  only:
+    - main
+    - merge_requests
+    - branches
+  script:
+    - |
+      echo "Generate code coverage report..."
+      mvn clean verify
+  artifacts:
+    expire_in: 3 days
+    paths:
+      - coverage-report/target/site/jacoco-aggregate
+    reports:
+      coverage_report:
+        coverage_format: jacoco
+        path: coverage-report/target/site/jacoco-aggregate/jacoco.xml
+
+build:
+  stage: build
+  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.271
+  script:
+    - |
+      echo "Building project..."
+      mvn clean install -DskipTests
+  artifacts:
+    paths:
+      - "**/target/*.hpi"
+      - "**/target/*.jar"
 
 new_pop_blackduck:
-  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.218
+  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.271
   stage: analysis
   extends: .new_pop_blackduck_analysis
   variables:
@@ -79,24 +79,24 @@ new_pop_blackduck:
     BD_PROPERTIES: "--detect.maven.excluded.scopes=test"
     DETECT_MAVEN_EXCLUDED_MODULES: "coverage-report"
     DETECT_PROJECT_NAME: "blackduck-security-scan-plugin"
-#  dependencies:
-#    - unit_tests
-#    - code_coverage
+  dependencies:
+    - unit_tests
+    - code_coverage
 
 polaris_bridge:
-  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.218
+  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.271
   stage: analysis
   variables:
     MAVEN_OPTS: -Dmaven.repo.local=${CI_PROJECT_DIR}/.m2 -Xss4M
     DETECT_MAVEN_EXCLUDED_SCOPES: "test"
     DETECT_MAVEN_EXCLUDED_MODULES: "coverage-report"
-#  dependencies:
-#    - unit_tests
-#    - code_coverage
+  dependencies:
+    - unit_tests
+    - code_coverage
 
 release_qa:
   stage: release_qa
-  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.218
+  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.271
   rules:
     - if: $RELEASE_QA_BUILD == "true"
   variables:
@@ -125,9 +125,9 @@ release_qa:
     paths:
       - "**/target/*.hpi"
       - "**/target/*.jar"
-#  dependencies:
-#    - unit_tests
-#    - code_coverage
+  dependencies:
+    - unit_tests
+    - code_coverage
 
 .export_reports_variables:
   before_script:
