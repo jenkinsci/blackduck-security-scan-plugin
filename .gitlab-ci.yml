@@ -28,7 +28,7 @@ stages:
 
 unit_tests:
   stage: test
-  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.271
+  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.225
   only:
     - merge_requests
     - main
@@ -40,7 +40,7 @@ unit_tests:
 
 code_coverage:
   stage: coverage_report
-  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.271
+  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.225
   only:
     - main
     - merge_requests
@@ -60,7 +60,7 @@ code_coverage:
 
 build:
   stage: build
-  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.271
+  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.225
   script:
     - |
       echo "Building project..."
@@ -71,7 +71,7 @@ build:
       - "**/target/*.jar"
 
 new_pop_blackduck:
-  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.271
+  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.225
   stage: analysis
   extends: .new_pop_blackduck_analysis
   variables:
@@ -84,7 +84,7 @@ new_pop_blackduck:
     - code_coverage
 
 polaris_bridge:
-  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.271
+  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.225
   stage: analysis
   variables:
     MAVEN_OPTS: -Dmaven.repo.local=${CI_PROJECT_DIR}/.m2 -Xss4M
@@ -96,7 +96,7 @@ polaris_bridge:
 
 release_qa:
   stage: release_qa
-  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.271
+  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.225
   rules:
     - if: $RELEASE_QA_BUILD == "true"
   variables:
