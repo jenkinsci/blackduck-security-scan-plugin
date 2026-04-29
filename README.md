@@ -5,7 +5,6 @@
 ## 🛠️ Build
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=io.jenkins.plugins%3Ablackduck-security-scan&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=io.jenkins.plugins%3Ablackduck-security-scan)
 
 ## 🚀 Where can I get the latest release?
 You can download the latest artifact from releases: https://updates.jenkins-ci.org/download/plugins/blackduck-security-scan/
