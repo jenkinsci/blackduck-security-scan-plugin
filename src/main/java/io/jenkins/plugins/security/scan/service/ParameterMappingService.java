@@ -447,6 +447,10 @@ public class ParameterMappingService {
                 securityScan.getPolaris_test_sca_location());
         addParameterIfNotBlank(
                 polarisParametersMap,
+                ApplicationConstants.POLARIS_ARTIFACTTOUPLOAD_KEY,
+                securityScan.getPolaris_artifactToUpload());
+        addParameterIfNotBlank(
+                polarisParametersMap,
                 ApplicationConstants.POLARIS_TEST_SAST_LOCATION_KEY,
                 securityScan.getPolaris_test_sast_location());
         addDeprecatedParameterIfNotBlank(
