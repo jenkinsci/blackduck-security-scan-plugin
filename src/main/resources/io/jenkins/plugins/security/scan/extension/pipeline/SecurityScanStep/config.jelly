@@ -149,6 +149,9 @@
             <f:entry field="polaris_test_sca_type" title="SCA Test Type (Optional)">
                 <f:textbox/>
             </f:entry>
+            <f:entry field="polaris_artifactToUpload" title="Binary or Archive File Path (Optional)">
+                <f:textbox/>
+            </f:entry>
             <f:entry field="polaris_test_sca_location" title="SCA Test Location (Optional)">
                 <f:select/>
             </f:entry>

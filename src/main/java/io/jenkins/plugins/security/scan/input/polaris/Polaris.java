@@ -29,6 +29,9 @@ public class Polaris {
     @JsonProperty("test")
     private Test test;
 
+    @JsonProperty("artifactToUpload")
+    private String artifactToUpload;
+
     @JsonProperty("reports")
     private Reports reports;
 
@@ -115,6 +118,14 @@ public class Polaris {
 
     public void setTest(Test test) {
         this.test = test;
+    }
+
+    public String getArtifactToUpload() {
+        return artifactToUpload;
+    }
+
+    public void setArtifactToUpload(String artifactToUpload) {
+        this.artifactToUpload = artifactToUpload;
     }
 
     public FixPr getFixPr() {

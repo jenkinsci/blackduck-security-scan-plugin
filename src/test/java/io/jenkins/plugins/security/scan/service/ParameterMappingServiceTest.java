@@ -326,6 +326,7 @@ public class ParameterMappingServiceTest {
         securityScanStep.setPolaris_prComment_severities("high, critical");
         securityScanStep.setPolaris_waitForScan(true);
         securityScanStep.setPolaris_test_sca_location("remote");
+        securityScanStep.setPolaris_artifactToUpload("/path/to/artifact.zip");
         securityScanStep.setProject_directory("test/directory");
         securityScanStep.setProject_source_archive("fake-source-archive");
         securityScanStep.setProject_source_preserveSymLinks(true);
@@ -334,7 +335,7 @@ public class ParameterMappingServiceTest {
         Map<String, Object> polarisParametersMap =
                 ParameterMappingService.preparePolarisParametersMap(securityScanStep);
 
-        assertEquals(15, polarisParametersMap.size());
+        assertEquals(16, polarisParametersMap.size());
         assertEquals(
                 "https://fake.polaris-server.url",
                 polarisParametersMap.get(ApplicationConstants.POLARIS_SERVER_URL_KEY));
@@ -345,6 +346,8 @@ public class ParameterMappingServiceTest {
         assertEquals("high, critical", polarisParametersMap.get(ApplicationConstants.POLARIS_PRCOMMENT_SEVERITIES_KEY));
         assertTrue((Boolean) polarisParametersMap.get(ApplicationConstants.POLARIS_WAITFORSCAN_KEY));
         assertEquals("remote", polarisParametersMap.get(ApplicationConstants.POLARIS_TEST_SCA_LOCATION_KEY));
+        assertEquals(
+                "/path/to/artifact.zip", polarisParametersMap.get(ApplicationConstants.POLARIS_ARTIFACTTOUPLOAD_KEY));
         assertEquals("test/directory", polarisParametersMap.get(ApplicationConstants.PROJECT_DIRECTORY_KEY));
         assertEquals("fake-source-archive", polarisParametersMap.get(ApplicationConstants.PROJECT_SOURCE_ARCHIVE_KEY));
         assertEquals("test_exclude", polarisParametersMap.get(ApplicationConstants.PROJECT_SOURCE_EXCLUDES_KEY));
@@ -393,11 +396,12 @@ public class ParameterMappingServiceTest {
         securityScanFreestyle.setPolaris_sca_search_depth(2);
         securityScanFreestyle.setPolaris_sca_config_path("fake/path/application.properties");
         securityScanFreestyle.setPolaris_sca_args("--o");
+        securityScanFreestyle.setPolaris_artifactToUpload("/path/to/artifact.jar");
 
         Map<String, Object> polarisParametersMap =
                 ParameterMappingService.preparePolarisParametersMap(securityScanFreestyle);
 
-        assertEquals(13, polarisParametersMap.size());
+        assertEquals(14, polarisParametersMap.size());
         assertEquals(
                 "https://fake.polaris-server.url",
                 polarisParametersMap.get(ApplicationConstants.POLARIS_SERVER_URL_KEY));
@@ -412,6 +416,8 @@ public class ParameterMappingServiceTest {
                 "fake/path/application.properties",
                 polarisParametersMap.get(ApplicationConstants.DETECT_CONFIG_PATH_KEY));
         assertEquals("--o", polarisParametersMap.get(ApplicationConstants.DETECT_ARGS_KEY));
+        assertEquals(
+                "/path/to/artifact.jar", polarisParametersMap.get(ApplicationConstants.POLARIS_ARTIFACTTOUPLOAD_KEY));
     }
 
     @Test

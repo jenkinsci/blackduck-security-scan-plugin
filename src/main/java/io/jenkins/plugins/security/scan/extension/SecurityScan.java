@@ -147,6 +147,8 @@ public interface SecurityScan {
 
     String getPolaris_test_sast_location();
 
+    String getPolaris_artifactToUpload();
+
     String getBitbucket_username();
 
     Boolean isPolaris_reports_sarif_create();
