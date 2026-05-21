@@ -126,9 +126,9 @@ public class Utility {
             return (HttpsURLConnection) url.openConnection(Proxy.NO_PROXY);
         } else {
             URL proxyURL = new URL(proxy);
+            setDefaultProxyAuthenticator(proxyURL.getUserInfo());
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection(
                     new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyURL.getHost(), proxyURL.getPort())));
-            setDefaultProxyAuthenticator(proxyURL.getUserInfo());
             return connection;
         }
     }
@@ -170,10 +170,10 @@ public class Utility {
                     return connection;
                 } else {
                     URL proxyURL = new URL(proxy);
+                    setDefaultProxyAuthenticator(proxyURL.getUserInfo());
                     HttpsURLConnection connection = (HttpsURLConnection) url.openConnection(
                             new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyURL.getHost(), proxyURL.getPort())));
                     connection.setSSLSocketFactory(sslContext.getSocketFactory());
-                    setDefaultProxyAuthenticator(proxyURL.getUserInfo());
                     return connection;
                 }
             } catch (Exception e) {
@@ -228,9 +228,9 @@ public class Utility {
             return (HttpURLConnection) url.openConnection(Proxy.NO_PROXY);
         } else {
             URL proxyURL = new URL(proxy);
+            setDefaultProxyAuthenticator(proxyURL.getUserInfo());
             HttpURLConnection connection = (HttpURLConnection) url.openConnection(
                     new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyURL.getHost(), proxyURL.getPort())));
-            setDefaultProxyAuthenticator(proxyURL.getUserInfo());
             return connection;
         }
     }
@@ -291,10 +291,15 @@ public class Utility {
         if (!isStringNullOrBlank(userInfo)) {
             String[] userInfoArray = userInfo.split(":", 2);
             if (userInfoArray.length == 2) {
+                System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
+                System.setProperty("jdk.http.auth.proxying.disabledSchemes", "");
                 Authenticator.setDefault(new Authenticator() {
                     @Override
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(userInfoArray[0], userInfoArray[1].toCharArray());
+                        if (getRequestorType() == Authenticator.RequestorType.PROXY) {
+                            return new PasswordAuthentication(userInfoArray[0], userInfoArray[1].toCharArray());
+                        }
+                        return null;
                     }
                 });
             }
