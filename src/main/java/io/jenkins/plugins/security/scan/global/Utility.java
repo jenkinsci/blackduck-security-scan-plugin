@@ -289,7 +289,7 @@ public class Utility {
 
     public static void setDefaultProxyAuthenticator(String userInfo) {
         if (!isStringNullOrBlank(userInfo)) {
-            String[] userInfoArray = userInfo.split(":");
+            String[] userInfoArray = userInfo.split(":", 2);
             if (userInfoArray.length == 2) {
                 Authenticator.setDefault(new Authenticator() {
                     @Override
@@ -304,8 +304,9 @@ public class Utility {
     private static String getMaskedProxyUrl(String proxyUrlString) throws MalformedURLException {
         URL proxyUrl = new URL(proxyUrlString);
         String userInfo = proxyUrl.getUserInfo();
-        if (!isStringNullOrBlank(userInfo) && userInfo.split(":").length > 1) {
-            return proxyUrlString.replace(userInfo.split(":")[1], "*****");
+        if (!isStringNullOrBlank(userInfo) && userInfo.split(":", 2).length > 1) {
+            String username = userInfo.split(":", 2)[0];
+            return proxyUrlString.replace(userInfo, username + ":*****");
         }
 
         return proxyUrlString;
