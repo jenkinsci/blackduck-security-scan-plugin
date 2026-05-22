@@ -36,7 +36,7 @@ unit_tests:
   script:
     - |
       echo "Run unit tests..."
-      mvn clean test
+      ./mvnw clean test
 
 code_coverage:
   stage: coverage_report
@@ -48,7 +48,7 @@ code_coverage:
   script:
     - |
       echo "Generate code coverage report..."
-      mvn clean verify
+      ./mvnw clean verify
   artifacts:
     expire_in: 3 days
     paths:
@@ -64,7 +64,7 @@ build:
   script:
     - |
       echo "Building project..."
-      mvn clean install -DskipTests
+      ./mvnw clean install -DskipTests
   artifacts:
     paths:
       - "**/target/*.hpi"
@@ -116,11 +116,13 @@ release_qa:
         </servers>
       </settings>
       EOF
-      mvn -U clean install deploy test -Pqa-deployment \
+      ./mvnw -U clean install deploy test -Pqa-deployment \
         -DqaArtifactoryUrl=${QA_ARTIFACTORY_URL} \
         -DsnapshotArtifactoryUrl=${SNAPSHOT_ARTIFACTORY_URL} \
         -Dspotbugs.skip=true \
         -Dspotless.check.skip=true
+  after_script:
+    - rm -f ${CI_PROJECT_DIR}/.m2/settings.xml
   artifacts:
     paths:
       - "**/target/*.hpi"
@@ -131,7 +133,7 @@ release_qa:
 
 .export_reports_variables:
   before_script:
-    - export PACKAGE_VERSION=$(mvn help:evaluate -Dexpression=revision -q -DforceStdout)
+    - export PACKAGE_VERSION=$(./mvnw help:evaluate -Dexpression=revision -q -DforceStdout)
     - export ARTIFACTORY_UPLOAD_REPO=1
     - export SBOM_ART_TOKEN_VAULT_PATH=sbom/integrations/blackduck-security-scan-plugin
     - export PRODUCT=Integrations
