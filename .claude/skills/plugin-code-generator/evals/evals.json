@@ -9,8 +9,8 @@
     },
     {
       "id": 2,
-      "prompt": "We want to add support for a new scanning product called 'Zephyr' to the plugin. It should be available alongside Black Duck SCA, Polaris, and Coverity. The CLI output format is similar to Coverity but with a different report filename pattern. Show me the complete implementation—enum changes, parameter mapping, CLI routing, and all tests needed.",
-      "expected_output": "Skill reads SecurityProduct enum, ParameterMappingService, SecurityScanner product routing, and generates: 1) ZEPHYR enum entry, 2) Zephyr-specific parameter mappings, 3) routing logic in SecurityScanner, 4) report handling for Zephyr report format, 5) complete test class, 6) impact analysis showing existing product flows remain safe",
+      "prompt": "We want to add support for a new scanning product called 'Xyzwv' to the plugin. It should be available alongside Black Duck SCA, Polaris, and Coverity. The CLI output format is similar to Coverity but with a different report filename pattern. Show me the complete implementation—enum changes, parameter mapping, CLI routing, and all tests needed.",
+      "expected_output": "Skill reads SecurityProduct enum, ParameterMappingService, SecurityScanner product routing, and generates: 1) Xyzwv enum entry, 2) Xyzwv-specific parameter mappings, 3) routing logic in SecurityScanner, 4) report handling for Xyzwv report format, 5) complete test class, 6) impact analysis showing existing product flows remain safe",
       "files": []
     },
     {

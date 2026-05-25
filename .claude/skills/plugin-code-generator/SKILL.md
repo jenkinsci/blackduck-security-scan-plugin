@@ -190,7 +190,7 @@ Use when implementing plugin functionality: add parameters, scan products, crede
 
 ## Example Workflow
 
-User: "Add support for a new scan product called Zephyr."
+User: "Add support for a new scan product called Xyzwv."
 
 **Phase 1 (Discovery):** Read `SecurityProduct.java` (current enum), `ParameterMappingService.java` (parameter building), `SecurityScanner.java` (product routing), existing product tests.
 
@@ -198,7 +198,7 @@ User: "Add support for a new scan product called Zephyr."
 
 **Phase 3 (Implementation):** Output complete `SecurityProduct.java`, modified `ParameterMappingService`, modified `SecurityScanner`, complete test class.
 
-**Phase 4 (Verification):** Verify existing products still work, trace `SecurityScanner.runScanner()` with Zephyr enabled, create backward-compatibility checklist.
+**Phase 4 (Verification):** Verify existing products still work, trace `SecurityScanner.runScanner()` with Xyzwv enabled, create backward-compatibility checklist.
 
 ---
 
