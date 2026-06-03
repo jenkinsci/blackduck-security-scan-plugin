@@ -51,7 +51,7 @@ public class CoverityParametersServiceTest {
 
         coverityParameters.put(ApplicationConstants.COVERITY_URL_KEY, TEST_COVERITY_URL);
         coverityParameters.put(ApplicationConstants.COVERITY_USER_KEY, TEST_COVERITY_USER_NAME);
-        coverityParameters.put(ApplicationConstants.COVERITY_PASSPHRASE_KEY, TEST_COVERITY_USER_PASSWORD);
+        coverityParameters.put(ApplicationConstants.COVERITY_PASSWORD_KEY, TEST_COVERITY_USER_PASSWORD);
         coverityParameters.put(ApplicationConstants.COVERITY_PROJECT_NAME_KEY, "fake-repo");
         coverityParameters.put(ApplicationConstants.COVERITY_STREAM_NAME_KEY, "fake-repo-branch");
 
@@ -64,7 +64,7 @@ public class CoverityParametersServiceTest {
 
         coverityParameters.put(ApplicationConstants.COVERITY_URL_KEY, TEST_COVERITY_URL);
         coverityParameters.put(ApplicationConstants.COVERITY_USER_KEY, TEST_COVERITY_USER_NAME);
-        coverityParameters.put(ApplicationConstants.COVERITY_PASSPHRASE_KEY, TEST_COVERITY_USER_PASSWORD);
+        coverityParameters.put(ApplicationConstants.COVERITY_PASSWORD_KEY, TEST_COVERITY_USER_PASSWORD);
         coverityParameters.put(ApplicationConstants.COVERITY_PROJECT_NAME_KEY, "fake-repo");
         coverityParameters.put(ApplicationConstants.COVERITY_STREAM_NAME_KEY, "fake-repo-branch");
         coverityParameters.put(ApplicationConstants.COVERITY_VERSION_KEY, "2023.6.0");
@@ -91,7 +91,7 @@ public class CoverityParametersServiceTest {
 
         coverityParameters.put(ApplicationConstants.COVERITY_URL_KEY, TEST_COVERITY_URL);
         coverityParameters.put(ApplicationConstants.COVERITY_USER_KEY, TEST_COVERITY_USER_NAME);
-        coverityParameters.put(ApplicationConstants.COVERITY_PASSPHRASE_KEY, TEST_COVERITY_USER_PASSWORD);
+        coverityParameters.put(ApplicationConstants.COVERITY_PASSWORD_KEY, TEST_COVERITY_USER_PASSWORD);
         coverityParameters.put(ApplicationConstants.COVERITY_PROJECT_NAME_KEY, "fake-repo");
         coverityParameters.put(ApplicationConstants.COVERITY_STREAM_NAME_KEY, "fake-repo-branch");
         coverityParameters.put(ApplicationConstants.COVERITY_VERSION_KEY, "2023.6.0");
@@ -121,7 +121,7 @@ public class CoverityParametersServiceTest {
 
         coverityParameters.put(ApplicationConstants.COVERITY_URL_KEY, TEST_COVERITY_URL);
         coverityParameters.put(ApplicationConstants.COVERITY_USER_KEY, TEST_COVERITY_USER_NAME);
-        coverityParameters.put(ApplicationConstants.COVERITY_PASSPHRASE_KEY, TEST_COVERITY_USER_PASSWORD);
+        coverityParameters.put(ApplicationConstants.COVERITY_PASSWORD_KEY, TEST_COVERITY_USER_PASSWORD);
         coverityParameters.put(ApplicationConstants.COVERITY_PRCOMMENT_ENABLED_KEY, true);
 
         Mockito.when(envVarsMock.get(ApplicationConstants.ENV_CHANGE_ID_KEY)).thenReturn("1");
@@ -148,7 +148,7 @@ public class CoverityParametersServiceTest {
 
         coverityParameters.put(ApplicationConstants.COVERITY_URL_KEY, TEST_COVERITY_URL);
         coverityParameters.put(ApplicationConstants.COVERITY_USER_KEY, TEST_COVERITY_USER_NAME);
-        coverityParameters.put(ApplicationConstants.COVERITY_PASSPHRASE_KEY, TEST_COVERITY_USER_PASSWORD);
+        coverityParameters.put(ApplicationConstants.COVERITY_PASSWORD_KEY, TEST_COVERITY_USER_PASSWORD);
 
         Mockito.when(envVarsMock.get(ApplicationConstants.ENV_BRANCH_NAME_KEY)).thenReturn("feature");
 
@@ -169,7 +169,7 @@ public class CoverityParametersServiceTest {
 
         coverityParameters.put(ApplicationConstants.COVERITY_URL_KEY, TEST_COVERITY_URL);
         coverityParameters.put(ApplicationConstants.COVERITY_USER_KEY, TEST_COVERITY_USER_NAME);
-        coverityParameters.put(ApplicationConstants.COVERITY_PASSPHRASE_KEY, TEST_COVERITY_USER_PASSWORD);
+        coverityParameters.put(ApplicationConstants.COVERITY_PASSWORD_KEY, TEST_COVERITY_USER_PASSWORD);
         coverityParameters.put(ApplicationConstants.COVERITY_PROJECT_NAME_KEY, "fake-repo");
         coverityParameters.put(ApplicationConstants.COVERITY_STREAM_NAME_KEY, "fake-repo-branch");
         coverityParameters.put(ApplicationConstants.PROJECT_DIRECTORY_KEY, "DIR/TEST");
@@ -191,7 +191,7 @@ public class CoverityParametersServiceTest {
 
         coverityParameters.put(ApplicationConstants.COVERITY_URL_KEY, TEST_COVERITY_URL);
         coverityParameters.put(ApplicationConstants.COVERITY_USER_KEY, TEST_COVERITY_USER_NAME);
-        coverityParameters.put(ApplicationConstants.COVERITY_PASSPHRASE_KEY, TEST_COVERITY_USER_PASSWORD);
+        coverityParameters.put(ApplicationConstants.COVERITY_PASSWORD_KEY, TEST_COVERITY_USER_PASSWORD);
         coverityParameters.put(ApplicationConstants.COVERITY_BUILD_COMMAND_KEY, "mvn clean install");
         coverityParameters.put(ApplicationConstants.COVERITY_CLEAN_COMMAND_KEY, "mvn clean");
         coverityParameters.put(ApplicationConstants.COVERITY_CONFIG_PATH_KEY, "DIR/CONFIG/coverity.yml");
