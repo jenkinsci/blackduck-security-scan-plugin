@@ -18,12 +18,12 @@ default:
 
 variables:
   MAVEN_OPTS: "-Dmaven.repo.local=${CI_PROJECT_DIR}/.m2 -Xss4M"
-  RELEASE_QA_BUILD:
+  ENABLE_E2E_BUILD:
     value: "false"
-    description: "Release QA (E2E) build. Set to 'true' to publish hpi to Artifactory."
-  RELEASE_QA_CHANGELIST:
-    value: "QA1"
-    description: "Changelist suffix for the release version (e.g. QA1 produces version 2.1.0-QA1). Must not end with SNAPSHOT. After fixing E2E bugs, use the changeList as QA2, QA3, QA4 etc. to provide new E2E build."
+    description: "Enable E2E build. Set to 'true' to publish hpi to Artifactory."
+  E2E_BUILD_CHANGELIST:
+    value: "RC1"
+    description: "Changelist suffix for the release version (e.g. RC1 produces version 2.1.0-RC1). Must not end with SNAPSHOT. After fixing E2E bugs, use the changeList as RC2, RC3, RC4 etc. to provide new E2E build."
   GENERATE_REPORTS:
     value: "false"
     description: "Generate and publish reports (SBOM, VDR) and publish to Artifactory. Set to 'true' to enable report generation and publishing."
@@ -32,7 +32,7 @@ stages:
   - test
   - build
   - analysis
-  - release_qa
+  - e2e_build
   - sbom_vdr
   - notification
 
@@ -102,7 +102,7 @@ new_pop_blackduck:
       touch $HOME/.docker/config.json
       echo "$DOCKER_AUTH_CONFIG" >> $HOME/.docker/config.json
       # Set Project Version for Black Duck Hub
-      export DETECT_PROJECT_VERSION_NAME=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)
+      export DETECT_PROJECT_VERSION_NAME=$(./mvnw help:evaluate -Dexpression=revision -q -DforceStdout)
       
 
 polaris_bridge:
@@ -117,9 +117,9 @@ polaris_bridge:
     BRIDGE_COVERITY_BUILD_COMMAND: "./mvnw install -DskipTests"
 
 release_qa:
-  stage: release_qa
+  stage: e2e_build
   rules:
-    - if: $RELEASE_QA_BUILD == "true"
+    - if: $ENABLE_E2E_BUILD == "true"
   script:
     - |
       echo "Publishing artifacts to internal Artifactory..."
@@ -137,7 +137,7 @@ release_qa:
       EOF
       ./mvnw -U clean install deploy -Pqa-deployment \
         -s ${CI_PROJECT_DIR}/.m2/settings.xml \
-        -Dchangelist=-${RELEASE_QA_CHANGELIST} \
+        -Dchangelist=${E2E_BUILD_CHANGELIST} \
         -DskipTests \
         -DqaArtifactoryUrl=${QA_ARTIFACTORY_URL} \
         -DsnapshotArtifactoryUrl=${SNAPSHOT_ARTIFACTORY_URL} \
