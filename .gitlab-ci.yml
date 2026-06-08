@@ -36,7 +36,7 @@ stages:
   - sbom_vdr
   - notification
 
-unit_tests_and_coverage:
+unit_test_and_coverage_report:
   stage: test
   only:
     - merge_requests
