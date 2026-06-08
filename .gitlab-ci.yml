@@ -27,14 +27,13 @@ variables:
 
 stages:
   - test
-  - coverage_report
   - build
   - analysis
   - release_qa
   - sbom_vdr
   - notification
 
-unit_tests:
+unit_tests_and_coverage:
   stage: test
   only:
     - merge_requests
@@ -42,19 +41,23 @@ unit_tests:
     - branches
   script:
     - |
-      echo "Run unit tests..."
-      ./mvnw clean test
-
-code_coverage:
-  stage: coverage_report
-  only:
-    - main
-    - merge_requests
-    - branches
-  script:
-    - |
-      echo "Generate code coverage report..."
+      echo "Running Tests and generating code coverage report..."
       ./mvnw clean verify
+      echo "Extracting code coverage percentage..."
+      JACOCO_XML="target/site/jacoco/jacoco.xml"
+      if [ -f "$JACOCO_XML" ]; then
+        MISSED=$(grep -oP '<counter type="LINE"[^/]*missed="\K[0-9]+' "$JACOCO_XML" | tail -1)
+        COVERED=$(grep -oP '<counter type="LINE"[^/]*covered="\K[0-9]+' "$JACOCO_XML" | tail -1)
+        TOTAL=$((MISSED + COVERED))
+        if [ "$TOTAL" -gt 0 ]; then
+          COVERAGE=$(awk "BEGIN {printf \"%.2f\", ($COVERED/$TOTAL)*100}")
+          echo "Total Code Coverage: ${COVERAGE}%"
+        else
+          echo "No coverage data found."
+        fi
+      else
+        echo "jacoco.xml not found!"
+      fi
   artifacts:
     expire_in: 3 days
     paths:
@@ -63,6 +66,7 @@ code_coverage:
       coverage_report:
         coverage_format: jacoco
         path: target/site/jacoco/jacoco.xml
+  coverage: /Total Code Coverage:\s+([\d\.]+)%/
 
 build:
   stage: build
