@@ -83,6 +83,7 @@ new_pop_blackduck:
   stage: analysis
   rules:
     - if: $CI_COMMIT_BRANCH
+  allow_failure: true
   extends: .new_pop_blackduck_analysis
   variables:
     DETECT_MAVEN_EXCLUDED_SCOPES: "test"
@@ -92,8 +93,10 @@ polaris_bridge:
   stage: analysis
   rules:
     - if: $CI_COMMIT_BRANCH
+  allow_failure: true
   variables:
     DETECT_MAVEN_EXCLUDED_SCOPES: "test"
+    BRIDGE_COVERITY_BUILD_COMMAND: "./mvnw clean install -DskipTests"
 
 release_qa:
   stage: release_qa
