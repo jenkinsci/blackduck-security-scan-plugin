@@ -89,8 +89,21 @@ new_pop_blackduck:
   allow_failure: true
   extends: .new_pop_blackduck_analysis
   variables:
-    DETECT_MAVEN_EXCLUDED_SCOPES: "test"
     DETECT_PROJECT_NAME: "blackduck-security-scan-plugin"
+    DETECT_MAVEN_EXCLUDED_SCOPES: "test"
+    DETECT_ACCURACY_REQUIRED: "NONE"
+  before_script:
+    - |
+      apt -y update
+      apt -y install make python3 python3-pip
+      pip install blackduck requests
+      export RELEASE_VERSION=`git describe --tags --abbrev=0 2>/dev/null || echo ''`
+      mkdir -p $HOME/.docker
+      touch $HOME/.docker/config.json
+      echo "$DOCKER_AUTH_CONFIG" >> $HOME/.docker/config.json
+      # Set Project Version for Black Duck Hub
+      export DETECT_PROJECT_VERSION_NAME=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)
+      
 
 polaris_bridge:
   stage: analysis
