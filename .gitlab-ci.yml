@@ -22,8 +22,8 @@ variables:
     value: "false"
     description: "Enable E2E build. Set to 'true' to publish hpi to Artifactory."
   E2E_BUILD_CHANGELIST:
-    value: "RC1"
-    description: "Changelist suffix for the release version (e.g. RC1 produces version 2.1.0-RC1). Must not end with SNAPSHOT. After fixing E2E bugs, use the changeList as RC2, RC3, RC4 etc. to provide new E2E build."
+    value: "rc1"
+    description: "Changelist suffix for the release version (e.g. rc1 produces version 2.1.0-rc1). Must not end with SNAPSHOT. After fixing E2E bugs, use the changeList as rc2, rc3, rc4 etc. to provide new E2E build."
   GENERATE_REPORTS:
     value: "false"
     description: "Generate and publish reports (SBOM, VDR) and publish to Artifactory. Set to 'true' to enable report generation and publishing."
