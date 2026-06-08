@@ -143,9 +143,6 @@ release_qa:
 
 generate_and_publish_sbom_vdr_reports:
   stage: sbom_vdr
-  only:
-    - main
-    - branches
   image: releng/base-gitlab-runner:jdk17-python3.11-git-docker
   rules:
     - if: $GENERATE_REPORTS == "true"
