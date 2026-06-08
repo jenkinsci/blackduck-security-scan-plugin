@@ -1,6 +1,6 @@
 include:
   - project: altair/altair-build-common
-    ref: 1.0.228
+    ref: master
     file: gitlab/ci/altair_common.yml
   - project: altair/altair-build-common
     ref: master
@@ -21,6 +21,9 @@ variables:
   RELEASE_QA_BUILD:
     value: "false"
     description: "Release QA (E2E) build. Set to 'true' to publish hpi to Artifactory."
+  RELEASE_QA_CHANGELIST:
+    value: "QA1"
+    description: "Changelist suffix for the release version (e.g. QA1 produces version 2.1.0-QA1). Must not end with SNAPSHOT. After fixing E2E bugs, use the changeList as QA2, QA3, QA4 etc. to provide new E2E build."
   GENERATE_REPORTS:
     value: "false"
     description: "Generate and publish reports (SBOM, VDR) and publish to Artifactory. Set to 'true' to enable report generation and publishing."
@@ -97,7 +100,8 @@ polaris_bridge:
   variables:
     DETECT_MAVEN_EXCLUDED_SCOPES: "test"
     BRIDGE_POLARIS_PROJECT_NAME: "blackduck-security-scan-jenkins-plugin"
-#    BRIDGE_COVERITY_BUILD_COMMAND: "./mvnw clean install -DskipTests"
+    BRIDGE_COVERITY_CLEAN_COMMAND: "./mvnw clean"
+    BRIDGE_COVERITY_BUILD_COMMAND: "./mvnw install -DskipTests"
 
 release_qa:
   stage: release_qa
@@ -120,6 +124,7 @@ release_qa:
       EOF
       ./mvnw -U clean install deploy -Pqa-deployment \
         -s ${CI_PROJECT_DIR}/.m2/settings.xml \
+        -Dchangelist=-${RELEASE_QA_CHANGELIST} \
         -DskipTests \
         -DqaArtifactoryUrl=${QA_ARTIFACTORY_URL} \
         -DsnapshotArtifactoryUrl=${SNAPSHOT_ARTIFACTORY_URL} \
