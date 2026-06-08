@@ -96,7 +96,7 @@ polaris_bridge:
   allow_failure: true
   variables:
     DETECT_MAVEN_EXCLUDED_SCOPES: "test"
-    BRIDGE_COVERITY_BUILD_COMMAND: "./mvnw clean install -DskipTests"
+#    BRIDGE_COVERITY_BUILD_COMMAND: "./mvnw clean install -DskipTests"
 
 release_qa:
   stage: release_qa
