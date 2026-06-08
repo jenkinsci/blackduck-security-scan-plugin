@@ -9,7 +9,15 @@ include:
     ref: master
     file: report-generator.yml
 
+default:
+  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.225
+  cache:
+    key: "$CI_COMMIT_REF_SLUG"
+    paths:
+      - .m2
+
 variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=${CI_PROJECT_DIR}/.m2 -Xss4M"
   RELEASE_QA_BUILD:
     value: "false"
     description: "Release QA (E2E) build. Set to 'true' to publish hpi to Artifactory."
@@ -28,7 +36,6 @@ stages:
 
 unit_tests:
   stage: test
-  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.225
   only:
     - merge_requests
     - main
@@ -40,7 +47,6 @@ unit_tests:
 
 code_coverage:
   stage: coverage_report
-  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.225
   only:
     - main
     - merge_requests
@@ -52,15 +58,14 @@ code_coverage:
   artifacts:
     expire_in: 3 days
     paths:
-      - coverage-report/target/site/jacoco-aggregate
+      - target/site/jacoco
     reports:
       coverage_report:
         coverage_format: jacoco
-        path: coverage-report/target/site/jacoco-aggregate/jacoco.xml
+        path: target/site/jacoco/jacoco.xml
 
 build:
   stage: build
-  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.225
   script:
     - |
       echo "Building project..."
@@ -71,36 +76,21 @@ build:
       - "**/target/*.jar"
 
 new_pop_blackduck:
-  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.225
   stage: analysis
   extends: .new_pop_blackduck_analysis
   variables:
-    MAVEN_OPTS: -Dmaven.repo.local=${CI_PROJECT_DIR}/.m2 -Xss4M
-    BD_PROPERTIES: "--detect.maven.excluded.scopes=test"
-    DETECT_MAVEN_EXCLUDED_MODULES: "coverage-report"
+    DETECT_MAVEN_EXCLUDED_SCOPES: "test"
     DETECT_PROJECT_NAME: "blackduck-security-scan-plugin"
-  dependencies:
-    - unit_tests
-    - code_coverage
 
 polaris_bridge:
-  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.225
   stage: analysis
   variables:
-    MAVEN_OPTS: -Dmaven.repo.local=${CI_PROJECT_DIR}/.m2 -Xss4M
     DETECT_MAVEN_EXCLUDED_SCOPES: "test"
-    DETECT_MAVEN_EXCLUDED_MODULES: "coverage-report"
-  dependencies:
-    - unit_tests
-    - code_coverage
 
 release_qa:
   stage: release_qa
-  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.225
   rules:
     - if: $RELEASE_QA_BUILD == "true"
-  variables:
-    MAVEN_OPTS: -Dmaven.repo.local=${CI_PROJECT_DIR}/.m2 -Xss4M
   script:
     - |
       echo "Publishing artifacts to internal Artifactory..."
@@ -116,7 +106,9 @@ release_qa:
         </servers>
       </settings>
       EOF
-      ./mvnw -U clean install deploy test -Pqa-deployment \
+      ./mvnw -U clean install deploy -Pqa-deployment \
+        -s ${CI_PROJECT_DIR}/.m2/settings.xml \
+        -DskipTests \
         -DqaArtifactoryUrl=${QA_ARTIFACTORY_URL} \
         -DsnapshotArtifactoryUrl=${SNAPSHOT_ARTIFACTORY_URL} \
         -Dspotbugs.skip=true \
@@ -127,9 +119,6 @@ release_qa:
     paths:
       - "**/target/*.hpi"
       - "**/target/*.jar"
-  dependencies:
-    - unit_tests
-    - code_coverage
 
 .export_reports_variables:
   before_script:
