@@ -112,7 +112,6 @@ polaris_bridge:
   allow_failure: true
   variables:
     DETECT_MAVEN_EXCLUDED_SCOPES: "test"
-    BRIDGE_POLARIS_PROJECT_NAME: "blackduck-security-scan-jenkins-plugin"
     BRIDGE_COVERITY_CLEAN_COMMAND: "./mvnw clean"
     BRIDGE_COVERITY_BUILD_COMMAND: "./mvnw install -DskipTests"
 
