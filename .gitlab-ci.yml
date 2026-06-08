@@ -81,6 +81,9 @@ build:
 
 new_pop_blackduck:
   stage: analysis
+  only:
+    - main
+    - branches
   extends: .new_pop_blackduck_analysis
   variables:
     DETECT_MAVEN_EXCLUDED_SCOPES: "test"
@@ -88,11 +91,17 @@ new_pop_blackduck:
 
 polaris_bridge:
   stage: analysis
+  only:
+    - main
+    - branches
   variables:
     DETECT_MAVEN_EXCLUDED_SCOPES: "test"
 
 release_qa:
   stage: release_qa
+  only:
+    - main
+    - branches
   rules:
     - if: $RELEASE_QA_BUILD == "true"
   script:
@@ -136,6 +145,9 @@ release_qa:
 
 generate_and_publish_sbom_vdr_reports:
   stage: sbom_vdr
+  only:
+    - main
+    - branches
   image: releng/base-gitlab-runner:jdk17-python3.11-git-docker
   rules:
     - if: $GENERATE_REPORTS == "true"
