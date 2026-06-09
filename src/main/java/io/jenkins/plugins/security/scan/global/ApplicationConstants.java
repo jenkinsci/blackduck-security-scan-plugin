@@ -123,7 +123,11 @@ public class ApplicationConstants {
     // Coverity Parameters
     public static final String COVERITY_URL_KEY = "coverity_url";
     public static final String COVERITY_USER_KEY = "coverity_user";
+
+    @Deprecated
     public static final String COVERITY_PASSPHRASE_KEY = "coverity_passphrase";
+
+    public static final String COVERITY_PASSWORD_KEY = "coverity_password";
     public static final String COVERITY_PROJECT_NAME_KEY = "coverity_project_name";
     public static final String COVERITY_STREAM_NAME_KEY = "coverity_stream_name";
     public static final String COVERITY_POLICY_VIEW_KEY = "coverity_policy_view";

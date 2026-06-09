@@ -208,7 +208,7 @@ public class ScanInitializer {
     private boolean isSensitiveKey(String key) {
         return key.equals(ApplicationConstants.BLACKDUCKSCA_TOKEN_KEY)
                 || key.equals(ApplicationConstants.POLARIS_ACCESS_TOKEN_KEY)
-                || key.equals(ApplicationConstants.COVERITY_PASSPHRASE_KEY)
+                || key.equals(ApplicationConstants.COVERITY_PASSWORD_KEY)
                 || key.equals(ApplicationConstants.SRM_APIKEY_KEY);
     }
 
