@@ -1,6 +1,6 @@
 include:
   - project: altair/altair-build-common
-    ref: 1.0.228
+    ref: master
     file: gitlab/ci/altair_common.yml
   - project: altair/altair-build-common
     ref: master
@@ -9,58 +9,70 @@ include:
     ref: master
     file: report-generator.yml
 
+default:
+  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.225
+  cache:
+    key: "$CI_COMMIT_REF_SLUG"
+    paths:
+      - .m2
+
 variables:
-  RELEASE_QA_BUILD:
+  MAVEN_OPTS: "-Dmaven.repo.local=${CI_PROJECT_DIR}/.m2 -Xss4M"
+  ENABLE_E2E_BUILD:
     value: "false"
-    description: "Release QA (E2E) build. Set to 'true' to publish hpi to Artifactory."
+    description: "Enable E2E build. Set to 'true' to publish hpi to Artifactory."
+  E2E_BUILD_CHANGELIST:
+    value: "rc1"
+    description: "Changelist suffix for the release version (e.g. rc1 produces version 2.1.0-rc1). Must not end with SNAPSHOT. After fixing E2E bugs, use the changeList as rc2, rc3, rc4 etc. to provide new E2E build."
   GENERATE_REPORTS:
     value: "false"
     description: "Generate and publish reports (SBOM, VDR) and publish to Artifactory. Set to 'true' to enable report generation and publishing."
 
 stages:
   - test
-  - coverage_report
   - build
   - analysis
-  - release_qa
+  - e2e_build
   - sbom_vdr
   - notification
 
-unit_tests:
+unit_test_and_coverage_report:
   stage: test
-  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.225
   only:
     - merge_requests
     - main
     - branches
   script:
     - |
-      echo "Run unit tests..."
-      ./mvnw clean test
-
-code_coverage:
-  stage: coverage_report
-  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.225
-  only:
-    - main
-    - merge_requests
-    - branches
-  script:
-    - |
-      echo "Generate code coverage report..."
+      echo "Running Tests and generating code coverage report..."
       ./mvnw clean verify
+      echo "Extracting code coverage percentage..."
+      JACOCO_XML="target/site/jacoco/jacoco.xml"
+      if [ -f "$JACOCO_XML" ]; then
+        MISSED=$(grep -oP '<counter type="LINE"[^/]*missed="\K[0-9]+' "$JACOCO_XML" | tail -1)
+        COVERED=$(grep -oP '<counter type="LINE"[^/]*covered="\K[0-9]+' "$JACOCO_XML" | tail -1)
+        TOTAL=$((MISSED + COVERED))
+        if [ "$TOTAL" -gt 0 ]; then
+          COVERAGE=$(awk "BEGIN {printf \"%.2f\", ($COVERED/$TOTAL)*100}")
+          echo "Total Code Coverage: ${COVERAGE}%"
+        else
+          echo "No coverage data found."
+        fi
+      else
+        echo "jacoco.xml not found!"
+      fi
   artifacts:
     expire_in: 3 days
     paths:
-      - coverage-report/target/site/jacoco-aggregate
+      - target/site/jacoco
     reports:
       coverage_report:
         coverage_format: jacoco
-        path: coverage-report/target/site/jacoco-aggregate/jacoco.xml
+        path: target/site/jacoco/jacoco.xml
+  coverage: /Total Code Coverage:\s+([\d\.]+)%/
 
 build:
   stage: build
-  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.225
   script:
     - |
       echo "Building project..."
@@ -71,36 +83,38 @@ build:
       - "**/target/*.jar"
 
 new_pop_blackduck:
-  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.225
   stage: analysis
+  allow_failure: true
   extends: .new_pop_blackduck_analysis
   variables:
-    MAVEN_OPTS: -Dmaven.repo.local=${CI_PROJECT_DIR}/.m2 -Xss4M
-    BD_PROPERTIES: "--detect.maven.excluded.scopes=test"
-    DETECT_MAVEN_EXCLUDED_MODULES: "coverage-report"
     DETECT_PROJECT_NAME: "blackduck-security-scan-plugin"
-  dependencies:
-    - unit_tests
-    - code_coverage
+    DETECT_MAVEN_EXCLUDED_SCOPES: "test"
+    DETECT_ACCURACY_REQUIRED: "NONE"
+  before_script:
+    - |
+      apt -y update
+      apt -y install make python3 python3-pip
+      pip3 install blackduck requests
+      export RELEASE_VERSION=`git describe --tags --abbrev=0 2>/dev/null || echo ''`
+      mkdir -p $HOME/.docker
+      touch $HOME/.docker/config.json
+      echo "$DOCKER_AUTH_CONFIG" >> $HOME/.docker/config.json
+      # Set Project Version for Black Duck Hub
+      export DETECT_PROJECT_VERSION_NAME=$(./mvnw help:evaluate -Dexpression=revision -q -DforceStdout)
+      
 
 polaris_bridge:
-  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.225
   stage: analysis
+  allow_failure: true
   variables:
-    MAVEN_OPTS: -Dmaven.repo.local=${CI_PROJECT_DIR}/.m2 -Xss4M
     DETECT_MAVEN_EXCLUDED_SCOPES: "test"
-    DETECT_MAVEN_EXCLUDED_MODULES: "coverage-report"
-  dependencies:
-    - unit_tests
-    - code_coverage
+    BRIDGE_COVERITY_CLEAN_COMMAND: "./mvnw clean"
+    BRIDGE_COVERITY_BUILD_COMMAND: "./mvnw install -DskipTests"
 
 release_qa:
-  stage: release_qa
-  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.225
+  stage: e2e_build
   rules:
-    - if: $RELEASE_QA_BUILD == "true"
-  variables:
-    MAVEN_OPTS: -Dmaven.repo.local=${CI_PROJECT_DIR}/.m2 -Xss4M
+    - if: $ENABLE_E2E_BUILD == "true"
   script:
     - |
       echo "Publishing artifacts to internal Artifactory..."
@@ -116,7 +130,10 @@ release_qa:
         </servers>
       </settings>
       EOF
-      ./mvnw -U clean install deploy test -Pqa-deployment \
+      ./mvnw -U clean install deploy -Pqa-deployment \
+        -s ${CI_PROJECT_DIR}/.m2/settings.xml \
+        -Dchangelist=${E2E_BUILD_CHANGELIST} \
+        -DskipTests \
         -DqaArtifactoryUrl=${QA_ARTIFACTORY_URL} \
         -DsnapshotArtifactoryUrl=${SNAPSHOT_ARTIFACTORY_URL} \
         -Dspotbugs.skip=true \
@@ -127,9 +144,6 @@ release_qa:
     paths:
       - "**/target/*.hpi"
       - "**/target/*.jar"
-  dependencies:
-    - unit_tests
-    - code_coverage
 
 .export_reports_variables:
   before_script:
