@@ -1,0 +1,23 @@
+{
+  "skill_name": "plugin-code-generator",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I need to add a new optional parameter called 'enableAdvancedLogging' to the security scan. This should be a boolean checkbox in the Jenkins UI that, when enabled, passes --verbose to the Bridge CLI. It should work for both Freestyle and Pipeline jobs. Walk me through the full implementation including tests.",
+      "expected_output": "Skill discovers ApplicationConstants, ToolsParameterService, SecurityScan extension, and generates complete implementation including: 1) new constant for parameter key, 2) UI field with @DataBoundSetter in SecurityScan, 3) parameter mapping logic in ToolsParameterService, 4) complete JUnit test, 5) impact analysis verifying backward compatibility",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "We want to add support for a new scanning product called 'Xyzwv' to the plugin. It should be available alongside Black Duck SCA, Polaris, and Coverity. The CLI output format is similar to Coverity but with a different report filename pattern. Show me the complete implementation—enum changes, parameter mapping, CLI routing, and all tests needed.",
+      "expected_output": "Skill reads SecurityProduct enum, ParameterMappingService, SecurityScanner product routing, and generates: 1) Xyzwv enum entry, 2) Xyzwv-specific parameter mappings, 3) routing logic in SecurityScanner, 4) report handling for Xyzwv report format, 5) complete test class, 6) impact analysis showing existing product flows remain safe",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Add support for JWT-based authentication as an alternative to the existing credential types (username/password, API token). This should work with the existing credential resolution flow. The JWT token is sensitive and must be masked in logs. Show me how to integrate this without breaking existing auth methods.",
+      "expected_output": "Skill analyzes Utility credential resolution, LoggerWrapper, maskSensitiveData patterns, and generates: 1) new credential type enum or marker constant, 2) credential resolution logic in Utility or new service, 3) JWT token masking in logs, 4) parameter mapping for JWT flow, 5) complete tests, 6) detailed impact analysis of credential resolution flow compatibility",
+      "files": []
+    }
+  ]
+}

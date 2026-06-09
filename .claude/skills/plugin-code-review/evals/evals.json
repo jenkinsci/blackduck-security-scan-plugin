@@ -1,0 +1,33 @@
+{
+  "skill_name": "plugin-code-review",
+  "evals": [
+    {
+      "id": 0,
+      "eval_name": "slash_command_trigger",
+      "prompt": "/plugin-code-review",
+      "expected_output": "Skill is triggered and ready to review code diffs, PRs, or files for the Black Duck plugin.",
+      "files": []
+    },
+    {
+      "id": 1,
+      "eval_name": "missing_test_class",
+      "prompt": "Review this code diff for the Black Duck plugin. New service class CoverityBridgeService.java added but no corresponding test. Check for: missing test classes, Jackson/LoggerWrapper patterns, exception handling patterns.",
+      "expected_output": "Finding: CoverityBridgeService.java has no test class. Add CoverityBridgeServiceTest.java following existing service test patterns.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "eval_name": "jackson_string_concat",
+      "prompt": "Review a change to ToolsParameterService.buildCommandLineArgs(). Parameter map being built via string concatenation instead of Jackson POJO serialization. Check for anti-patterns: direct string concat to JSON, no POJO usage, missing ObjectMapper.",
+      "expected_output": "Finding: Parameters built via string concat, should use Jackson ObjectMapper + POJO for type safety and Bridge input validation.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "eval_name": "logger_wrapper_skip",
+      "prompt": "Review code in ScanInitializer that logs scan parameters using raw Jenkins TaskListener instead of LoggerWrapper. Check for: direct TaskListener usage, missing LoggerWrapper imports, inconsistent logging patterns.",
+      "expected_output": "Finding: Raw TaskListener.getLogger() used. Replace with LoggerWrapper.getLogger() for consistent prefix and log routing.",
+      "files": []
+    }
+  ]
+}
