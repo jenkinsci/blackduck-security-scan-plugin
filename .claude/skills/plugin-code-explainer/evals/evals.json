@@ -1,0 +1,29 @@
+{
+  "skill_name": "plugin-code-explainer",
+  "evals": [
+    {
+      "id": 0,
+      "prompt": "How does the credential resolution work in this plugin? Walk me through the flow from job config to actual credential access.",
+      "expected_output": "Step-by-step explanation of credential ID storage, lazy resolution timing, Jenkins credential store API calls, and why resolution happens in the service layer not ScanInitializer",
+      "files": []
+    },
+    {
+      "id": 1,
+      "prompt": "Explain the full scan execution flow. I want to understand what happens from when a job runs the SecurityScan step all the way to when artifacts are archived.",
+      "expected_output": "Complete flow from SecurityScan entry point through ScanInitializer config extraction, SecurityScanner orchestration, ToolsParameterService CLI building, Bridge CLI execution, IssueCalculator result parsing, and UploadReportService archiving",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Why does the plugin use temporary JSON files to pass parameters to the Bridge CLI instead of passing them directly as command-line arguments?",
+      "expected_output": "Design decision explanation covering: type safety, injection risk reduction, debugging benefits, support for complex config, and examples of where this pattern matters",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Trace the parameter flow from the Jenkins job configuration all the way through to Bridge CLI execution. What happens at each step?",
+      "expected_output": "Detailed trace showing config extraction via ScanInitializer, parameter validation and building via ToolsParameterService, temporary file creation, and final Bridge CLI invocation with mapped parameters",
+      "files": []
+    }
+  ]
+}
