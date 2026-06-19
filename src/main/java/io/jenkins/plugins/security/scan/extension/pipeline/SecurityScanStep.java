@@ -88,7 +88,11 @@ public class SecurityScanStep extends Step
 
     private String coverity_url;
     private String coverity_user;
+
+    @Deprecated
     private transient String coverity_passphrase;
+
+    private transient String coverity_password;
     private String coverity_project_name;
     private String coverity_stream_name;
     private String coverity_policy_view;
@@ -386,6 +390,10 @@ public class SecurityScanStep extends Step
 
     public String getCoverity_passphrase() {
         return coverity_passphrase;
+    }
+
+    public String getCoverity_password() {
+        return coverity_password;
     }
 
     public String getCoverity_project_name() {
@@ -1011,6 +1019,11 @@ public class SecurityScanStep extends Step
     @DataBoundSetter
     public void setCoverity_passphrase(String coverity_passphrase) {
         this.coverity_passphrase = coverity_passphrase;
+    }
+
+    @DataBoundSetter
+    public void setCoverity_password(String coverity_password) {
+        this.coverity_password = coverity_password;
     }
 
     @DataBoundSetter

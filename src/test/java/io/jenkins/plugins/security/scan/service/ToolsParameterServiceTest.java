@@ -624,7 +624,7 @@ public class ToolsParameterServiceTest {
         coverityParameters.put(ApplicationConstants.PRODUCT_KEY, SecurityProduct.COVERITY.name());
         coverityParameters.put(ApplicationConstants.COVERITY_URL_KEY, "https://fake.coverity.url");
         coverityParameters.put(ApplicationConstants.COVERITY_USER_KEY, "fake-user");
-        coverityParameters.put(ApplicationConstants.COVERITY_PASSPHRASE_KEY, "fakeUserPassword");
+        coverityParameters.put(ApplicationConstants.COVERITY_PASSWORD_KEY, "fakeUserPassword");
         coverityParameters.put(ApplicationConstants.INCLUDE_DIAGNOSTICS_KEY, true);
 
         BridgeDownloadParameters bridgeDownloadParams = Mockito.mock(BridgeDownloadParameters.class);

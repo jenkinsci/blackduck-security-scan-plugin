@@ -61,7 +61,7 @@ public class CoverityParametersService {
         Arrays.asList(
                         ApplicationConstants.COVERITY_URL_KEY,
                         ApplicationConstants.COVERITY_USER_KEY,
-                        ApplicationConstants.COVERITY_PASSPHRASE_KEY)
+                        ApplicationConstants.COVERITY_PASSWORD_KEY)
                 .forEach(key -> {
                     boolean isKeyValid = coverityParameters.containsKey(key)
                             && coverityParameters.get(key) != null
@@ -180,11 +180,11 @@ public class CoverityParametersService {
     }
 
     private void setPassPhrase(Map<String, Object> coverityParameters, Coverity coverity) {
-        if (coverityParameters.containsKey(ApplicationConstants.COVERITY_PASSPHRASE_KEY)) {
+        if (coverityParameters.containsKey(ApplicationConstants.COVERITY_PASSWORD_KEY)) {
             coverity.getConnect()
                     .getUser()
                     .setPassword(coverityParameters
-                            .get(ApplicationConstants.COVERITY_PASSPHRASE_KEY)
+                            .get(ApplicationConstants.COVERITY_PASSWORD_KEY)
                             .toString()
                             .trim());
         }
