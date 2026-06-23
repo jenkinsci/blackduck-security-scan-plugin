@@ -163,6 +163,7 @@ public class ApplicationConstants {
     public static final String POLARIS_TEST_SCA_LOCATION_KEY = "polaris_test_sca_location";
     public static final String POLARIS_TEST_SAST_LOCATION_KEY = "polaris_test_sast_location";
     public static final String POLARIS_ARTIFACTTOUPLOAD_KEY = "polaris_artifactToUpload";
+    public static final String POLARIS_CONTAINER_NAME_KEY = "polaris_container_name";
     public static final String POLARIS_FIXPR_ENABLED_KEY = "polaris_fixpr_enabled";
     public static final String POLARIS_FIXPR_MAXCOUNT_KEY = "polaris_fixpr_maxcount";
     public static final String POLARIS_FIXPR_USEUPGRADEGUIDANCE_KEY = "polaris_fixpr_useUpgradeGuidance";
