@@ -152,6 +152,9 @@
             <f:entry field="polaris_artifactToUpload" title="Artifact to Upload (Optional)">
                 <f:textbox/>
             </f:entry>
+            <f:entry field="polaris_container_name" title="Container name (Optional)">
+                <f:textbox/>
+            </f:entry>
             <f:entry field="polaris_test_sca_location" title="SCA Test Location (Optional)">
                 <f:select/>
             </f:entry>

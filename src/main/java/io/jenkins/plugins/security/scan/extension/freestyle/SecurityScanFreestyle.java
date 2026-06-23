@@ -88,6 +88,7 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     private String polaris_test_sca_location;
     private String polaris_test_sast_location;
     private String polaris_artifactToUpload;
+    private String polaris_container_name;
     private String coverity_project_directory;
     private String blackducksca_project_directory;
     private String polaris_project_directory;
@@ -432,6 +433,10 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
 
     public String getPolaris_artifactToUpload() {
         return polaris_artifactToUpload;
+    }
+
+    public String getPolaris_container_name() {
+        return polaris_container_name;
     }
 
     public Integer getPolaris_sca_search_depth() {
@@ -952,6 +957,11 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     @DataBoundSetter
     public void setPolaris_artifactToUpload(String polaris_artifactToUpload) {
         this.polaris_artifactToUpload = Util.fixEmptyAndTrim(polaris_artifactToUpload);
+    }
+
+    @DataBoundSetter
+    public void setPolaris_container_name(String polaris_container_name) {
+        this.polaris_container_name = Util.fixEmptyAndTrim(polaris_container_name);
     }
 
     @DataBoundSetter

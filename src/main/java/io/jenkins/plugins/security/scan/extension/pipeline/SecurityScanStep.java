@@ -131,6 +131,7 @@ public class SecurityScanStep extends Step
     private String polaris_test_sca_location;
     private String polaris_test_sast_location;
     private String polaris_artifactToUpload;
+    private String polaris_container_name;
     private String project_source_archive;
     private String project_source_excludes;
     private Boolean project_source_preserveSymLinks;
@@ -510,6 +511,10 @@ public class SecurityScanStep extends Step
 
     public String getPolaris_artifactToUpload() {
         return polaris_artifactToUpload;
+    }
+
+    public String getPolaris_container_name() {
+        return polaris_container_name;
     }
 
     public Boolean isPolaris_reports_sarif_create() {
@@ -1154,6 +1159,11 @@ public class SecurityScanStep extends Step
     @DataBoundSetter
     public void setPolaris_artifactToUpload(String polaris_artifactToUpload) {
         this.polaris_artifactToUpload = Util.fixEmptyAndTrim(polaris_artifactToUpload);
+    }
+
+    @DataBoundSetter
+    public void setPolaris_container_name(String polaris_container_name) {
+        this.polaris_container_name = Util.fixEmptyAndTrim(polaris_container_name);
     }
 
     @Deprecated
