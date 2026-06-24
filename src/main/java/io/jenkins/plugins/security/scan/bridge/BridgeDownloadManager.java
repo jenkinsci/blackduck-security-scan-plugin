@@ -122,6 +122,9 @@ public class BridgeDownloadManager {
             String directoryUrl = getDirectoryUrl(bridgeDownloadUrl);
             if (isVersionFileAvailableInArtifactory(directoryUrl)) {
                 String versionFilePath = downloadVersionFileFromArtifactory(directoryUrl);
+                if (versionFilePath == null) {
+                    return ApplicationConstants.NOT_AVAILABLE;
+                }
                 String latestVersion = getBridgeVersionFromVersionFile(versionFilePath);
 
                 Utility.removeFile(versionFilePath, workspace, listener);
