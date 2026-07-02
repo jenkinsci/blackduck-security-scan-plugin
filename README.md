@@ -11,7 +11,7 @@
 You can download the latest artifact from releases: https://updates.jenkins-ci.org/download/plugins/blackduck-security-scan/
 
 ## 📄 Documentation
-Documentation for Black Duck Security Scan for Jenkins can be found [**here**](https://documentation.blackduck.com/bundle/bridge/page/documentation/c_using-jenkins-plugin.html)
+Documentation for Black Duck Security Scan for Jenkins can be found [**here**](https://docs.blackduck.com/r/bridge/latest/bridge-cli-guide/jenkins-black-duck-security-scan-plugin-for-jenkins.html)
 
 ## 👩‍💻 Developers Guide
 Please follow the steps described [**here**](DeveloperGuide.md)
