@@ -17,6 +17,7 @@ public class IssueCalculator {
     private static final String FULL_PROPERTY = "full";
     private static final String SCA_PACKAGE_PROPERTY = "scaPackage";
     private static final String SCA_SIGNATURE_PROPERTY = "scaSignature";
+    private static final String SCA_BINARY_PROPERTY = "scaBinary";
     private static final String ANALYSIS_PROPERTY = "analysis";
     private static final String PROJECT_BOM_URL_PROPERTY = "projectBomUrl";
     private static final String RESULT_URL_PROPERTY = "resultURL";
@@ -95,11 +96,15 @@ public class IssueCalculator {
             } else {
                 JsonNode scaPackageNode = getNodeIgnoreCase(testsNode, SCA_PACKAGE_PROPERTY);
                 JsonNode scaSignatureNode = getNodeIgnoreCase(testsNode, SCA_SIGNATURE_PROPERTY);
+                JsonNode scaBinaryNode = getNodeIgnoreCase(testsNode, SCA_BINARY_PROPERTY);
                 if (!scaSignatureNode.isMissingNode()) {
                     totalIssues += calculateIssues(scaSignatureNode);
                 }
                 if (!scaPackageNode.isMissingNode()) {
                     totalIssues += calculateIssues(scaPackageNode);
+                }
+                if (!scaBinaryNode.isMissingNode()) {
+                    totalIssues += calculateIssues(scaBinaryNode);
                 }
             }
         }
