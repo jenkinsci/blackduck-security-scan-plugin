@@ -52,7 +52,7 @@ public class ScanParametersServiceTest {
         parameters.put(ApplicationConstants.PRODUCT_KEY, "coverity");
         parameters.put(ApplicationConstants.COVERITY_URL_KEY, "https://fake.coverity.url");
         parameters.put(ApplicationConstants.COVERITY_USER_KEY, "fake-user");
-        parameters.put(ApplicationConstants.COVERITY_PASSPHRASE_KEY, "fake-passphrase");
+        parameters.put(ApplicationConstants.COVERITY_PASSWORD_KEY, "fake-password");
         parameters.put(ApplicationConstants.COVERITY_PROJECT_NAME_KEY, "fake-project");
         parameters.put(ApplicationConstants.COVERITY_STREAM_NAME_KEY, "fake-stream");
 

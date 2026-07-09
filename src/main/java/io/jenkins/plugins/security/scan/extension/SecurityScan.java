@@ -97,7 +97,10 @@ public interface SecurityScan {
 
     String getCoverity_user();
 
+    @Deprecated
     String getCoverity_passphrase();
+
+    String getCoverity_password();
 
     String getCoverity_project_name();
 

@@ -106,7 +106,7 @@ public class ParameterMappingService {
                             .orElse(null));
             addParameterIfNotBlank(
                     globalParameters,
-                    ApplicationConstants.COVERITY_PASSPHRASE_KEY,
+                    ApplicationConstants.COVERITY_PASSWORD_KEY,
                     scanCredentialsHelper
                             .getPasswordByCredentialsId(config.getCoverityCredentialsId())
                             .orElse(null));
@@ -354,10 +354,13 @@ public class ParameterMappingService {
                 coverityParameters, ApplicationConstants.COVERITY_URL_KEY, securityScan.getCoverity_url());
         addParameterIfNotBlank(
                 coverityParameters, ApplicationConstants.COVERITY_USER_KEY, securityScan.getCoverity_user());
-        addParameterIfNotBlank(
+        addDeprecatedParameterIfNotBlank(
                 coverityParameters,
-                ApplicationConstants.COVERITY_PASSPHRASE_KEY,
-                securityScan.getCoverity_passphrase());
+                ApplicationConstants.COVERITY_PASSWORD_KEY,
+                securityScan.getCoverity_passphrase(),
+                ApplicationConstants.COVERITY_PASSPHRASE_KEY);
+        addParameterIfNotBlank(
+                coverityParameters, ApplicationConstants.COVERITY_PASSWORD_KEY, securityScan.getCoverity_password());
         addParameterIfNotBlank(
                 coverityParameters,
                 ApplicationConstants.COVERITY_PROJECT_NAME_KEY,

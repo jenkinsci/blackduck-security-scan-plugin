@@ -186,7 +186,7 @@ public class ParameterMappingServiceTest {
     public void prepareCoverityParametersMapTestForMultibranchTest() {
         securityScanStep.setCoverity_url("https://fake.coverity-url");
         securityScanStep.setCoverity_user("fake-user");
-        securityScanStep.setCoverity_passphrase("fake-passphrase");
+        securityScanStep.setCoverity_password("fake-password");
         securityScanStep.setCoverity_project_name("fake-project");
         securityScanStep.setCoverity_stream_name("fake-stream");
         securityScanStep.setCoverity_policy_view("fake-policy");
@@ -207,7 +207,7 @@ public class ParameterMappingServiceTest {
         assertEquals(16, coverityParametersMap.size());
         assertEquals("https://fake.coverity-url", coverityParametersMap.get(ApplicationConstants.COVERITY_URL_KEY));
         assertEquals("fake-user", coverityParametersMap.get(ApplicationConstants.COVERITY_USER_KEY));
-        assertEquals("fake-passphrase", coverityParametersMap.get(ApplicationConstants.COVERITY_PASSPHRASE_KEY));
+        assertEquals("fake-password", coverityParametersMap.get(ApplicationConstants.COVERITY_PASSWORD_KEY));
         assertEquals("fake-project", coverityParametersMap.get(ApplicationConstants.COVERITY_PROJECT_NAME_KEY));
         assertEquals("fake-stream", coverityParametersMap.get(ApplicationConstants.COVERITY_STREAM_NAME_KEY));
         assertEquals("fake-policy", coverityParametersMap.get(ApplicationConstants.COVERITY_POLICY_VIEW_KEY));
@@ -231,7 +231,7 @@ public class ParameterMappingServiceTest {
     public void prepareCoverityParametersMapForFreestyleTest() {
         securityScanFreestyle.setCoverity_url("https://fake.coverity-url");
         securityScanFreestyle.setCoverity_user("fake-user");
-        securityScanFreestyle.setCoverity_passphrase("fake-passphrase");
+        securityScanFreestyle.setCoverity_password("fake-password");
         securityScanFreestyle.setCoverity_project_name("fake-project");
         securityScanFreestyle.setCoverity_stream_name("fake-stream");
         securityScanFreestyle.setCoverity_policy_view("fake-policy");
@@ -251,7 +251,7 @@ public class ParameterMappingServiceTest {
         assertEquals(15, coverityParametersMap.size());
         assertEquals("https://fake.coverity-url", coverityParametersMap.get(ApplicationConstants.COVERITY_URL_KEY));
         assertEquals("fake-user", coverityParametersMap.get(ApplicationConstants.COVERITY_USER_KEY));
-        assertEquals("fake-passphrase", coverityParametersMap.get(ApplicationConstants.COVERITY_PASSPHRASE_KEY));
+        assertEquals("fake-password", coverityParametersMap.get(ApplicationConstants.COVERITY_PASSWORD_KEY));
         assertEquals("fake-project", coverityParametersMap.get(ApplicationConstants.COVERITY_PROJECT_NAME_KEY));
         assertEquals("fake-stream", coverityParametersMap.get(ApplicationConstants.COVERITY_STREAM_NAME_KEY));
         assertEquals("fake-policy", coverityParametersMap.get(ApplicationConstants.COVERITY_POLICY_VIEW_KEY));
