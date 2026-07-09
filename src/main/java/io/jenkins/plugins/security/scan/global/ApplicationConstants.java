@@ -163,6 +163,7 @@ public class ApplicationConstants {
     public static final String POLARIS_TEST_SCA_LOCATION_KEY = "polaris_test_sca_location";
     public static final String POLARIS_TEST_SAST_LOCATION_KEY = "polaris_test_sast_location";
     public static final String POLARIS_ARTIFACTTOUPLOAD_KEY = "polaris_artifactToUpload";
+    public static final String POLARIS_CONTAINER_NAME_KEY = "polaris_container_name";
     public static final String POLARIS_FIXPR_ENABLED_KEY = "polaris_fixpr_enabled";
     public static final String POLARIS_FIXPR_MAXCOUNT_KEY = "polaris_fixpr_maxcount";
     public static final String POLARIS_FIXPR_USEUPGRADEGUIDANCE_KEY = "polaris_fixpr_useUpgradeGuidance";
@@ -350,7 +351,7 @@ public class ApplicationConstants {
     public static final String POLARIS_FIXPR_INFO_FOR_NON_PR_SCANS = "Polaris Fix PR ignored for pull request scan";
 
     public static final String BLACKDUCK_SECURITY_SCAN_PLUGIN_DOCS_URL =
-            "https://documentation.blackduck.com/bundle/bridge/page/documentation/c_using-jenkins-plugin.html";
+            "https://docs.blackduck.com/r/bridge/latest/bridge-cli-guide/jenkins-black-duck-security-scan-plugin-for-jenkins.html";
 
     public static final List<String> ARBITRARY_PARAM_KEYS = List.of(
             DETECT_SEARCH_DEPTH_KEY,

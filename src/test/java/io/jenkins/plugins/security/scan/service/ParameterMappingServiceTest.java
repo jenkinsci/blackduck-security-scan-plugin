@@ -329,13 +329,14 @@ public class ParameterMappingServiceTest {
         securityScanStep.setPolaris_artifactToUpload("/path/to/artifact.zip");
         securityScanStep.setProject_directory("test/directory");
         securityScanStep.setProject_source_archive("fake-source-archive");
+        securityScanStep.setPolaris_container_name("fake-container-name");
         securityScanStep.setProject_source_preserveSymLinks(true);
         securityScanStep.setProject_source_excludes("test_exclude");
 
         Map<String, Object> polarisParametersMap =
                 ParameterMappingService.preparePolarisParametersMap(securityScanStep);
 
-        assertEquals(16, polarisParametersMap.size());
+        assertEquals(17, polarisParametersMap.size());
         assertEquals(
                 "https://fake.polaris-server.url",
                 polarisParametersMap.get(ApplicationConstants.POLARIS_SERVER_URL_KEY));
@@ -348,6 +349,7 @@ public class ParameterMappingServiceTest {
         assertEquals("remote", polarisParametersMap.get(ApplicationConstants.POLARIS_TEST_SCA_LOCATION_KEY));
         assertEquals(
                 "/path/to/artifact.zip", polarisParametersMap.get(ApplicationConstants.POLARIS_ARTIFACTTOUPLOAD_KEY));
+        assertEquals("fake-container-name", polarisParametersMap.get(ApplicationConstants.POLARIS_CONTAINER_NAME_KEY));
         assertEquals("test/directory", polarisParametersMap.get(ApplicationConstants.PROJECT_DIRECTORY_KEY));
         assertEquals("fake-source-archive", polarisParametersMap.get(ApplicationConstants.PROJECT_SOURCE_ARCHIVE_KEY));
         assertEquals("test_exclude", polarisParametersMap.get(ApplicationConstants.PROJECT_SOURCE_EXCLUDES_KEY));
@@ -397,11 +399,12 @@ public class ParameterMappingServiceTest {
         securityScanFreestyle.setPolaris_sca_config_path("fake/path/application.properties");
         securityScanFreestyle.setPolaris_sca_args("--o");
         securityScanFreestyle.setPolaris_artifactToUpload("/path/to/artifact.jar");
+        securityScanFreestyle.setPolaris_container_name("fake-container-name");
 
         Map<String, Object> polarisParametersMap =
                 ParameterMappingService.preparePolarisParametersMap(securityScanFreestyle);
 
-        assertEquals(14, polarisParametersMap.size());
+        assertEquals(15, polarisParametersMap.size());
         assertEquals(
                 "https://fake.polaris-server.url",
                 polarisParametersMap.get(ApplicationConstants.POLARIS_SERVER_URL_KEY));
@@ -415,6 +418,7 @@ public class ParameterMappingServiceTest {
         assertEquals(
                 "fake/path/application.properties",
                 polarisParametersMap.get(ApplicationConstants.DETECT_CONFIG_PATH_KEY));
+        assertEquals("fake-container-name", polarisParametersMap.get(ApplicationConstants.POLARIS_CONTAINER_NAME_KEY));
         assertEquals("--o", polarisParametersMap.get(ApplicationConstants.DETECT_ARGS_KEY));
         assertEquals(
                 "/path/to/artifact.jar", polarisParametersMap.get(ApplicationConstants.POLARIS_ARTIFACTTOUPLOAD_KEY));

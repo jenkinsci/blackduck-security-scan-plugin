@@ -94,6 +94,7 @@ public class PolarisParametersServiceTest {
         polarisParameters.put(ApplicationConstants.POLARIS_TEST_SCA_LOCATION_KEY, "hybrid");
         polarisParameters.put(ApplicationConstants.POLARIS_TEST_SAST_LOCATION_KEY, "remote");
         polarisParameters.put(ApplicationConstants.POLARIS_ARTIFACTTOUPLOAD_KEY, "/path/to/artifact.zip");
+        polarisParameters.put(ApplicationConstants.POLARIS_CONTAINER_NAME_KEY, "fakeContainerName");
 
         polarisParameters.put(ApplicationConstants.POLARIS_WAITFORSCAN_KEY, true);
 
@@ -110,6 +111,7 @@ public class PolarisParametersServiceTest {
         assertEquals(polaris.getTest().getSca().getLocation(), "hybrid");
         assertEquals(polaris.getTest().getSast().getLocation(), "remote");
         assertEquals("/path/to/artifact.zip", polaris.getArtifactToUpload());
+        assertEquals("fakeContainerName", polaris.getContainer().getName());
         assertNull(polaris.getBranch().getParent());
         assertNull(polaris.getPrcomment());
         assertEquals(polaris.isWaitForScan(), true);

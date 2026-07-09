@@ -1,0 +1,33 @@
+{
+  "skill_name": "plugin-security-review",
+  "evals": [
+    {
+      "id": 0,
+      "eval_name": "slash_command_trigger",
+      "prompt": "/plugin-security-review",
+      "expected_output": "Skill is triggered and ready to perform security audit for credential handling, CLI injection, log masking, and input validation in the Black Duck plugin.",
+      "files": []
+    },
+    {
+      "id": 1,
+      "eval_name": "credential_in_cli_arg",
+      "prompt": "Review BlackDuckSCAParametersService.java diff. Token credential being passed via CLI argument: commandLineArgs.add(\"--token=\" + token). Check for: credential exposure in CLI args, missing JSON serialization, token source validation.",
+      "expected_output": "Finding: --token= passed as CLI arg. Move credential to Jackson POJO, serialize via ObjectMapper, pass via JSON input file instead.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "eval_name": "unmasked_proxy_log",
+      "prompt": "Review Utility.java setupProxyParameters() method. Logging proxy URL: logger.info(\"Proxy: \" + proxyUrl) where proxyUrl contains http://user:password@proxy:8080. Check for: unmasked credentials in logs, sensitive patterns logged.",
+      "expected_output": "Finding: Proxy URL logged with credentials. Mask auth: proxyUrl.replaceAll(\"://.*@\", \"://***@\") before logging.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "eval_name": "input_not_validated",
+      "prompt": "Review ScannerGlobalConfig credential ID handling. credentialId = config.getBlackDuckCredentialId() used directly without checking if credential exists in Jenkins store. Check for: credential validation, missing CredentialsProvider lookup.",
+      "expected_output": "Finding: credentialId used without validation. Check: if (isStringNullOrBlank(credentialId)) throw exception, then validate with CredentialsProvider.findCredentialById(credentialId) exists.",
+      "files": []
+    }
+  ]
+}
