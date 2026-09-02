@@ -11,7 +11,7 @@ import io.jenkins.plugins.security.scan.input.scm.github.Github;
 import io.jenkins.plugins.security.scan.input.scm.github.Host;
 import io.jenkins.plugins.security.scan.service.ToolsParameterService;
 import java.util.Map;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class GithubRepositoryService {
     private final LoggerWrapper logger;
