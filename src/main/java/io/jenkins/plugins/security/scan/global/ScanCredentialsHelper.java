@@ -11,7 +11,7 @@ import hudson.util.Secret;
 import java.util.Collections;
 import java.util.Optional;
 import jenkins.model.Jenkins;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl;
 
 public class ScanCredentialsHelper {
