@@ -10,6 +10,9 @@ public class Prcomment {
     @JsonProperty("severities")
     private List<String> severities;
 
+    @JsonProperty("filter")
+    private Filter filter;
+
     public Boolean getEnabled() {
         return enabled;
     }
@@ -24,5 +27,13 @@ public class Prcomment {
 
     public void setSeverities(List<String> severities) {
         this.severities = severities;
+    }
+
+    public Filter getFilter() {
+        return filter;
+    }
+
+    public void setFilter(Filter filter) {
+        this.filter = filter;
     }
 }

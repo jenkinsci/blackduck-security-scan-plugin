@@ -120,6 +120,7 @@ public class SecurityScanStep extends Step
     private Boolean polaris_prComment_enabled;
     private Boolean polaris_prComment_enabled_actualValue;
     private String polaris_prComment_severities;
+    private String polaris_prComment_filter_issueTypes;
     private Boolean polaris_reports_sarif_create;
     private String polaris_reports_sarif_file_path;
     private String polaris_reports_sarif_issue_types;
@@ -150,6 +151,8 @@ public class SecurityScanStep extends Step
     private Integer polaris_fixpr_maxCount;
     private String polaris_fixpr_useUpgradeGuidance;
     private String polaris_fixpr_filter_severities;
+    private String polaris_fixpr_filter_issueTypes;
+    private String polaris_fixpr_filter_confidence;
     private Boolean polaris_waitForScan;
     private Boolean polaris_waitForScan_actualValue;
 
@@ -501,6 +504,10 @@ public class SecurityScanStep extends Step
         return polaris_prComment_severities;
     }
 
+    public String getPolaris_prComment_filter_issueTypes() {
+        return polaris_prComment_filter_issueTypes;
+    }
+
     public String getPolaris_test_sca_type() {
         return polaris_test_sca_type;
     }
@@ -584,6 +591,14 @@ public class SecurityScanStep extends Step
 
     public String getPolaris_fixpr_filter_severities() {
         return polaris_fixpr_filter_severities;
+    }
+
+    public String getPolaris_fixpr_filter_issueTypes() {
+        return polaris_fixpr_filter_issueTypes;
+    }
+
+    public String getPolaris_fixpr_filter_confidence() {
+        return polaris_fixpr_filter_confidence;
     }
 
     public Boolean isPolaris_waitForScan() {
@@ -1150,6 +1165,11 @@ public class SecurityScanStep extends Step
     }
 
     @DataBoundSetter
+    public void setPolaris_prComment_filter_issueTypes(String polaris_prComment_filter_issueTypes) {
+        this.polaris_prComment_filter_issueTypes = Util.fixEmptyAndTrim(polaris_prComment_filter_issueTypes);
+    }
+
+    @DataBoundSetter
     public void setPolaris_test_sca_type(String polaris_test_sca_type) {
         this.polaris_test_sca_type = Util.fixEmptyAndTrim(polaris_test_sca_type);
     }
@@ -1246,6 +1266,16 @@ public class SecurityScanStep extends Step
     @DataBoundSetter
     public void setPolaris_fixpr_filter_severities(String polaris_fixpr_filter_severities) {
         this.polaris_fixpr_filter_severities = Util.fixEmptyAndTrim(polaris_fixpr_filter_severities);
+    }
+
+    @DataBoundSetter
+    public void setPolaris_fixpr_filter_issueTypes(String polaris_fixpr_filter_issueTypes) {
+        this.polaris_fixpr_filter_issueTypes = Util.fixEmptyAndTrim(polaris_fixpr_filter_issueTypes);
+    }
+
+    @DataBoundSetter
+    public void setPolaris_fixpr_filter_confidence(String polaris_fixpr_filter_confidence) {
+        this.polaris_fixpr_filter_confidence = Util.fixEmptyAndTrim(polaris_fixpr_filter_confidence);
     }
 
     @DataBoundSetter

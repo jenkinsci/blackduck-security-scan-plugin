@@ -495,6 +495,10 @@ public class ParameterMappingService {
                         ApplicationConstants.POLARIS_PRCOMMENT_SEVERITIES_KEY,
                         prCommentScan.getPolaris_prComment_severities());
             }
+            addParameterIfNotBlank(
+                    polarisParametersMap,
+                    ApplicationConstants.POLARIS_PRCOMMENT_FILTER_ISSUETYPES_KEY,
+                    prCommentScan.getPolaris_prComment_filter_issueTypes());
         }
 
         if (securityScan instanceof FixPrScan) {
@@ -515,6 +519,14 @@ public class ParameterMappingService {
                     polarisParametersMap,
                     ApplicationConstants.POLARIS_FIXPR_FILTER_SEVERITIES_KEY,
                     fixPrScan.getPolaris_fixpr_filter_severities());
+            addParameterIfNotBlank(
+                    polarisParametersMap,
+                    ApplicationConstants.POLARIS_FIXPR_FILTER_ISSUETYPES_KEY,
+                    fixPrScan.getPolaris_fixpr_filter_issueTypes());
+            addParameterIfNotBlank(
+                    polarisParametersMap,
+                    ApplicationConstants.POLARIS_FIXPR_FILTER_CONFIDENCE_KEY,
+                    fixPrScan.getPolaris_fixpr_filter_confidence());
         }
 
         if (securityScan instanceof FreestyleScan) {

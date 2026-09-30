@@ -20,4 +20,8 @@ public interface FixPrScan {
     String getPolaris_fixpr_useUpgradeGuidance();
 
     String getPolaris_fixpr_filter_severities();
+
+    String getPolaris_fixpr_filter_issueTypes();
+
+    String getPolaris_fixpr_filter_confidence();
 }

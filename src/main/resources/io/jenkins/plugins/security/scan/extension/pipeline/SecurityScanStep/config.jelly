@@ -213,6 +213,9 @@
                     <f:entry field="polaris_prComment_severities" title="PR Comment Severities (Optional)">
                         <f:textbox/>
                     </f:entry>
+                    <f:entry field="polaris_prComment_filter_issueTypes" title="PR Comment Filter Issue Types (Optional)">
+                        <f:textbox/>
+                    </f:entry>
                     <f:entry field="polaris_branch_parent_name" title="Parent Branch Name (Optional)">
                         <f:textbox/>
                     </f:entry>
@@ -233,6 +236,12 @@
                         <f:textbox/>
                     </f:entry>
                     <f:entry field="polaris_fixpr_filter_severities" title="List of SEVERITIES to be filtered (Optional)">
+                        <f:textbox/>
+                    </f:entry>
+                    <f:entry field="polaris_fixpr_filter_issueTypes" title="List of ISSUE TYPES to be filtered (Optional)">
+                        <f:textbox/>
+                    </f:entry>
+                    <f:entry field="polaris_fixpr_filter_confidence" title="List of CONFIDENCE levels to be filtered (Optional)">
                         <f:textbox/>
                     </f:entry>
                 </div>
