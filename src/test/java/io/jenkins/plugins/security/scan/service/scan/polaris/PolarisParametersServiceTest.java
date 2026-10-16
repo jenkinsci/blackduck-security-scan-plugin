@@ -510,7 +510,6 @@ public class PolarisParametersServiceTest {
 
         fixPrParameters.put(ApplicationConstants.POLARIS_FIXPR_ENABLED_KEY, true);
         fixPrParameters.put(ApplicationConstants.POLARIS_FIXPR_FILTER_ISSUETYPES_KEY, "SCA,SAST");
-        fixPrParameters.put(ApplicationConstants.POLARIS_FIXPR_FILTER_CONFIDENCE_KEY, "High,Medium");
 
         FixPr fixPrObject = polarisParametersService.prepareFixPrObject(fixPrParameters);
 
@@ -518,7 +517,6 @@ public class PolarisParametersServiceTest {
         assertTrue(fixPrObject.getEnabled());
         assertNotNull(fixPrObject.getFilter());
         assertEquals(Arrays.asList("sca", "sast"), fixPrObject.getFilter().getIssueTypes());
-        assertEquals(Arrays.asList("High", "Medium"), fixPrObject.getFilter().getConfidence());
         assertNull(fixPrObject.getFilter().getSeverities());
     }
 
@@ -529,14 +527,12 @@ public class PolarisParametersServiceTest {
         fixPrParameters.put(ApplicationConstants.POLARIS_FIXPR_ENABLED_KEY, true);
         fixPrParameters.put(ApplicationConstants.POLARIS_FIXPR_FILTER_SEVERITIES_KEY, "CRITICAL");
         fixPrParameters.put(ApplicationConstants.POLARIS_FIXPR_FILTER_ISSUETYPES_KEY, "sca");
-        fixPrParameters.put(ApplicationConstants.POLARIS_FIXPR_FILTER_CONFIDENCE_KEY, "High");
 
         FixPr fixPrObject = polarisParametersService.prepareFixPrObject(fixPrParameters);
 
         assertNotNull(fixPrObject.getFilter());
         assertEquals(Arrays.asList("CRITICAL"), fixPrObject.getFilter().getSeverities());
         assertEquals(Arrays.asList("sca"), fixPrObject.getFilter().getIssueTypes());
-        assertEquals(Arrays.asList("High"), fixPrObject.getFilter().getConfidence());
     }
 
     @Test
@@ -593,7 +589,6 @@ public class PolarisParametersServiceTest {
         polarisParameters.put(ApplicationConstants.POLARIS_BRANCH_NAME_KEY, "test-branch");
         polarisParameters.put(ApplicationConstants.POLARIS_FIXPR_ENABLED_KEY, true);
         polarisParameters.put(ApplicationConstants.POLARIS_FIXPR_FILTER_ISSUETYPES_KEY, "sast");
-        polarisParameters.put(ApplicationConstants.POLARIS_FIXPR_FILTER_CONFIDENCE_KEY, "High,Low");
 
         Polaris polaris = polarisParametersService.preparePolarisObjectForBridge(polarisParameters);
 
@@ -601,7 +596,5 @@ public class PolarisParametersServiceTest {
         assertTrue(polaris.getFixPr().getEnabled());
         assertNotNull(polaris.getFixPr().getFilter());
         assertEquals(Arrays.asList("sast"), polaris.getFixPr().getFilter().getIssueTypes());
-        assertEquals(
-                Arrays.asList("High", "Low"), polaris.getFixPr().getFilter().getConfidence());
     }
 }

@@ -174,7 +174,6 @@ public class ApplicationConstants {
     public static final String POLARIS_FIXPR_USEUPGRADEGUIDANCE_KEY = "polaris_fixpr_useUpgradeGuidance";
     public static final String POLARIS_FIXPR_FILTER_SEVERITIES_KEY = "polaris_fixpr_filter_severities";
     public static final String POLARIS_FIXPR_FILTER_ISSUETYPES_KEY = "polaris_fixpr_filter_issueTypes";
-    public static final String POLARIS_FIXPR_FILTER_CONFIDENCE_KEY = "polaris_fixpr_filter_confidence";
     public static final String POLARIS_WAITFORSCAN_KEY = "polaris_waitForScan";
 
     // SRM Parameters

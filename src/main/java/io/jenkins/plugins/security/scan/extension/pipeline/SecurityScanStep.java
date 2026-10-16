@@ -152,7 +152,6 @@ public class SecurityScanStep extends Step
     private String polaris_fixpr_useUpgradeGuidance;
     private String polaris_fixpr_filter_severities;
     private String polaris_fixpr_filter_issueTypes;
-    private String polaris_fixpr_filter_confidence;
     private Boolean polaris_waitForScan;
     private Boolean polaris_waitForScan_actualValue;
 
@@ -595,10 +594,6 @@ public class SecurityScanStep extends Step
 
     public String getPolaris_fixpr_filter_issueTypes() {
         return polaris_fixpr_filter_issueTypes;
-    }
-
-    public String getPolaris_fixpr_filter_confidence() {
-        return polaris_fixpr_filter_confidence;
     }
 
     public Boolean isPolaris_waitForScan() {
@@ -1271,11 +1266,6 @@ public class SecurityScanStep extends Step
     @DataBoundSetter
     public void setPolaris_fixpr_filter_issueTypes(String polaris_fixpr_filter_issueTypes) {
         this.polaris_fixpr_filter_issueTypes = Util.fixEmptyAndTrim(polaris_fixpr_filter_issueTypes);
-    }
-
-    @DataBoundSetter
-    public void setPolaris_fixpr_filter_confidence(String polaris_fixpr_filter_confidence) {
-        this.polaris_fixpr_filter_confidence = Util.fixEmptyAndTrim(polaris_fixpr_filter_confidence);
     }
 
     @DataBoundSetter

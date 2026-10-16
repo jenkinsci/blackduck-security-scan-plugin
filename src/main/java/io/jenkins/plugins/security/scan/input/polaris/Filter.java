@@ -10,9 +10,6 @@ public class Filter {
     @JsonProperty("issueTypes")
     private List<String> issueTypes;
 
-    @JsonProperty("confidence")
-    private List<String> confidence;
-
     public List<String> getSeverities() {
         return severities;
     }
@@ -27,13 +24,5 @@ public class Filter {
 
     public void setIssueTypes(List<String> issueTypes) {
         this.issueTypes = issueTypes;
-    }
-
-    public List<String> getConfidence() {
-        return confidence;
-    }
-
-    public void setConfidence(List<String> confidence) {
-        this.confidence = confidence;
     }
 }

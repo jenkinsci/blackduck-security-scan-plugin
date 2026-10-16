@@ -523,10 +523,6 @@ public class ParameterMappingService {
                     polarisParametersMap,
                     ApplicationConstants.POLARIS_FIXPR_FILTER_ISSUETYPES_KEY,
                     fixPrScan.getPolaris_fixpr_filter_issueTypes());
-            addParameterIfNotBlank(
-                    polarisParametersMap,
-                    ApplicationConstants.POLARIS_FIXPR_FILTER_CONFIDENCE_KEY,
-                    fixPrScan.getPolaris_fixpr_filter_confidence());
         }
 
         if (securityScan instanceof FreestyleScan) {

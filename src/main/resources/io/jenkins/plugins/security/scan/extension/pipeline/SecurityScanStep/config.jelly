@@ -241,9 +241,6 @@
                     <f:entry field="polaris_fixpr_filter_issueTypes" title="List of ISSUE TYPES to be filtered (Optional)">
                         <f:textbox/>
                     </f:entry>
-                    <f:entry field="polaris_fixpr_filter_confidence" title="List of CONFIDENCE levels to be filtered (Optional)">
-                        <f:textbox/>
-                    </f:entry>
                 </div>
             </f:advanced>
         </div>

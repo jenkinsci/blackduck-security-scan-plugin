@@ -372,8 +372,7 @@ public class PolarisParametersService {
         }
 
         if (fixPrParameters.containsKey(ApplicationConstants.POLARIS_FIXPR_FILTER_SEVERITIES_KEY)
-                || fixPrParameters.containsKey(ApplicationConstants.POLARIS_FIXPR_FILTER_ISSUETYPES_KEY)
-                || fixPrParameters.containsKey(ApplicationConstants.POLARIS_FIXPR_FILTER_CONFIDENCE_KEY)) {
+                || fixPrParameters.containsKey(ApplicationConstants.POLARIS_FIXPR_FILTER_ISSUETYPES_KEY)) {
             Filter filter = new Filter();
 
             if (fixPrParameters.containsKey(ApplicationConstants.POLARIS_FIXPR_FILTER_SEVERITIES_KEY)) {
@@ -386,12 +385,6 @@ public class PolarisParametersService {
                 String filterIssueTypes =
                         (String) fixPrParameters.get(ApplicationConstants.POLARIS_FIXPR_FILTER_ISSUETYPES_KEY);
                 filter.setIssueTypes(splitAndTrim(filterIssueTypes.toLowerCase()));
-            }
-
-            if (fixPrParameters.containsKey(ApplicationConstants.POLARIS_FIXPR_FILTER_CONFIDENCE_KEY)) {
-                String filterConfidence =
-                        (String) fixPrParameters.get(ApplicationConstants.POLARIS_FIXPR_FILTER_CONFIDENCE_KEY);
-                filter.setConfidence(splitAndTrim(filterConfidence));
             }
 
             fixPr.setFilter(filter);
