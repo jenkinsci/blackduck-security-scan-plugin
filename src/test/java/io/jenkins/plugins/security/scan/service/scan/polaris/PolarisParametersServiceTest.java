@@ -505,7 +505,7 @@ public class PolarisParametersServiceTest {
     }
 
     @Test
-    public void prepareFixPrObject_withIssueTypesAndConfidenceTest() {
+    public void prepareFixPrObject_withIssueTypesOnlyTest() {
         Map<String, Object> fixPrParameters = new HashMap<>();
 
         fixPrParameters.put(ApplicationConstants.POLARIS_FIXPR_ENABLED_KEY, true);
@@ -557,6 +557,30 @@ public class PolarisParametersServiceTest {
         assertNotNull(polaris.getPrcomment().getFilter());
         assertEquals(
                 Arrays.asList("sca", "sast"), polaris.getPrcomment().getFilter().getIssueTypes());
+    }
+
+    @Test
+    public void preparePolarisObjectForBridge_withPrCommentSeveritiesAndFilterIssueTypesTest() {
+        Map<String, Object> polarisParameters = new HashMap<>();
+
+        polarisParameters.put(ApplicationConstants.POLARIS_SERVER_URL_KEY, TEST_POLARIS_SERVER_URL);
+        polarisParameters.put(ApplicationConstants.POLARIS_ACCESS_TOKEN_KEY, TEST_POLARIS_ACCESS_TOKEN);
+        polarisParameters.put(ApplicationConstants.POLARIS_APPLICATION_NAME_KEY, TEST_APPLICATION_NAME);
+        polarisParameters.put(ApplicationConstants.POLARIS_PROJECT_NAME_KEY, "fake-project-name");
+        polarisParameters.put(ApplicationConstants.POLARIS_ASSESSMENT_TYPES_KEY, "SCA,SAST");
+        polarisParameters.put(ApplicationConstants.POLARIS_BRANCH_NAME_KEY, "test-branch");
+        polarisParameters.put(ApplicationConstants.POLARIS_PRCOMMENT_ENABLED_KEY, true);
+        polarisParameters.put(ApplicationConstants.POLARIS_PRCOMMENT_SEVERITIES_KEY, "CRITICAL,HIGH");
+        polarisParameters.put(ApplicationConstants.POLARIS_PRCOMMENT_FILTER_ISSUETYPES_KEY, "SAST");
+
+        Mockito.when(envVarsMock.get(ApplicationConstants.ENV_CHANGE_ID_KEY)).thenReturn("42");
+
+        Polaris polaris = polarisParametersService.preparePolarisObjectForBridge(polarisParameters);
+
+        assertNotNull(polaris.getPrcomment());
+        assertEquals(Arrays.asList("CRITICAL", "HIGH"), polaris.getPrcomment().getSeverities());
+        assertNotNull(polaris.getPrcomment().getFilter());
+        assertEquals(Arrays.asList("sast"), polaris.getPrcomment().getFilter().getIssueTypes());
     }
 
     @Test
