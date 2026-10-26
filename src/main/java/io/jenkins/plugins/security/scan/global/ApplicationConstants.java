@@ -152,6 +152,7 @@ public class ApplicationConstants {
     public static final String POLARIS_BRANCH_NAME_KEY = "polaris_branch_name";
     public static final String POLARIS_PRCOMMENT_ENABLED_KEY = "polaris_prComment_enabled";
     public static final String POLARIS_PRCOMMENT_SEVERITIES_KEY = "polaris_prComment_severities";
+    public static final String POLARIS_PRCOMMENT_FILTER_ISSUETYPES_KEY = "polaris_prComment_filter_issueTypes";
     public static final String POLARIS_BRANCH_PARENT_NAME_KEY = "polaris_branch_parent_name";
     public static final String POLARIS_REPORTS_SARIF_CREATE_KEY = "polaris_reports_sarif_create";
     public static final String POLARIS_REPORTS_SARIF_FILE_PATH_KEY = "polaris_reports_sarif_file_path";
@@ -172,6 +173,7 @@ public class ApplicationConstants {
     public static final String POLARIS_FIXPR_MAXCOUNT_KEY = "polaris_fixpr_maxcount";
     public static final String POLARIS_FIXPR_USEUPGRADEGUIDANCE_KEY = "polaris_fixpr_useUpgradeGuidance";
     public static final String POLARIS_FIXPR_FILTER_SEVERITIES_KEY = "polaris_fixpr_filter_severities";
+    public static final String POLARIS_FIXPR_FILTER_ISSUETYPES_KEY = "polaris_fixpr_filter_issueTypes";
     public static final String POLARIS_WAITFORSCAN_KEY = "polaris_waitForScan";
 
     // SRM Parameters

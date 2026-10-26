@@ -371,14 +371,22 @@ public class PolarisParametersService {
             fixPr.setMaxCount(maxCount);
         }
 
-        if (fixPrParameters.containsKey(ApplicationConstants.POLARIS_FIXPR_FILTER_SEVERITIES_KEY)) {
+        if (fixPrParameters.containsKey(ApplicationConstants.POLARIS_FIXPR_FILTER_SEVERITIES_KEY)
+                || fixPrParameters.containsKey(ApplicationConstants.POLARIS_FIXPR_FILTER_ISSUETYPES_KEY)) {
             Filter filter = new Filter();
-            String filterSeverities =
-                    (String) fixPrParameters.get(ApplicationConstants.POLARIS_FIXPR_FILTER_SEVERITIES_KEY);
-            String[] severitiesInput = filterSeverities.toUpperCase().split(",");
-            List<String> severities =
-                    Arrays.stream(severitiesInput).map(String::trim).collect(Collectors.toList());
-            filter.setSeverities(severities);
+
+            if (fixPrParameters.containsKey(ApplicationConstants.POLARIS_FIXPR_FILTER_SEVERITIES_KEY)) {
+                String filterSeverities =
+                        (String) fixPrParameters.get(ApplicationConstants.POLARIS_FIXPR_FILTER_SEVERITIES_KEY);
+                filter.setSeverities(splitAndTrim(filterSeverities.toUpperCase()));
+            }
+
+            if (fixPrParameters.containsKey(ApplicationConstants.POLARIS_FIXPR_FILTER_ISSUETYPES_KEY)) {
+                String filterIssueTypes =
+                        (String) fixPrParameters.get(ApplicationConstants.POLARIS_FIXPR_FILTER_ISSUETYPES_KEY);
+                filter.setIssueTypes(splitAndTrim(filterIssueTypes.toLowerCase()));
+            }
+
             fixPr.setFilter(filter);
         }
 
@@ -429,6 +437,7 @@ public class PolarisParametersService {
                 if (isPullRequestEvent) {
                     prcomment.setEnabled(true);
                     handlePrCommentSeverities(polarisParameters, prcomment);
+                    handlePrCommentFilterIssueTypes(polarisParameters, prcomment);
                     polaris.setPrcomment(prcomment);
                     setBranchParent(polarisParameters, polaris);
                 } else {
@@ -452,6 +461,25 @@ public class PolarisParametersService {
                 prcomment.setSeverities(prCommentSeverities);
             }
         }
+    }
+
+    private static void handlePrCommentFilterIssueTypes(Map<String, Object> polarisParameters, Prcomment prcomment) {
+        if (polarisParameters.containsKey(ApplicationConstants.POLARIS_PRCOMMENT_FILTER_ISSUETYPES_KEY)) {
+            String issueTypesValue = polarisParameters
+                    .get(ApplicationConstants.POLARIS_PRCOMMENT_FILTER_ISSUETYPES_KEY)
+                    .toString()
+                    .trim();
+            if (!issueTypesValue.isEmpty()) {
+                if (prcomment.getFilter() == null) {
+                    prcomment.setFilter(new Filter());
+                }
+                prcomment.getFilter().setIssueTypes(splitAndTrim(issueTypesValue.toLowerCase()));
+            }
+        }
+    }
+
+    private static List<String> splitAndTrim(String value) {
+        return Arrays.stream(value.split(",")).map(String::trim).collect(Collectors.toList());
     }
 
     private static void setBranchParent(Map<String, Object> polarisParameters, Polaris polaris) {

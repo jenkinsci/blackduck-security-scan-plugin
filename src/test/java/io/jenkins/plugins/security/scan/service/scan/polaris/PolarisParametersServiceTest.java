@@ -503,4 +503,122 @@ public class PolarisParametersServiceTest {
 
         assertEquals("remote", polaris.getTest().getSca().getLocation());
     }
+
+    @Test
+    public void prepareFixPrObject_withIssueTypesOnlyTest() {
+        Map<String, Object> fixPrParameters = new HashMap<>();
+
+        fixPrParameters.put(ApplicationConstants.POLARIS_FIXPR_ENABLED_KEY, true);
+        fixPrParameters.put(ApplicationConstants.POLARIS_FIXPR_FILTER_ISSUETYPES_KEY, "SCA,SAST");
+
+        FixPr fixPrObject = polarisParametersService.prepareFixPrObject(fixPrParameters);
+
+        assertNotNull(fixPrObject);
+        assertTrue(fixPrObject.getEnabled());
+        assertNotNull(fixPrObject.getFilter());
+        assertEquals(Arrays.asList("sca", "sast"), fixPrObject.getFilter().getIssueTypes());
+        assertNull(fixPrObject.getFilter().getSeverities());
+    }
+
+    @Test
+    public void prepareFixPrObject_withAllFilterFieldsTest() {
+        Map<String, Object> fixPrParameters = new HashMap<>();
+
+        fixPrParameters.put(ApplicationConstants.POLARIS_FIXPR_ENABLED_KEY, true);
+        fixPrParameters.put(ApplicationConstants.POLARIS_FIXPR_FILTER_SEVERITIES_KEY, "CRITICAL");
+        fixPrParameters.put(ApplicationConstants.POLARIS_FIXPR_FILTER_ISSUETYPES_KEY, "sca");
+
+        FixPr fixPrObject = polarisParametersService.prepareFixPrObject(fixPrParameters);
+
+        assertNotNull(fixPrObject.getFilter());
+        assertEquals(Arrays.asList("CRITICAL"), fixPrObject.getFilter().getSeverities());
+        assertEquals(Arrays.asList("sca"), fixPrObject.getFilter().getIssueTypes());
+    }
+
+    @Test
+    public void preparePolarisObjectForBridge_withPrCommentFilterIssueTypesTest() {
+        Map<String, Object> polarisParameters = new HashMap<>();
+
+        polarisParameters.put(ApplicationConstants.POLARIS_SERVER_URL_KEY, TEST_POLARIS_SERVER_URL);
+        polarisParameters.put(ApplicationConstants.POLARIS_ACCESS_TOKEN_KEY, TEST_POLARIS_ACCESS_TOKEN);
+        polarisParameters.put(ApplicationConstants.POLARIS_APPLICATION_NAME_KEY, TEST_APPLICATION_NAME);
+        polarisParameters.put(ApplicationConstants.POLARIS_PROJECT_NAME_KEY, "fake-project-name");
+        polarisParameters.put(ApplicationConstants.POLARIS_ASSESSMENT_TYPES_KEY, "SCA");
+        polarisParameters.put(ApplicationConstants.POLARIS_BRANCH_NAME_KEY, "test-branch");
+        polarisParameters.put(ApplicationConstants.POLARIS_PRCOMMENT_ENABLED_KEY, true);
+        polarisParameters.put(ApplicationConstants.POLARIS_PRCOMMENT_FILTER_ISSUETYPES_KEY, "SCA,SAST");
+
+        Mockito.when(envVarsMock.get(ApplicationConstants.ENV_CHANGE_ID_KEY)).thenReturn("42");
+
+        Polaris polaris = polarisParametersService.preparePolarisObjectForBridge(polarisParameters);
+
+        assertNotNull(polaris.getPrcomment());
+        assertTrue(polaris.getPrcomment().getEnabled());
+        assertNotNull(polaris.getPrcomment().getFilter());
+        assertEquals(
+                Arrays.asList("sca", "sast"), polaris.getPrcomment().getFilter().getIssueTypes());
+    }
+
+    @Test
+    public void preparePolarisObjectForBridge_withPrCommentSeveritiesAndFilterIssueTypesTest() {
+        Map<String, Object> polarisParameters = new HashMap<>();
+
+        polarisParameters.put(ApplicationConstants.POLARIS_SERVER_URL_KEY, TEST_POLARIS_SERVER_URL);
+        polarisParameters.put(ApplicationConstants.POLARIS_ACCESS_TOKEN_KEY, TEST_POLARIS_ACCESS_TOKEN);
+        polarisParameters.put(ApplicationConstants.POLARIS_APPLICATION_NAME_KEY, TEST_APPLICATION_NAME);
+        polarisParameters.put(ApplicationConstants.POLARIS_PROJECT_NAME_KEY, "fake-project-name");
+        polarisParameters.put(ApplicationConstants.POLARIS_ASSESSMENT_TYPES_KEY, "SCA,SAST");
+        polarisParameters.put(ApplicationConstants.POLARIS_BRANCH_NAME_KEY, "test-branch");
+        polarisParameters.put(ApplicationConstants.POLARIS_PRCOMMENT_ENABLED_KEY, true);
+        polarisParameters.put(ApplicationConstants.POLARIS_PRCOMMENT_SEVERITIES_KEY, "CRITICAL,HIGH");
+        polarisParameters.put(ApplicationConstants.POLARIS_PRCOMMENT_FILTER_ISSUETYPES_KEY, "SAST");
+
+        Mockito.when(envVarsMock.get(ApplicationConstants.ENV_CHANGE_ID_KEY)).thenReturn("42");
+
+        Polaris polaris = polarisParametersService.preparePolarisObjectForBridge(polarisParameters);
+
+        assertNotNull(polaris.getPrcomment());
+        assertEquals(Arrays.asList("CRITICAL", "HIGH"), polaris.getPrcomment().getSeverities());
+        assertNotNull(polaris.getPrcomment().getFilter());
+        assertEquals(Arrays.asList("sast"), polaris.getPrcomment().getFilter().getIssueTypes());
+    }
+
+    @Test
+    public void preparePolarisObjectForBridge_prCommentFilterIgnoredInNonPRContextTest() {
+        Map<String, Object> polarisParameters = new HashMap<>();
+
+        polarisParameters.put(ApplicationConstants.POLARIS_SERVER_URL_KEY, TEST_POLARIS_SERVER_URL);
+        polarisParameters.put(ApplicationConstants.POLARIS_ACCESS_TOKEN_KEY, TEST_POLARIS_ACCESS_TOKEN);
+        polarisParameters.put(ApplicationConstants.POLARIS_APPLICATION_NAME_KEY, TEST_APPLICATION_NAME);
+        polarisParameters.put(ApplicationConstants.POLARIS_PROJECT_NAME_KEY, "fake-project-name");
+        polarisParameters.put(ApplicationConstants.POLARIS_ASSESSMENT_TYPES_KEY, "SCA");
+        polarisParameters.put(ApplicationConstants.POLARIS_BRANCH_NAME_KEY, "test-branch");
+        polarisParameters.put(ApplicationConstants.POLARIS_PRCOMMENT_ENABLED_KEY, true);
+        polarisParameters.put(ApplicationConstants.POLARIS_PRCOMMENT_FILTER_ISSUETYPES_KEY, "SCA");
+
+        Polaris polaris = polarisParametersService.preparePolarisObjectForBridge(polarisParameters);
+
+        assertNull(polaris.getPrcomment());
+    }
+
+    @Test
+    public void preparePolarisObjectForBridge_withFixPrFilterIssueTypesInNonPRContextTest() {
+        Map<String, Object> polarisParameters = new HashMap<>();
+
+        polarisParameters.put(ApplicationConstants.POLARIS_SERVER_URL_KEY, TEST_POLARIS_SERVER_URL);
+        polarisParameters.put(ApplicationConstants.POLARIS_ACCESS_TOKEN_KEY, TEST_POLARIS_ACCESS_TOKEN);
+        polarisParameters.put(ApplicationConstants.POLARIS_APPLICATION_NAME_KEY, TEST_APPLICATION_NAME);
+        polarisParameters.put(ApplicationConstants.POLARIS_PROJECT_NAME_KEY, "fake-project-name");
+        polarisParameters.put(ApplicationConstants.POLARIS_ASSESSMENT_TYPES_KEY, "SAST");
+        polarisParameters.put(ApplicationConstants.POLARIS_BRANCH_NAME_KEY, "test-branch");
+        polarisParameters.put(ApplicationConstants.POLARIS_FIXPR_ENABLED_KEY, true);
+        polarisParameters.put(ApplicationConstants.POLARIS_FIXPR_FILTER_ISSUETYPES_KEY, "sast");
+
+        Polaris polaris = polarisParametersService.preparePolarisObjectForBridge(polarisParameters);
+
+        assertNotNull(polaris.getFixPr());
+        assertTrue(polaris.getFixPr().getEnabled());
+        assertNotNull(polaris.getFixPr().getFilter());
+        assertEquals(Arrays.asList("sast"), polaris.getFixPr().getFilter().getIssueTypes());
+    }
 }
