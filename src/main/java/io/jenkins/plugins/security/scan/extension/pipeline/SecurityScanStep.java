@@ -18,6 +18,7 @@ import io.jenkins.plugins.security.scan.extension.SecurityScan;
 import io.jenkins.plugins.security.scan.global.*;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import io.jenkins.plugins.security.scan.service.ParameterMappingService;
+import io.jenkins.plugins.security.scan.service.ToolsParameterService;
 import io.jenkins.plugins.security.scan.service.scm.SCMRepositoryService;
 import java.io.IOException;
 import java.io.Serializable;
@@ -1478,6 +1479,11 @@ public class SecurityScanStep extends Step
                 this, ParameterMappingService.getGlobalConfigurationValues(workspace, listener), listener);
     }
 
+    static boolean requiresBranchSourcePlugin(Map<String, Object> scanParameters) {
+        return ToolsParameterService.isPrCommentValueSet(scanParameters)
+                || ToolsParameterService.isFixPrValueSet(scanParameters);
+    }
+
     @Override
     public StepExecution start(StepContext context) throws Exception {
         return new Execution(context);
@@ -1597,7 +1603,7 @@ public class SecurityScanStep extends Step
             Map<String, Object> scanparametersMap = getParametersMap(workspace, listener);
 
             try {
-                verifyRequiredPlugins(logger, envVars);
+                verifyRequiredPlugins(logger, envVars, scanparametersMap);
 
                 SecurityScanner securityScanner = new SecurityScanner(run, listener, launcher, workspace, envVars);
                 ScanInitializer scanInitializer = new ScanInitializer(securityScanner, workspace, envVars, listener);
@@ -1670,12 +1676,14 @@ public class SecurityScanStep extends Step
             }
         }
 
-        public void verifyRequiredPlugins(LoggerWrapper logger, EnvVars envVars) throws PluginExceptionHandler {
+        public void verifyRequiredPlugins(LoggerWrapper logger, EnvVars envVars, Map<String, Object> scanParameters)
+                throws PluginExceptionHandler {
             String jobType = Utility.jenkinsJobType(envVars);
             SCMRepositoryService scmRepositoryService = new SCMRepositoryService(listener, envVars);
             Map<String, Boolean> installedBranchSourceDependencies = Utility.installedBranchSourceDependencies();
 
-            if (jobType.equalsIgnoreCase(ApplicationConstants.MULTIBRANCH_JOB_TYPE_NAME)) {
+            if (jobType.equalsIgnoreCase(ApplicationConstants.MULTIBRANCH_JOB_TYPE_NAME)
+                    && requiresBranchSourcePlugin(scanParameters)) {
                 if (installedBranchSourceDependencies.isEmpty()) {
                     logger.error(ApplicationConstants.NECESSARY_BRANCH_SOURCE_PLUGIN_IS_NOT_INSTALLED);
                     throw new PluginExceptionHandler(ErrorCode.REQUIRED_BRANCH_SOURCE_PLUGIN_NOT_INSTALLED);
