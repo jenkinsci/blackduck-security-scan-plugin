@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>plugin</artifactId>
-    <version>5.26</version>
+    <version>6.2250.va_d01d559a_209</version>
     <relativePath />
   </parent>
   <groupId>io.jenkins.plugins</groupId>
@@ -29,7 +29,7 @@
     <!-- https://www.jenkins.io/doc/developer/plugin-development/choosing-jenkins-baseline/ -->
     <revision>2.12.0</revision>
     <changelist>SNAPSHOT</changelist>
-    <jenkins.version>2.492.3</jenkins.version>
+    <jenkins.version>2.555.3</jenkins.version>
     <gitHubRepo>jenkinsci/${project.artifactId}-plugin</gitHubRepo>
     <spotless.check.skip>false</spotless.check.skip>
     <ban-commons-lang-2.skip>false</ban-commons-lang-2.skip>
@@ -40,8 +40,8 @@
       <dependency>
         <!-- Pick up common dependencies for the selected LTS line: https://github.com/jenkinsci/bom#usage -->
         <groupId>io.jenkins.tools.bom</groupId>
-        <artifactId>bom-2.492.x</artifactId>
-        <version>5473.vb_9533d9e5d88</version>
+        <artifactId>bom-2.555.x</artifactId>
+        <version>7280.ve2096dda_41b_9</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -172,7 +172,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.10</version>
+        <version>0.8.16</version>
         <configuration>
           <excludes>
             <exclude>io/jenkins/plugins/security/scan/extension/**/*.class</exclude>
