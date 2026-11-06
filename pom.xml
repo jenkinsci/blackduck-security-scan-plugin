@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>plugin</artifactId>
-    <version>6.2250.va_d01d559a_209</version>
+    <version>5.26</version>
     <relativePath />
   </parent>
   <groupId>io.jenkins.plugins</groupId>
@@ -30,6 +30,16 @@
     <revision>2.12.0</revision>
     <changelist>SNAPSHOT</changelist>
     <jenkins.version>2.555.3</jenkins.version>
+    <!--
+      Parent 5.26 is kept on purpose (newer parent versions raise licensing concerns). Its pinned build tooling is too old
+      for the Jenkins 2.555.x baseline (Java 21), so the two versions below override what the parent defines:
+      - hpi-plugin.version: maven-hpi-plugin 3.1746 fails with "Unknown Java specification version for class version: 65".
+      - jenkins-test-harness.version: the newer maven-hpi-plugin generates tests that need
+        org.jvnet.hudson.test.injected, which is missing from the harness 5.26 pins (2493).
+      Both are build/test-time only. Re-check and remove these overrides when the parent is upgraded.
+    -->
+    <hpi-plugin.version>3.1841.va_2f3e25d3a_5f</hpi-plugin.version>
+    <jenkins-test-harness.version>2587.v9791b_4544b_b_2</jenkins-test-harness.version>
     <gitHubRepo>jenkinsci/${project.artifactId}-plugin</gitHubRepo>
     <spotless.check.skip>false</spotless.check.skip>
     <ban-commons-lang-2.skip>false</ban-commons-lang-2.skip>
