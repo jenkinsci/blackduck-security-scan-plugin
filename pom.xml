@@ -29,7 +29,17 @@
     <!-- https://www.jenkins.io/doc/developer/plugin-development/choosing-jenkins-baseline/ -->
     <revision>2.12.0</revision>
     <changelist>SNAPSHOT</changelist>
-    <jenkins.version>2.492.3</jenkins.version>
+    <jenkins.version>2.555.3</jenkins.version>
+    <!--
+      Parent 5.26 is kept on purpose (newer parent versions raise licensing concerns). Its pinned build tooling is too old
+      for the Jenkins 2.555.x baseline (Java 21), so the two versions below override what the parent defines:
+      - hpi-plugin.version: maven-hpi-plugin 3.1746 fails with "Unknown Java specification version for class version: 65".
+      - jenkins-test-harness.version: the newer maven-hpi-plugin generates tests that need
+        org.jvnet.hudson.test.injected, which is missing from the harness 5.26 pins (2493).
+      Both are build/test-time only. Re-check and remove these overrides when the parent is upgraded.
+    -->
+    <hpi-plugin.version>3.1841.va_2f3e25d3a_5f</hpi-plugin.version>
+    <jenkins-test-harness.version>2587.v9791b_4544b_b_2</jenkins-test-harness.version>
     <gitHubRepo>jenkinsci/${project.artifactId}-plugin</gitHubRepo>
     <spotless.check.skip>false</spotless.check.skip>
     <ban-commons-lang-2.skip>false</ban-commons-lang-2.skip>
@@ -40,8 +50,8 @@
       <dependency>
         <!-- Pick up common dependencies for the selected LTS line: https://github.com/jenkinsci/bom#usage -->
         <groupId>io.jenkins.tools.bom</groupId>
-        <artifactId>bom-2.492.x</artifactId>
-        <version>5473.vb_9533d9e5d88</version>
+        <artifactId>bom-2.555.x</artifactId>
+        <version>7280.ve2096dda_41b_9</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -172,7 +182,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.10</version>
+        <version>0.8.16</version>
         <configuration>
           <excludes>
             <exclude>io/jenkins/plugins/security/scan/extension/**/*.class</exclude>

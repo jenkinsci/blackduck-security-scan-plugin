@@ -1,6 +1,7 @@
 package io.jenkins.plugins.security.scan.extension.freestyle;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import hudson.*;
 import hudson.model.*;
 import hudson.tasks.BuildStepDescriptor;
@@ -234,10 +235,12 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
         return null;
     }
 
+    @Nullable
     public Boolean isBlackduck_scan_full() {
         return NULL;
     }
 
+    @Nullable
     public Boolean isBlackduckIntelligentScan() {
         return NULL;
     }
@@ -266,6 +269,7 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
         return null;
     }
 
+    @Nullable
     public Boolean isBlackduck_reports_sarif_create() {
         return NULL;
     }
@@ -278,18 +282,22 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
         return null;
     }
 
+    @Nullable
     public Boolean isBlackduck_reports_sarif_groupSCAIssues() {
         return NULL;
     }
 
+    @Nullable
     public Boolean isBlackduck_reports_sarif_groupSCAIssues_temporary() {
         return NULL;
     }
 
+    @Nullable
     public Boolean isBlackduck_waitForScan() {
         return NULL;
     }
 
+    @Nullable
     public Boolean isBlackduck_waitForScan_actualValue() {
         return NULL;
     }
@@ -563,18 +571,22 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
         return include_diagnostics;
     }
 
+    @Nullable
     public Boolean isCoverity_include_diagnostics() {
         return coverity_include_diagnostics;
     }
 
+    @Nullable
     public Boolean isBlackducksca_include_diagnostics() {
         return blackducksca_include_diagnostics;
     }
 
+    @Nullable
     public Boolean isPolaris_include_diagnostics() {
         return polaris_include_diagnostics;
     }
 
+    @Nullable
     public Boolean isSrm_include_diagnostics() {
         return srm_include_diagnostics;
     }
