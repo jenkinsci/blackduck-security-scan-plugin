@@ -39,60 +39,6 @@ public interface SecurityScan {
 
     Boolean isBlackducksca_waitForScan_actualValue();
 
-    @Deprecated
-    String getBlackduck_url();
-
-    @Deprecated
-    String getBlackduck_token();
-
-    @Deprecated
-    String getBlackduck_install_directory();
-
-    @Deprecated
-    Boolean isBlackduck_scan_full();
-
-    @Deprecated
-    Boolean isBlackduckIntelligentScan();
-
-    @Deprecated
-    String getBlackduck_scan_failure_severities();
-
-    @Deprecated
-    String getBlackduck_download_url();
-
-    @Deprecated
-    Integer getBlackduck_search_depth();
-
-    @Deprecated
-    String getBlackduck_config_path();
-
-    @Deprecated
-    String getBlackduck_args();
-
-    @Deprecated
-    String getBlackduck_execution_path();
-
-    @Deprecated
-    Boolean isBlackduck_reports_sarif_create();
-
-    @Deprecated
-    String getBlackduck_reports_sarif_file_path();
-
-    @Deprecated
-    Boolean isBlackduck_reports_sarif_groupSCAIssues();
-
-    @Deprecated
-    String getBlackduck_reports_sarif_severities();
-
-    @Deprecated
-    Boolean isBlackduck_reports_sarif_groupSCAIssues_temporary();
-
-    @Deprecated
-    Boolean isBlackduck_waitForScan();
-
-    @Deprecated
-    Boolean isBlackduck_waitForScan_actualValue();
-
     String getCoverity_url();
 
     String getCoverity_user();
@@ -208,15 +154,6 @@ public interface SecurityScan {
     String getGithub_token();
 
     String getGitlab_token();
-
-    @Deprecated
-    String getSynopsys_bridge_download_url();
-
-    @Deprecated
-    String getSynopsys_bridge_download_version();
-
-    @Deprecated
-    String getSynopsys_bridge_install_directory();
 
     String getBridgecli_download_url();
 

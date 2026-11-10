@@ -57,6 +57,53 @@ public class ParameterMappingServiceTest {
     }
 
     @Test
+    void prepareCoverityParametersMap_withDeprecatedPassphraseTest() {
+        securityScanStep.setCoverity_passphrase("fake-passphrase");
+
+        Map<String, Object> coverityParameters = ParameterMappingService.prepareCoverityParametersMap(securityScanStep);
+
+        assertEquals("fake-passphrase", coverityParameters.get(ApplicationConstants.COVERITY_PASSWORD_KEY));
+        assertEquals(
+                List.of(ApplicationConstants.COVERITY_PASSPHRASE_KEY),
+                ParameterMappingService.getDeprecatedParameters());
+    }
+
+    @Test
+    void preparePolarisParametersMap_withDeprecatedAssessmentModeTest() {
+        securityScanStep.setPolaris_assessment_mode("SOURCE_UPLOAD");
+
+        ParameterMappingService.preparePolarisParametersMap(securityScanStep);
+
+        assertEquals(
+                List.of(ApplicationConstants.POLARIS_ASSESSMENT_MODE_KEY),
+                ParameterMappingService.getDeprecatedParameters());
+    }
+
+    @Test
+    void prepareParametersMap_withAllRemainingDeprecatedParametersTest() {
+        securityScanStep.setCoverity_passphrase("fake-passphrase");
+        securityScanStep.setPolaris_assessment_mode("SOURCE_UPLOAD");
+
+        ParameterMappingService.prepareCoverityParametersMap(securityScanStep);
+        ParameterMappingService.preparePolarisParametersMap(securityScanStep);
+
+        assertEquals(
+                List.of(ApplicationConstants.COVERITY_PASSPHRASE_KEY, ApplicationConstants.POLARIS_ASSESSMENT_MODE_KEY),
+                ParameterMappingService.getDeprecatedParameters());
+    }
+
+    @Test
+    void prepareParametersMap_withoutDeprecatedParametersTest() {
+        securityScanStep.setCoverity_password("fake-password");
+        securityScanStep.setPolaris_test_sast_location("REMOTE");
+
+        ParameterMappingService.prepareCoverityParametersMap(securityScanStep);
+        ParameterMappingService.preparePolarisParametersMap(securityScanStep);
+
+        assertTrue(ParameterMappingService.getDeprecatedParameters().isEmpty());
+    }
+
+    @Test
     public void preparePipelineParametersMapTest() throws PluginExceptionHandler {
         Map<String, Object> globalConfigValues = new HashMap<>();
 
