@@ -1,6 +1,7 @@
 package io.jenkins.plugins.security.scan.extension.freestyle;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.*;
 import hudson.model.*;
@@ -488,18 +489,22 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
         return include_diagnostics;
     }
 
+    @Nullable
     public Boolean isCoverity_include_diagnostics() {
         return coverity_include_diagnostics;
     }
 
+    @Nullable
     public Boolean isBlackducksca_include_diagnostics() {
         return blackducksca_include_diagnostics;
     }
 
+    @Nullable
     public Boolean isPolaris_include_diagnostics() {
         return polaris_include_diagnostics;
     }
 
+    @Nullable
     public Boolean isSrm_include_diagnostics() {
         return srm_include_diagnostics;
     }
