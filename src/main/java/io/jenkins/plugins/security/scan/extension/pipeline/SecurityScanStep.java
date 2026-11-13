@@ -20,6 +20,7 @@ import io.jenkins.plugins.security.scan.extension.SecurityScan;
 import io.jenkins.plugins.security.scan.global.*;
 import io.jenkins.plugins.security.scan.global.enums.SecurityProduct;
 import io.jenkins.plugins.security.scan.service.ParameterMappingService;
+import io.jenkins.plugins.security.scan.service.ToolsParameterService;
 import io.jenkins.plugins.security.scan.service.scm.SCMRepositoryService;
 import java.io.IOException;
 import java.io.Serializable;
@@ -1257,6 +1258,11 @@ public class SecurityScanStep extends Step
                 this, ParameterMappingService.getGlobalConfigurationValues(workspace, listener), listener);
     }
 
+    static boolean requiresBranchSourcePlugin(Map<String, Object> scanParameters) {
+        return ToolsParameterService.isPrCommentValueSet(scanParameters)
+                || ToolsParameterService.isFixPrValueSet(scanParameters);
+    }
+
     @Override
     public StepExecution start(StepContext context) throws Exception {
         return new Execution(context);
@@ -1376,7 +1382,7 @@ public class SecurityScanStep extends Step
             Map<String, Object> scanparametersMap = getParametersMap(workspace, listener);
 
             try {
-                verifyRequiredPlugins(logger, envVars);
+                verifyRequiredPlugins(logger, envVars, scanparametersMap);
 
                 SecurityScanner securityScanner = new SecurityScanner(run, listener, launcher, workspace, envVars);
                 ScanInitializer scanInitializer = new ScanInitializer(securityScanner, workspace, envVars, listener);
@@ -1449,30 +1455,47 @@ public class SecurityScanStep extends Step
             }
         }
 
-        public void verifyRequiredPlugins(LoggerWrapper logger, EnvVars envVars) throws PluginExceptionHandler {
-            String jobType = Utility.jenkinsJobType(envVars);
-            SCMRepositoryService scmRepositoryService = new SCMRepositoryService(listener, envVars);
-            Map<String, Boolean> installedBranchSourceDependencies = Utility.installedBranchSourceDependencies();
-
-            if (jobType.equalsIgnoreCase(ApplicationConstants.MULTIBRANCH_JOB_TYPE_NAME)) {
-                if (installedBranchSourceDependencies.isEmpty()) {
-                    logger.error(ApplicationConstants.NECESSARY_BRANCH_SOURCE_PLUGIN_IS_NOT_INSTALLED);
-                    throw new PluginExceptionHandler(ErrorCode.REQUIRED_BRANCH_SOURCE_PLUGIN_NOT_INSTALLED);
-                }
-                SCMSource scmSource = scmRepositoryService.findSCMSource();
-                if (!((installedBranchSourceDependencies.getOrDefault(
-                                        ApplicationConstants.BITBUCKET_BRANCH_SOURCE_PLUGIN_NAME, false)
-                                && scmSource instanceof BitbucketSCMSource)
-                        || (installedBranchSourceDependencies.getOrDefault(
-                                        ApplicationConstants.GITHUB_BRANCH_SOURCE_PLUGIN_NAME, false)
-                                && scmSource instanceof GitHubSCMSource)
-                        || (installedBranchSourceDependencies.getOrDefault(
-                                        ApplicationConstants.GITLAB_BRANCH_SOURCE_PLUGIN_NAME, false)
-                                && scmSource instanceof GitLabSCMSource))) {
-                    logger.error(ApplicationConstants.NECESSARY_BRANCH_SOURCE_PLUGIN_IS_NOT_INSTALLED);
-                    throw new PluginExceptionHandler(ErrorCode.REQUIRED_BRANCH_SOURCE_PLUGIN_NOT_INSTALLED);
-                }
+        public void verifyRequiredPlugins(LoggerWrapper logger, EnvVars envVars, Map<String, Object> scanParameters)
+                throws PluginExceptionHandler {
+            boolean isMultibranch =
+                    Utility.jenkinsJobType(envVars).equalsIgnoreCase(ApplicationConstants.MULTIBRANCH_JOB_TYPE_NAME);
+            if (!isMultibranch) {
+                return;
             }
+
+            Map<String, Boolean> installedBranchSourceDependencies = Utility.installedBranchSourceDependencies();
+            boolean noBranchSourcePluginInstalled = installedBranchSourceDependencies.isEmpty();
+
+            if (!requiresBranchSourcePlugin(scanParameters)) {
+                if (noBranchSourcePluginInstalled) {
+                    logger.info(ApplicationConstants.NO_BRANCH_SOURCE_PLUGIN_FOUND_INFO);
+                }
+                return;
+            }
+
+            if (noBranchSourcePluginInstalled) {
+                throwBranchSourcePluginNotInstalled(logger);
+            }
+            SCMSource scmSource = new SCMRepositoryService(listener, envVars).findSCMSource();
+            if (!isSupportedSCMSource(scmSource, installedBranchSourceDependencies)) {
+                throwBranchSourcePluginNotInstalled(logger);
+            }
+        }
+
+        private boolean isSupportedSCMSource(SCMSource scmSource, Map<String, Boolean> installed) {
+            boolean isBitbucket =
+                    installed.getOrDefault(ApplicationConstants.BITBUCKET_BRANCH_SOURCE_PLUGIN_NAME, false)
+                            && scmSource instanceof BitbucketSCMSource;
+            boolean isGitHub = installed.getOrDefault(ApplicationConstants.GITHUB_BRANCH_SOURCE_PLUGIN_NAME, false)
+                    && scmSource instanceof GitHubSCMSource;
+            boolean isGitLab = installed.getOrDefault(ApplicationConstants.GITLAB_BRANCH_SOURCE_PLUGIN_NAME, false)
+                    && scmSource instanceof GitLabSCMSource;
+            return isBitbucket || isGitHub || isGitLab;
+        }
+
+        private void throwBranchSourcePluginNotInstalled(LoggerWrapper logger) throws PluginExceptionHandler {
+            logger.error(ApplicationConstants.NECESSARY_BRANCH_SOURCE_PLUGIN_IS_NOT_INSTALLED);
+            throw new PluginExceptionHandler(ErrorCode.REQUIRED_BRANCH_SOURCE_PLUGIN_NOT_INSTALLED);
         }
     }
 }
