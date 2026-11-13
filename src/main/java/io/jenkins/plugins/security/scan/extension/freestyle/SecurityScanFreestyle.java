@@ -2,6 +2,7 @@ package io.jenkins.plugins.security.scan.extension.freestyle;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.*;
 import hudson.model.*;
 import hudson.tasks.BuildStepDescriptor;
@@ -131,9 +132,17 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
     private String bridgecli_download_version;
     private String bridgecli_install_directory;
     private Boolean include_diagnostics;
+
+    @SuppressFBWarnings("UWF_UNWRITTEN_FIELD")
     private Boolean coverity_include_diagnostics;
+
+    @SuppressFBWarnings("UWF_UNWRITTEN_FIELD")
     private Boolean blackducksca_include_diagnostics;
+
+    @SuppressFBWarnings("UWF_UNWRITTEN_FIELD")
     private Boolean polaris_include_diagnostics;
+
+    @SuppressFBWarnings("UWF_UNWRITTEN_FIELD")
     private Boolean srm_include_diagnostics;
 
     private String mark_build_status;
@@ -221,85 +230,6 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
 
     public String getDetect_execution_path() {
         return detect_execution_path;
-    }
-
-    public String getBlackduck_url() {
-        return null;
-    }
-
-    public String getBlackduck_token() {
-        return null;
-    }
-
-    public String getBlackduck_install_directory() {
-        return null;
-    }
-
-    @Nullable
-    public Boolean isBlackduck_scan_full() {
-        return NULL;
-    }
-
-    @Nullable
-    public Boolean isBlackduckIntelligentScan() {
-        return NULL;
-    }
-
-    public String getBlackduck_scan_failure_severities() {
-        return null;
-    }
-
-    public String getBlackduck_download_url() {
-        return null;
-    }
-
-    public Integer getBlackduck_search_depth() {
-        return null;
-    }
-
-    public String getBlackduck_config_path() {
-        return null;
-    }
-
-    public String getBlackduck_args() {
-        return null;
-    }
-
-    public String getBlackduck_execution_path() {
-        return null;
-    }
-
-    @Nullable
-    public Boolean isBlackduck_reports_sarif_create() {
-        return NULL;
-    }
-
-    public String getBlackduck_reports_sarif_file_path() {
-        return null;
-    }
-
-    public String getBlackduck_reports_sarif_severities() {
-        return null;
-    }
-
-    @Nullable
-    public Boolean isBlackduck_reports_sarif_groupSCAIssues() {
-        return NULL;
-    }
-
-    @Nullable
-    public Boolean isBlackduck_reports_sarif_groupSCAIssues_temporary() {
-        return NULL;
-    }
-
-    @Nullable
-    public Boolean isBlackduck_waitForScan() {
-        return NULL;
-    }
-
-    @Nullable
-    public Boolean isBlackduck_waitForScan_actualValue() {
-        return NULL;
     }
 
     public String getCoverity_url() {
@@ -553,18 +483,6 @@ public class SecurityScanFreestyle extends Builder implements SecurityScan, Free
 
     public String getBridgecli_install_directory() {
         return bridgecli_install_directory;
-    }
-
-    public String getSynopsys_bridge_download_url() {
-        return null;
-    }
-
-    public String getSynopsys_bridge_download_version() {
-        return null;
-    }
-
-    public String getSynopsys_bridge_install_directory() {
-        return null;
     }
 
     public Boolean isInclude_diagnostics() {

@@ -48,55 +48,6 @@ public class ApplicationConstants {
     // Product Key
     public static final String PRODUCT_KEY = "product";
 
-    // Blackduck Parameters (Deprecated)
-    @Deprecated
-    public static final String BLACKDUCK_URL_KEY = "blackduck_url";
-
-    @Deprecated
-    public static final String BLACKDUCK_TOKEN_KEY = "blackduck_token";
-
-    @Deprecated
-    public static final String BLACKDUCK_INSTALL_DIRECTORY_KEY = "blackduck_install_directory";
-
-    @Deprecated
-    public static final String BLACKDUCK_SCAN_FULL_KEY = "blackduck_scan_full";
-
-    @Deprecated
-    public static final String BLACKDUCK_SCAN_FAILURE_SEVERITIES_KEY = "blackduck_scan_failure_severities";
-
-    @Deprecated
-    public static final String BLACKDUCK_PRCOMMENT_ENABLED_KEY = "blackduck_prComment_enabled";
-
-    @Deprecated
-    public static final String BLACKDUCK_DOWNLOAD_URL_KEY = "blackduck_download_url";
-
-    @Deprecated
-    public static final String BLACKDUCK_REPORTS_SARIF_CREATE_KEY = "blackduck_reports_sarif_create";
-
-    @Deprecated
-    public static final String BLACKDUCK_REPORTS_SARIF_FILE_PATH_KEY = "blackduck_reports_sarif_file_path";
-
-    @Deprecated
-    public static final String BLACKDUCK_REPORTS_SARIF_GROUPSCAISSUES_KEY = "blackduck_reports_sarif_groupSCAIssues";
-
-    @Deprecated
-    public static final String BLACKDUCK_REPORTS_SARIF_SEVERITIES_KEY = "blackduck_reports_sarif_severities";
-
-    @Deprecated
-    public static final String BLACKDUCK_WAITFORSCAN_KEY = "blackduck_waitForScan";
-
-    @Deprecated
-    public static final String BLACKDUCK_SEARCH_DEPTH_KEY = "blackduck_search_depth";
-
-    @Deprecated
-    public static final String BLACKDUCK_CONFIG_PATH_KEY = "blackduck_config_path";
-
-    @Deprecated
-    public static final String BLACKDUCK_ARGS_KEY = "blackduck_args";
-
-    @Deprecated
-    public static final String BLACKDUCK_EXECUTION_PATH_KEY = "blackduck_execution_path";
-
     // Black Duck SCA Parameters
     public static final String BLACKDUCKSCA_URL_KEY = "blackducksca_url";
     public static final String BLACKDUCKSCA_TOKEN_KEY = "blackducksca_token";
@@ -307,15 +258,6 @@ public class ApplicationConstants {
     public static final String SCAN_INFO_ISSUE_COUNT_NOT_FOUND = "Issue count not found in output file";
 
     // Bridge Download Parameters
-    @Deprecated
-    public static final String SYNOPSYS_BRIDGE_DOWNLOAD_URL = "synopsys_bridge_download_url";
-
-    @Deprecated
-    public static final String SYNOPSYS_BRIDGE_DOWNLOAD_VERSION = "synopsys_bridge_download_version";
-
-    @Deprecated
-    public static final String SYNOPSYS_BRIDGE_INSTALL_DIRECTORY = "synopsys_bridge_install_directory";
-
     public static final String BRIDGECLI_DOWNLOAD_URL = "bridgecli_download_url";
     public static final String BRIDGECLI_DOWNLOAD_VERSION = "bridgecli_download_version";
     public static final String BRIDGECLI_INSTALL_DIRECTORY = "bridgecli_install_directory";

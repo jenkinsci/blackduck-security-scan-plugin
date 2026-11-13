@@ -91,4 +91,4 @@ A scan step's `product` parameter accepts one or more comma-separated product na
 
 ### Deprecated parameters
 
-Parameters prefixed `blackduck_*` are deprecated in favour of `blackducksca_*`. Both are still handled; deprecated ones are tracked in `ParameterMappingService.DEPRECATED_PARAMETERS` and trigger warnings.
+The Phase 1 `blackduck_*` and `synopsys_bridge_*` parameters are no longer supported and have been removed from the plugin. Deprecated parameters that remain (`coverity_passphrase`, `polaris_assessment_mode`) are tracked in `ParameterMappingService.DEPRECATED_PARAMETERS` and trigger warnings.
