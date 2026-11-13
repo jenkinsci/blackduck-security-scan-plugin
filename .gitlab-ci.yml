@@ -10,7 +10,7 @@ include:
     file: report-generator.yml
 
 default:
-  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.225
+  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk21:2.0.271
   cache:
     key: "$CI_COMMIT_REF_SLUG"
     paths:
@@ -157,7 +157,7 @@ release_qa:
 
 generate_and_publish_sbom_vdr_reports:
   stage: sbom_vdr
-  image: releng/base-gitlab-runner:jdk17-python3.11-git-docker
+  image: releng/base-gitlab-runner:jdk21-python3.11-git-docker
   rules:
     - if: $GENERATE_REPORTS == "true"
   extends:
