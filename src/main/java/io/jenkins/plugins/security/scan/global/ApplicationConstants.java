@@ -248,6 +248,8 @@ public class ApplicationConstants {
             "An exception occurred while fetching the OS information for the agent node: %s";
     public static final String NECESSARY_BRANCH_SOURCE_PLUGIN_IS_NOT_INSTALLED =
             "Necessary 'Branch Source Plugin' is not installed in Jenkins instance. Please install necessary 'Branch Source Plugin' in your Jenkins instance";
+    public static final String NO_BRANCH_SOURCE_PLUGIN_FOUND_INFO =
+            "No Branch Source Plugin was found. To use advanced features such as fixPR and PR Comment, please install the appropriate SCM-specific 'Branch Source Plugin' in your Jenkins instance";
     public static final String FAILED_TO_CREATE_DEFAULT_INSTALLATION_DIRECTORY =
             "Failed to create default installation directory: %s";
     public static final String FAILED_TO_FETCH_PLUGINS_DEFAULT_INSTALLATION_PATH =
