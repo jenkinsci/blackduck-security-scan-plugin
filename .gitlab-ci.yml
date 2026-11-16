@@ -105,6 +105,7 @@ new_pop_blackduck:
 
 polaris_bridge:
   stage: analysis
+  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk21:2.0.271
   allow_failure: true
   variables:
     DETECT_MAVEN_EXCLUDED_SCOPES: "test"
