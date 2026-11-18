@@ -11,7 +11,7 @@ include:
   - local: e2e/jenkins-e2e-scripts.yml
 
 default:
-  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk17:1.0.225
+  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk21:2.0.271
   cache:
     key: "$CI_COMMIT_REF_SLUG"
     paths:
@@ -108,6 +108,7 @@ new_pop_blackduck:
 
 polaris_bridge:
   stage: analysis
+  image: us-docker.pkg.dev/cloudops-artifacts-prd/polarisng/altair-maven-build-jdk21:2.0.271
   allow_failure: true
   variables:
     DETECT_MAVEN_EXCLUDED_SCOPES: "test"
