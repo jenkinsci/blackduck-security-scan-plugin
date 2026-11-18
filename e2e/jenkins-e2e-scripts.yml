@@ -1,0 +1,452 @@
+
+# ── Hidden job templates — included by .gitlab-ci.yml ────────────────────────
+
+# ── upload_hpi_to_jenkins ─────────────────────────────────────────────────────
+.upload_hpi_to_jenkins_scripts:
+  before_script:
+    - |
+      if [ -z "${JENKINS_URL}" ] || [ -z "${JENKINS_USER}" ] || [ -z "${JENKINS_API_TOKEN}" ]; then
+        echo "ERROR: JENKINS_URL, JENKINS_USER, or JENKINS_API_TOKEN is not set. Define them as masked CI/CD variables."
+        exit 1
+      fi
+  script:
+    - |
+      HPI_FILE=$(find . -path "*/target/*.hpi" -type f 2>/dev/null | head -1)
+      if [ -n "${HPI_FILE}" ]; then
+        echo "Found HPI in target directory: ${HPI_FILE}"
+      elif [ -f "blackduck-security-scan-2.11.0-QA1.hpi" ]; then
+        HPI_FILE="blackduck-security-scan-2.11.0-QA1.hpi"
+        echo "Found QA artifact HPI: ${HPI_FILE}"
+      else
+        echo "ERROR: No HPI artifact found in '**/target/*.hpi' or 'blackduck-security-scan-2.11.0-QA1.hpi'. Ensure the build job succeeded and artifacts were passed."
+        exit 1
+      fi
+      echo "Using HPI artifact: ${HPI_FILE}"
+      UPLOAD_SUCCESS=false
+
+      echo "Verifying HPI artifact..."
+      ls -lh "${HPI_FILE}"
+
+      # ── Extract plugin name and version from HPI manifest ──────────────────
+      echo "Extracting plugin metadata from HPI manifest..."
+      PLUGIN_NAME=$(unzip -p "${HPI_FILE}" META-INF/MANIFEST.MF | grep "^Short-Name:" | sed 's/Short-Name: //' | tr -d '\r\n ')
+      HPI_VERSION=$(unzip -p "${HPI_FILE}" META-INF/MANIFEST.MF | grep "^Plugin-Version:" | sed 's/Plugin-Version: //' | tr -d '\r\n ')
+      if [ -z "${PLUGIN_NAME}" ] || [ -z "${HPI_VERSION}" ]; then
+        echo "ERROR: Could not extract plugin metadata from HPI manifest."
+        exit 1
+      fi
+      echo "Plugin name: ${PLUGIN_NAME}, HPI version: ${HPI_VERSION}"
+
+      # ── Check if plugin is already installed in Jenkins ────────────────────
+      echo "Checking if plugin '${PLUGIN_NAME}' is installed in Jenkins..."
+      PLUGIN_CHECK_HTTP=$(curl -s --http1.1 \
+        -o /tmp/plugin_check.txt -w "%{http_code}" \
+        --user "${JENKINS_USER}:${JENKINS_API_TOKEN}" \
+        "${JENKINS_URL}/pluginManager/plugin/${PLUGIN_NAME}/api/json?tree=version")
+
+      if [ "${PLUGIN_CHECK_HTTP}" -eq 200 ]; then
+        # Plugin is installed — retrieve current version
+        INSTALLED_VERSION=$(python3 -c "import sys,json; print(json.load(open('/tmp/plugin_check.txt')).get('version',''))" 2>/dev/null || \
+          grep -o '"version":"[^"]*"' /tmp/plugin_check.txt | head -1 | cut -d'"' -f4)
+        echo "Plugin '${PLUGIN_NAME}' is installed. Installed version: ${INSTALLED_VERSION}"
+
+        if [ "${INSTALLED_VERSION}" = "${HPI_VERSION}" ]; then
+          echo "Installed version matches HPI version (${HPI_VERSION}). Skipping installation."
+          exit 0
+        fi
+
+        echo "Version mismatch — installed: ${INSTALLED_VERSION}, HPI: ${HPI_VERSION}. Proceeding with update..."
+      else
+        echo "Plugin '${PLUGIN_NAME}' is not installed (HTTP ${PLUGIN_CHECK_HTTP}). Proceeding with fresh installation..."
+      fi
+
+      # ── Wait for running jobs and queued jobs to clear ────────────────────
+      # Outer loop repeats until both running builds are done AND queue is
+      # empty in the same cycle. Uses the jobs API (lastBuild.building) so
+      # multibranch pipeline builds are detected even when they occupy no
+      # executor (e.g. waiting between stages, locks, or parallel branches).
+      echo "Waiting for Jenkins to become quiet (no running or queued jobs)..."
+
+      cat > /tmp/find_running.py << 'PYEOF'
+      import json, sys
+      try:
+          d = json.load(open('/tmp/jobs.json'))
+      except Exception as e:
+          print(f"ERROR: could not parse /tmp/jobs.json: {e}", file=sys.stderr)
+          sys.exit(0)
+      def walk(jobs, path=''):
+          for j in jobs:
+              full = (path + '/' if path else '') + j.get('name', '(unknown)')
+              lb   = j.get('lastBuild') or {}
+              if lb.get('building'):
+                  job_type = 'pipeline' if j.get('jobs') is not None else 'job'
+                  print(f"RUNNING|{job_type}|{full}")
+              walk(j.get('jobs') or [], full)
+      walk(d.get('jobs') or [])
+      PYEOF
+
+      cat > /tmp/find_queued.py << 'PYEOF'
+      import json, sys
+      try:
+          d = json.load(open('/tmp/queue.json'))
+      except Exception as e:
+          print(f"ERROR: could not parse /tmp/queue.json: {e}", file=sys.stderr)
+          sys.exit(0)
+      for item in d.get('items', []):
+          task = (item.get('task') or {}).get('name', 'unknown')
+          why  = item.get('why') or 'no reason given'
+          print(f"QUEUED|{task}|{why}")
+      PYEOF
+
+      RUNNING_POLL_INTERVAL="${JENKINS_POLL_INTERVAL_SECONDS:-30}"
+      while true; do
+        # Step A: wait until no jobs/builds are running (all job types, all levels)
+        while true; do
+          JOB_HTTP=$(curl -s -g --http1.1 -o /tmp/jobs.json -w "%{http_code}" \
+            --user "${JENKINS_USER}:${JENKINS_API_TOKEN}" \
+            "${JENKINS_URL}/api/json?tree=jobs[name,lastBuild[building],jobs[name,lastBuild[building],jobs[name,lastBuild[building]]]]" || echo "000")
+          if [ "${JOB_HTTP}" -ne 200 ]; then
+            echo "WARNING: Jenkins API returned HTTP ${JOB_HTTP} — retrying in ${RUNNING_POLL_INTERVAL}s..."
+            sleep "${RUNNING_POLL_INTERVAL}"
+            continue
+          fi
+          RUNNING_LINES=$(python3 /tmp/find_running.py 2>/dev/null)
+          BUSY_COUNT=$(echo "${RUNNING_LINES}" | grep -c "^RUNNING|" || true)
+          if [ "${BUSY_COUNT}" = "0" ]; then
+            echo "No running jobs detected."
+            break
+          fi
+          echo "${BUSY_COUNT} job(s) still running:"
+          echo "${RUNNING_LINES}" | grep "^RUNNING|" | while IFS='|' read -r _ type name; do
+            echo "  [${type}] ${name}"
+          done
+          echo "Waiting ${RUNNING_POLL_INTERVAL}s..."
+          sleep "${RUNNING_POLL_INTERVAL}"
+        done
+
+        # Step B: poll queue up to 3 times at escalating intervals
+        QUEUE_BASE_INTERVAL="${JENKINS_POLL_INTERVAL_SECONDS:-30}"
+        echo "Polling for queued Jenkins jobs (up to 3 times, base interval: ${QUEUE_BASE_INTERVAL}s)..."
+        QUEUE_POLL=0
+        QUEUE_COUNT=0
+        while [ "${QUEUE_POLL}" -lt 3 ]; do
+          QUEUE_HTTP=$(curl -s -g --http1.1 -o /tmp/queue.json -w "%{http_code}" \
+            --user "${JENKINS_USER}:${JENKINS_API_TOKEN}" \
+            "${JENKINS_URL}/queue/api/json?tree=items[id,task[name],why,inQueueSince]" || echo "000")
+          QUEUE_POLL=$((QUEUE_POLL + 1))
+          if [ "${QUEUE_HTTP}" -ne 200 ]; then
+            echo "Queue poll ${QUEUE_POLL}/3: WARNING — Jenkins queue API returned HTTP ${QUEUE_HTTP}."
+            QUEUE_COUNT=0
+          else
+            QUEUED_LINES=$(python3 /tmp/find_queued.py 2>/dev/null)
+            QUEUE_COUNT=$(echo "${QUEUED_LINES}" | grep -c "^QUEUED|" || true)
+            echo "Queue poll ${QUEUE_POLL}/3: ${QUEUE_COUNT} item(s) in queue."
+            if [ "${QUEUE_COUNT}" != "0" ]; then
+              echo "${QUEUED_LINES}" | grep "^QUEUED|" | while IFS='|' read -r _ name why; do
+                echo "  - ${name}: ${why}"
+              done
+            fi
+          fi
+          if [ "${QUEUE_COUNT}" = "0" ]; then
+            echo "Queue is empty."
+            break
+          fi
+          if [ "${QUEUE_POLL}" -lt 3 ]; then
+            WAIT_SECONDS=$((QUEUE_BASE_INTERVAL * QUEUE_POLL))
+            echo "Queue not empty. Waiting ${WAIT_SECONDS}s before next check (poll ${QUEUE_POLL} × ${QUEUE_BASE_INTERVAL}s)..."
+            sleep "${WAIT_SECONDS}"
+          else
+            echo "Queue still has items after 3 polls."
+          fi
+        done
+
+        # If queue was empty, both conditions are met — safe to install
+        if [ "${QUEUE_COUNT}" = "0" ]; then
+          echo "Jenkins is quiet. Proceeding with plugin installation."
+          break
+        fi
+
+        # Queue had items after 3 polls — those may now be running.
+        # Loop back and re-check executors before installing.
+        echo "Queued jobs may have started running. Re-checking executors..."
+      done
+
+      # ── Script Console dynamic load (chunked base64 embed) ────────────────
+      echo "Loading plugin via Jenkins Script Console (chunked base64)..."
+      HPI_BASE64=$(base64 -w 0 "${HPI_FILE}")
+      CHUNK_SIZE=60000
+
+      echo "def b64 = []" > /tmp/jenkins_script.groovy
+      offset=0
+      while [ $offset -lt ${#HPI_BASE64} ]; do
+        chunk="${HPI_BASE64:$offset:$CHUNK_SIZE}"
+        echo "b64 << '${chunk}'" >> /tmp/jenkins_script.groovy
+        offset=$((offset + CHUNK_SIZE))
+      done
+      echo "def hpiBytes = b64.join('').decodeBase64()" >> /tmp/jenkins_script.groovy
+      echo "def pluginName = '${PLUGIN_NAME}'" >> /tmp/jenkins_script.groovy
+      echo "def pluginsDir = jenkins.model.Jenkins.instance.pluginManager.rootDir" >> /tmp/jenkins_script.groovy
+      echo "def hpiDest = new File(pluginsDir, pluginName + '.hpi')" >> /tmp/jenkins_script.groovy
+      echo "hpiDest.bytes = hpiBytes" >> /tmp/jenkins_script.groovy
+      echo "def expandedDir = new File(pluginsDir, pluginName)" >> /tmp/jenkins_script.groovy
+      echo "if (expandedDir.exists()) { expandedDir.deleteDir() }" >> /tmp/jenkins_script.groovy
+      echo "def jpiFile = new File(pluginsDir, pluginName + '.jpi')" >> /tmp/jenkins_script.groovy
+      echo "if (jpiFile.exists()) { jpiFile.delete() }" >> /tmp/jenkins_script.groovy
+      echo "jenkins.model.Jenkins.instance.safeRestart()" >> /tmp/jenkins_script.groovy
+      echo "println 'Plugin updated in plugins directory. Safe restart initiated.'" >> /tmp/jenkins_script.groovy
+
+      SCRIPT_STATUS=$(curl -s --http1.1 \
+        -o /tmp/jenkins_script_resp.txt -w "%{http_code}" \
+        --user "${JENKINS_USER}:${JENKINS_API_TOKEN}" \
+        --data-urlencode "script@/tmp/jenkins_script.groovy" \
+        "${JENKINS_URL}/scriptText")
+      echo "Script Console HTTP status: ${SCRIPT_STATUS}"
+
+      if [ "${SCRIPT_STATUS}" -ge 200 ] && [ "${SCRIPT_STATUS}" -lt 400 ]; then
+        SCRIPT_OUTPUT=$(cat /tmp/jenkins_script_resp.txt)
+        echo "Script Console response: ${SCRIPT_OUTPUT}"
+
+        if echo "${SCRIPT_OUTPUT}" | grep -qE "successfully|Safe restart initiated"; then
+          UPLOAD_SUCCESS=true
+          if echo "${SCRIPT_OUTPUT}" | grep -q "Safe restart initiated"; then
+            echo "Plugin installed. Jenkins restart initiated — waiting for Jenkins to come back online..."
+            sleep 30
+            RETRY=0
+            until [ "$(curl -s --http1.1 -o /dev/null -w '%{http_code}' \
+              --user "${JENKINS_USER}:${JENKINS_API_TOKEN}" \
+              "${JENKINS_URL}/api/json")" -eq 200 ]; do
+              RETRY=$((RETRY + 1))
+              if [ $RETRY -ge 20 ]; then
+                echo "WARNING: Jenkins did not respond within expected time after restart."
+                break
+              fi
+              echo "Waiting for Jenkins to come back... (attempt ${RETRY}/20)"
+              sleep 15
+            done
+            echo "Jenkins is back online. Plugin is active."
+          else
+            echo "Plugin installed via Script Console."
+          fi
+        else
+          echo "ERROR: Script Console returned unexpected output: ${SCRIPT_OUTPUT}"
+        fi
+      else
+        echo "ERROR: Script Console failed with HTTP ${SCRIPT_STATUS}. Response:"
+        cat /tmp/jenkins_script_resp.txt || true
+      fi
+
+      if [ "${UPLOAD_SUCCESS}" = "true" ]; then
+        VERIFIED_VERSION=$(curl -s --http1.1 \
+          --user "${JENKINS_USER}:${JENKINS_API_TOKEN}" \
+          "${JENKINS_URL}/pluginManager/plugin/${PLUGIN_NAME}/api/json?tree=version" \
+          | python3 -c "import sys,json; print(json.load(sys.stdin).get('version','unknown'))" 2>/dev/null || echo "unknown")
+        echo "Installed plugin version: ${VERIFIED_VERSION}"
+      else
+        echo "ERROR: Plugin installation via Script Console failed. Check Jenkins permissions or CloudBees plugin management restrictions."
+        exit 1
+      fi
+
+
+# ── generate_gate_jenkins_pipeline ────────────────────────────────────────────────────
+.generate_gate_jenkins_pipeline_scripts:
+  before_script:
+    - apt-get -y update && apt-get -y install -y curl jq
+  script:
+    - |
+      if [ -z "$ACCESS_TOKEN" ]; then
+        echo "ERROR: ACCESS_TOKEN is not set. Add it as a masked CI/CD variable with read_api scope."
+        exit 1
+      fi
+      echo "Project ID: $CI_PROJECT_ID"
+      echo "Pipeline ID: $CI_PIPELINE_ID"
+      echo "API URL: $CI_API_V4_URL"
+      echo "Fetching pipeline bridges from GitLab API..."
+      API_RESPONSE=$(curl --silent \
+        --write-out "\nHTTP_STATUS:%{http_code}" \
+        --header "PRIVATE-TOKEN: $ACCESS_TOKEN" \
+        "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/pipelines/${CI_PIPELINE_ID}/bridges")
+      HTTP_STATUS=$(echo "$API_RESPONSE" | grep "HTTP_STATUS:" | cut -d: -f2)
+      API_RESPONSE=$(echo "$API_RESPONSE" | grep -v "HTTP_STATUS:")
+      echo "HTTP Status: $HTTP_STATUS"
+      echo "API Response: $API_RESPONSE"
+      if echo "$API_RESPONSE" | jq -e 'if type == "array" then true else false end' > /dev/null 2>&1; then
+        DOWNSTREAM_PIPELINE_ID=$(echo "$API_RESPONSE" | jq -r '[.[] | select(.name == "trigger_jenkins_e2e_tests")] | last | .downstream_pipeline.id // "not_found"')
+        DOWNSTREAM_PIPELINE_STATUS=$(echo "$API_RESPONSE" | jq -r '[.[] | select(.name == "trigger_jenkins_e2e_tests")] | last | .downstream_pipeline.status // "not_found"')
+
+        echo "Downstream Pipeline ID    : $DOWNSTREAM_PIPELINE_ID"
+        echo "Downstream Pipeline Status: $DOWNSTREAM_PIPELINE_STATUS"
+        echo "Evidence: Status above is from downstream pipeline ID $DOWNSTREAM_PIPELINE_ID, not from the bridge job itself."
+
+        E2E_STATUS="$DOWNSTREAM_PIPELINE_STATUS"
+      else
+        echo "API did not return a valid array. Response was: $API_RESPONSE"
+        E2E_STATUS="unknown"
+      fi
+      echo "Downstream E2E pipeline status: $E2E_STATUS"
+
+      if [ "$E2E_STATUS" = "success" ]; then
+        echo "E2E passed — generating auto-proceed gate..."
+        cat > gate-pipeline.yml << 'EOF'
+      stages:
+        - gate
+      auto_proceed:
+        stage: gate
+        script:
+          - echo "E2E passed. Auto-proceeding to publish."
+      EOF
+
+      else
+        echo "E2E failed or unknown — attempting Teams notification..."
+
+        (
+          set -e
+          TEAMS_URL=$(printf '%s' "$TEAMS_WEBHOOK_URL_JENKINS_DEPLOYMENT" | tr -d '\r\n[:space:]')
+          TIMEOUT_MINUTES=$(( ${APPROVAL_TIMEOUT_SECONDS:-1800} / 60 ))
+          echo "DEBUG: URL length: ${#TEAMS_URL}"
+          echo "DEBUG: URL prefix (first 40 chars): ${TEAMS_URL:0:40}"
+          echo "DEBUG: Timeout minutes: $TIMEOUT_MINUTES"
+
+          if [ -z "$TEAMS_URL" ] || [ "${TEAMS_URL:0:8}" != "https://" ]; then
+            echo "ERROR: TEAMS_WEBHOOK_URL is empty or not https."
+            exit 1
+          fi
+
+          PAYLOAD=$(jq -n \
+            --arg project "$CI_PROJECT_PATH" \
+            --arg ref "$CI_COMMIT_REF_NAME" \
+            --arg pipeline "$CI_PIPELINE_ID" \
+            --arg status "$E2E_STATUS" \
+            --arg user "$GITLAB_USER_LOGIN" \
+            --arg url "$CI_PIPELINE_URL" \
+            --arg teamId "$TEAMS_TEAM_ID_JENKINS_DEPLOYMENT" \
+            --arg timeoutMin "$TIMEOUT_MINUTES" '
+          {
+            type: "message",
+            attachments: [{
+              contentType: "application/vnd.microsoft.card.adaptive",
+              content: {
+                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                type: "AdaptiveCard",
+                version: "1.4",
+                msteams: {
+                  entities: [
+                    {
+                      type: "mention",
+                      text: "<at>Team</at>",
+                      mentioned: { id: $teamId, name: "Team" }
+                    }
+                  ]
+                },
+                body: [
+                  { type: "TextBlock", size: "Large", weight: "Bolder", color: "Attention",
+                    text: "<at>Team</at> — Manual Approval Required for Jenkins Pipeline" },
+                  { type: "TextBlock", wrap: true, spacing: "Small",
+                    text: ("The downstream E2E pipeline did not succeed. A manual approval gate has been created and will time out in " + $timeoutMin + " minutes.") },
+                  { type: "FactSet", facts: [
+                      { title: "Project:",      value: $project },
+                      { title: "Ref:",          value: $ref },
+                      { title: "Pipeline:",     value: $pipeline },
+                      { title: "E2E Status:",   value: $status },
+                      { title: "Triggered by:", value: $user }
+                  ]}
+                ],
+                actions: [
+                  { type: "Action.OpenUrl", title: "Open Pipeline to Approve", url: $url }
+                ]
+              }
+            }]
+          }')
+
+          HTTP_CODE=$(curl -sS -o /tmp/teams_resp.txt -w "%{http_code}" \
+            -H "Content-Type: application/json" \
+            -d "$PAYLOAD" \
+            "$TEAMS_URL")
+          echo "Teams webhook HTTP status: $HTTP_CODE"
+          if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
+            echo "Teams notification sent successfully."
+          else
+            echo "Teams webhook returned non-2xx status. Response body:"
+            cat /tmp/teams_resp.txt || true
+            exit 1
+          fi
+        ) || echo "WARN: Teams notification failed — continuing with gate generation anyway."
+
+
+        echo "Generating manual approval gate..."
+        cat > gate-pipeline.yml << 'EOF'
+      stages:
+        - approval
+        - gate
+
+      e2e_failure_approval:
+        stage: approval
+        when: manual
+        allow_failure: false
+        environment:
+          name: publish-approval
+        script:
+          - echo "Approved by $GITLAB_USER_LOGIN — proceeding despite E2E failures."
+
+      manual_approval_timeout_gate:
+        stage: approval
+        before_script:
+          - apt-get -y update && apt-get -y install -y curl jq
+        script:
+          - |
+            TIMEOUT_SECONDS="${APPROVAL_TIMEOUT_SECONDS:-1800}"
+            POLL_INTERVAL_SECONDS="${APPROVAL_POLL_INTERVAL_SECONDS:-30}"
+            echo "Approval timeout: ${TIMEOUT_SECONDS}s"
+            echo "Poll interval:   ${POLL_INTERVAL_SECONDS}s"
+
+            APPROVAL_JOB_ID=""
+            RETRY=0
+            while [ -z "$APPROVAL_JOB_ID" ] && [ "$RETRY" -lt 5 ]; do
+              sleep 5
+              APPROVAL_JOB_ID=$(curl --silent \
+                --header "PRIVATE-TOKEN: $ACCESS_TOKEN" \
+                "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/pipelines/${CI_PIPELINE_ID}/jobs" \
+                | jq -r '.[] | select(.name == "e2e_failure_approval") | .id')
+              RETRY=$((RETRY + 1))
+              echo "Attempt $RETRY — Approval Job ID: $APPROVAL_JOB_ID"
+            done
+
+            if [ -z "$APPROVAL_JOB_ID" ]; then
+              echo "Could not find approval job ID — failing safe."
+              exit 1
+            fi
+
+            DEADLINE=$(($(date +%s) + TIMEOUT_SECONDS))
+            echo "Watchdog started at : $(date)"
+            echo "Deadline at         : $(date -d @$DEADLINE)"
+
+            until [ $(date +%s) -gt "$DEADLINE" ]; do
+              STATUS=$(curl --silent \
+                --header "PRIVATE-TOKEN: $ACCESS_TOKEN" \
+                "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/jobs/${APPROVAL_JOB_ID}" \
+                | jq -r '.status')
+              REMAINING=$((DEADLINE - $(date +%s)))
+              echo "Remaining: ${REMAINING}s — Approval status: $STATUS"
+
+              if [ "$STATUS" = "success" ]; then
+                echo "Approved — proceeding to publish E2E build."
+                exit 0
+              fi
+
+              sleep "$POLL_INTERVAL_SECONDS"
+            done
+
+            echo "${TIMEOUT_SECONDS}s deadline reached — cancelling approval job."
+            curl -s -X POST --header "PRIVATE-TOKEN: $ACCESS_TOKEN" \
+              "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/jobs/${APPROVAL_JOB_ID}/cancel"
+            echo "Skipping publish."
+            exit 1
+
+      publish_cleared:
+        stage: gate
+        when: on_success
+        needs: [manual_approval_timeout_gate]
+        script:
+          - echo "Approval received. Proceeding to publish E2E build."
+      EOF
+
+      fi
