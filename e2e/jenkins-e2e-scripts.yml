@@ -14,11 +14,8 @@
       HPI_FILE=$(find . -path "*/target/*.hpi" -type f 2>/dev/null | head -1)
       if [ -n "${HPI_FILE}" ]; then
         echo "Found HPI in target directory: ${HPI_FILE}"
-      elif [ -f "blackduck-security-scan-2.11.0-QA1.hpi" ]; then
-        HPI_FILE="blackduck-security-scan-2.11.0-QA1.hpi"
-        echo "Found QA artifact HPI: ${HPI_FILE}"
       else
-        echo "ERROR: No HPI artifact found in '**/target/*.hpi' or 'blackduck-security-scan-2.11.0-QA1.hpi'. Ensure the build job succeeded and artifacts were passed."
+        echo "ERROR: No HPI artifact found in '**/target/*.hpi'. Ensure the build job succeeded and artifacts were passed."
         exit 1
       fi
       echo "Using HPI artifact: ${HPI_FILE}"
