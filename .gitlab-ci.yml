@@ -153,7 +153,6 @@ generate_gate_jenkins_pipeline:
     paths:
       - gate-pipeline.yml
 
-# ── Stage 3b: Run the gate child pipeline ─────────────────────────────────────
 run_gate_jenkins_pipeline:
   stage: e2e_gate
   rules:
