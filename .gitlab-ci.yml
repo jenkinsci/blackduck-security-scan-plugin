@@ -134,7 +134,7 @@ trigger_jenkins_e2e_tests:
       artifacts: true
   trigger:
     project: qa-automation/test-integrations
-    branch: enable-e2e-scripts-jenkins-delivery-pipeline
+    branch: main
     strategy: depend
   variables:
     TRIGGER_STAGE: "jenkins-delivery-pipeline"
