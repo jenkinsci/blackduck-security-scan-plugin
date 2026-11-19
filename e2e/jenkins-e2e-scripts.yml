@@ -124,13 +124,12 @@
         # Step B: poll queue up to 3 times at escalating intervals
         QUEUE_BASE_INTERVAL="${JENKINS_POLL_INTERVAL_SECONDS:-30}"
         echo "Polling for queued Jenkins jobs (up to 3 times, base interval: ${QUEUE_BASE_INTERVAL}s)..."
-        QUEUE_POLL=0
+        QUEUE_POLL=1
         QUEUE_COUNT=0
-        while [ "${QUEUE_POLL}" -lt 3 ]; do
+        while [ "${QUEUE_POLL}" -le 3 ]; do
           QUEUE_HTTP=$(curl -s -g --http1.1 -o /tmp/queue.json -w "%{http_code}" \
             --user "${JENKINS_USER}:${JENKINS_API_TOKEN}" \
             "${JENKINS_URL}/queue/api/json?tree=items[id,task[name],why,inQueueSince]" || echo "000")
-          QUEUE_POLL=$((QUEUE_POLL + 1))
           if [ "${QUEUE_HTTP}" -ne 200 ]; then
             echo "Queue poll ${QUEUE_POLL}/3: WARNING — Jenkins queue API returned HTTP ${QUEUE_HTTP}."
             QUEUE_COUNT=0
@@ -148,13 +147,11 @@
             echo "Queue is empty."
             break
           fi
-          if [ "${QUEUE_POLL}" -lt 3 ]; then
-            WAIT_SECONDS=$((QUEUE_BASE_INTERVAL * QUEUE_POLL))
-            echo "Queue not empty. Waiting ${WAIT_SECONDS}s before next check (poll ${QUEUE_POLL} × ${QUEUE_BASE_INTERVAL}s)..."
-            sleep "${WAIT_SECONDS}"
-          else
-            echo "Queue still has items after 3 polls."
-          fi
+          WAIT_SECONDS=$((QUEUE_BASE_INTERVAL * (1 << (QUEUE_POLL - 1))))
+          echo "Queue not empty. Waiting ${WAIT_SECONDS}s before next check (poll ${QUEUE_POLL}, ${QUEUE_BASE_INTERVAL}s × 2^$((QUEUE_POLL - 1)))..."
+          sleep "${WAIT_SECONDS}"
+          QUEUE_POLL=$((QUEUE_POLL + 1))
+
         done
 
         # If queue was empty, both conditions are met — safe to install
